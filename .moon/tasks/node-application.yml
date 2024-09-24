@@ -24,7 +24,7 @@ tasks:
   test-unit:
     command: 'vitest'
     args:
-      - '-c vitest.config.mts'
+      - '--config vitest.config.mts'
     inputs:
       - '@globs(sources)'
       - '@globs(unit-tests)'
@@ -36,7 +36,7 @@ tasks:
   test-contract:
     command: 'vitest'
     args:
-      - '-c vitest-contract.config.mts'
+      - '--config vitest-contract.config.mts'
     inputs:
       - '@globs(sources)'
       - '@globs(contract-tests)'
