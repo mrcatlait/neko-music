@@ -22,7 +22,9 @@ fileGroups:
 
 tasks:
   test-unit:
-    command: 'vitest --config vitest.config.mts'
+    command: 'vitest'
+    args:
+      - '--config "vitest.config.mts"'
     inputs:
       - '@globs(sources)'
       - '@globs(unit-tests)'
@@ -32,7 +34,9 @@ tasks:
       - 'reports/unit'
     
   test-contract:
-    command: 'vitest --config vitest-contract.config.mts'
+    command: 'vitest'
+    args:
+      - '--config "vitest-contract.config.mts"'
     inputs:
       - '@globs(sources)'
       - '@globs(contract-tests)'
