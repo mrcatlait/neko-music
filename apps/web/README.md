@@ -33,7 +33,7 @@ To set up the web application locally:
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/mrcatlait/neko-music.git
    ```
 
 2. **Run the development server**:
@@ -123,7 +123,7 @@ The web application includes various types of tests to ensure the code is reliab
   moon web:test-contract
   ```
 
-- **Integration Tests**: Handled using [Cypress](https://www.cypress.io/) for end-to-end testing. To run the integration tests:
+- **Integration Tests**: Handled using [Cypress](https://www.cypress.io/) for integration testing with request interceptors. To run the integration tests:
   ```bash
   moon web:test-integration
   ```
