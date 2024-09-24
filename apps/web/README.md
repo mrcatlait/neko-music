@@ -1,5 +1,9 @@
 # Web Application (Music Streaming Interface)
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mrcatlait/neko-music/ci.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mrcatlait_neko-music-web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mrcatlait_neko-music-web)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mrcatlait_neko-music-web&metric=coverage)](https://sonarcloud.io/summary/new_code?id=mrcatlait_neko-music-web)
+
 This repository contains the **web application** component of the monorepo project, which provides the user interface for a music streaming service. This Angular-based app is styled using a custom design that follows Material 3 guidelines.
 
 ## Table of Contents

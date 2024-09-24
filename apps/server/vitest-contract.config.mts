@@ -13,7 +13,6 @@ export default defineConfig(({ mode }) => ({
     }),
   ],
   test: {
-    hookTimeout: 30000,
     globals: true,
     watch: false,
     include: ['contract-tests/**/*.spec.ts'],

@@ -18,7 +18,16 @@ export default defineConfig(({ mode }) => ({
     reporters: ['default', 'junit'],
     outputFile: {
       junit: './reports/contract/junit-report.xml',
-    }
+    },
+    coverage: {
+      enabled: true,
+      provider: 'v8',
+      include: ['src/**/*.repository.ts'],
+      all: true,
+      thresholds: {
+        functions: 100,
+      }
+    },
   },
   define: {
     'import.meta.vitest': mode !== 'production',

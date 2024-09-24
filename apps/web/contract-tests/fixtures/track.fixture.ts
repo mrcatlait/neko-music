@@ -72,3 +72,27 @@ export const requestToGetTracks: Pick<InteractionObject, 'uponReceiving' | 'with
     },
   },
 }
+
+export const requestToGetNewTracks: Pick<InteractionObject, 'uponReceiving' | 'withRequest'> = {
+  uponReceiving: 'a request to GET new tracks',
+  withRequest: {
+    method: 'GET',
+    path: '/tracks/new',
+    query: {
+      take: '6',
+      offset: '0',
+    },
+  },
+}
+
+export const requestToGetPopularTracks: Pick<InteractionObject, 'uponReceiving' | 'withRequest'> = {
+  uponReceiving: 'a request to GET popular tracks',
+  withRequest: {
+    method: 'GET',
+    path: '/tracks/popular',
+    query: {
+      take: '12',
+      offset: '0',
+    },
+  },
+}

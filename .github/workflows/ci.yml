@@ -32,11 +32,3 @@ jobs:
         if: success() || failure()
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish test reports
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: Test Reports
-          path: '**/apps/**/reports/**/*.xml'
-          reporter: jest-junit

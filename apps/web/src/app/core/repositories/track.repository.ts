@@ -13,19 +13,15 @@ export class TrackRepository {
   private readonly apiUrl = inject(API_URL)
 
   getPopular() {
-    return this.httpClient
-      .get<PageResponseDto<TrackDto>>(`${this.apiUrl}/tracks/popular`, {
-        params: { take: 12, offset: 0 } as PageOptionsDto,
-      })
-      .pipe(map((response) => response.data))
+    return this.httpClient.get<PageResponseDto<TrackDto>>(`${this.apiUrl}/tracks/popular`, {
+      params: { take: 12, offset: 0 } as PageOptionsDto,
+    })
   }
 
   getNew() {
-    return this.httpClient
-      .get<PageResponseDto<TrackDto>>(`${this.apiUrl}/tracks/new`, {
-        params: { take: 6, offset: 1 } as PageOptionsDto,
-      })
-      .pipe(map((response) => response.data))
+    return this.httpClient.get<PageResponseDto<TrackDto>>(`${this.apiUrl}/tracks/new`, {
+      params: { take: 6, offset: 0 } as PageOptionsDto,
+    })
   }
 
   get({ take, offset }: PageOptionsDto) {

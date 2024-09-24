@@ -26,7 +26,7 @@ tasks:
     inputs:
       - '@globs(sources)'
       - '@globs(unit-tests)'
-      - 'vitest.config.mts'
+      - 'vitest.config.*'
     outputs:
       - 'coverage'
       - 'reports/unit'
@@ -36,7 +36,7 @@ tasks:
     inputs:
       - '@globs(sources)'
       - '@globs(contract-tests)'
-      - 'vitest-contract.config.mts'
+      - 'vitest-contract.config.*'
     outputs:
       - 'reports/contract'
 
@@ -54,5 +54,9 @@ tasks:
     command: 'sonar-scanner'
     args:
       - 'Dsonar.token=${SONAR_TOKEN}'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(unit-tests)'
+      - 'sonar-project.properties'
     deps:
       - 'test-unit'
