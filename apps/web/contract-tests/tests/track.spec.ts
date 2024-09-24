@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing'
 import { Pact } from '@pact-foundation/pact'
 import { firstValueFrom } from 'rxjs'
 import { provideHttpClient } from '@angular/common/http'
-import { expect } from 'vitest'
 import { resolve } from 'path'
 
 import { API_URL } from '@core/tokens'

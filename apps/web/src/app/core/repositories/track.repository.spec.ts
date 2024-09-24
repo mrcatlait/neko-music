@@ -46,7 +46,7 @@ describe('TrackRepository', () => {
     // Act
     repository.getPopular().subscribe((remixes) => {
       // Assert
-      expect(remixes).toEqual(mockResponse.data)
+      expect(remixes).toEqual(mockResponse)
     })
   })
 

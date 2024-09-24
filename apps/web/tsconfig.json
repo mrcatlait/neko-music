@@ -36,6 +36,7 @@
       "@environment": ["src/environments/environment"]
     }
   },
+  "exclude": ["cypress.config.ts"],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
