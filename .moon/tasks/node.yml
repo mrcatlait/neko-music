@@ -53,3 +53,10 @@ tasks:
       - '@globs(configs)'
       - '.prettierignore'
       - '.prettierrc'
+
+  sonar:
+    command: 'sonar-scanner'
+    args:
+      - 'Dsonar.token=${SONAR_TOKEN}'
+    deps:
+      - 'test-unit'
