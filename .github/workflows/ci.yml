@@ -7,6 +7,11 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  statuses: write
+  checks: write
+
 jobs:
   ci:
     name: 'CI'
@@ -24,3 +29,10 @@ jobs:
         if: success() || failure()
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish test reports
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Reports
+          path: '**/apps/**/reports/**/*.xml'
+          reporter: jest-junit
