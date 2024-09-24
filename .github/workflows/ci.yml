@@ -12,6 +12,9 @@ permissions:
   statuses: write
   checks: write
 
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 jobs:
   ci:
     name: 'CI'
@@ -32,6 +35,7 @@ jobs:
 
       - name: Publish test reports
         uses: dorny/test-reporter@v1
+        if: success() || failure()
         with:
           name: Test Reports
           path: '**/apps/**/reports/**/*.xml'
