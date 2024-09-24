@@ -1,0 +1,17 @@
+{
+  "root": true,
+  "parserOptions": {
+    "project": true
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": true
+      },
+      "node": true
+    }
+  },
+  "extends": [
+    "@neko/eslint-config"
+  ]
+}

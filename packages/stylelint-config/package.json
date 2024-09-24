@@ -1,0 +1,10 @@
+{
+  "name": "@neko/stylelint-config",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "stylelint": "^16.9.0",
+    "stylelint-config-recommended": "^14.0.1",
+    "stylelint-config-standard-scss": "^13.1.0"
+  }
+}

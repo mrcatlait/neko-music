@@ -1,0 +1,5 @@
+export * from './player/player.component'
+export * from './player-controls/player-controls.component'
+export * from './player-playback/player-playback.component'
+export * from './player-song/player-song.component'
+export * from './player-volume/player-volume.component'

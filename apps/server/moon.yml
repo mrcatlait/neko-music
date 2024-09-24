@@ -1,0 +1,26 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'backend'
+type: 'application'
+language: 'typescript'
+
+dependsOn:
+  - id: 'eslint-config'
+    scope: 'development'
+  - id: 'vitest'
+    scope: 'development'
+
+fileGroups:
+  app:
+    - 'nest-cli.*'
+
+tasks:
+  start:
+    command: 'nest start -w'
+    local: true
+
+  build:
+    command: 'nest build'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'

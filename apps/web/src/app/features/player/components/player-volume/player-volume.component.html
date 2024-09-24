@@ -1,0 +1,17 @@
+<button
+  aria-label="Toggle mute"
+  nekoIconButton
+  variant="text"
+  (click)="toggleMute()"
+>
+  <i>volume_up</i>
+</button>
+
+<input
+  [max]="100"
+  [min]="0"
+  aria-label="Volume"
+  color="secondary"
+  nekoSlider
+  (input)="changeVolume($event)"
+/>

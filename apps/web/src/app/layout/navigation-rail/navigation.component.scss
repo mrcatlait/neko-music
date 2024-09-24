@@ -1,0 +1,71 @@
+@use 'abstracts' as abstracts;
+
+$rail-width: 80px;
+$drawer-width: 240px;
+$bar-height: 80px;
+
+:host {
+  --n-navigation-active-bg: rgba(var(--color-on-surface-rgb), .16);
+  --n-navigation-hover-color: var(--color-on-surface);
+
+  width: $rail-width;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background-color: var(--color-surface);
+  height: 100vh;
+  padding-top: 12px;
+
+  // border-right: 1px solid var(--color-outline);
+  width: $rail-width;
+
+  @include abstracts.elevation(0);
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  flex-direction: column;
+  padding: 8px;
+  margin: 0 8px;
+  border-radius: var(--shape-corner-medium);
+
+  &.active {
+    background-color: var(--n-navigation-active-bg);
+  }
+
+  &:not(.active) {
+    @include abstracts.state(var(--n-navigation-hover-color));
+  }
+}
+
+.neko-navigation-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  width: 56px;
+  margin-bottom: 4px;
+}
+
+neko-logo {
+  margin: 0 auto;
+}
+
+button {
+  margin-bottom: 12px;
+  margin-left: 20px;
+}

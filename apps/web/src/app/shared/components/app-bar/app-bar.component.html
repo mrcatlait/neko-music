@@ -1,0 +1,18 @@
+<header
+  [attr.data-sticky]="sticky()"
+  [style.width]="width() + 'px'"
+>
+  <div>
+    <ng-content select="[nekoSlot='left']" />
+  </div>
+
+  <div class="truncate">
+    @if (sticky()) {
+      <h1 class="title-l truncate"><ng-content /></h1>
+    }
+  </div>
+
+  <div>
+    <ng-content select="[nekoSlot='right']" />
+  </div>
+</header>

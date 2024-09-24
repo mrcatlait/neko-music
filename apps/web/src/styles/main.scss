@@ -1,0 +1,20 @@
+@use 'base' as base;
+@use 'components' as components;
+@use 'themes' as themes;
+
+// Base styles
+@include base.elevations;
+@include base.motions;
+@include base.reset;
+@include base.shapes;
+@include base.spacing;
+@include base.states;
+@include base.typography;
+
+// Include custom components
+@include components.button;
+@include components.icon;
+@include components.slider;
+
+// Theme
+@include themes.default;

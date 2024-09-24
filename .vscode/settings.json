@@ -1,0 +1,32 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": true,
+  "files.eol": "\n",
+  "editor.formatOnSave": false,
+  "eslint.options": {
+    "extensions": [".ts", ".html"]
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html"
+  ],
+  "css.validate": false,
+  "scss.validate": false,
+  "stylelint.validate": [
+    "css",
+    "scss"
+  ],
+  "eslint.workingDirectories": [
+    { "pattern": "./apps/*/" },
+    { "pattern": "./packages/*/" }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "javascript.suggestionActions.enabled": false
+}

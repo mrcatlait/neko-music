@@ -1,0 +1,44 @@
+@use '../abstracts' as abstracts;
+
+@mixin spacing() {
+  :root {
+    // Compact
+    --spacing-layout-compact: 16px;
+
+    // Medium
+    --spacing-layout-medium: 24px;
+    --spacing-panes-medium: 24px;
+
+    // Expanded
+    --spacing-layout-expanded: 24px;
+    --spacing-panes-expanded: 24px;
+    --spacing-fixed-pane-expanded: 360px;
+
+    // Large & Extra large
+    --spacing-layout-large: 24px;
+    --spacing-panes-large: 24px;
+    --spacing-fixed-pane-large: 412px;
+  }
+
+  body {
+    @include abstracts.screen(compact) {
+      --spacing-layout: var(--spacing-layout-compact);
+    }
+
+    @include abstracts.screen(medium) {
+      --spacing-layout: var(--spacing-layout-medium);
+    }
+  
+    @include abstracts.screen(expanded) {
+      --spacing-layout: var(--spacing-layout-expanded);
+    }
+  
+    @include abstracts.screen(large) {
+      --spacing-layout: var(--spacing-layout-large);
+    }
+  
+    @include abstracts.screen(extra-large) {
+      --spacing-layout: var(--spacing-layout-large);
+    }
+  }
+}

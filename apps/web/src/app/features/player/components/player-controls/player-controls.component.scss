@@ -1,0 +1,35 @@
+@use 'abstracts' as abstracts;
+
+:host {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  @include abstracts.screen(compact) {
+    .neko-player-controls-shuffle-button,
+    .neko-player-controls-previous-button,
+    .neko-player-controls-repeat-button {
+      display: none;
+    }
+  }
+
+  @include abstracts.screen(medium) {
+    .neko-player-controls-shuffle-button,
+    .neko-player-controls-repeat-button {
+      display: none;
+    }
+  }
+}
+
+.inactive {
+  opacity: 0.4;
+}
+
+.player-controls-button {
+  color: var(--color-surface-container);
+  background-color: var(--color-text-high-emphasis) !important;
+
+  &:hover {
+    background-color: var(--color-text-high-emphasis);
+  }
+}

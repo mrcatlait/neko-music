@@ -1,0 +1,23 @@
+$padding: 12px;
+
+:host {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  &:not(:hover) input {
+    &:not(:hover)::-webkit-slider-thumb {
+      background-color: transparent;
+    }
+  
+    &:not(:hover)::-moz-range-thumb {
+      background-color: transparent;
+    }
+  }
+}
+
+.neko-slider {
+  --n-slider-track-height: 6px;
+  --n-slider-thumb-diameters: 14px;
+  --n-slider-track-hitbox: 24px;
+}

@@ -1,0 +1,55 @@
+@use 'abstracts' as abstracts;
+
+:host {
+  display: grid;
+  grid-template: "top top top" auto "left center right" 1fr "bottom bottom bottom" auto / auto 1fr auto;
+  gap: 0; 
+  min-height: 100%;
+}
+
+neko-navigation-bar {
+  display: none;
+  grid-area: bottom;
+
+  @include abstracts.screen(compact) {
+    display: block;
+  }
+
+  @include abstracts.screen(medium) {
+    display: block;
+  }
+}
+
+neko-navigation-rail {
+  grid-area: left;
+  display: none;
+
+  @include abstracts.screen(expanded) {
+    display: block;
+  }
+}
+
+neko-navigation-drawer {
+  grid-area: left;
+  display: none;
+
+  @include abstracts.screen(large) {
+    display: block;
+  }
+
+  @include abstracts.screen(extra-large) {
+    display: block;
+  }
+}
+
+
+main {
+  grid-area: center;
+  overflow: hidden;
+
+  // margin: 0 auto;
+  // max-width: 1478px;
+  // width: 100%;
+
+  padding: 0 var(--spacing-layout);
+}

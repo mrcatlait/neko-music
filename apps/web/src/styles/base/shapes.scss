@@ -1,0 +1,29 @@
+@mixin shapes() {
+  :root {
+    // Full
+    --shape-corner-full: 3vmin;
+
+    // Extra large
+    --shape-corner-extra-large-top: 28px 28px 0 0;
+    --shape-corner-extra-large: 28px;
+
+    // Large
+    --shape-corner-large-top: 16px 16px 0 0;
+    --shape-corner-large-end: 0 16px 16px 0;
+    --shape-corner-large-start: 16px 0 0 16px;
+    --shape-corner-large: 16px;
+
+    // Medium
+    --shape-corner-medium: 12px;
+
+    // Small
+    --shape-corner-small: 8px;
+
+    // Extra small
+    --shape-corner-extra-small-top: 4px 4px 0 0;
+    --shape-corner-extra-small: 4px;
+
+    // None
+    --shape-corner-none: 0;
+  }
+}

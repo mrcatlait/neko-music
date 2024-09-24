@@ -1,0 +1,47 @@
+<button
+  aria-label="Shuffle"
+  class="neko-player-controls-shuffle-button"
+  nekoIconButton
+  variant="text"
+  (click)="handleToggleShuffle()"
+>
+  <i>shuffle</i>
+</button>
+
+<button
+  aria-label="Previous"
+  class="neko-player-controls-previous-button"
+  nekoIconButton
+  variant="text"
+  (click)="handleSkipPrevious()"
+>
+  <i>skip_previous</i>
+</button>
+
+<button
+  aria-label="Play"
+  color="secondary"
+  nekoIconButton
+  (click)="handleTogglePlay()"
+>
+  <i>play_arrow</i>
+</button>
+
+<button
+  aria-label="Next"
+  nekoIconButton
+  variant="text"
+  (click)="handleSkipNext()"
+>
+  <i>skip_next</i>
+</button>
+
+<button
+  aria-label="Repeat"
+  class="neko-player-controls-repeat-button"
+  nekoIconButton
+  variant="text"
+  (click)="handleToggleRepeat()"
+>
+  <i>repeat</i>
+</button>
