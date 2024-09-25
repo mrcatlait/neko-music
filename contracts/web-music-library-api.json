@@ -18,7 +18,8 @@
               "artists": [
                 {
                   "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                  "name": "Artist"
+                  "name": "Artist",
+                  "role": "Main"
                 }
               ],
               "duration": 123,
@@ -51,6 +52,9 @@
             "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
           },
           "$.body.data[0].artists[0].name": {
+            "match": "type"
+          },
+          "$.body.data[0].artists[0].role": {
             "match": "type"
           },
           "$.body.data[0].duration": {
@@ -141,7 +145,8 @@
               "artists": [
                 {
                   "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                  "name": "Artist"
+                  "name": "Artist",
+                  "role": "Main"
                 }
               ],
               "duration": 123,
@@ -174,6 +179,9 @@
             "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
           },
           "$.body.data[0].artists[0].name": {
+            "match": "type"
+          },
+          "$.body.data[0].artists[0].role": {
             "match": "type"
           },
           "$.body.data[0].duration": {
@@ -264,7 +272,8 @@
               "artists": [
                 {
                   "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                  "name": "Artist"
+                  "name": "Artist",
+                  "role": "Main"
                 }
               ],
               "duration": 123,
@@ -297,6 +306,9 @@
             "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
           },
           "$.body.data[0].artists[0].name": {
+            "match": "type"
+          },
+          "$.body.data[0].artists[0].role": {
             "match": "type"
           },
           "$.body.data[0].duration": {

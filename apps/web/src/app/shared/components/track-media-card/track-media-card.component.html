@@ -1,0 +1,16 @@
+<div [selector]="selectors.trackMediaCard">
+  <h3
+    [selector]="selectors.trackLabel"
+    [title]="track.title"
+  >
+    {{ track.title }}
+  </h3>
+
+  <button
+    [selector]="selectors.playButton"
+    nekoIconButton
+    (click)="handleTogglePlay()"
+  >
+    <i>{{ isCurrentTrack() ? 'pause' : 'play_arrow' }}</i>
+  </button>
+</div>

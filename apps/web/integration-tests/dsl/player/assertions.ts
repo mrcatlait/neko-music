@@ -1,4 +1,4 @@
-import { playerSelectors } from 'integration-tests/selectors'
+import { playerSelectors } from 'selectors'
 
 export const assertions = {
   assertPlaying() {
@@ -49,16 +49,15 @@ export const assertions = {
     cy.getBySelector(playerSelectors.playbackSlider).should('have.value', time)
   },
 
-  assertCurrentTime(time: string) {
-    cy.getBySelector(playerSelectors.currentTimeLabel).should('contain', time)
+  assertTrack(track: string) {
+    cy.getBySelector(playerSelectors.trackLabel).should('contain', track)
   },
 
-  assertTotalTime(time: string) {
-    cy.getBySelector(playerSelectors.totalTimeLabel).should('contain', time)
-  },
-
-  assertRemix(remix: string) {
-    cy.getBySelector(playerSelectors.remixLabel).should('contain', remix)
+  assertTrackImage() {
+    cy.getBySelector(playerSelectors.trackImage)
+      .should('be.visible')
+      .and('have.prop', 'naturalWidth')
+      .should('be.greaterThan', 0)
   },
 
   assertArtist(artist: string) {

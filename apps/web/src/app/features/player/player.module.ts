@@ -4,7 +4,7 @@ import {
   PlayerComponent,
   PlayerControlsComponent,
   PlayerPlaybackComponent,
-  PlayerSongComponent,
+  PlayerTrackComponent,
   PlayerVolumeComponent,
 } from './components'
 
@@ -16,7 +16,7 @@ import { SharedModule } from '@shared/shared.module'
     PlayerComponent,
     PlayerControlsComponent,
     PlayerPlaybackComponent,
-    PlayerSongComponent,
+    PlayerTrackComponent,
     PlayerVolumeComponent,
   ],
   providers: [],

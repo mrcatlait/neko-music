@@ -1,23 +1,27 @@
-import { playerSelectors } from 'integration-tests/selectors'
+import { playerSelectors } from 'selectors'
 
 export const actions = {
   play() {
-    cy.getBySelector(playerSelectors.playButton).contains('play_arrow').click()
+    cy.getBySelector(playerSelectors.playButton).contains('play_arrow').click({ force: true })
   },
 
   pause() {
-    cy.getBySelector(playerSelectors.playButton).contains('pause').click()
+    cy.getBySelector(playerSelectors.playButton).contains('pause').click({ force: true })
   },
 
   mute() {
-    cy.getBySelector(playerSelectors.volumeButton).contains('volume_up').click()
+    cy.getBySelector(playerSelectors.volumeButton).contains('volume_up').click({ force: true })
   },
 
-  skipToNextSong() {
+  unmute() {
+    cy.getBySelector(playerSelectors.volumeButton).contains('volume_off').click({ force: true })
+  },
+
+  skipToNextTrack() {
     cy.getBySelector(playerSelectors.skipNextButton).click()
   },
 
-  skipToPreviousSong() {
+  skipToPreviousTrack() {
     cy.getBySelector(playerSelectors.skipPreviousButton).click()
   },
 

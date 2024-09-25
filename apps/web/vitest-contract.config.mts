@@ -26,7 +26,8 @@ export default defineConfig(({ mode }) => ({
       all: true,
       thresholds: {
         functions: 100,
-      }
+      },
+      reportsDirectory: 'coverage-contract'
     },
   },
   define: {

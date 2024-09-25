@@ -2,10 +2,12 @@ import { InteractionObject, MatchersV3 } from '@pact-foundation/pact'
 
 import { PageResponseDto, TrackDto } from '@core/dto'
 import { PactMatcher, PactResponses } from 'contract-tests/types'
+import { mapTrackDtoToModel } from '@core/mappers'
+import { Track } from '@core/models'
 
 const { extractPayload, integer, string, uuid } = MatchersV3
 
-const track: PactMatcher<TrackDto> = {
+const trackDto: PactMatcher<TrackDto> = {
   id: uuid('c76b4326-ca77-4c24-a414-f002c6be3106'),
   title: string('Title'),
   duration: integer(123),
@@ -20,12 +22,13 @@ const track: PactMatcher<TrackDto> = {
     {
       id: uuid('c76b4326-ca77-4c24-a414-f002c6be3106'),
       name: string('Artist'),
+      role: string('Main'),
     },
   ],
 }
 
 const getTracksSuccessResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
-  data: [track],
+  data: [trackDto],
   meta: {
     take: integer(50),
     offset: integer(0),
@@ -33,7 +36,9 @@ const getTracksSuccessResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
     pageCount: integer(1),
   },
 }
-export const getTracksSuccess = extractPayload(getTracksSuccessResponseBody)
+export const getTracksSuccess = (extractPayload(getTracksSuccessResponseBody.data) as unknown as TrackDto[]).map(
+  mapTrackDtoToModel,
+)
 
 const getTracksEmptyResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
   data: [],
@@ -44,7 +49,8 @@ const getTracksEmptyResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
     pageCount: integer(1),
   },
 }
-export const getTracksEmpty = extractPayload(getTracksEmptyResponseBody)
+
+export const getTracksEmpty = extractPayload(getTracksEmptyResponseBody.data)
 
 export const trackResponses: PactResponses = {
   getTracksSuccess: {

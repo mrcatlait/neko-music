@@ -39,6 +39,7 @@ describe('Tracks', () => {
 
   afterEach(async () => {
     await provider.verify()
+    vi.resetAllMocks()
   })
 
   afterAll(async () => {

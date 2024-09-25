@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core'
+
+import { AudioState } from '@core/state'
+import { playerSelectors } from 'selectors'
 
 @Component({
   selector: 'neko-player-volume',
@@ -7,13 +10,20 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerVolumeComponent {
+  private readonly audioState = inject(AudioState)
+
+  readonly icon = computed(() => (this.audioState.muted() ? 'volume_off' : 'volume_up'))
+  readonly volume = computed(() => (this.audioState.muted() ? 0 : this.audioState.volume()))
+
+  readonly selectors = playerSelectors
+
   changeVolume(event: Event) {
     const volume = Number((event.target as HTMLInputElement).value)
 
-    // this.audioState.setVolume({ volume })
+    this.audioState.setVolume({ volume })
   }
 
   toggleMute() {
-    // this.audioState.toggleMute()
+    this.audioState.toggleMute()
   }
 }

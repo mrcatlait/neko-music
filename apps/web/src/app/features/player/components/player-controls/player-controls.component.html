@@ -1,4 +1,6 @@
 <button
+  [class]="{ inactive: !shuffle() }"
+  [selector]="selectors.shuffleButton"
   aria-label="Shuffle"
   class="neko-player-controls-shuffle-button"
   nekoIconButton
@@ -9,6 +11,8 @@
 </button>
 
 <button
+  [disabled]="!hasPrevious()"
+  [selector]="selectors.skipPreviousButton"
   aria-label="Previous"
   class="neko-player-controls-previous-button"
   nekoIconButton
@@ -19,15 +23,28 @@
 </button>
 
 <button
+  [selector]="selectors.playButton"
   aria-label="Play"
   color="secondary"
   nekoIconButton
   (click)="handleTogglePlay()"
 >
-  <i>play_arrow</i>
+  @switch (status()) {
+    @case (playerStatus.Playing) {
+      <i>pause</i>
+    }
+    @case (playerStatus.Loading) {
+      <i>downloading</i>
+    }
+    @case (playerStatus.Paused) {
+      <i>play_arrow</i>
+    }
+  }
 </button>
 
 <button
+  [disabled]="!hasNext()"
+  [selector]="selectors.skipNextButton"
   aria-label="Next"
   nekoIconButton
   variant="text"
@@ -37,11 +54,21 @@
 </button>
 
 <button
+  [selector]="selectors.repeatButton"
   aria-label="Repeat"
-  class="neko-player-controls-repeat-button"
   nekoIconButton
   variant="text"
   (click)="handleToggleRepeat()"
 >
-  <i>repeat</i>
+  @switch (repeat()) {
+    @case (repeatOption.None) {
+      <i class="inactive">repeat</i>
+    }
+    @case (repeatOption.All) {
+      <i>repeat</i>
+    }
+    @case (repeatOption.Single) {
+      <i>repeat_one</i>
+    }
+  }
 </button>

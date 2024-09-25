@@ -1,0 +1,24 @@
+<h2
+  [selector]="selectors.titleLabel"
+  class="display-m"
+>
+  New Releases
+</h2>
+
+<div
+  [selector]="selectors.trackContainer"
+  class="neko-track-new-releases-container"
+>
+  @if (loading()) {
+    <!-- @for (i of 5 | numberSequence; track i) {
+      <neko-track-media-card-skeleton />
+    } -->
+  } @else {
+    @for (track of tracks(); track track.id) {
+      <neko-track-media-card
+        [queue]="queue()"
+        [track]="track"
+      />
+    }
+  }
+</div>

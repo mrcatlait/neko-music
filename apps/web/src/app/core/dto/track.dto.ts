@@ -7,6 +7,7 @@ export interface TrackDto {
   artists: Array<{
     id: string
     name: string
+    role: string
   }>
   duration: number
   genres: string[]

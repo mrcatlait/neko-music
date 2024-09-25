@@ -1,6 +1,6 @@
 export const routes = {
   HOME: '/',
-  EXPLORE: '/remixes',
+  EXPLORE: '/tracks',
   LOGIN: '/login',
   REGISTRATION: '/registration',
   ARTIST_DETAILS: '/artists/artist-1',
