@@ -5,5 +5,5 @@ import { Directive, Input } from '@angular/core'
 })
 export class SlotDirective {
   @Input()
-  nekoSlot: string | 'left' | 'right' = 'left'
+  nekoSlot: 'left' | 'right' = 'left'
 }

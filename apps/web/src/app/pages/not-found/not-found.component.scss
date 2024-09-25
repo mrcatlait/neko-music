@@ -23,8 +23,7 @@
   background-clip: text;
   background-repeat: no-repeat;
   background-position: center;
-
-  // color: transparent;
+  color: transparent;
 
   @include abstracts.screen(compact) {
     display: none;

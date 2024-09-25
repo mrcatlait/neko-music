@@ -10,9 +10,6 @@
   class="neko-track-new-releases-container"
 >
   @if (loading()) {
-    <!-- @for (i of 5 | numberSequence; track i) {
-      <neko-track-media-card-skeleton />
-    } -->
   } @else {
     @for (track of tracks(); track track.id) {
       <neko-track-media-card

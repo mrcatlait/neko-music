@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => ({
   test: {
     globals: true,
     watch: false,
+    hookTimeout: 30000,
     include: ['contract-tests/**/*.spec.ts'],
     reporters: ['default', 'junit'],
     outputFile: {

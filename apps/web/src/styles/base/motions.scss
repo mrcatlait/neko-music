@@ -30,8 +30,8 @@
 
     // Standard
     --motion-easing-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
-    --motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);;
-    --motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);;
+    --motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+    --motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
 
     // Emphasized
     --motion-easing-emphasized: var(--motion-easing-standard);
@@ -41,6 +41,5 @@
     // Transition
 
     // Top level
-    // --motion-transition-top-level: all var(--motion-duration-medium2) var(--motion-easing-standard);
   }
 }

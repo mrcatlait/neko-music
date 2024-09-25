@@ -1,5 +1,4 @@
 import { Injectable, computed, inject } from '@angular/core'
-import { of } from 'rxjs'
 
 import { Queue, Track } from '@core/models'
 import { TrackRepository } from '@core/repositories'

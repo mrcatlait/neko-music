@@ -33,7 +33,7 @@ export class AudioState implements StateModel<AudioStateModel> {
   readonly duration = computed(() => this.track()?.duration ?? 0)
 
   constructor() {
-    const volume = this.cookieService.get(VOLUME_COOKIE) || 30
+    const volume = this.cookieService.get(VOLUME_COOKIE) ?? 30
 
     if (volume) {
       this.setVolume({ volume: Number(volume) })
