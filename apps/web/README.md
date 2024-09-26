@@ -1,55 +1,44 @@
-# Web Application (Music Streaming Interface)
+# Neko Music Web Application
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mrcatlait/neko-music/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mrcatlait_neko-music-web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mrcatlait_neko-music-web)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mrcatlait_neko-music-web&metric=coverage)](https://sonarcloud.io/summary/new_code?id=mrcatlait_neko-music-web)
 
-This repository contains the **web application** component of the monorepo project, which provides the user interface for a music streaming service. This Angular-based app is styled using a custom design that follows Material 3 guidelines.
+This repository contains the web application component of the Neko Music project, providing the user interface for our music streaming service. Built with Angular and styled using a custom design based on Material 3 guidelines, it offers a sleek and responsive experience for music lovers.
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
+- [Features](#features)
+- [Technologies](#technologies)
 - [Project Structure](#project-structure)
-- [Scripts](#scripts)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Available Scripts](#available-scripts)
 - [Testing](#testing)
-- [Code Formatting](#code-formatting)
-- [Moonrepo](#moonrepo)
-- [License](#license)
+- [Code Quality](#code-quality)
 
-## Prerequisites
+## Features
 
-Before setting up the project, ensure that you have the following installed:
+- Intuitive music player interface
+- Playlist management
+- User profile customization
+- Advanced search and discovery tools
+- Responsive design for various devices
 
-1. **Node.js** (>= 14.x) and **npm** (>= 6.x) or **yarn**.
-   - You can download Node.js from [here](https://nodejs.org/).
+## Technologies
 
-2. **Moonrepo** for monorepo task orchestration and management. Follow these steps to install Moonrepo globally:
-   ```
-   npm install -g moonrepo
-   ```
-
-   For more information on Moonrepo installation and usage, refer to the official [Moonrepo Documentation](https://moonrepo.dev/docs).
-
-## Installation
-
-To set up the web application locally:
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/mrcatlait/neko-music.git
-   ```
-
-2. **Run the development server**:
-   ```bash
-   moon web:start
-   ```
-
-Moonrepo will install all required dependencies automatically on the first run. The application should now be running at `http://localhost:4200`.
+- **Framework**: Angular
+- **UI Design**: Custom components based on Material 3 guidelines
+- **State Management**: Angular services with signals
+- **Testing**: 
+  - Unit Tests: Vitest
+  - Integration Tests: Cypress
+  - Contract Tests: PactJS
+- **Code Quality**: ESLint, Prettier, Stylelint
 
 ## Project Structure
 
-The project is structured using Angular’s modular architecture to ensure scalability and maintainability. It is divided into three main module types:
+The project is structured using Angular's modular architecture to ensure scalability and maintainability. It is divided into three main module types:
 
 1. **Core Module**:
    - The core module contains singleton services, and repositories that are used across the entire application. These include things like authentication, routing, and configuration services.
@@ -66,11 +55,11 @@ The project is structured using Angular’s modular architecture to ensure scala
    - This folder contains components and templates that define the global layout of the application. It typically includes headers, footers, side navigation, and other structural elements that provide a consistent look and feel across all pages.
 
 5. **Pages**
-   - This folder contains page components that act as wrappers for routing. These components combine multiple features and display them in a structured way, allowing for seamless navigation and organization of the application’s content.
+   - This folder contains page components that act as wrappers for routing. These components combine multiple features and display them in a structured way, allowing for seamless navigation and organization of the application's content.
 
 ### General Project Structure
 
-```
+```plaintext
 web/
 ├── src/
 │   ├── app/
@@ -80,13 +69,16 @@ web/
 │   │   ├── layout/              # Global layout components applied to the application
 │   │   ├── pages/               # Page components used for routing and combining features
 │   │   └── app.module.ts        # Root module
+│   ├── assets/                  # Static assets (images, fonts)
+│   └── environments/            # Environment-specific configuration
+└─  package.json
 ```
 
 ### Example Feature Module Structure
 
 Each feature module has its own dedicated folder that may include various components, services, state management, pipes, and routing. The structure for a single feature module might look like this:
 
-```
+```plaintext
 features/
 ├── feature-name/                # Feature module folder
 │   ├── components/              # Components specific to this feature
@@ -96,70 +88,78 @@ features/
 │   └── feature.module.ts        # Module definition for the feature
 ```
 
-## Scripts
+## Getting Started
 
-Here are the commonly used scripts for this web application, executed via Moonrepo:
+### Prerequisites
 
-- **Start the development server**:
+Ensure you have the following installed:
+- Node.js (>= 14.x)
+- npm (>= 6.x) or yarn
+- Moonrepo (global installation)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mrcatlait/neko-music.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd neko-music
+   ```
+
+3. Start the development server:
+   ```bash
+   moon web:start
+   ```
+
+The application should now be running at `http://localhost:4200`.
+
+## Available Scripts
+
+- **Start development server**:
   ```bash
   moon web:start
   ```
-- **Build the application for production**:
+- **Build for production**:
   ```bash
   moon web:build
   ```
-- **Lint the codebase**:
+- **Run linter**:
   ```bash
   moon web:lint
   ```
 
 ## Testing
 
-The web application includes various types of tests to ensure the code is reliable and performs as expected. All tests are executed using Moonrepo.
-
-- **Unit Tests**: Written using [Vitest](https://vitest.dev/), run the tests with:
+- **Unit Tests**:
   ```bash
-  moon wen:test-unit
+  moon web:test-unit
   ```
-
-- **Contract Tests**: Built using [PactJS](https://pact.io/) and executed with [Vitest](https://vitest.dev/). Run the contract tests with:
-  ```bash
-  moon web:test-contract
-  ```
-
-- **Integration Tests**: Handled using [Cypress](https://www.cypress.io/) for integration testing with request interceptors. To run the integration tests:
+- **Integration Tests**:
   ```bash
   moon web:test-integration
   ```
-
-- **All Tests**: To run all tests:
+- **Contract Tests**:
+  ```bash
+  moon web:test-contract
+  ```
+- **Run all tests**:
   ```bash
   moon web:test
   ```
 
-## Code Formatting
+## Code Quality
 
-The project uses a strict set of formatting and linting tools to ensure consistent code style across the codebase. The following tools are used:
+We maintain high code quality standards using:
+- ESLint for JavaScript/TypeScript linting
+- Prettier for code formatting
+- Stylelint for CSS/SCSS linting
 
-- **ESLint**: For JavaScript/TypeScript linting.
-- **Prettier**: For code formatting.
-- **Stylelint**: For linting CSS/SCSS styles.
-
-To automatically format the code and fix linting issues:
-
+To format code and fix linting issues:
 ```bash
 moon web:lint
 ```
 
-## Moonrepo
-
-This web application is managed as part of a monorepo using [Moonrepo](https://moonrepo.dev/), which provides task orchestration and monorepo management.
-
-- **Build orchestration**: Moonrepo handles the build process, ensuring consistency across multiple apps and packages in the repository.
-- **Task caching**: By leveraging task caching, the project achieves faster build and test times.
-
-Refer to the Moonrepo [documentation](https://moonrepo.dev/docs) for more details on setting up and managing monorepo-based projects.
-
-## License
-
-This project is licensed under the [MIT License](../../LICENSE).
+For more detailed information about the entire Neko Music project, please refer to the [main README](../../README.md).
