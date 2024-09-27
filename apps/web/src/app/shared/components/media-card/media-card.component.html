@@ -1,0 +1,21 @@
+<div class="media-card-image-container">
+  <img
+    [ngSrc]="imageUrl"
+    alt=""
+    height="256"
+    priority
+    width="256"
+  />
+
+  <button nekoIconButton>
+    <neko-play-icon [isPlaying]="isPlaying" />
+  </button>
+</div>
+
+<h2 class="title-m truncate">
+  <ng-content select="neko-media-card-title, [neko-media-card-title]" />
+</h2>
+
+<span class="title-s secondary-text truncate">
+  <ng-content select="neko-media-card-subtitle, [neko-media-card-subtitle]" />
+</span>

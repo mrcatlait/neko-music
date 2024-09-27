@@ -1,0 +1,50 @@
+<div
+  [class.track-list-item-active]="isPlaying()"
+  [selector]="selectors.trackListItem"
+  class="track-list-item"
+>
+  <div class="track-list-item-image-container">
+    <img
+      [alt]="track.title"
+      [ngSrc]="track.images | imageUrl: 'small'"
+      [selector]="selectors.trackImage"
+      alt=""
+      height="56"
+      width="56"
+    />
+
+    <button
+      [selector]="selectors.playButton"
+      nekoIconButton
+    >
+      <neko-play-icon [isPlaying]="isPlaying()" />
+    </button>
+  </div>
+
+  <div class="truncate secondary-text">
+    <h3
+      [attr.tabindex]="false"
+      [selector]="selectors.trackLabel"
+      [title]="track.title"
+      class="title-m truncate primary-text"
+      (click)="togglePlay.emit()"
+      (keyup)="togglePlay.emit()"
+    >
+      {{ track.title }}
+    </h3>
+
+    <neko-track-artist-list
+      [artists]="track.artists"
+      [selector]="selectors.artistLabel"
+      class="title-s"
+    />
+  </div>
+
+  <button
+    [selector]="selectors.menuButton"
+    nekoIconButton
+    variant="text"
+  >
+    <i>more_vert</i>
+  </button>
+</div>

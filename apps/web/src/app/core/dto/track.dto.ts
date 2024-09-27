@@ -1,5 +1,7 @@
 import { ImageDto } from './image.dto'
 
+import { ArtistRole } from '@core/enum'
+
 export interface TrackDto {
   id: string
   title: string
@@ -7,7 +9,7 @@ export interface TrackDto {
   artists: Array<{
     id: string
     name: string
-    role: string
+    role: ArtistRole
   }>
   duration: number
   genres: string[]

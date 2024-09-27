@@ -43,8 +43,6 @@ export class PlaybackState implements StateModel<PlaybackStateModel> {
 
   readonly currentTrackId = computed(() => generateCompositeTrackId(this.queue(), this.currentTrack()))
 
-  readonly queueSourceId = computed(() => this.queue().source.entityId)
-
   togglePlay(payload: { queue: Queue; trackId?: string }): void {
     if (this.currentTrack()?.id === payload.trackId && this.queue().source.entityId === payload.queue.source.entityId) {
       this.audioState.togglePlay()
@@ -59,10 +57,7 @@ export class PlaybackState implements StateModel<PlaybackStateModel> {
 
     this.currentTrack.set(track)
 
-    if (
-      this.queue().source.entityId !== payload.queue.source.entityId ||
-      this.queue().source.name !== payload.queue.source.name
-    ) {
+    if (this.queue().source.entityId !== payload.queue.source.entityId) {
       this.queue.set(payload.queue)
     }
 

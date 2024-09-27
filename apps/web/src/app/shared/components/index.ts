@@ -1,3 +1,6 @@
 export * from './app-bar/app-bar.component'
 export * from './logo/logo.component'
-export * from './track-media-card/track-media-card.component'
+export * from './media-card/media-card.component'
+export * from './media-card/media-card-subtitle.directive'
+export * from './media-card/media-card-title.directive'
+export * from './play-icon/play-icon.component'

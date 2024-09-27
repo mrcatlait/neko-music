@@ -2,7 +2,7 @@
   [class]="{ inactive: !shuffle() }"
   [selector]="selectors.shuffleButton"
   aria-label="Shuffle"
-  class="neko-player-controls-shuffle-button"
+  class="player-controls-shuffle-button"
   nekoIconButton
   variant="text"
   (click)="handleToggleShuffle()"
@@ -14,7 +14,7 @@
   [disabled]="!hasPrevious()"
   [selector]="selectors.skipPreviousButton"
   aria-label="Previous"
-  class="neko-player-controls-previous-button"
+  class="player-controls-previous-button"
   nekoIconButton
   variant="text"
   (click)="handleSkipPrevious()"
@@ -29,17 +29,7 @@
   nekoIconButton
   (click)="handleTogglePlay()"
 >
-  @switch (status()) {
-    @case (playerStatus.Playing) {
-      <i>pause</i>
-    }
-    @case (playerStatus.Loading) {
-      <i>downloading</i>
-    }
-    @case (playerStatus.Paused) {
-      <i>play_arrow</i>
-    }
-  }
+  <neko-play-icon [isPlaying]="true" />
 </button>
 
 <button

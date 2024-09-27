@@ -6,16 +6,16 @@
   gap: 8px;
 
   @include abstracts.screen(compact) {
-    .neko-player-controls-shuffle-button,
-    .neko-player-controls-previous-button,
-    .neko-player-controls-repeat-button {
+    .player-controls-shuffle-button,
+    .player-controls-previous-button,
+    .player-controls-repeat-button {
       display: none;
     }
   }
 
   @include abstracts.screen(medium) {
-    .neko-player-controls-shuffle-button,
-    .neko-player-controls-repeat-button {
+    .player-controls-shuffle-button,
+    .player-controls-repeat-button {
       display: none;
     }
   }

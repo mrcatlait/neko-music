@@ -7,14 +7,14 @@
 
 <div
   [selector]="selectors.trackContainer"
-  class="neko-track-new-releases-container"
+  class="track-new-releases-container"
 >
   @if (loading()) {
   } @else {
     @for (track of tracks(); track track.id) {
-      <neko-track-media-card
-        [queue]="queue()"
+      <neko-track-list-item
         [track]="track"
+        (togglePlay)="handleTogglePlay(track.id)"
       />
     }
   }

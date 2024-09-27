@@ -40,18 +40,18 @@ describe('ImageUrlPipe', () => {
     ]
 
     // Act & Assert
-    expect(pipe.transform(images, ImageSize.MEDIUM)).toBe('medium-image.jpg')
-    expect(pipe.transform(images, ImageSize.LARGE)).toBe('large-image.jpg')
+    expect(pipe.transform(images, ImageSize.Medium)).toBe('medium-image.jpg')
+    expect(pipe.transform(images, ImageSize.Large)).toBe('large-image.jpg')
   })
 
-  it('should return undefined if the requested size is not available', () => {
+  it('should return empty string if the requested size is not available', () => {
     // Arrange
     const images: Image[] = [{ resolution: '56x56', url: 'small-image.jpg' }]
 
     // Act
-    const result = pipe.transform(images, ImageSize.LARGE)
+    const result = pipe.transform(images, ImageSize.Large)
 
     // Assert
-    expect(result).toBeUndefined()
+    expect(result).toBe('')
   })
 })

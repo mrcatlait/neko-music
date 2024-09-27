@@ -1,24 +1,34 @@
 import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
+import { CommonModule, NgOptimizedImage } from '@angular/common'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 
 import { ButtonDirective, SelectorDirective, SliderDirective, SlotDirective } from './directives'
-import { AppBarComponent, LogoComponent, TrackMediaCardComponent } from './components'
+import {
+  AppBarComponent,
+  LogoComponent,
+  MediaCardComponent,
+  MediaCardSubtitleDirective,
+  MediaCardTitleDirective,
+  PlayIconComponent,
+} from './components'
 import { ImageUrlPipe, NumberSequencePipe } from './pipes'
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, NgOptimizedImage, ReactiveFormsModule, RouterModule],
   declarations: [
     AppBarComponent,
     ButtonDirective,
     ImageUrlPipe,
     LogoComponent,
+    MediaCardComponent,
+    MediaCardSubtitleDirective,
+    MediaCardTitleDirective,
     NumberSequencePipe,
+    PlayIconComponent,
     SelectorDirective,
     SliderDirective,
     SlotDirective,
-    TrackMediaCardComponent,
   ],
   exports: [
     AppBarComponent,
@@ -26,13 +36,17 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     CommonModule,
     ImageUrlPipe,
     LogoComponent,
+    MediaCardComponent,
+    MediaCardSubtitleDirective,
+    MediaCardTitleDirective,
+    NgOptimizedImage,
     NumberSequencePipe,
+    PlayIconComponent,
     ReactiveFormsModule,
     RouterModule,
     SelectorDirective,
     SliderDirective,
     SlotDirective,
-    TrackMediaCardComponent,
   ],
 })
 export class SharedModule {}

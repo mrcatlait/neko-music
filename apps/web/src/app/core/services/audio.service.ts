@@ -7,6 +7,7 @@ import { API_URL } from '@core/tokens'
 export enum AudioEvents {
   PLAYBACK_TIME_UPDATED = 'playbackTimeUpdated',
   MANIFEST_LOADED = 'manifestLoaded',
+  CAN_PLAY = 'canPlay',
   PLAYBACK_ENDED = 'playbackEnded',
 }
 
@@ -31,11 +32,15 @@ export class AudioService implements OnDestroy {
   }
 
   play() {
-    this.player.play()
+    if (this.player.isPaused()) {
+      this.player.play()
+    }
   }
 
   pause() {
-    this.player.pause()
+    if (!this.player.isPaused()) {
+      this.player.pause()
+    }
   }
 
   seek(seconds: number) {
@@ -63,13 +68,13 @@ export class AudioService implements OnDestroy {
   }
 
   private registerEvents() {
-    this.player.on(AudioEvents.MANIFEST_LOADED, this.onManifestLoaded)
+    this.player.on(AudioEvents.CAN_PLAY, this.onCanPlay)
     this.player.on(AudioEvents.PLAYBACK_TIME_UPDATED, this.onPlaybackTimeUpdate)
     this.player.on(AudioEvents.PLAYBACK_ENDED, this.onPlaybackEnded)
   }
 
   private removeEvents() {
-    this.player.off(AudioEvents.MANIFEST_LOADED, this.onManifestLoaded)
+    this.player.off(AudioEvents.CAN_PLAY, this.onCanPlay)
     this.player.off(AudioEvents.PLAYBACK_TIME_UPDATED, this.onPlaybackTimeUpdate)
     this.player.off(AudioEvents.PLAYBACK_ENDED, this.onPlaybackEnded)
   }
@@ -79,7 +84,7 @@ export class AudioService implements OnDestroy {
     this.injector.get(AudioState).setTime({ time: Math.floor(currentTime) })
   }
 
-  private readonly onManifestLoaded = () => {
+  private readonly onCanPlay = () => {
     this.injector.get(AudioState).play()
   }
 

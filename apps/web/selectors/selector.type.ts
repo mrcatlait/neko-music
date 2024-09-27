@@ -11,6 +11,7 @@ const _selectors = [
   'container',
   'link',
   'text-field',
+  'list-item',
 ] as const
 
 const _names = [
@@ -26,6 +27,7 @@ const _names = [
   'container',
   'link',
   'textField',
+  'listItem',
 ] as const
 
 type SelectorSuffix = (typeof _selectors)[number]

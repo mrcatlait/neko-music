@@ -17,7 +17,7 @@ describe('generateCompositeTrackId', () => {
     expect(result).toBe('playlist123:track456')
   })
 
-  it('should return null when track is null', () => {
+  it('should return empty string when track is null', () => {
     // Arrange
     const queue = {
       source: { entityId: 'playlist123' },
@@ -27,10 +27,10 @@ describe('generateCompositeTrackId', () => {
     const result = generateCompositeTrackId(queue, null)
 
     // Assert
-    expect(result).toBeNull()
+    expect(result).toBe('')
   })
 
-  it('should return null when queue source entityId is falsy', () => {
+  it('should return empty string when queue source entityId is falsy', () => {
     // Arrange
     const queue = {
       source: { entityId: '' },
@@ -41,6 +41,6 @@ describe('generateCompositeTrackId', () => {
     const result = generateCompositeTrackId(queue, track)
 
     // Assert
-    expect(result).toBeNull()
+    expect(result).toBe('')
   })
 })

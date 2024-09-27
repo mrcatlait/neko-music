@@ -3,6 +3,10 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { TrackNewReleaseState } from '../../state'
 
 import { trackNewReleasesSelectors } from 'selectors'
+import { ArtistRole } from '@core/enum'
+import { PlaybackState } from '@core/state'
+import { generateCompositeTrackId } from '@shared/utils'
+import { Track } from '@core/models'
 
 @Component({
   selector: 'neko-track-new-releases',
@@ -12,14 +16,28 @@ import { trackNewReleasesSelectors } from 'selectors'
 })
 export class TrackNewReleasesComponent implements OnInit {
   private readonly trackNewReleasesState = inject(TrackNewReleaseState)
+  private readonly playbackState = inject(PlaybackState)
 
   readonly tracks = this.trackNewReleasesState.data
   readonly loading = this.trackNewReleasesState.loading
-  readonly queue = this.trackNewReleasesState.queue
+
+  readonly currentTrackId = this.playbackState.currentTrackId
+
+  private readonly queue = this.trackNewReleasesState.queue
+
+  readonly artistRole = ArtistRole
 
   readonly selectors = trackNewReleasesSelectors
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.trackNewReleasesState.fetch()
+  }
+
+  handleTogglePlay(trackId: string) {
+    this.playbackState.togglePlay({ queue: this.queue(), trackId })
+  }
+
+  isPlaying(track: Track) {
+    return generateCompositeTrackId(this.queue(), track) === this.currentTrackId()
   }
 }
