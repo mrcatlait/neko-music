@@ -10,10 +10,10 @@ describe('ImageUrlPipe', () => {
     pipe = new ImageUrlPipe()
   })
 
-  it('should return undefined for empty or undefined input', () => {
+  it('should return empty string for empty or undefined input', () => {
     // Act & Assert
-    expect(pipe.transform(undefined)).toBeUndefined()
-    expect(pipe.transform([])).toBeUndefined()
+    expect(pipe.transform(undefined)).toBe('')
+    expect(pipe.transform([])).toBe('')
   })
 
   it('should return the correct URL for the default size (SMALL)', () => {

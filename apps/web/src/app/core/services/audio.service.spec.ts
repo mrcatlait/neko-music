@@ -11,6 +11,7 @@ import { API_URL } from '@core/tokens'
 
 const mediaPlayerMock: PartiallyMocked<MediaPlayerClass> = {
   initialize: vi.fn(),
+  isPaused: vi.fn(),
   on: vi.fn(),
   off: vi.fn(),
   attachSource: vi.fn(),
@@ -58,7 +59,21 @@ describe('AudioService', () => {
     vi.clearAllMocks()
   })
 
-  it('should play audio', () => {
+  it('should not play audio when player is not paused', () => {
+    // Arrange
+    mediaPlayerMock.isPaused?.mockImplementation(() => false)
+
+    // Act
+    audioService.play()
+
+    // Assert
+    expect(mediaPlayerMock.play).not.toHaveBeenCalled()
+  })
+
+  it('should play audio when player is paused', () => {
+    // Arrange
+    mediaPlayerMock.isPaused?.mockImplementation(() => true)
+
     // Act
     audioService.play()
 
@@ -66,12 +81,26 @@ describe('AudioService', () => {
     expect(mediaPlayerMock.play).toHaveBeenCalled()
   })
 
-  it('should pause audio', () => {
+  it('should pause audio when player is not paused', () => {
+    // Arrange
+    mediaPlayerMock.isPaused?.mockImplementation(() => false)
+
     // Act
     audioService.pause()
 
     // Assert
     expect(mediaPlayerMock.pause).toHaveBeenCalled()
+  })
+
+  it('should not pause audio when player is paused', () => {
+    // Arrange
+    mediaPlayerMock.isPaused?.mockImplementation(() => true)
+
+    // Act
+    audioService.pause()
+
+    // Assert
+    expect(mediaPlayerMock.pause).not.toHaveBeenCalled()
   })
 
   it('should seek to specified time', () => {
@@ -156,14 +185,14 @@ describe('AudioService', () => {
     )
   })
 
-  it('should dispatch audio play action on loaded manifest', () => {
+  it('should dispatch audio play action on player ready', () => {
     // Arrange
     const playSpy = vi.fn()
     const injectorSpy = vi.spyOn(injector, 'get').mockReturnValue({ play: playSpy })
 
     // Act
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(audioService as any).onManifestLoaded()
+    ;(audioService as any).onCanPlay()
 
     // Assert
     expect(injectorSpy).toHaveBeenCalledWith(AudioState)
@@ -260,7 +289,7 @@ describe('AudioService', () => {
     ;(audioService as any).registerEvents()
 
     // Assert
-    expect(mediaPlayerMock.on).toHaveBeenCalledWith(AudioEvents.MANIFEST_LOADED, expect.any(Function))
+    expect(mediaPlayerMock.on).toHaveBeenCalledWith(AudioEvents.CAN_PLAY, expect.any(Function))
     expect(mediaPlayerMock.on).toHaveBeenCalledWith(AudioEvents.PLAYBACK_TIME_UPDATED, expect.any(Function))
     expect(mediaPlayerMock.on).toHaveBeenCalledWith(AudioEvents.PLAYBACK_ENDED, expect.any(Function))
   })
@@ -271,7 +300,7 @@ describe('AudioService', () => {
     ;(audioService as any).removeEvents()
 
     // Assert
-    expect(mediaPlayerMock.off).toHaveBeenCalledWith(AudioEvents.MANIFEST_LOADED, expect.any(Function))
+    expect(mediaPlayerMock.off).toHaveBeenCalledWith(AudioEvents.CAN_PLAY, expect.any(Function))
     expect(mediaPlayerMock.off).toHaveBeenCalledWith(AudioEvents.PLAYBACK_TIME_UPDATED, expect.any(Function))
     expect(mediaPlayerMock.off).toHaveBeenCalledWith(AudioEvents.PLAYBACK_ENDED, expect.any(Function))
   })

@@ -63,7 +63,10 @@ describe('PlaybackState', () => {
   it('should set current track, queue, load audio, and open visualizer when toggling play with new track', () => {
     // Arrange
     const trackId = 'track2'
-    const queue = { source: { name: 'source2' }, tracks: [{ id: 'track1' }, { id: trackId }] } as Queue
+    const queue = {
+      source: { name: 'source2', entityId: 'newQueue' },
+      tracks: [{ id: 'track1' }, { id: trackId }],
+    } as Queue
 
     // Act
     playbackState.togglePlay({ queue, trackId })
