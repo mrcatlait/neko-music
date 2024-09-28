@@ -35,6 +35,7 @@ export default defineConfig(({ mode }) => ({
         '**/*.entity.ts',
         '**/*.module.ts',
         '**/*.table.ts',
+        '**/*.spec.ts',
       ],
       reporter: ['text', 'lcov'],
       all: true,
