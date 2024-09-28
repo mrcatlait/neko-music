@@ -5,26 +5,6 @@
 
 This repository contains the server application component of the Neko Music project, providing the backend services for our music streaming platform. Built with NestJS and following a modular monolith architecture, it offers a scalable and maintainable solution for handling music streaming, user management, and more.
 
-## Table of Contents
-
-- [Features](#features)
-- [Technologies](#technologies)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Available Scripts](#available-scripts)
-- [Testing](#testing)
-- [Code Quality](#code-quality)
-
-## Features
-
-- RESTful API for music streaming
-- User authentication and authorization
-- Playlist management
-- Music metadata handling
-- Integration with music storage services
-
 ## Technologies
 
 - **Framework**: NestJS

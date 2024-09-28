@@ -5,23 +5,7 @@
 
 Neko Music is a full-featured music streaming platform designed to offer a smooth experience for discovering, playing, and curating music. This monorepo hosts two main applications: a sleek Angular web interface and a powerful NestJS backend, both managed with Moonrepo for streamlined development and orchestration.
 
-## Table of Contents
 
-- [Features](#features)
-- [Technologies](#technologies)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Running the Applications](#running-the-applications)
-- [License](#license)
-
-## Features
-
-- Seamless music streaming
-- Advanced search and discovery
-- Playlist creation and management
-- User profiles and social sharing
-- Responsive design for all devices
 
 ## Technologies
 
@@ -95,3 +79,92 @@ Once **Moonrepo** is installed, you can easily manage the frontend and backend a
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
+## Roadmap
+
+### Phase 1: Foundation and Core Functionality
+- [x] Set up project structure (Angular frontend, NestJS backend)
+- [ ] Implement basic user authentication (local auth)
+- [x] Develop music file upload and storage system
+- [x] Create basic music player with standard controls
+- [ ] Implement basic playlist management
+- [x] Set up CI/CD pipeline for automated testing and deployment
+
+### Phase 2: Advanced Streaming and Audio Features
+- [ ] Implement MPEG DASH streaming
+- [ ] Develop adaptive bitrate streaming
+- [x] Add support for various audio formats (FLAC, AAC, OGG, etc.)
+- [ ] Implement gapless playback
+- [ ] Develop audio normalization feature
+- [ ] Create visualizer for audio playback
+
+### Phase 3: Library Management and Discovery
+- [ ] Implement advanced search and filtering options
+- [ ] Develop automatic metadata fetching and management
+- [ ] Create smart playlists based on listening habits
+- [ ] Implement music recommendation system
+- [ ] Add support for lyrics display and synchronization
+- [ ] Develop a "Discover" section for new music exploration
+
+### Phase 4: Social Features and Sharing
+- [ ] Implement user profiles
+- [ ] Develop friend system and social connections
+- [ ] Create shared playlists functionality
+- [ ] Implement activity feed for friends' listening habits
+- [ ] Add option to share songs/playlists via unique links
+- [ ] Develop collaborative playlists feature
+
+### Phase 5: Customization and Extensibility
+- [ ] Create plugin system for easy feature extensions
+- [ ] Implement theming engine for UI customization
+- [ ] Develop API for third-party integrations
+- [ ] Add support for custom audio sources (local files, cloud storage)
+- [ ] Implement user-defined smart radio stations
+- [ ] Create a marketplace for community-created plugins and themes
+
+### Phase 6: Cross-Platform Support
+- [x] Develop responsive web design for mobile browsers
+- [ ] Create Progressive Web App (PWA) version
+- [ ] Develop native mobile apps (iOS and Android)
+- [ ] Implement desktop apps using Electron
+- [ ] Add support for smart speakers and home assistants
+- [ ] Develop TV apps for popular platforms (Apple TV, Android TV, etc.)
+
+### Phase 7: Advanced Features and Optimizations
+- [ ] Implement offline mode with smart caching
+- [ ] Develop advanced audio processing features (equalizer, effects)
+- [ ] Create DJ mode with mixing capabilities
+- [ ] Implement multi-room audio synchronization
+- [ ] Develop voice control for hands-free operation
+- [ ] Optimize for low-latency live streaming
+
+### Phase 8: Integration and Ecosystem
+- [ ] Develop import/export tools for other music services
+- [ ] Implement scrobbling to Last.fm and similar services
+- [ ] Create integrations with popular music production tools
+- [ ] Develop podcast support and management
+- [ ] Implement integration with smart home systems
+- [ ] Create a companion app for wearables (smartwatches)
+
+### Phase 9: Scalability and Enterprise Features
+- [ ] Implement multi-tenancy for hosting multiple libraries
+- [ ] Develop advanced analytics and reporting tools
+- [ ] Create admin dashboard for system management
+- [ ] Implement role-based access control (RBAC)
+- [ ] Develop white-label solution for businesses
+- [ ] Create documentation for enterprise deployment
+
+### Phase 10: Community and Monetization (Optional)
+- [ ] Develop a community forum for user discussions
+- [ ] Implement a donation system for supporting the project
+- [ ] Create a premium tier with advanced features
+- [ ] Develop marketplace for artists to sell music directly
+- [ ] Implement ad integration for free tier (optional)
+- [ ] Create developer program for third-party contributions
+
+### Ongoing: Security, Performance, and Compliance
+- [x] Regularly update dependencies and address security vulnerabilities
+- [x] Conduct periodic security audits and penetration testing
+- [ ] Optimize database queries and caching strategies
+- [ ] Conduct accessibility audits and improvements (WCAG compliance)
+- [ ] Regularly review and optimize cloud resource usage

@@ -5,26 +5,6 @@
 
 This repository contains the web application component of the Neko Music project, providing the user interface for our music streaming service. Built with Angular and styled using a custom design based on Material 3 guidelines, it offers a sleek and responsive experience for music lovers.
 
-## Table of Contents
-
-- [Features](#features)
-- [Technologies](#technologies)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Available Scripts](#available-scripts)
-- [Testing](#testing)
-- [Code Quality](#code-quality)
-
-## Features
-
-- Intuitive music player interface
-- Playlist management
-- User profile customization
-- Advanced search and discovery tools
-- Responsive design for various devices
-
 ## Technologies
 
 - **Framework**: Angular
