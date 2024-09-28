@@ -1,5 +1,5 @@
-import { navigationSelectors } from 'selectors'
-import { routes } from 'integration-tests/support/routes'
+import { routes } from '../../routes'
+import { navigationSelectors } from '../../selectors'
 
 export const actions = {
   goToHome() {

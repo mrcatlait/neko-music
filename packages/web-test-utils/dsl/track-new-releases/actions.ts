@@ -1,6 +1,5 @@
 import { trackListItem } from '../components'
-
-import { trackNewReleasesSelectors } from 'selectors'
+import { trackNewReleasesSelectors } from '../../selectors'
 
 export const actions = {
   playTrack(track: string) {

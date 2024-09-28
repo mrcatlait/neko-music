@@ -1,4 +1,4 @@
-import { playerSelectors } from 'selectors'
+import { playerSelectors } from '../../selectors'
 
 export const assertions = {
   assertPlaying() {

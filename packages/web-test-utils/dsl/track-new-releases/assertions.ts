@@ -1,6 +1,5 @@
 import { trackListItem } from '../components'
-
-import { trackListItemSelectors, trackNewReleasesSelectors } from 'selectors'
+import { trackListItemSelectors, trackNewReleasesSelectors } from '../../selectors'
 
 export const assertions = {
   assertVisible() {

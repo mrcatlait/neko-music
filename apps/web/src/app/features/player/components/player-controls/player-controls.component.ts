@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
+import { playerSelectors } from '@neko/web-test-utils/selectors'
 
 import { PlayerStatus, RepeatOption } from '@core/enum'
 import { AudioState, PlaybackState } from '@core/state'
-import { playerSelectors } from 'selectors'
 
 @Component({
   selector: 'neko-player-controls',

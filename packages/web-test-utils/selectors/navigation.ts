@@ -1,4 +1,4 @@
-import { Selectors } from 'selectors/selector.type'
+import { Selectors } from './selector.type'
 
 export const navigationSelectors = {
   homeLink: 'navigation-home-link',

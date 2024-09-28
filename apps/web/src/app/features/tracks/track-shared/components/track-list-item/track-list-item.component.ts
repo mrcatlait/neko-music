@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, EventEmitter, inject, Input, Output } from '@angular/core'
+import { trackListItemSelectors } from '@neko/web-test-utils/selectors'
 
 import { LinkedTrack } from '../../models'
 
 import { PlaybackState } from '@core/state'
-import { trackListItemSelectors } from 'selectors'
 
 @Component({
   selector: 'neko-track-list-item',

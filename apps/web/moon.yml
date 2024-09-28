@@ -11,6 +11,8 @@ dependsOn:
     scope: 'development'
   - id: 'vitest'
     scope: 'development'
+  - id: 'web-test-utils'
+    scope: 'development'
 
 fileGroups:
   app:

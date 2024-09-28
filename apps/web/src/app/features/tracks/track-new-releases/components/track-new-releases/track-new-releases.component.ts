@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core'
+import { trackNewReleasesSelectors } from '@neko/web-test-utils/selectors'
 
 import { TrackNewReleaseState } from '../../state'
 
-import { trackNewReleasesSelectors } from 'selectors'
 import { ArtistRole } from '@core/enum'
 import { PlaybackState } from '@core/state'
 import { generateCompositeTrackId } from '@shared/utils'

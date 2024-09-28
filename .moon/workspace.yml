@@ -5,7 +5,7 @@ telemetry: false
 projects:
   - 'apps/*'
   - 'packages/*'
-
+  - 'e2e'
 vcs:
   manager: 'git'
   defaultBranch: 'master'

@@ -1,5 +1,6 @@
-import { navigation, player, trackNewReleases } from '../dsl'
-import { interceptors } from '../dsl/interceptors'
+import { navigation, player, trackNewReleases } from '@neko/web-test-utils/dsl'
+
+import { interceptors } from '../interceptors'
 
 describe('Player', () => {
   beforeEach(() => {

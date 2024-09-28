@@ -1,0 +1,19 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+type: 'automation'
+language: 'typescript'
+
+dependsOn:
+  - id: 'eslint-config'
+    scope: 'production'
+  - id: 'web-test-utils'
+    scope: 'production'
+
+tasks:
+  test:
+    command: 'cypress run'
+    local: true
+
+  test-ui:
+    command: 'cypress open'
+    local: true
