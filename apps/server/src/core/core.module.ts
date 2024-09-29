@@ -4,10 +4,10 @@ import { join } from 'path'
 import { FastifyMulterModule } from '@nest-lab/fastify-multer'
 import { APP_GUARD } from '@nestjs/core'
 
-import { ConfigService, DatabaseSeedService, ImageProcessingService, VideoProcessingService } from './services'
+import { ConfigService, ImageProcessingService, VideoProcessingService } from './services'
 import { NODE_ENV } from './models'
 import { RolesGuard } from './guards'
-import { CreateArtists1000000000020, CreateGenres1000000000010 } from '../seeds'
+import { TypeOrmSeedModule } from './seed/typeorm-seed.module'
 
 @Global()
 @Module({
@@ -30,13 +30,21 @@ import { CreateArtists1000000000020, CreateGenres1000000000010 } from '../seeds'
       },
       inject: [ConfigService],
     }),
+    TypeOrmSeedModule.forRootAsync({
+      useFactory(configService: ConfigService) {
+        return {
+          seedsRun: configService.get('NODE_ENV') === NODE_ENV.DEVELOPMENT,
+          seeds: [join(__dirname + '/../' + 'seeds/*{.ts,.js}')],
+        }
+      },
+      inject: [ConfigService],
+    }),
     FastifyMulterModule,
   ],
   providers: [
     ConfigService,
     ImageProcessingService,
     VideoProcessingService,
-    DatabaseSeedService,
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
@@ -44,8 +52,4 @@ import { CreateArtists1000000000020, CreateGenres1000000000010 } from '../seeds'
   ],
   exports: [ConfigService, ImageProcessingService, VideoProcessingService],
 })
-export class CoreModule {
-  constructor(private readonly databaseSeedService: DatabaseSeedService) {
-    this.databaseSeedService.executePendingSeeds([CreateGenres1000000000010, CreateArtists1000000000020])
-  }
-}
+export class CoreModule {}

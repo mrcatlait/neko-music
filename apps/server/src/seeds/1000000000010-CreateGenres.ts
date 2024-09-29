@@ -1,7 +1,7 @@
 import { In, QueryRunner } from 'typeorm'
 
-import { SeedInterface } from '@core/services'
 import { GenreEntity } from '@features/track/entities'
+import { SeedInterface } from '@core/seed/types'
 
 export class CreateGenres1000000000010 implements SeedInterface {
   private readonly genres = [

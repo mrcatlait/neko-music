@@ -1,37 +1,26 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { DataSource, ObjectLiteral, QueryRunner, Table } from 'typeorm'
+import { importClassesFromDirectories } from 'typeorm/util/DirectoryExportedClassesLoader'
 
-export interface SeedInterface {
-  up(queryRunner: QueryRunner): Promise<any>
-  down(queryRunner: QueryRunner): Promise<any>
-}
-
-export class Seed {
-  id: number | undefined
-  timestamp: number
-  name: string
-  instance?: SeedInterface
-
-  constructor(id: number | undefined, timestamp: number, name: string, instance?: SeedInterface) {
-    this.id = id
-    this.timestamp = timestamp
-    this.name = name
-    this.instance = instance
-  }
-}
-
-type SeedClass = new () => SeedInterface
+import { Seed, SeedClass, SeedInterface, TypeOrmSeedModuleOptions } from './types'
 
 @Injectable()
 export class DatabaseSeedService {
+  private readonly logger = new Logger(DatabaseSeedService.name)
+
+  private readonly dataSource: DataSource
+  private readonly options: TypeOrmSeedModuleOptions
   private readonly seedsDatabase?: string
   private readonly seedsSchema?: string
   private readonly seedsTable: string
   private readonly seedsTableName = 'seeds'
 
-  private seeds: SeedInterface[] = []
+  private seeds: SeedInterface[] | null = null
 
-  constructor(private readonly dataSource: DataSource) {
+  constructor(dataSource: DataSource, options: TypeOrmSeedModuleOptions) {
+    this.dataSource = dataSource
+    this.options = options
+
     const { schema } = this.dataSource.driver.options as any
     const database = this.dataSource.driver.database
     this.seedsDatabase = database
@@ -39,8 +28,8 @@ export class DatabaseSeedService {
     this.seedsTable = this.dataSource.driver.buildTableName(this.seedsTableName, schema, database)
   }
 
-  async executePendingSeeds(seeds: SeedClass[]) {
-    this.seeds = seeds.map((seed) => new seed())
+  async executePendingSeeds() {
+    await this.loadSeedsIfNotExist()
     const pendingSeeds = await this.getPendingSeeds()
 
     for (const seed of pendingSeeds) {
@@ -84,6 +73,10 @@ export class DatabaseSeedService {
   }
 
   private getAllSeeds(): Seed[] {
+    if (!this.seeds) {
+      throw new Error('Seeds are missing')
+    }
+
     const seeds = this.seeds.map((seed) => {
       const seedClassName = (seed.constructor as any).name
       const seedTimestamp = parseInt(seedClassName.substr(-13), 10)
@@ -96,6 +89,8 @@ export class DatabaseSeedService {
 
       return new Seed(undefined, seedTimestamp, seedClassName, seed)
     })
+
+    this.checkForDuplicateSeeds(seeds)
 
     return seeds.sort((a, b) => a.timestamp - b.timestamp)
   }
@@ -163,4 +158,42 @@ export class DatabaseSeedService {
       )
     }
   }
+
+  private async loadSeedsIfNotExist(): Promise<void> {
+    if (this.seeds !== null) {
+      return
+    }
+
+    const seeds = await this.buildSeeds(this.options.seeds || [])
+    this.seeds = seeds
+  }
+
+  private async buildSeeds(seeds: (SeedClass | string)[]): Promise<SeedInterface[]> {
+    const [seedClasses, seedDirectories] = splitClassesAndStrings(seeds)
+
+    const allSeedClasses = [
+      ...seedClasses,
+      ...(await importClassesFromDirectories(this.logger as any, seedDirectories)),
+    ] as SeedClass[]
+
+    return allSeedClasses.map((seed) => new seed())
+  }
+
+  protected checkForDuplicateSeeds(seeds: Seed[]) {
+    const seedNames = seeds.map((seed) => seed.name)
+    const duplicates = Array.from(
+      new Set(seedNames.filter((migrationName, index) => seedNames.indexOf(migrationName) < index)),
+    )
+
+    if (duplicates.length > 0) {
+      throw Error(`Duplicate seeds: ${duplicates.join(', ')}`)
+    }
+  }
+}
+
+const splitClassesAndStrings = <T>(classesAndStrings: (string | T)[]): [T[], string[]] => {
+  return [
+    classesAndStrings.filter((cls): cls is T => typeof cls !== 'string'),
+    classesAndStrings.filter((str): str is string => typeof str === 'string'),
+  ]
 }
