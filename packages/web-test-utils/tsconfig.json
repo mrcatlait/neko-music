@@ -2,6 +2,7 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "target": "es5",
+    "baseUrl": "./",
     "lib": ["es5", "dom"],
     "types": ["cypress", "node"]
   },

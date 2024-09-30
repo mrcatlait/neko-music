@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { playerSelectors } from '@neko/web-test-utils/selectors'
+import { playerSelectors } from '@selectors'
 
 import { PlaybackState } from '@core/state'
 

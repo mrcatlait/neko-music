@@ -2,6 +2,8 @@
   "name": "e2e",
   "private": true,
   "dependencies": {
+    "@neko/eslint-config": "*",
+    "@neko/web-test-utils": "*",
     "typescript": "^5.1.3"
   },
   "prettier": "@neko/eslint-config/prettier"

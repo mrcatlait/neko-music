@@ -1,5 +1,5 @@
 import { Directive, HostBinding, Input } from '@angular/core'
-import { SelectorWithSuffix } from '@neko/web-test-utils/selectors/selector.type'
+import { SelectorWithSuffix } from '@selectors'
 
 @Directive({
   selector: '[selector]',

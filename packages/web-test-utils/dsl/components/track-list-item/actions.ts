@@ -1,4 +1,4 @@
-import { trackListItemSelectors } from '@neko/web-test-utils/selectors'
+import { trackListItemSelectors } from '@selectors'
 
 export const actions = {
   play(track: string) {

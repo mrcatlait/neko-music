@@ -16,6 +16,7 @@
     <button
       [selector]="selectors.playButton"
       nekoIconButton
+      (click)="togglePlay.emit()"
     >
       <neko-play-icon [isPlaying]="isPlaying()" />
     </button>

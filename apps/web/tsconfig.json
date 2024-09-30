@@ -32,7 +32,7 @@
       "@shared/*": ["src/app/shared/*"],
       "@features/*": ["src/app/features/*"],
       "@features": ["src/app/features"],
-      "@selectors": ["integration-tests/support/selectors"],
+      "@selectors": ["../../packages/web-test-utils/selectors"],
       "@environment": ["src/environments/environment"]
     }
   },

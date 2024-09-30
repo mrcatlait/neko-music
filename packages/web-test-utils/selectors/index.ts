@@ -1,5 +1,6 @@
 export * from './components'
 export * from './navigation'
 export * from './player'
+export * from './selector.type'
 export * from './track-new-releases'
 export * from './visualizer'

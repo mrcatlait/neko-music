@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core'
-import { trackNewReleasesSelectors } from '@neko/web-test-utils/selectors'
+import { trackNewReleasesSelectors } from '@selectors'
 
 import { TrackNewReleaseState } from '../../state'
 
