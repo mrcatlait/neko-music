@@ -24,6 +24,6 @@ export class PageMetaDto {
     this.offset = pageOptionsDto.offset
     this.take = pageOptionsDto.take
     this.itemCount = itemCount
-    this.pageCount = Math.ceil(itemCount / this.take)
+    this.pageCount = itemCount ? Math.ceil(itemCount / this.take) : 0
   }
 }

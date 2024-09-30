@@ -11,7 +11,7 @@ export class PageOptionsDto {
   @IsInt()
   @Min(0)
   @IsOptional()
-  readonly offset: number
+  readonly offset: number = 0
 
   @ApiPropertyOptional({
     minimum: 1,
@@ -23,5 +23,5 @@ export class PageOptionsDto {
   @Min(1)
   @Max(50)
   @IsOptional()
-  readonly take: number
+  readonly take: number = 50
 }

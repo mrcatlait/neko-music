@@ -13,7 +13,7 @@ export class DatabaseSeedService {
   private readonly seedsDatabase?: string
   private readonly seedsSchema?: string
   private readonly seedsTable: string
-  private readonly seedsTableName = 'seeds'
+  private readonly seedsTableName: string = 'seeds'
 
   private seeds: SeedInterface[] | null = null
 
@@ -25,6 +25,11 @@ export class DatabaseSeedService {
     const database = this.dataSource.driver.database
     this.seedsDatabase = database
     this.seedsSchema = schema
+
+    if (options.seedsTableName) {
+      this.seedsTableName = options.seedsTableName
+    }
+
     this.seedsTable = this.dataSource.driver.buildTableName(this.seedsTableName, schema, database)
   }
 

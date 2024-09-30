@@ -9,6 +9,9 @@ import { NODE_ENV } from './models'
 import { RolesGuard } from './guards'
 import { TypeOrmSeedModule } from './seed/typeorm-seed.module'
 
+import { migrations } from 'src/migrations'
+import { seeds } from 'src/seeds'
+
 @Global()
 @Module({
   imports: [
@@ -24,7 +27,7 @@ import { TypeOrmSeedModule } from './seed/typeorm-seed.module'
           migrationsRun: true,
           synchronize: false,
           autoLoadEntities: true,
-          migrations: [join(__dirname + '/../' + 'migrations/*{.ts,.js}')],
+          migrations: migrations,
           logging: configService.get('NODE_ENV') === NODE_ENV.DEVELOPMENT,
         }
       },
@@ -33,8 +36,8 @@ import { TypeOrmSeedModule } from './seed/typeorm-seed.module'
     TypeOrmSeedModule.forRootAsync({
       useFactory(configService: ConfigService) {
         return {
-          seedsRun: configService.get('NODE_ENV') === NODE_ENV.DEVELOPMENT,
-          seeds: [join(__dirname + '/../' + 'seeds/*{.ts,.js}')],
+          seedsRun: configService.get('NODE_ENV') !== NODE_ENV.PRODUCTION,
+          seeds: seeds,
         }
       },
       inject: [ConfigService],

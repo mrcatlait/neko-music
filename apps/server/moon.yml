@@ -24,3 +24,12 @@ tasks:
     inputs:
       - '@group(app)'
       - '@group(sources)'
+
+  test-integration:
+    command: 'vitest --config vitest-integration.config.mts'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(integration-tests)'
+      - 'vitest-integration.config.*'
+    outputs:
+      - 'reports/integration'

@@ -1,36 +1,19 @@
 import { Test } from '@nestjs/testing'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql'
-import { MessageStateHandlers } from '@pact-foundation/pact'
 
-import { PactModule, PactVerifierService } from 'contract-tests/pact.module'
 import { AppModule } from 'src/app.module'
 import { ConfigService } from '@core/services'
-import { registerTrackRepositories, tracks } from 'contract-tests/fixtures'
 
-describe('Pact Verification', () => {
+describe('Tracks', () => {
   let postgresContainer: StartedPostgreSqlContainer
-  let verifierService: PactVerifierService
   let app: NestFastifyApplication
 
   beforeAll(async () => {
     postgresContainer = await new PostgreSqlContainer().start()
 
-    const stateHandlers: MessageStateHandlers = {
-      'list of tracks is empty': () => {
-        tracks.getTracksEmpty()
-
-        return Promise.resolve()
-      },
-      'list of tracks exists': () => {
-        tracks.getTracksSuccess()
-
-        return Promise.resolve()
-      },
-    }
-
-    const moduleBuilder = Test.createTestingModule({
-      imports: [PactModule.register({ stateHandlers }), AppModule],
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
     })
       .overrideProvider(ConfigService)
       .useValue({
@@ -53,16 +36,12 @@ describe('Pact Verification', () => {
           }
         },
       })
+      .compile()
 
-    registerTrackRepositories(moduleBuilder)
-
-    const moduleRef = await moduleBuilder.compile()
-
-    verifierService = moduleRef.get(PactVerifierService)
-
-    app = moduleRef.createNestApplication(new FastifyAdapter())
+    app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter())
 
     await app.init()
+    await app.getHttpAdapter().getInstance().ready()
   })
 
   afterAll(async () => {
@@ -74,7 +53,20 @@ describe('Pact Verification', () => {
     vi.clearAllMocks()
   })
 
-  it('validates the expectations of Matching Service', async () => {
-    await verifierService.verify(app)
+  describe('/tracks (GET)', () => {
+    it('should return list of tracks', () => {
+      return app
+        .inject({
+          method: 'GET',
+          url: '/tracks',
+        })
+        .then((response) => {
+          expect(response.statusCode).toEqual(200)
+
+          const body = JSON.parse(response.body)
+          expect(body.data.length).toBe(1)
+          expect(body.data[0].title).toBe('Bad Romance')
+        })
+    })
   })
 })
