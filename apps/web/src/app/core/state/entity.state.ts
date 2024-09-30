@@ -17,9 +17,15 @@ export abstract class EntityState<Entity, FetchPayload> implements StateModel<En
 
   readonly loading = computed(() => this.status() === FetchStatus.Loading)
 
+  protected cache = false
+
   protected abstract fetchFn(payload: FetchPayload): Observable<Entity>
 
   fetch(payload: FetchPayload): void {
+    if (this.cache && this.data()) {
+      return
+    }
+
     this.status.set(FetchStatus.Loading)
 
     this.fetchFn(payload)

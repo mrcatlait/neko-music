@@ -11,6 +11,8 @@ import { LinkedTrack } from '@features/tracks/track-shared/models'
 export class TrackNewReleaseState extends EntityState<LinkedTrack[], void> {
   private readonly repository = inject(TrackRepository)
 
+  protected override cache = true
+
   private readonly basicQueue: Queue = {
     tracks: [],
     source: { entityId: 'track-new-releases', name: 'New releases' },
