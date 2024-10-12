@@ -4,7 +4,7 @@ node:
   version: '20'
   dependencyVersionFormat: 'star'
   syncProjectWorkspaceDependencies: true
-  dedupeOnLockfileChange: false # Currently there is issue with postcss
+  dedupeOnLockfileChange: false # Currently there is an issue with postcss
   packageManager: 'npm'
   npm:
     version: '10'

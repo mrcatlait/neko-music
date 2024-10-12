@@ -4,9 +4,6 @@
   "editor.detectIndentation": true,
   "files.eol": "\n",
   "editor.formatOnSave": false,
-  "eslint.options": {
-    "extensions": [".ts", ".html"]
-  },
   "eslint.validate": [
     "javascript",
     "javascriptreact",

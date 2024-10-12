@@ -64,7 +64,8 @@
                   "replace": "src/devtools/devtools.ts",
                   "with": "src/devtools/devtools.prod.ts"
                 }
-              ]
+              ],
+              "statsJson": true
             },
             "test": {
               "outputHashing": "all",
