@@ -64,7 +64,7 @@ describe('Tracks', () => {
           expect(response.statusCode).toEqual(200)
 
           const body = JSON.parse(response.body)
-          expect(body.data.length).toBe(1)
+          expect(body.data.length).toBe(3)
           expect(body.data[0].title).toBe('Bad Romance')
         })
     })

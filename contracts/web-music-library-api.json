@@ -19,7 +19,7 @@
                 {
                   "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
                   "name": "Artist",
-                  "role": "Main"
+                  "role": "Primary"
                 }
               ],
               "duration": 123,
@@ -146,7 +146,7 @@
                 {
                   "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
                   "name": "Artist",
-                  "role": "Main"
+                  "role": "Primary"
                 }
               ],
               "duration": 123,
@@ -273,7 +273,7 @@
                 {
                   "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
                   "name": "Artist",
-                  "role": "Main"
+                  "role": "Primary"
                 }
               ],
               "duration": 123,

@@ -50,3 +50,10 @@ tasks:
   test-integration-ui:
     command: 'cypress open'
     local: true
+
+  test:
+    local: true
+    deps:
+      - 'test-unit'
+      - 'test-contract'
+      - 'test-integration'

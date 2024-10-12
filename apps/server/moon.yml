@@ -33,3 +33,10 @@ tasks:
       - 'vitest-integration.config.*'
     outputs:
       - 'reports/integration'
+
+  test:
+    local: true
+    deps:
+      - 'test-unit'
+      - 'test-contract'
+      - 'test-integration'

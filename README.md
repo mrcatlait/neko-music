@@ -91,7 +91,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - [x] Set up CI/CD pipeline for automated testing and deployment
 
 ### Phase 2: Advanced Streaming and Audio Features
-- [ ] Implement MPEG DASH streaming
+- [x] Implement MPEG DASH streaming
 - [ ] Develop adaptive bitrate streaming
 - [x] Add support for various audio formats (FLAC, AAC, OGG, etc.)
 - [ ] Implement gapless playback

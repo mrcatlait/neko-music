@@ -20,6 +20,18 @@ export class CreateTracks1000000000030 implements SeedInterface {
       releaseData: new Date(),
       artist: 'Lady Gaga',
     },
+    {
+      title: 'Poker Face',
+      duration: 214,
+      releaseData: new Date(),
+      artist: 'Lady Gaga',
+    },
+    {
+      title: 'Telephone',
+      duration: 221,
+      releaseData: new Date(),
+      artist: 'Lady Gaga',
+    },
   ]
 
   async up(queryRunner: QueryRunner): Promise<void> {

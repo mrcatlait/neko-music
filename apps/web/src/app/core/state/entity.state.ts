@@ -23,6 +23,7 @@ export abstract class EntityState<Entity, FetchPayload> implements StateModel<En
 
   fetch(payload: FetchPayload): void {
     if (this.cache && this.data()) {
+      this.status.set(FetchStatus.Success)
       return
     }
 

@@ -7,4 +7,4 @@ node:
   dedupeOnLockfileChange: false # Currently there is issue with postcss
   packageManager: 'npm'
   npm:
-    version: '9'
+    version: '10'

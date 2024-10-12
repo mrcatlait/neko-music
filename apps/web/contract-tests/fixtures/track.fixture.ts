@@ -1,9 +1,9 @@
-import { InteractionObject, MatchersV3 } from '@pact-foundation/pact'
+import { InteractionObject, Matcher, MatchersV3 } from '@pact-foundation/pact'
 
 import { PageResponseDto, TrackDto } from '@core/dto'
 import { PactMatcher, PactResponses } from 'contract-tests/types'
 import { mapTrackDtoToModel } from '@core/mappers'
-import { Track } from '@core/models'
+import { ArtistRole } from '@core/enum'
 
 const { extractPayload, integer, string, uuid } = MatchersV3
 
@@ -22,7 +22,7 @@ const trackDto: PactMatcher<TrackDto> = {
     {
       id: uuid('c76b4326-ca77-4c24-a414-f002c6be3106'),
       name: string('Artist'),
-      role: string('Main'),
+      role: string(ArtistRole.Primary) as Matcher<ArtistRole>,
     },
   ],
 }
