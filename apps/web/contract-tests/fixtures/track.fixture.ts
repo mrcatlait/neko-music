@@ -1,7 +1,7 @@
 import { InteractionObject, Matcher, MatchersV3 } from '@pact-foundation/pact'
 
 import { PageResponseDto, TrackDto } from '@core/dto'
-import { PactMatcher, PactResponses } from 'contract-tests/types'
+import { PactMatcher, PactResponseOptions, PactResponses } from 'contract-tests/types'
 import { mapTrackDtoToModel } from '@core/mappers'
 import { ArtistRole } from '@core/enum'
 
@@ -27,7 +27,7 @@ const trackDto: PactMatcher<TrackDto> = {
   ],
 }
 
-const getTracksSuccessResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
+export const getTracksSuccessResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
   data: [trackDto],
   meta: {
     take: integer(50),
@@ -40,7 +40,7 @@ export const getTracksSuccess = (extractPayload(getTracksSuccessResponseBody.dat
   mapTrackDtoToModel,
 )
 
-const getTracksEmptyResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
+export const getTracksEmptyResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
   data: [],
   meta: {
     take: integer(50),
@@ -52,18 +52,18 @@ const getTracksEmptyResponseBody: PactMatcher<PageResponseDto<TrackDto>> = {
 
 export const getTracksEmpty = extractPayload(getTracksEmptyResponseBody.data)
 
-export const trackResponses: PactResponses = {
+export const trackResponses = {
   getTracksSuccess: {
     willRespondWith: {
       status: 200,
       body: getTracksSuccessResponseBody,
-    },
+    } as PactResponseOptions,
   },
   getTracksEmpty: {
     willRespondWith: {
       status: 200,
       body: getTracksEmptyResponseBody,
-    },
+    } as PactResponseOptions,
   },
 }
 

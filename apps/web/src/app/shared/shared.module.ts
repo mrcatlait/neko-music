@@ -3,13 +3,20 @@ import { CommonModule, NgOptimizedImage } from '@angular/common'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 
-import { ButtonDirective, SelectorDirective, SliderDirective, SlotDirective } from './directives'
+import {
+  ButtonDirective,
+  DropdownTriggerDirective,
+  SelectorDirective,
+  SliderDirective,
+  SlotDirective,
+} from './directives'
 import {
   AppBarComponent,
   LogoComponent,
   MediaCardComponent,
   MediaCardSubtitleDirective,
   MediaCardTitleDirective,
+  MenuComponent,
   PlayIconComponent,
 } from './components'
 import { ImageUrlPipe, NumberSequencePipe } from './pipes'
@@ -19,11 +26,13 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
   declarations: [
     AppBarComponent,
     ButtonDirective,
+    DropdownTriggerDirective,
     ImageUrlPipe,
     LogoComponent,
     MediaCardComponent,
     MediaCardSubtitleDirective,
     MediaCardTitleDirective,
+    MenuComponent,
     NumberSequencePipe,
     PlayIconComponent,
     SelectorDirective,
@@ -34,11 +43,13 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     AppBarComponent,
     ButtonDirective,
     CommonModule,
+    DropdownTriggerDirective,
     ImageUrlPipe,
     LogoComponent,
     MediaCardComponent,
     MediaCardSubtitleDirective,
     MediaCardTitleDirective,
+    MenuComponent,
     NgOptimizedImage,
     NumberSequencePipe,
     PlayIconComponent,

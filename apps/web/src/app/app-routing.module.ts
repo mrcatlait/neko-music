@@ -10,6 +10,10 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'artists/:id',
+    loadComponent: () => import('./pages/artist-details').then((c) => c.ArtistDetailsPage),
+  },
+  {
     path: '404',
     pathMatch: 'full',
     loadComponent: () => import('./pages/not-found').then((c) => c.NotFoundPage),

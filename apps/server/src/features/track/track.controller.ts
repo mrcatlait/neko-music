@@ -1,24 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  Param,
-  Post,
-  Query,
-  StreamableFile,
-  UploadedFiles,
-  UseInterceptors,
-  ValidationPipe,
-} from '@nestjs/common'
-import { ApiBearerAuth, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { File, FileFieldsInterceptor } from '@nest-lab/fastify-multer'
+import { Controller, Get, HttpStatus, Param, Query, StreamableFile, ValidationPipe } from '@nestjs/common'
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { TrackService } from './track.service'
-import { TrackDto, TracksPageOptionsDto, TracksPageDto, CreateTrackDto } from './dto'
+import { TracksPageOptionsDto, TracksPageDto } from './dto'
 
-import { Roles } from '@core/decorators'
-import { Role } from '@core/models'
 import { Public } from '@features/auth/decorators'
 
 @Controller('tracks')
@@ -37,15 +22,6 @@ export class TrackController {
     pageOptionsDto: TracksPageOptionsDto,
   ): Promise<TracksPageDto> {
     return this.service.getTracks(pageOptionsDto)
-  }
-
-  @Get('/:trackId')
-  @ApiOkResponse({
-    status: HttpStatus.OK,
-    type: TrackDto,
-  })
-  trackById(@Param('trackId') trackId: string): Promise<TrackDto> {
-    return this.service.getTrackById(trackId)
   }
 
   @Get('/popular')
@@ -70,26 +46,6 @@ export class TrackController {
     pageOptionsDto: TracksPageOptionsDto,
   ): Promise<TracksPageDto> {
     return this.service.getNewTracks(pageOptionsDto)
-  }
-
-  @Post()
-  @ApiCreatedResponse({
-    status: HttpStatus.OK,
-    type: TrackDto,
-  })
-  @ApiConsumes('multipart/form-data')
-  @Roles(Role.Admin)
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'image', maxCount: 1 },
-      { name: 'video', maxCount: 1 },
-    ]),
-  )
-  createArtist(
-    @Body() input: CreateTrackDto,
-    @UploadedFiles() files: { image: File[]; video: File[] },
-  ): Promise<TrackDto> {
-    return this.service.createTrack(input, files.image[0], files.video[0])
   }
 
   @Get('/:trackId/stream/:filename')

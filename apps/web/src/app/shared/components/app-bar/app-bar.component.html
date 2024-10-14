@@ -3,7 +3,16 @@
   [style.width]="width() + 'px'"
 >
   <div>
-    <ng-content select="[nekoSlot='left']" />
+    @if (showBackArrow) {
+      <button
+        color="secondary"
+        nekoIconButton
+        variant="text"
+        (click)="handleBackClick()"
+      >
+        <i>arrow_back</i>
+      </button>
+    }
   </div>
 
   <div class="truncate">

@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, effect, HostListener, inject, signal } from '@angular/core'
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  HostListener,
+  inject,
+  signal,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core'
 
-import { MediaQueryService } from '@core/services'
+import { MediaQueryService, PortalService } from '@core/services'
 
 @Component({
   selector: 'neko-root',
@@ -8,8 +18,12 @@ import { MediaQueryService } from '@core/services'
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   private readonly mediaQueryService = inject(MediaQueryService)
+  private readonly portalService = inject(PortalService)
+
+  @ViewChild('viewContainer', { read: ViewContainerRef })
+  private readonly vcr!: ViewContainerRef
 
   private readonly isMediumScreen = this.mediaQueryService.isMediumScreen
   private readonly isExpandedScreen = this.mediaQueryService.isExpandedScreen
@@ -24,6 +38,10 @@ export class AppComponent {
       },
       { allowSignalWrites: true },
     )
+  }
+
+  ngAfterViewInit(): void {
+    this.portalService.attach(this.vcr)
   }
 
   @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent) {

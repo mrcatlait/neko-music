@@ -1,7 +1,6 @@
 import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm'
 
 import { ArtistImageEntity } from './artist-image.entity'
-import { ArtistLinkEntity } from './artist-link.entity'
 import { ArtistDto } from '../dto'
 
 import { AbstractEntity } from '@core/entities'
@@ -20,8 +19,8 @@ export class ArtistEntity extends AbstractEntity<ArtistDto> {
   @OneToMany(() => ArtistImageEntity, (image) => image.artist)
   images?: ArtistImageEntity[]
 
-  @OneToMany(() => ArtistLinkEntity, (link) => link.artist)
-  links?: ArtistLinkEntity[]
+  @Column(UtilsService.toColumnOptions(ArtistTable.bioColumn))
+  bio?: string
 
   @ManyToMany(() => TrackEntity, (track) => track.artists)
   tracks?: TrackEntity[]

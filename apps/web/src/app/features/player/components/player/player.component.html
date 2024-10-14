@@ -1,9 +1,11 @@
-<div class="player-container">
-  <neko-player-track />
+@if (active()) {
+  <div class="player-container">
+    <neko-player-track />
 
-  <neko-player-controls />
+    <neko-player-controls />
 
-  <neko-player-volume />
-</div>
+    <neko-player-volume />
+  </div>
 
-<neko-player-playback />
+  <neko-player-playback />
+}

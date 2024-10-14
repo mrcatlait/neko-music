@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
+
+import { AudioState } from '@core/state'
 
 @Component({
   selector: 'neko-player',
@@ -6,4 +8,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   styleUrls: ['player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerComponent {}
+export class PlayerComponent {
+  private readonly audioState = inject(AudioState)
+
+  readonly active = this.audioState.active
+}

@@ -3,6 +3,7 @@ import { fromEvent, map, startWith, tap } from 'rxjs'
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop'
 
 import { WINDOW } from '@core/tokens'
+import { NavigationService } from '@core/services'
 
 @Component({
   selector: 'neko-app-bar',
@@ -12,10 +13,14 @@ import { WINDOW } from '@core/tokens'
 })
 export class AppBarComponent implements AfterViewInit {
   private readonly window = inject(WINDOW)
+  private readonly navigationService = inject(NavigationService)
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef)
 
   @Input({ required: true })
   anchor: HTMLElement
+
+  @Input()
+  showBackArrow = true
 
   readonly width = signal(0)
 
@@ -40,5 +45,9 @@ export class AppBarComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.width.set(this.elementRef.nativeElement.clientWidth)
+  }
+
+  handleBackClick(): void {
+    this.navigationService.back()
   }
 }

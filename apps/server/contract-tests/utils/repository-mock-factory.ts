@@ -8,5 +8,6 @@ export function repositoryMockFactory<Entity extends ObjectLiteral>(): Partially
     findBy: vi.fn(),
     create: vi.fn(),
     findAndCount: vi.fn(),
+    existsBy: vi.fn(),
   }
 }

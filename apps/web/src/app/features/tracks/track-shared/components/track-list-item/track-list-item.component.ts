@@ -21,5 +21,11 @@ export class TrackListItemComponent {
 
   readonly selectors = trackListItemSelectors
 
+  menuOpen = false
+
   @Output() togglePlay = new EventEmitter<void>()
+
+  handleMenuClick(): void {
+    this.menuOpen = false
+  }
 }

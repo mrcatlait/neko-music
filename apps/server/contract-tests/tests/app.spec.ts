@@ -6,7 +6,7 @@ import { MessageStateHandlers } from '@pact-foundation/pact'
 import { PactModule, PactVerifierService } from 'contract-tests/pact.module'
 import { AppModule } from 'src/app.module'
 import { ConfigService } from '@core/services'
-import { registerTrackRepositories, tracks } from 'contract-tests/fixtures'
+import { artists, registerRepositories, tracks } from 'contract-tests/fixtures'
 
 describe('Pact Verification', () => {
   let postgresContainer: StartedPostgreSqlContainer
@@ -24,6 +24,16 @@ describe('Pact Verification', () => {
       },
       'list of tracks exists': () => {
         tracks.getTracksSuccess()
+
+        return Promise.resolve()
+      },
+      'artist exists': () => {
+        artists.getArtistSuccess()
+
+        return Promise.resolve()
+      },
+      'artist exists and list of tracks exists': () => {
+        artists.getArtistTracksSuccess()
 
         return Promise.resolve()
       },
@@ -54,7 +64,7 @@ describe('Pact Verification', () => {
         },
       })
 
-    registerTrackRepositories(moduleBuilder)
+    registerRepositories(moduleBuilder)
 
     const moduleRef = await moduleBuilder.compile()
 

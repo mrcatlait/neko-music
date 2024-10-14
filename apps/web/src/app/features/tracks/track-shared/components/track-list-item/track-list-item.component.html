@@ -42,10 +42,78 @@
   </div>
 
   <button
+    [nekoDropdownTrigger]="menu"
     [selector]="selectors.menuButton"
+    [(nekoDropdownOpen)]="menuOpen"
     nekoIconButton
     variant="text"
   >
     <i>more_vert</i>
   </button>
 </div>
+
+<ng-template #menu>
+  <neko-menu>
+    <ul class="track-list-item-menu">
+      <li
+        [attr.tabindex]="false"
+        (click)="togglePlay.emit(); handleMenuClick()"
+        (keyup)="togglePlay.emit(); handleMenuClick()"
+      >
+        <i class="secondary-text">play_arrow</i>
+        <span class="label-l">Play</span>
+      </li>
+
+      <hr />
+
+      <li
+        [attr.tabindex]="false"
+        (click)="handleMenuClick()"
+        (keyup)="handleMenuClick()"
+      >
+        <i class="secondary-text">add</i>
+        <span class="label-l">Add to library</span>
+      </li>
+      <li
+        [attr.tabindex]="false"
+        (click)="handleMenuClick()"
+        (keyup)="handleMenuClick()"
+      >
+        <i class="secondary-text">playlist_add</i>
+        <span class="label-l">Add to playlist</span>
+      </li>
+
+      <hr />
+
+      <li
+        [attr.tabindex]="false"
+        (click)="handleMenuClick()"
+        (keyup)="handleMenuClick()"
+      >
+        <i class="outlined secondary-text">queue_play_next</i>
+        <span class="label-l">Play next</span>
+      </li>
+      <li
+        [attr.tabindex]="false"
+        (click)="handleMenuClick()"
+        (keyup)="handleMenuClick()"
+      >
+        <i class="outlined secondary-text">add_to_queue</i>
+        <span class="label-l">Play last</span>
+      </li>
+
+      <!-- @if (track.album) {
+        <hr />
+
+        <li
+          [attr.tabindex]="false"
+          (click)="handleMenuClick()"
+          (keyup)="handleMenuClick()"
+        >
+          <i class="outlined secondary-text">library_music</i>
+          <span class="label-l">Go to album</span>
+        </li>
+      } -->
+    </ul>
+  </neko-menu>
+</ng-template>

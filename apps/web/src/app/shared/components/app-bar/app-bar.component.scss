@@ -5,6 +5,14 @@ $height: 64px;
 :host {
   display: block;
   height: $height;
+
+  @include abstracts.screen(large) {
+    display: none;
+  }
+
+  @include abstracts.screen(extra-large) {
+    display: none;
+  }
 }
 
 header {
