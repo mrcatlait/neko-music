@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  margin: 64px 0;
+}
+
+.track-list-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  column-gap: 28px;
+  row-gap: 8px;
+  margin-top: 28px;
+  width: 100%;
+}

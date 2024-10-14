@@ -1,1 +1,1 @@
-export * from './track-new-releases.module'
+export * from './artist-details.component'

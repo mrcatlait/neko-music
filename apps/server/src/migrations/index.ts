@@ -8,9 +8,8 @@ import { CreateTrackImageTable1000000000070 } from './1000000000070-CreateTrackI
 import { CreateGenreTable1000000000080 } from './1000000000080-CreateGenreTable'
 import { CreateTrackGenreTable1000000000090 } from './1000000000090-CreateTrackGenreTable'
 import { CreateTrackArtistTable1000000000100 } from './1000000000100-CreateTrackArtistTable'
-import { CreateArtistLinkTable1000000000110 } from './1000000000110-CreateArtistLinkTable'
-import { CreatePlaylistTable1000000000120 } from './1000000000120-CreatePlaylistTable'
-import { CreatePlaylistTrackTable1000000000130 } from './1000000000130-CreatePlaylistTrackTable'
+import { CreatePlaylistTable1000000000110 } from './1000000000110-CreatePlaylistTable'
+import { CreatePlaylistTrackTable1000000000120 } from './1000000000120-CreatePlaylistTrackTable'
 
 export const migrations: any[] = [
   CreateExtensions1000000000010,
@@ -23,7 +22,6 @@ export const migrations: any[] = [
   CreateGenreTable1000000000080,
   CreateTrackGenreTable1000000000090,
   CreateTrackArtistTable1000000000100,
-  CreateArtistLinkTable1000000000110,
-  CreatePlaylistTable1000000000120,
-  CreatePlaylistTrackTable1000000000130,
+  CreatePlaylistTable1000000000110,
+  CreatePlaylistTrackTable1000000000120,
 ]

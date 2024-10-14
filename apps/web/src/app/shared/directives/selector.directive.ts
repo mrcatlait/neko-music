@@ -6,6 +6,6 @@ import { SelectorWithSuffix } from '@selectors'
 })
 export class SelectorDirective {
   @HostBinding('attr.data-test')
-  @Input({ required: true })
+  @Input()
   selector: SelectorWithSuffix
 }

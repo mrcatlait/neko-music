@@ -1,7 +1,6 @@
 export * from './album-image.table'
 export * from './album.table'
 export * from './artist-image.table'
-export * from './artist-link.table'
 export * from './artist.table'
 export * from './genre.table'
 export * from './playlist-track.table'

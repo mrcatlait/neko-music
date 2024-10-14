@@ -1,0 +1,30 @@
+@if (artist(); as a) {
+  <neko-app-bar [anchor]="header">
+    {{ a.name }}
+
+    <ng-content nekoSlot="right">
+      <button
+        color="secondary"
+        nekoIconButton
+        variant="text"
+      >
+        <i>favorite</i>
+      </button>
+
+      <button
+        color="secondary"
+        nekoIconButton
+        variant="text"
+      >
+        <i>more_vert</i>
+      </button>
+    </ng-content>
+  </neko-app-bar>
+
+  <h1
+    #header
+    class="display-m"
+  >
+    {{ a.name }}
+  </h1>
+}

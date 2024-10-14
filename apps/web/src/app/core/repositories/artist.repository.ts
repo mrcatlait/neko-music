@@ -27,4 +27,28 @@ export class ArtistRepository {
       })
       .pipe(map((response) => response.data.map(mapTrackDtoToModel)))
   }
+
+  // getAlbums(artistId: string, { take, offset }: PageOptionsDto): Observable<Album[]> {
+  //   return this.httpClient
+  //     .get<PageResponseDto<AlbumDto>>(`${this.apiUrl}/artists/${artistId}/albums`, {
+  //       params: { take, offset } as PageOptionsDto,
+  //     })
+  //     .pipe(map((response) => response.data.map(mapAlbumDtoToModel)))
+  // }
+
+  // getSingles(artistId: string, { take, offset }: PageOptionsDto): Observable<Album[]> {
+  //   return this.httpClient
+  //     .get<PageResponseDto<AlbumDto>>(`${this.apiUrl}/artists/${artistId}/singles`, {
+  //       params: { take, offset } as PageOptionsDto,
+  //     })
+  //     .pipe(map((response) => response.data.map(mapAlbumDtoToModel)))
+  // }
+
+  // getRelatedArtists(artistId: string, { take, offset }: PageOptionsDto): Observable<Artist[]> {
+  //   return this.httpClient
+  //     .get<PageResponseDto<ArtistDto>>(`${this.apiUrl}/artists/${artistId}/related`, {
+  //       params: { take, offset } as PageOptionsDto,
+  //     })
+  //     .pipe(map((response) => response.data.map(mapArtistDtoToModel)))
+  // }
 }

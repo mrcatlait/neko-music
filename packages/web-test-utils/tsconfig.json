@@ -4,7 +4,10 @@
     "target": "es5",
     "baseUrl": "./",
     "lib": ["es5", "dom"],
-    "types": ["cypress", "node"]
+    "types": ["cypress", "node"],
+    "paths": {
+      "@selectors": ["./selectors"],
+    }
   },
   "include": ["**/*.ts"]
 }
