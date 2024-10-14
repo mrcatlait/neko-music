@@ -29,7 +29,7 @@
     "@neko/stylelint-config": "*",
     "@neko/vitest": "*",
     "@neko/web-test-utils": "*",
-    "@pact-foundation/pact": "^13.1.3",
+    "@pact-foundation/pact": "^13.1.4",
     "esbuild-visualizer": "^0.6.0",
     "jsdom": "^25.0.1",
     "start-server-and-test": "^2.0.8",
