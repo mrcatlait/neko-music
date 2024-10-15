@@ -11,6 +11,7 @@ import {
 } from '@angular/core'
 
 import { MediaQueryService, PortalService } from '@core/services'
+import { AuthService } from '@core/services/auth.service'
 
 @Component({
   selector: 'neko-root',
@@ -21,6 +22,7 @@ import { MediaQueryService, PortalService } from '@core/services'
 export class AppComponent implements AfterViewInit {
   private readonly mediaQueryService = inject(MediaQueryService)
   private readonly portalService = inject(PortalService)
+  private readonly authService = inject(AuthService)
 
   @ViewChild('viewContainer', { read: ViewContainerRef })
   private readonly vcr!: ViewContainerRef
@@ -38,6 +40,8 @@ export class AppComponent implements AfterViewInit {
       },
       { allowSignalWrites: true },
     )
+
+    this.authService.setupAutomaticSilentRefresh()
   }
 
   ngAfterViewInit(): void {

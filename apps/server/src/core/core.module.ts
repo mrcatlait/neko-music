@@ -1,16 +1,17 @@
 import { Global, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { join } from 'path'
 import { FastifyMulterModule } from '@nest-lab/fastify-multer'
 import { APP_GUARD } from '@nestjs/core'
+import { ScheduleModule } from '@nestjs/schedule'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 
 import { ConfigService, ImageProcessingService, VideoProcessingService } from './services'
 import { NODE_ENV } from './models'
-import { RolesGuard } from './guards'
 import { TypeOrmSeedModule } from './seed/typeorm-seed.module'
 
 import { migrations } from 'src/migrations'
 import { seeds } from 'src/seeds'
+import { JwtAuthGuard } from '@features/auth/guards'
 
 @Global()
 @Module({
@@ -42,7 +43,20 @@ import { seeds } from 'src/seeds'
       },
       inject: [ConfigService],
     }),
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 1000,
+        limit: 50,
+      },
+      {
+        name: 'long',
+        ttl: 60000,
+        limit: 1000,
+      },
+    ]),
     FastifyMulterModule,
+    ScheduleModule.forRoot(),
   ],
   providers: [
     ConfigService,
@@ -50,7 +64,15 @@ import { seeds } from 'src/seeds'
     VideoProcessingService,
     {
       provide: APP_GUARD,
-      useClass: RolesGuard,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
   exports: [ConfigService, ImageProcessingService, VideoProcessingService],

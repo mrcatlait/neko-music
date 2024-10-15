@@ -1,17 +1,9 @@
 import { defineConfig } from 'cypress'
 
-import { seedDatabase, teardownDatabase } from './support/db'
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      on('task', {
-        'db:seed': () => {
-          return seedDatabase()
-        },
-        'db:teardown': () => {
-          return teardownDatabase()
-        },
-      })
+      // implement node event listeners here
     },
     specPattern: 'tests/**/*.spec.ts',
     screenshotsFolder: 'reports/screenshots',

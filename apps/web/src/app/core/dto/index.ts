@@ -1,5 +1,7 @@
 export * from './artist.dto'
 export * from './image.dto'
+export * from './login-response.dto'
+export * from './login.dto'
 export * from './page-options.dto'
 export * from './page-response.dto'
 export * from './track.dto'

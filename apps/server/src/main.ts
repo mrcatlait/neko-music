@@ -4,6 +4,7 @@ import { NestFactory, Reflector } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { fastify } from 'fastify'
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common'
+import { fastifyCookie } from '@fastify/cookie'
 
 import { AppModule } from './app.module'
 import { setupLogger } from './util/setup-logger.util'
@@ -30,6 +31,12 @@ async function bootstrap() {
 
   const PORT = configService.get('PORT')
   const UI_URL = configService.get('UI_URL')
+
+  const COOKIE_SECRET = configService.get('COOKIE_SECRET')
+
+  await app.register(fastifyCookie, {
+    secret: COOKIE_SECRET,
+  })
 
   if (configService.get('NODE_ENV') === NODE_ENV.DEVELOPMENT) {
     setupSwagger(app)

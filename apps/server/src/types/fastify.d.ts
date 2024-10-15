@@ -1,9 +1,9 @@
-import type { AccessToken } from '@core/models'
+import type { UserAccountEntity } from '../modules/user/entities'
 import 'fastify'
 
 declare module 'fastify' {
   export interface FastifyRequest {
-    user?: AccessToken
+    user?: UserAccountEntity
     res: FastifyReply
   }
 
