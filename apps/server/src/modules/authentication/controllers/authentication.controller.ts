@@ -1,10 +1,9 @@
 import { Controller, HttpStatus, InternalServerErrorException, Post, Req, Res, UseGuards } from '@nestjs/common'
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 
 import { REFRESH_TOKEN_COOKIE } from '../constants'
-import { Public } from '../decorators/public.decorator'
 import { UserLoginDto, TokenPayloadDto } from '../dto'
 import { LocalAuthGuard, JwtRefreshAuthGuard } from '../guards'
 import { AuthenticationService, AuthRefreshTokenService } from '../services'
@@ -26,7 +25,6 @@ export class AuthenticationController {
     long: { limit: 5, ttl: 60000 },
   })
   @ApiBody({ type: UserLoginDto })
-  @Public()
   @ApiOkResponse({
     status: HttpStatus.OK,
     type: TokenPayloadDto,
@@ -49,8 +47,6 @@ export class AuthenticationController {
     short: { limit: 1, ttl: 1000 },
     long: { limit: 2, ttl: 60000 },
   })
-  @ApiBearerAuth()
-  @Public()
   @ApiOkResponse({
     status: HttpStatus.OK,
     type: TokenPayloadDto,

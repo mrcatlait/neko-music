@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus, Param, Query, ValidationPipe } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { ArtistByIdDto, ArtistDto } from './dto'
 import { ArtistService } from './services'
@@ -9,7 +9,6 @@ import { TracksPageDto, TracksPageOptionsDto } from '@modules/track/dto'
 
 @Controller('artists')
 @ApiTags('Artists')
-@ApiBearerAuth()
 export class ArtistsController {
   constructor(
     private readonly service: ArtistService,

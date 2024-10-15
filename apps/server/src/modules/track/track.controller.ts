@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus, Param, Query, StreamableFile, ValidationPipe } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { TrackService } from './track.service'
 import { TracksPageOptionsDto, TracksPageDto } from './dto'
@@ -8,7 +8,6 @@ import { Public } from '@modules/authentication/decorators'
 
 @Controller('tracks')
 @ApiTags('Tracks')
-@ApiBearerAuth()
 export class TrackController {
   constructor(private readonly service: TrackService) {}
 

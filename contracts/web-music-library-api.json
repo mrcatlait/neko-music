@@ -650,7 +650,7 @@
   ],
   "metadata": {
     "pact-js": {
-      "version": "13.1.3"
+      "version": "13.1.4"
     },
     "pactRust": {
       "ffi": "0.4.22",

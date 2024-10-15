@@ -8,9 +8,7 @@ import { FastifyMulterModule } from '@nest-lab/fastify-multer'
 import { migrations } from '../../migrations'
 import { seeds } from '../../seeds'
 import { AuthenticationModule } from '../authentication'
-import { JwtAuthGuard } from '../authentication/guards'
 import { AuthorizationModule } from '../authorization'
-import { PermissionGuard } from '../authorization/guards'
 import { AppService } from './services'
 import { DatabaseSeedModule } from '../database-seed'
 import { SharedModule } from '../shared'
@@ -73,14 +71,6 @@ import { PlaylistModule } from '@modules/playlist'
   ],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: PermissionGuard,
-    },
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
