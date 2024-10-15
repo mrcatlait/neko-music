@@ -5,11 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserModule } from '../user/user.module'
 import { RefreshTokenEntity } from './entities'
 import { AuthenticationService, AuthRefreshTokenService, CryptoService } from './services'
-import { AuthenticationController } from './authentication.controller'
+import { AuthenticationController } from './controllers'
 import { JwtRefreshStrategy, JwtStrategy, LocalStrategy } from './strategies'
 import { RefreshTokenCron } from './crons'
 
-import { ConfigService } from '@core/services/config.service'
+import { ConfigService } from '@shared/services'
+import { SharedModule } from '@shared/shared.module'
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { ConfigService } from '@core/services/config.service'
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get('jwtSecret'),
+        secret: configService.get('JWT_SECRET'),
         signOptions: { expiresIn: '30m' },
       }),
     }),

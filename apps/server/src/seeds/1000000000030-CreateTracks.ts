@@ -1,9 +1,9 @@
 import { In, QueryRunner } from 'typeorm'
 
-import { SeedInterface } from '@core/seed/types'
-import { TrackArtistEntity, TrackEntity, TrackImageEntity } from '@features/track/entities'
-import { ArtistEntity } from '@features/artist/entities'
-import { ArtistRole } from '@features/artist/models'
+import { SeedInterface } from '@modules/database-seed/types'
+import { ArtistRole } from '@modules/artist/constants'
+import { ArtistEntity } from '@modules/artist/entities'
+import { TrackEntity, TrackArtistEntity, TrackImageEntity } from '@modules/track/entities'
 
 interface Track {
   title: string

@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-import { TrackImageTable } from '@core/tables'
+import { TrackImageTable } from '@tables'
 
 export class CreateTrackImageTable1000000000070 implements MigrationInterface {
   async up(queryRunner: QueryRunner): Promise<void> {

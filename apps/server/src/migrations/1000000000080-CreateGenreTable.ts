@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-import { GenreTable } from '@core/tables'
+import { GenreTable } from '@tables'
 
 export class CreateGenreTable1000000000080 implements MigrationInterface {
   async up(queryRunner: QueryRunner): Promise<void> {

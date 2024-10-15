@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-import { TrackTable } from '@core/tables'
+import { TrackTable } from '@tables'
 
 export class CreateTrackTable1000000000060 implements MigrationInterface {
   async up(queryRunner: QueryRunner): Promise<void> {

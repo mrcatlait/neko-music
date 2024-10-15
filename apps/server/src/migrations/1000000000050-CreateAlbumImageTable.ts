@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-import { AlbumImageTable } from '@core/tables'
+import { AlbumImageTable } from '@tables'
 
 export class CreateAlbumImageTable1000000000050 implements MigrationInterface {
   async up(queryRunner: QueryRunner): Promise<void> {

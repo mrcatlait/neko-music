@@ -2,8 +2,8 @@ import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm'
 
 import { UserLoginDataEntity } from './user-login-data.entity'
 
-import { UserAccountTable } from '@core/tables'
-import { UtilsService } from '@core/services'
+import { UtilsService } from '@shared/services'
+import { UserAccountTable } from '@tables'
 
 @Entity({ name: UserAccountTable.table.name })
 export class UserAccountEntity {

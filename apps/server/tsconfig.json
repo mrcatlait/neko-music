@@ -20,9 +20,10 @@
     "esModuleInterop": true,
     "types": ["vitest/globals"],
     "paths": {
-      "@core/*": ["src/core/*"],
-      "@features/*": ["src/features/*"],
-      "@environment": ["src/environment"]
+      "@common/*": ["src/common/*"],
+      "@shared/*": ["src/modules/shared/*"],
+      "@tables": ["src/tables"],
+      "@modules/*": ["src/modules/*"],
     }
   }
 }

@@ -4,9 +4,9 @@ import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers
 import { MessageStateHandlers } from '@pact-foundation/pact'
 
 import { PactModule, PactVerifierService } from 'contract-tests/pact.module'
-import { AppModule } from 'src/app.module'
-import { ConfigService } from '@core/services'
 import { artists, registerRepositories, tracks } from 'contract-tests/fixtures'
+import { ConfigService } from '@shared/services'
+import { AppModule } from '@modules/app'
 
 describe('Pact Verification', () => {
   let postgresContainer: StartedPostgreSqlContainer
@@ -58,6 +58,9 @@ describe('Pact Verification', () => {
               return postgresContainer.getPassword()
             case 'POSTGRES_DB':
               return postgresContainer.getDatabase()
+            case 'JWT_REFRESH_SECRET':
+            case 'JWT_SECRET':
+              return 'secret'
             default:
               return ''
           }

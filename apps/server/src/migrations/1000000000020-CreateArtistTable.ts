@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-import { ArtistTable } from '@core/tables'
+import { ArtistTable } from '@tables'
 
 export class CreateArtistTable1000000000020 implements MigrationInterface {
   async up(queryRunner: QueryRunner): Promise<void> {

@@ -1,23 +1,3 @@
-# Build
-FROM node:20-alpine As build
-
-WORKDIR /usr/src/app
-
-# Copy source code into app folder
-COPY --chown=node:node . .
-
-# Install dependencies
-RUN npm ci
-
-# Generate the production build
-RUN npm run build
-
-# Set to production environment
-ENV NODE_ENV production
-
-# Install dependencies
-RUN npm ci --omit=dev && npm cache clean --force
-
 # Production
 FROM node:20-alpine As production
 

@@ -5,7 +5,7 @@ import { genSaltSync, hashSync } from 'bcrypt'
 
 import { UserLoginDataEntity } from '../entities'
 
-import { ConfigService } from '@core/services'
+import { ConfigService } from '@shared/services'
 
 @Injectable()
 export class UserLoginDataService {
@@ -16,7 +16,7 @@ export class UserLoginDataService {
   ) {}
 
   createUserLoginDataEntity(userId: string, email: string, password: string): UserLoginDataEntity {
-    const passwordSalt = genSaltSync(this.configService.get('USER_PASSWORD_BCRYPT_SALT_ROUNDS'))
+    const passwordSalt = genSaltSync(this.configService.get('USER_PASSWORD_SALT_ROUNDS'))
     const passwordHash = hashSync(password, passwordSalt)
 
     return this.userLoginDataRepository.create({

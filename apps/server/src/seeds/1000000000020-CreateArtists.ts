@@ -1,7 +1,7 @@
 import { In, QueryRunner } from 'typeorm'
 
-import { ArtistEntity, ArtistImageEntity } from '@features/artist/entities'
-import { SeedInterface } from '@core/seed/types'
+import { ArtistEntity, ArtistImageEntity } from '@modules/artist/entities'
+import { SeedInterface } from '@modules/database-seed/types'
 
 export class CreateArtists1000000000020 implements SeedInterface {
   private readonly artists = [

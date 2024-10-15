@@ -8,8 +8,14 @@ import { CreateTrackImageTable1000000000070 } from './1000000000070-CreateTrackI
 import { CreateGenreTable1000000000080 } from './1000000000080-CreateGenreTable'
 import { CreateTrackGenreTable1000000000090 } from './1000000000090-CreateTrackGenreTable'
 import { CreateTrackArtistTable1000000000100 } from './1000000000100-CreateTrackArtistTable'
-import { CreatePlaylistTable1000000000110 } from './1000000000110-CreatePlaylistTable'
-import { CreatePlaylistTrackTable1000000000120 } from './1000000000120-CreatePlaylistTrackTable'
+import { CreatePermissionTable1000000000110 } from './1000000000110-CreatePermissionTable'
+import { CreateUserRoleTable1000000000120 } from './1000000000120-CreateUserRoleTable'
+import { CreateGrantedPermissionTable1000000000130 } from './1000000000130-CreateGrantedPermissionTable'
+import { CreateUserAccountTable1000000000140 } from './1000000000140-CreateUserAccountTable'
+import { CreateUserLoginDataTable1000000000150 } from './1000000000150-CreateUserLoginDataTable'
+import { CreateRefreshTokenTable1000000000160 } from './1000000000160-CreateRefreshTokenTable'
+import { CreatePlaylistTable1000000000170 } from './1000000000170-CreatePlaylistTable'
+import { CreatePlaylistTrackTable1000000000180 } from './1000000000180-CreatePlaylistTrackTable'
 
 export const migrations: any[] = [
   CreateExtensions1000000000010,
@@ -22,6 +28,12 @@ export const migrations: any[] = [
   CreateGenreTable1000000000080,
   CreateTrackGenreTable1000000000090,
   CreateTrackArtistTable1000000000100,
-  CreatePlaylistTable1000000000110,
-  CreatePlaylistTrackTable1000000000120,
+  CreatePermissionTable1000000000110,
+  CreateUserRoleTable1000000000120,
+  CreateGrantedPermissionTable1000000000130,
+  CreateUserAccountTable1000000000140,
+  CreateUserLoginDataTable1000000000150,
+  CreateRefreshTokenTable1000000000160,
+  CreatePlaylistTable1000000000170,
+  CreatePlaylistTrackTable1000000000180,
 ]

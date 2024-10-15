@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { TrackEntity, TrackImageEntity } from '@features/track/entities'
+import { TrackImageEntity, TrackEntity } from '@modules/track/entities'
 
 export const trackImageFactory = (): TrackImageEntity => {
   const trackImageMock: Omit<TrackImageEntity, 'dtoClass' | 'toDto'> = {

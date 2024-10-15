@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, PrimaryColumn } from 'typeorm'
 
-import { RefreshTokenTable } from '@core/tables'
-import { UtilsService } from '@core/services'
+import { UtilsService } from '@shared/services'
+import { RefreshTokenTable } from '@tables'
 
 @Entity({ name: RefreshTokenTable.table.name })
 export class RefreshTokenEntity {

@@ -6,12 +6,12 @@ import { fastify } from 'fastify'
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common'
 import { fastifyCookie } from '@fastify/cookie'
 
-import { AppModule } from './app.module'
 import { setupLogger } from './util/setup-logger.util'
-import { ConfigService } from './core/services'
 import { setupSwagger } from './util'
 
-import { NODE_ENV } from '@core/models'
+import { ConfigService } from '@shared/services'
+import { AppModule } from '@modules/app'
+import { NODE_ENV } from '@common/constants'
 
 async function bootstrap() {
   const logger = new Logger()

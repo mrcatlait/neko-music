@@ -1,4 +1,4 @@
-import { AbstractEntity } from '@core/entities'
+import { AbstractEntity } from '@common/entities'
 
 declare global {
   interface Array<T> {

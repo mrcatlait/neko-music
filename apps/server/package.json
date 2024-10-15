@@ -5,14 +5,14 @@
     "build": "nest build"
   },
   "dependencies": {
-    "@fastify/cookie": "^11.0.1",
+    "@fastify/cookie": "^9.4.0",
     "@fastify/multipart": "^8.3.0",
     "@nest-lab/fastify-multer": "^1.2.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
-    "@nestjs/platform-fastify": "^10.3.10",
+    "@nestjs/platform-fastify": "^10.4.4",
     "@nestjs/schedule": "^4.1.1",
     "@nestjs/swagger": "^7.4.0",
     "@nestjs/throttler": "^6.2.1",

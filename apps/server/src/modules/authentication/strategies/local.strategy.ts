@@ -4,6 +4,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 
 import { AuthenticationService } from '../services'
 
+import { UserAccountEntity } from 'src/modules/user/entities'
+
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   private readonly authenticationService: AuthenticationService
@@ -14,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     this.authenticationService = authenticationService
   }
 
-  async validate(username: string, password: string): Promise<User> {
+  async validate(username: string, password: string): Promise<UserAccountEntity> {
     const user = await this.authenticationService.validateUser(username, password)
 
     if (!user) {

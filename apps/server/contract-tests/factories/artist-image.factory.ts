@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { ArtistEntity, ArtistImageEntity } from '@features/artist/entities'
+import { ArtistEntity, ArtistImageEntity } from '@modules/artist/entities'
 
 export const artistImageFactory = (): ArtistImageEntity => {
   const artistImageMock: Omit<ArtistImageEntity, 'dtoClass' | 'toDto'> = {

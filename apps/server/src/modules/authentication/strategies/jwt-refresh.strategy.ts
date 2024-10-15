@@ -3,10 +3,11 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
 
-import { REFRESH_TOKEN_COOKIE } from '../authentication.constant'
+import { REFRESH_TOKEN_COOKIE } from '../constants'
 
-import { ConfigService } from '@core/services'
 import { UserAccountService } from 'src/modules/user/services'
+import { UserAccountEntity } from 'src/modules/user/entities'
+import { ConfigService } from '@shared/services'
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
@@ -30,12 +31,12 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     super({
       jwtFromRequest: fromCookie,
       ignoreExpiration: false,
-      secretOrKey: configService.get('jwtRefreshSecret'),
+      secretOrKey: configService.get('JWT_REFRESH_SECRET'),
     })
     this.userAccountService = userAccountService
   }
 
-  async validate(payload: any): User {
+  async validate(payload: any): Promise<UserAccountEntity> {
     const userAccount = await this.userAccountService.findById(payload.sub)
 
     if (!userAccount) {

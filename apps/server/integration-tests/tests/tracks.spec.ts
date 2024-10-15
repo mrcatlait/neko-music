@@ -2,8 +2,8 @@ import { Test } from '@nestjs/testing'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql'
 
-import { AppModule } from 'src/app.module'
-import { ConfigService } from '@core/services'
+import { ConfigService } from '@shared/services'
+import { AppModule } from '@modules/app'
 
 describe('Tracks', () => {
   let postgresContainer: StartedPostgreSqlContainer
@@ -31,6 +31,9 @@ describe('Tracks', () => {
               return postgresContainer.getPassword()
             case 'POSTGRES_DB':
               return postgresContainer.getDatabase()
+            case 'JWT_REFRESH_SECRET':
+            case 'JWT_SECRET':
+              return 'secret'
             default:
               return ''
           }

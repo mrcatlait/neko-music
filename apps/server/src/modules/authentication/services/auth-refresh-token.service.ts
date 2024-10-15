@@ -5,8 +5,8 @@ import { Repository } from 'typeorm'
 
 import { RefreshTokenEntity } from '../entities'
 
-import { ConfigService } from '@core/services'
 import { UserAccountEntity } from 'src/modules/user/entities'
+import { ConfigService } from '@shared/services'
 
 @Injectable()
 export class AuthRefreshTokenService {
@@ -21,7 +21,7 @@ export class AuthRefreshTokenService {
     const newRefreshToken = this.jwtService.sign(
       { sub: authUserId },
       {
-        secret: this.configService.get('jwtRefreshSecret'),
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
         expiresIn: '30d',
       },
     )

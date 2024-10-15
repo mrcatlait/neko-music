@@ -1,10 +1,10 @@
 import { TestingModuleBuilder } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 
-import { GenreEntity, TrackArtistEntity, TrackEntity, TrackImageEntity } from '@features/track/entities'
 import { repositoryMockFactory } from 'contract-tests/utils'
 import { artistFactory, trackFactory } from 'contract-tests/factories'
-import { ArtistEntity, ArtistImageEntity } from '@features/artist/entities'
+import { ArtistEntity, ArtistImageEntity } from '@modules/artist/entities'
+import { TrackEntity, TrackImageEntity, TrackArtistEntity, GenreEntity } from '@modules/track/entities'
 
 const trackRepositoryMock = repositoryMockFactory<TrackEntity>()
 const trackImageRepositoryMock = repositoryMockFactory<TrackImageEntity>()

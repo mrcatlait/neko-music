@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker'
 
 import { artistFactory } from './artist.factory'
 
-import { ArtistRole } from '@features/artist/models'
-import { TrackArtistEntity, TrackEntity } from '@features/track/entities'
+import { ArtistRole } from '@modules/artist/constants'
+import { TrackArtistEntity, TrackEntity } from '@modules/track/entities'
 
 export const trackArtistFactory = (): TrackArtistEntity => {
   const trackArtistMock: Omit<TrackArtistEntity, 'dtoClass' | 'toDto'> = {
