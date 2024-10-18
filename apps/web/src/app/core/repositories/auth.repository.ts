@@ -13,14 +13,14 @@ export class AuthRepository {
   private readonly apiUrl = inject(API_URL)
 
   login({ username, password }: LoginDto): Observable<LoginResponseDto> {
-    return this.httpClient.post<LoginResponseDto>(`${this.apiUrl}/api/auth/login`, { username, password })
+    return this.httpClient.post<LoginResponseDto>(`${this.apiUrl}/auth/login`, { username, password })
   }
 
   logout(): Observable<void> {
-    return this.httpClient.post<void>(`${this.apiUrl}/api/auth/logout`, {})
+    return this.httpClient.post<void>(`${this.apiUrl}/auth/logout`, {})
   }
 
   refreshToken(): Observable<LoginResponseDto> {
-    return this.httpClient.post<LoginResponseDto>(`${this.apiUrl}/api/auth/refresh`, {})
+    return this.httpClient.post<LoginResponseDto>(`${this.apiUrl}/auth/refresh`, {})
   }
 }

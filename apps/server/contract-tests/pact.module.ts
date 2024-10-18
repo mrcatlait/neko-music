@@ -17,9 +17,12 @@ export class PactVerifierService {
     await app.listen(host.port, host.hostname)
 
     // this can throw an error, we are sure the app will close after calling finally
-    return new Verifier({ ...this.options, providerBaseUrl: await app.getUrl() })
-      .verifyProvider()
-      .finally(() => app.close())
+    return (
+      new Verifier({ ...this.options, providerBaseUrl: await app.getUrl() })
+        .verifyProvider()
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        .finally(() => app.close())
+    )
   }
 }
 

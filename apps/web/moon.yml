@@ -5,6 +5,8 @@ type: 'application'
 language: 'typescript'
 
 dependsOn:
+  - id: 'permissions'
+    scope: 'production'
   - id: 'eslint-config'
     scope: 'development'
   - id: 'stylelint-config'

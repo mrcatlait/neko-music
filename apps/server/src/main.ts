@@ -5,6 +5,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { fastify } from 'fastify'
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common'
 import { fastifyCookie } from '@fastify/cookie'
+import { fastifySession } from '@fastify/session'
 
 import { setupLogger } from './util/setup-logger.util'
 import { setupSwagger } from './util'
@@ -34,9 +35,9 @@ async function bootstrap() {
 
   const COOKIE_SECRET = configService.get('COOKIE_SECRET')
 
-  await app.register(fastifyCookie, {
-    secret: COOKIE_SECRET,
-  })
+  await app.register(fastifyCookie)
+
+  await app.register(fastifySession, { secret: COOKIE_SECRET })
 
   if (configService.get('NODE_ENV') === NODE_ENV.DEVELOPMENT) {
     setupSwagger(app)
@@ -51,12 +52,18 @@ async function bootstrap() {
     credentials: true,
   })
 
-  await app.listen(PORT, '0.0.0.0')
+  await app.listen({
+    port: PORT,
+    host: '0.0.0.0',
+  })
 
   logger.log(`Server started on ${PORT}`)
 }
 
 bootstrap().catch((error) => {
-  new Logger().error(error.message, error)
+  if (error instanceof Error) {
+    new Logger().error(error.message, error)
+  }
+
   process.exit(1)
 })

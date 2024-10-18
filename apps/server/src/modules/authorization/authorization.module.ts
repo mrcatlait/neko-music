@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { AuthorizationService } from './authorization.service'
+import { AuthorizationService, PermissionService, RoleService, GrantService } from './services'
+import { GrantedPermissionEntity, PermissionEntity, UserRoleEntity } from './entities'
 
 @Module({
-  providers: [AuthorizationService],
+  imports: [TypeOrmModule.forFeature([PermissionEntity, UserRoleEntity, GrantedPermissionEntity])],
+  providers: [AuthorizationService, RoleService, PermissionService, GrantService],
+  exports: [AuthorizationService, RoleService, PermissionService, GrantService],
 })
 export class AuthorizationModule {}

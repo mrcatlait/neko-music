@@ -5,7 +5,7 @@ import Joi from 'joi'
 import { NODE_ENV } from '@common/constants'
 
 interface Config {
-  NODE_ENV: string
+  NODE_ENV: NODE_ENV
   PORT: number
   UI_URL: string
   MEDIA_URL: string
@@ -15,13 +15,13 @@ interface Config {
   POSTGRES_USER: string
   POSTGRES_PASSWORD: string
   POSTGRES_DB: string
-  // JWT
-  JWT_SECRET: string
-  JWT_REFRESH_SECRET: string
   // Cookies
   COOKIE_SECRET: string
   // Bcrypt
   USER_PASSWORD_SALT_ROUNDS: number
+  // Root user
+  ROOT_USER_EMAIL: string
+  ROOT_USER_PASSWORD: string
 }
 
 @Injectable()
@@ -52,10 +52,10 @@ export class ConfigService {
       POSTGRES_USER: Joi.string().required(),
       POSTGRES_PASSWORD: Joi.string().required(),
       POSTGRES_DB: Joi.string().required(),
-      JWT_SECRET: Joi.string().required(),
-      JWT_REFRESH_SECRET: Joi.string().required(),
-      COOKIE_SECRET: Joi.string().required(),
+      COOKIE_SECRET: Joi.string().length(32).required(),
       USER_PASSWORD_SALT_ROUNDS: Joi.number().default(10),
+      ROOT_USER_EMAIL: Joi.string().email().required(),
+      ROOT_USER_PASSWORD: Joi.string().required(),
     }).unknown()
 
     const { error, value } = envVarsSchema.validate(envConfig)

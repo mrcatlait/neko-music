@@ -1,5 +1,6 @@
 export * from './button.directive'
 export * from './dropdown-trigger.directive'
+export * from './permission.directive'
 export * from './selector.directive'
 export * from './slider.directive'
 export * from './slot.directive'

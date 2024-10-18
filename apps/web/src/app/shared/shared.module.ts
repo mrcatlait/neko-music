@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router'
 import {
   ButtonDirective,
   DropdownTriggerDirective,
+  PermissionDirective,
   SelectorDirective,
   SliderDirective,
   SlotDirective,
@@ -34,6 +35,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     MediaCardTitleDirective,
     MenuComponent,
     NumberSequencePipe,
+    PermissionDirective,
     PlayIconComponent,
     SelectorDirective,
     SliderDirective,
@@ -52,6 +54,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     MenuComponent,
     NgOptimizedImage,
     NumberSequencePipe,
+    PermissionDirective,
     PlayIconComponent,
     ReactiveFormsModule,
     RouterModule,

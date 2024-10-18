@@ -1,4 +1,4 @@
-import { navigation, player, trackNewReleases } from '@neko/web-test-utils/dsl'
+import { navigation, player, trackListNewReleases } from '@neko/web-test-utils/dsl'
 
 import { interceptors } from '../interceptors'
 
@@ -6,7 +6,7 @@ describe('Player', () => {
   beforeEach(() => {
     interceptors.mockTrackNewReleases()
     navigation.goToHome()
-    trackNewReleases.playTrack('Flutter')
+    trackListNewReleases.playTrack('Flutter')
     player.pause()
   })
 

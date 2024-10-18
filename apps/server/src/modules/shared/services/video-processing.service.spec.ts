@@ -14,7 +14,7 @@ const fluentFfmpegMock = vi.hoisted(() => {
     default: vi.fn().mockReturnThis(),
     outputOptions: vi.fn().mockReturnThis(),
     output: vi.fn().mockReturnThis(),
-    on: vi.fn().mockImplementation((event, callback: (...params: any[]) => void) => {
+    on: vi.fn().mockImplementation((event, callback: (...params: unknown[]) => void) => {
       if (event === 'error') {
         eventMap.error = () => callback(new InternalServerErrorException())
       } else if (event === 'end') {

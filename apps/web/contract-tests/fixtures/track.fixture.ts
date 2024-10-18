@@ -1,7 +1,7 @@
 import { InteractionObject, Matcher, MatchersV3 } from '@pact-foundation/pact'
 
 import { PageResponseDto, TrackDto } from '@core/dto'
-import { PactMatcher, PactResponseOptions, PactResponses } from 'contract-tests/types'
+import { PactMatcher, PactResponseOptions } from 'contract-tests/types'
 import { mapTrackDtoToModel } from '@core/mappers'
 import { ArtistRole } from '@core/enum'
 

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 
+import { Permission } from '@core/enum'
 import { SharedModule } from '@shared/shared.module'
 
 @Component({
@@ -11,4 +12,6 @@ import { SharedModule } from '@shared/shared.module'
   imports: [RouterLinkActive, RouterLink, SharedModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationBarComponent {}
+export class NavigationBarComponent {
+  readonly permissions = Permission
+}

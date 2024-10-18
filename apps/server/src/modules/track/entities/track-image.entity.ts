@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, Relation } from 'typeorm'
 
 import { TrackEntity } from './track.entity'
 
@@ -21,5 +21,5 @@ export class TrackImageEntity {
 
   @ManyToOne(() => TrackEntity, (track) => track.images)
   @JoinColumn({ name: TrackImageTable.trackIdColumn.name, referencedColumnName: 'id' })
-  track: TrackEntity
+  track: Relation<TrackEntity>
 }

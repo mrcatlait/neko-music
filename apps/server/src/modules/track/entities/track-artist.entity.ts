@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, Relation } from 'typeorm'
 
 import { TrackArtistDto } from '../dto'
 import { TrackEntity } from './track.entity'
@@ -29,7 +29,7 @@ export class TrackArtistEntity extends AbstractEntity<TrackArtistDto> {
 
   @ManyToOne(() => TrackEntity)
   @JoinColumn({ name: TrackArtistTable.trackIdColumn.name, referencedColumnName: 'id' })
-  track: TrackEntity
+  track: Relation<TrackEntity>
 
   dtoClass = TrackArtistDto
 }

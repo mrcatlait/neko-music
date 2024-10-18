@@ -1,6 +1,5 @@
 export * from './artist.model'
 export * from './image.model'
-export * from './ng-changes.model'
 export * from './queue.model'
 export * from './state.model'
 export * from './track.model'

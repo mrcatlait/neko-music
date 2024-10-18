@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
-import { DataSource, ObjectLiteral, QueryRunner, Table } from 'typeorm'
+import { DataSource, QueryRunner, Table, Logger as OrmLogger } from 'typeorm'
 import { importClassesFromDirectories } from 'typeorm/util/DirectoryExportedClassesLoader'
+import { PostgresDriver } from 'typeorm/driver/postgres/PostgresDriver'
 
 import { Seed, SeedClass, SeedInterface, TypeOrmSeedModuleOptions } from './types'
 
@@ -21,7 +22,7 @@ export class DatabaseSeedService {
     this.dataSource = dataSource
     this.options = options
 
-    const { schema } = this.dataSource.driver.options as any
+    const { schema } = (this.dataSource.driver as PostgresDriver).options
     const database = this.dataSource.driver.database
     this.seedsDatabase = database
     this.seedsSchema = schema
@@ -83,7 +84,7 @@ export class DatabaseSeedService {
     }
 
     const seeds = this.seeds.map((seed) => {
-      const seedClassName = (seed.constructor as any).name
+      const seedClassName = seed.constructor.name
       const seedTimestamp = parseInt(seedClassName.substr(-13), 10)
 
       if (!seedTimestamp || isNaN(seedTimestamp)) {
@@ -101,7 +102,7 @@ export class DatabaseSeedService {
   }
 
   private async loadExecutedSeeds(queryRunner: QueryRunner): Promise<Seed[]> {
-    const seedsRaw: ObjectLiteral[] = await this.dataSource.manager
+    const seedsRaw: Record<string, string>[] = await this.dataSource.manager
       .createQueryBuilder(queryRunner)
       .select()
       .orderBy(this.dataSource.driver.escape('id'), 'DESC')
@@ -114,7 +115,7 @@ export class DatabaseSeedService {
   }
 
   private async insertExecutedSeed(queryRunner: QueryRunner, seed: Seed): Promise<void> {
-    const values: ObjectLiteral = {}
+    const values: Record<string, string | number> = {}
 
     values['timestamp'] = seed.timestamp
     values['name'] = seed.name
@@ -178,7 +179,7 @@ export class DatabaseSeedService {
 
     const allSeedClasses = [
       ...seedClasses,
-      ...(await importClassesFromDirectories(this.logger as any, seedDirectories)),
+      ...(await importClassesFromDirectories(this.logger as unknown as OrmLogger, seedDirectories)),
     ] as SeedClass[]
 
     return allSeedClasses.map((seed) => new seed())

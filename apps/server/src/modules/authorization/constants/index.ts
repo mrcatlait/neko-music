@@ -1,1 +1,2 @@
-export * from './permission.enum'
+export * from './role-permissions.const'
+export * from './role.enum'

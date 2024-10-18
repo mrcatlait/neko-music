@@ -1,24 +1,19 @@
-import { Controller, HttpStatus, InternalServerErrorException, Post, Req, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Post, Req, Res, UnauthorizedException } from '@nestjs/common'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
+import { getPermissionId, Permission } from '@neko/permissions'
 
-import { REFRESH_TOKEN_COOKIE } from '../constants'
-import { UserLoginDto, TokenPayloadDto } from '../dto'
-import { LocalAuthGuard, JwtRefreshAuthGuard } from '../guards'
-import { AuthenticationService, AuthRefreshTokenService } from '../services'
+import { UserLoginDto, UserAccountDto } from '../dto'
+import { AuthenticationService } from '../services'
+import { User } from '../decorators'
 
-import { ConfigService } from '@shared/services'
-import { NODE_ENV } from '@common/constants'
+import { UserModel } from '@modules/authorization/models'
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthenticationController {
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly authenticationService: AuthenticationService,
-    private readonly authRefreshTokenService: AuthRefreshTokenService,
-  ) {}
+  constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Throttle({
     short: { limit: 2, ttl: 1000 },
@@ -27,52 +22,48 @@ export class AuthenticationController {
   @ApiBody({ type: UserLoginDto })
   @ApiOkResponse({
     status: HttpStatus.OK,
-    type: TokenPayloadDto,
+    type: UserAccountDto,
   })
-  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req: FastifyRequest, @Res() res: FastifyReply): Promise<TokenPayloadDto> {
-    if (!req.user) {
-      throw new InternalServerErrorException()
+  async login(@Req() req: FastifyRequest, @Body() input: UserLoginDto): Promise<UserAccountDto> {
+    const user = await this.authenticationService.validateUser(input)
+
+    if (!user) {
+      throw new UnauthorizedException()
     }
 
-    const { accessToken, refreshToken } = await this.authenticationService.login(req.user)
+    req.session.user = {
+      id: user.id,
+      username: user.username,
+      permissions: user.role.permissions?.map((permission) => getPermissionId(permission as Permission)) || [],
+    }
 
-    this.setRefreshTokenCookie(res, refreshToken)
+    await req.session.save()
 
-    return { accessToken }
+    return req.session.user
   }
 
   @Throttle({
-    short: { limit: 1, ttl: 1000 },
-    long: { limit: 2, ttl: 60000 },
+    short: { limit: 2, ttl: 1000 },
+    long: { limit: 5, ttl: 60000 },
   })
-  @ApiOkResponse({
-    status: HttpStatus.OK,
-    type: TokenPayloadDto,
-  })
-  @UseGuards(JwtRefreshAuthGuard)
-  @Post('refresh')
-  async refreshTokens(@Req() req: FastifyRequest, @Res() res: FastifyReply): Promise<TokenPayloadDto> {
-    if (!req.user) {
-      throw new InternalServerErrorException()
-    }
-
-    const { accessToken, refreshToken: newRefreshToken } = await this.authRefreshTokenService.generateTokenPair(
-      req.user,
-    )
-
-    this.setRefreshTokenCookie(res, newRefreshToken)
-
-    return { accessToken }
+  @Post('logout')
+  logout(@Req() req: FastifyRequest): Promise<void> {
+    return req.session.destroy()
   }
 
-  private setRefreshTokenCookie(res: FastifyReply, refreshToken: string): void {
-    res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, {
-      httpOnly: true,
-      secure: this.configService.get('NODE_ENV') === NODE_ENV.PRODUCTION,
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    })
+  @Get('me')
+  @ApiOkResponse({
+    status: HttpStatus.OK,
+    type: UserAccountDto,
+  })
+  me(@Res({ passthrough: true }) res: FastifyReply, @User() user?: UserModel): UserAccountDto {
+    res.header('Cache-Control', 'no-store')
+
+    if (!user) {
+      throw new UnauthorizedException()
+    }
+
+    return user
   }
 }

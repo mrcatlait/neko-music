@@ -41,7 +41,7 @@ export class AppComponent implements AfterViewInit {
       { allowSignalWrites: true },
     )
 
-    this.authService.setupAutomaticSilentRefresh()
+    // this.authService.setupAutomaticSilentRefresh()
   }
 
   ngAfterViewInit(): void {

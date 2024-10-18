@@ -23,7 +23,7 @@ export class UserAccountTable {
   })
 
   static readonly roleIdForeignKey = new TableForeignKey({
-    columnNames: ['Id'],
+    columnNames: ['RoleId'],
     referencedTableName: UserRoleTable.table.name,
     referencedColumnNames: [UserRoleTable.idColumn.name],
   })

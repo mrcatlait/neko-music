@@ -12,16 +12,23 @@ export class UserRoleTable {
     isPrimary: true,
   })
 
-  static descriptionColumn = new TableColumn({
-    name: 'Description',
-    length: '50',
+  static nameColumn = new TableColumn({
+    name: 'Name',
+    length: '20',
     type: CharacterTypes.varchar,
     isNullable: false,
     isUnique: true,
   })
 
+  static descriptionColumn = new TableColumn({
+    name: 'Description',
+    length: '255',
+    type: CharacterTypes.varchar,
+    isNullable: true,
+  })
+
   static table = new Table({
     name: 'UserRole',
-    columns: [this.idColumn, this.descriptionColumn],
+    columns: [this.idColumn, this.nameColumn, this.descriptionColumn],
   })
 }

@@ -1,9 +1,9 @@
-import { ModuleMetadata, Provider, Type } from '@nestjs/common'
+import { InjectionToken, ModuleMetadata, OptionalFactoryDependency, Provider, Type } from '@nestjs/common'
 import { QueryRunner } from 'typeorm'
 
 export interface SeedInterface {
-  up(queryRunner: QueryRunner): Promise<any>
-  down(queryRunner: QueryRunner): Promise<any>
+  up(queryRunner: QueryRunner): Promise<void>
+  down(queryRunner: QueryRunner): Promise<void>
 }
 
 export class Seed {
@@ -36,7 +36,7 @@ export interface TypeOrmSeedModuleAsyncOptions extends Pick<ModuleMetadata, 'imp
   name?: string
   useExisting?: Type<TypeOrmSeedOptionsFactory>
   useClass?: Type<TypeOrmSeedOptionsFactory>
-  useFactory?: (...args: any[]) => Promise<TypeOrmSeedModuleOptions> | TypeOrmSeedModuleOptions
-  inject?: any[]
+  useFactory?: (...args: unknown[]) => Promise<TypeOrmSeedModuleOptions> | TypeOrmSeedModuleOptions
+  inject?: (InjectionToken | OptionalFactoryDependency)[]
   extraProviders?: Provider[]
 }

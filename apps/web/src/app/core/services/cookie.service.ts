@@ -12,7 +12,7 @@ export interface CookieOptions {
 }
 
 const DAY = 1000 * 60 * 60 * 24
-const COOKIE_PREFIX = 'neko_'
+const COOKIE_PREFIX = 'neko.'
 
 @Injectable({
   providedIn: 'root',

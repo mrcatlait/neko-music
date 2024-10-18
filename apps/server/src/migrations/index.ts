@@ -1,3 +1,5 @@
+import { MigrationInterface } from 'typeorm'
+
 import { CreateExtensions1000000000010 } from './1000000000010-CreateExtensions'
 import { CreateArtistTable1000000000020 } from './1000000000020-CreateArtistTable'
 import { CreateArtistImageTable1000000000030 } from './1000000000030-CreateArtistImageTable'
@@ -13,11 +15,12 @@ import { CreateUserRoleTable1000000000120 } from './1000000000120-CreateUserRole
 import { CreateGrantedPermissionTable1000000000130 } from './1000000000130-CreateGrantedPermissionTable'
 import { CreateUserAccountTable1000000000140 } from './1000000000140-CreateUserAccountTable'
 import { CreateUserLoginDataTable1000000000150 } from './1000000000150-CreateUserLoginDataTable'
-import { CreateRefreshTokenTable1000000000160 } from './1000000000160-CreateRefreshTokenTable'
-import { CreatePlaylistTable1000000000170 } from './1000000000170-CreatePlaylistTable'
-import { CreatePlaylistTrackTable1000000000180 } from './1000000000180-CreatePlaylistTrackTable'
+import { CreatePlaylistTable1000000000160 } from './1000000000160-CreatePlaylistTable'
+import { CreatePlaylistTrackTable1000000000170 } from './1000000000170-CreatePlaylistTrackTable'
 
-export const migrations: any[] = [
+export type MigrationClass = new () => MigrationInterface
+
+export const migrations: MigrationClass[] = [
   CreateExtensions1000000000010,
   CreateArtistTable1000000000020,
   CreateArtistImageTable1000000000030,
@@ -33,7 +36,6 @@ export const migrations: any[] = [
   CreateGrantedPermissionTable1000000000130,
   CreateUserAccountTable1000000000140,
   CreateUserLoginDataTable1000000000150,
-  CreateRefreshTokenTable1000000000160,
-  CreatePlaylistTable1000000000170,
-  CreatePlaylistTrackTable1000000000180,
+  CreatePlaylistTable1000000000160,
+  CreatePlaylistTrackTable1000000000170,
 ]

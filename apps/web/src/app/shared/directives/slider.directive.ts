@@ -1,6 +1,13 @@
-import { Directive, ElementRef, HostBinding, HostListener, Input, OnChanges, inject } from '@angular/core'
-
-import { NgChanges } from '@core/models'
+import {
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  inject,
+} from '@angular/core'
 
 type Colors = 'primary' | 'secondary'
 
@@ -19,7 +26,7 @@ export class SliderDirective implements OnChanges {
 
   @Input() value?: number | null
 
-  ngOnChanges({ value }: NgChanges<SliderDirective>): void {
+  ngOnChanges({ value }: SimpleChanges): void {
     if (value) {
       this.element.value = String(this.value)
       this.onInput(this.element)

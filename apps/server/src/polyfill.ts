@@ -7,5 +7,5 @@ declare global {
 }
 
 Array.prototype.toDtos = function <B>(options?: unknown): B[] {
-  return <B[]>(this as AbstractEntity<B>[]).map((item) => item.toDto(options))
+  return (this as AbstractEntity<B>[]).map((item) => item.toDto(options))
 }

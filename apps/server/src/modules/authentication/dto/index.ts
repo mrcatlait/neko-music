@@ -1,2 +1,2 @@
-export * from './token-payload.dto'
+export * from './user-account.dto'
 export * from './user-login.dto'

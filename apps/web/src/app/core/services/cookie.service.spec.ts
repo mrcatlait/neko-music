@@ -26,7 +26,7 @@ describe('CookieService', () => {
   describe('get', () => {
     it('should get a cookie', () => {
       // Arrange
-      documentMock.cookie = 'neko_testCookie=testValue'
+      documentMock.cookie = 'neko.testCookie=testValue'
 
       // Act
       const result = cookieService.get('testCookie')
@@ -48,7 +48,7 @@ describe('CookieService', () => {
 
     it('should safely decode URI component', () => {
       // Arrange
-      documentMock.cookie = 'neko_testCookie=%E0%A4%A'
+      documentMock.cookie = 'neko.testCookie=%E0%A4%A'
 
       // Act
       const result = cookieService.get('testCookie')
@@ -67,7 +67,7 @@ describe('CookieService', () => {
       cookieService.set(cookieOptions)
 
       // Assert
-      expect(documentMock.cookie).toContain('neko_testCookie=testValue')
+      expect(documentMock.cookie).toContain('neko.testCookie=testValue')
     })
 
     it('should set a cookie with expiration date', () => {
@@ -78,7 +78,7 @@ describe('CookieService', () => {
       cookieService.set(cookieOptions)
 
       // Assert
-      expect(documentMock.cookie).toContain('neko_testCookie=testValue')
+      expect(documentMock.cookie).toContain('neko.testCookie=testValue')
       expect(documentMock.cookie).toContain('Expires=')
     })
 
@@ -90,7 +90,7 @@ describe('CookieService', () => {
       cookieService.set(cookieOptions)
 
       // Assert
-      expect(documentMock.cookie).toContain('neko_testCookie=testValue')
+      expect(documentMock.cookie).toContain('neko.testCookie=testValue')
       expect(documentMock.cookie).toContain('Secure')
     })
 
@@ -102,20 +102,20 @@ describe('CookieService', () => {
       cookieService.set(cookieOptions)
 
       // Assert
-      expect(documentMock.cookie).toContain('neko_test%20Cookie=test%20Value')
+      expect(documentMock.cookie).toContain('neko.test%20Cookie=test%20Value')
     })
   })
 
   describe('delete', () => {
     it('should delete a cookie', () => {
       // Arrange
-      documentMock.cookie = 'neko_testCookie=testValue'
+      documentMock.cookie = 'neko.testCookie=testValue'
 
       // Act
       cookieService.delete('testCookie')
 
       // Assert
-      expect(documentMock.cookie).toContain('neko_testCookie=')
+      expect(documentMock.cookie).toContain('neko.testCookie=')
       expect(documentMock.cookie).toContain('Expires=Thu, 01 Jan 1970 00:00:01 GMT')
     })
   })

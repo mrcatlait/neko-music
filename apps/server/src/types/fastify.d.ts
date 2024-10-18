@@ -1,9 +1,14 @@
-import type { UserAccountEntity } from '../modules/user/entities'
 import 'fastify'
+import { fastifySession } from '@fastify/session'
+
+import type { UserModel } from '@modules/authorization/models'
 
 declare module 'fastify' {
+  interface Session extends fastifySession.FastifySessionObject {
+    user?: UserModel
+  }
   export interface FastifyRequest {
-    user?: UserAccountEntity
+    session: Session
     res: FastifyReply
   }
 

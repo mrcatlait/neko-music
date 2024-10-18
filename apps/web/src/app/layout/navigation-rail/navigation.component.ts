@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 
+import { Permission } from '@core/enum'
 import { SharedModule } from '@shared/shared.module'
 
 @Component({
@@ -13,4 +14,6 @@ import { SharedModule } from '@shared/shared.module'
 })
 export class NavigationRailComponent {
   @Output() expand = new EventEmitter<void>()
+
+  readonly permissions = Permission
 }

@@ -1,0 +1,11 @@
+{
+  "name": "@neko/permissions",
+  "version": "1.0.0",
+  "private": true,
+  "types": "./lib/index.d.ts",
+  "main": "./lib/index.js",
+  "devDependencies": {
+    "@neko/eslint-config": "*"
+  },
+  "prettier": "@neko/eslint-config/prettier"
+}

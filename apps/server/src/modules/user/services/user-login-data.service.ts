@@ -28,6 +28,9 @@ export class UserLoginDataService {
   }
 
   findByEmail(email: string): Promise<UserLoginDataEntity | null> {
-    return this.userLoginDataRepository.findOne({ where: { email }, relations: { userAccount: true } })
+    return this.userLoginDataRepository.findOne({
+      where: { email },
+      relations: { userAccount: { role: { permissions: true } } },
+    })
   }
 }

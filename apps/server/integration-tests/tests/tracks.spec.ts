@@ -4,6 +4,7 @@ import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers
 
 import { ConfigService } from '@shared/services'
 import { AppModule } from '@modules/app'
+import { TracksPageDto } from '@modules/track/dto'
 
 describe('Tracks', () => {
   let postgresContainer: StartedPostgreSqlContainer
@@ -66,7 +67,7 @@ describe('Tracks', () => {
         .then((response) => {
           expect(response.statusCode).toEqual(200)
 
-          const body = JSON.parse(response.body)
+          const body = JSON.parse(response.body) as TracksPageDto
           expect(body.data.length).toBe(3)
           expect(body.data[0].title).toBe('Bad Romance')
         })

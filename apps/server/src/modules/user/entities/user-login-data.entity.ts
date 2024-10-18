@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, Relation } from 'typeorm'
 
 import { UserAccountEntity } from './user-account.entity'
 
@@ -21,5 +21,5 @@ export class UserLoginDataEntity {
 
   @OneToOne(() => UserAccountEntity, (userAccount) => userAccount.userLoginData)
   @JoinColumn(UserLoginDataTable.userIdColumn)
-  userAccount: UserAccountEntity
+  userAccount: Relation<UserAccountEntity>
 }

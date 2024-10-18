@@ -1,22 +1,19 @@
-import { Directive, Input, TemplateRef, ViewContainerRef, OnInit } from '@angular/core'
+import { NgIf } from '@angular/common'
+import { Directive, Input, OnInit, inject } from '@angular/core'
 
 import { Permission } from '@core/enum'
 import { PermissionService } from '@core/services/permission.service'
 
 @Directive({
-  selector: '[nekoPermission]',
+  selector: '[hasPermissions]',
+  hostDirectives: [NgIf],
 })
 export class PermissionDirective implements OnInit {
-  @Input('nekoPermission') permission: Permission | Permission[] | undefined
-  @Input('nekoPermissionStrategy') strategy: 'any' | 'all' = 'any'
+  private readonly ngIfDirective = inject(NgIf)
+  private readonly permissionService = inject(PermissionService)
 
-  private isVisible = false
-
-  constructor(
-    private readonly templateRef: TemplateRef<any>,
-    private readonly viewContainer: ViewContainerRef,
-    private readonly permissionService: PermissionService,
-  ) {}
+  @Input('hasPermissions') permission: Permission | Permission[]
+  @Input('hasPermissionsStrategy') strategy: 'any' | 'all' = 'any'
 
   ngOnInit() {
     this.updateView()
@@ -34,14 +31,8 @@ export class PermissionDirective implements OnInit {
       } else {
         hasPermission = this.permissionService.hasPermission(this.permission)
       }
-    }
 
-    if (hasPermission && !this.isVisible) {
-      this.viewContainer.createEmbeddedView(this.templateRef)
-      this.isVisible = true
-    } else if (!hasPermission && this.isVisible) {
-      this.viewContainer.clear()
-      this.isVisible = false
+      this.ngIfDirective.ngIf = hasPermission
     }
   }
 }

@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
+        if (error instanceof HttpErrorResponse && error.status === 401 && !this.isAuthRoute(request.url)) {
           return this.handle401Error(request, next)
         }
 
@@ -67,5 +67,10 @@ export class AuthInterceptor implements HttpInterceptor {
         Authorization: `Bearer ${token}`,
       },
     })
+  }
+
+  private isAuthRoute(url: string): boolean {
+    const authRoutes = ['/auth']
+    return authRoutes.some((route) => url.includes(route))
   }
 }

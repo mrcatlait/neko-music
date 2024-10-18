@@ -4,6 +4,7 @@ import { trackListItemSelectors } from '@selectors'
 import { LinkedTrack } from '../../models'
 
 import { PlaybackState } from '@core/state'
+import { Permission } from '@core/enum'
 
 @Component({
   selector: 'neko-track-list-item',
@@ -20,6 +21,7 @@ export class TrackListItemComponent {
   readonly isPlaying = computed(() => this.track.linkedTrackId === this.currentTrackId())
 
   readonly selectors = trackListItemSelectors
+  readonly permissions = Permission
 
   menuOpen = false
 
