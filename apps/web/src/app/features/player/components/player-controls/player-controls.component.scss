@@ -5,16 +5,9 @@
   justify-content: center;
   gap: 8px;
 
-  @include abstracts.screen(compact) {
+  @include abstracts.screen(compact, medium) {
     .player-controls-shuffle-button,
     .player-controls-previous-button,
-    .player-controls-repeat-button {
-      display: none;
-    }
-  }
-
-  @include abstracts.screen(medium) {
-    .player-controls-shuffle-button,
     .player-controls-repeat-button {
       display: none;
     }

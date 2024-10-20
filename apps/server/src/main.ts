@@ -14,6 +14,8 @@ import { ConfigService } from '@shared/services'
 import { AppModule } from '@modules/app'
 import { NODE_ENV } from '@common/constants'
 
+const DAY = 1000 * 60 * 60 * 24
+
 async function bootstrap() {
   const logger = new Logger()
 
@@ -36,8 +38,10 @@ async function bootstrap() {
   const COOKIE_SECRET = configService.get('COOKIE_SECRET')
 
   await app.register(fastifyCookie)
-
-  await app.register(fastifySession, { secret: COOKIE_SECRET })
+  await app.register(fastifySession, {
+    secret: COOKIE_SECRET,
+    cookie: { sameSite: 'strict', maxAge: DAY * 3 },
+  })
 
   if (configService.get('NODE_ENV') === NODE_ENV.DEVELOPMENT) {
     setupSwagger(app)

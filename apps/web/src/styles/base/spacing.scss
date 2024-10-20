@@ -33,11 +33,7 @@
       --spacing-layout: var(--spacing-layout-expanded);
     }
   
-    @include abstracts.screen(large) {
-      --spacing-layout: var(--spacing-layout-large);
-    }
-  
-    @include abstracts.screen(extra-large) {
+    @include abstracts.screen(large, extra-large) {
       --spacing-layout: var(--spacing-layout-large);
     }
   }

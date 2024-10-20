@@ -1,0 +1,87 @@
+<section class="registration-media-sidebar">
+  <!-- <logo /> -->
+
+  <video
+    [autoplay]="true"
+    [loop]="true"
+    [muted]="true"
+  >
+    <source
+      src="/assets/vid/videoplayback.mp4"
+      type="video/mp4"
+    />
+  </video>
+</section>
+
+<section class="registration-form-sidebar">
+  <div class="registration-form-content">
+    <h1 class="headline-l">Sign up</h1>
+
+    <div class="registration-content-error-banner">
+      <p *ngIf="usernameTaken()">Username has already been taken</p>
+      <p *ngIf="emailTaken()">Email has already been taken</p>
+    </div>
+
+    <form
+      [formGroup]="form"
+      autocomplete="off"
+    >
+      <neko-textfield>
+        <label>Email</label>
+        <input
+          formControlName="email"
+          nekoTextfield
+          type="email"
+        />
+      </neko-textfield>
+
+      <neko-textfield>
+        <label>Password</label>
+        <input
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          nekoTextfield
+        />
+
+        <button
+          [attr.aria-pressed]="hidePassword"
+          aria-label="Show password"
+          nekoIconButton
+          nekoSlot="right"
+          variant="text"
+          (click)="hidePassword = !hidePassword"
+        >
+          <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
+        </button>
+      </neko-textfield>
+
+      <neko-textfield>
+        <label>Username</label>
+        <input
+          formControlName="username"
+          nekoTextfield
+          type="email"
+        />
+      </neko-textfield>
+
+      <button
+        [disabled]="loading()"
+        nekoButton
+        type="submit"
+        (click)="handleSubmit()"
+      >
+        Create Account
+      </button>
+    </form>
+
+    <p class="body-m">
+      Already have an account?
+      <a
+        class="link"
+        routerLink="/login"
+      >
+        Sign In
+      </a>
+    </p>
+  </div>
+</section>

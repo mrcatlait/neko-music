@@ -10,6 +10,7 @@ import {
   SelectorDirective,
   SliderDirective,
   SlotDirective,
+  TextfieldDirective,
 } from './directives'
 import {
   AppBarComponent,
@@ -19,6 +20,7 @@ import {
   MediaCardTitleDirective,
   MenuComponent,
   PlayIconComponent,
+  TextfieldComponent,
 } from './components'
 import { ImageUrlPipe, NumberSequencePipe } from './pipes'
 
@@ -40,6 +42,8 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     SelectorDirective,
     SliderDirective,
     SlotDirective,
+    TextfieldComponent,
+    TextfieldDirective,
   ],
   exports: [
     AppBarComponent,
@@ -61,6 +65,8 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     SelectorDirective,
     SliderDirective,
     SlotDirective,
+    TextfieldComponent,
+    TextfieldDirective,
   ],
 })
 export class SharedModule {}

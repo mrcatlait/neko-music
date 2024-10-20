@@ -9,7 +9,6 @@ import { migrations } from '../../migrations'
 import { seeds } from '../../seeds'
 import { AuthenticationModule } from '../authentication'
 import { AuthorizationModule } from '../authorization'
-import { AppService } from './services'
 import { DatabaseSeedModule } from '../database-seed'
 import { SharedModule } from '../shared'
 
@@ -18,6 +17,7 @@ import { ArtistModule } from '@modules/artist'
 import { TrackModule } from '@modules/track'
 import { NODE_ENV } from '@common/constants'
 import { PlaylistModule } from '@modules/playlist'
+import { AuthGuard } from '@modules/authentication/guards'
 
 @Module({
   imports: [
@@ -70,10 +70,13 @@ import { PlaylistModule } from '@modules/playlist'
     ScheduleModule.forRoot(),
   ],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
   ],
 })

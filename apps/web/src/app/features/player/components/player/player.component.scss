@@ -7,13 +7,7 @@ $bar-height: 80px;
   display: block;
   height: $height;
 
-  @include abstracts.screen(compact) {
-    &::before {
-      content: '';
-    }
-  }
-
-  @include abstracts.screen(medium) {
+  @include abstracts.screen(compact, medium) {
     &::before {
       content: '';
     }
@@ -50,20 +44,7 @@ $bar-height: 80px;
 
   @include abstracts.elevation(2);
 
-  @include abstracts.screen(compact) {
-    grid-template-columns: 1fr auto;
-    bottom: calc($bar-height);
-    left: var(--spacing-layout);
-    right: var(--spacing-layout);
-    gap: 28px;
-    border-radius: var(--shape-corner-large);
-    
-    neko-player-volume {
-      display: none;
-    }
-  }
-
-  @include abstracts.screen(medium) {
+  @include abstracts.screen(compact, medium) {
     grid-template-columns: 1fr auto;
     bottom: calc($bar-height);
     left: var(--spacing-layout);
@@ -85,11 +66,7 @@ neko-player-playback {
 
   @include abstracts.elevation(2);
 
-  @include abstracts.screen(medium) {
-    display: none;
-  }
-
-  @include abstracts.screen(compact) {
+  @include abstracts.screen(compact, medium) {
     display: none;
   }
 }

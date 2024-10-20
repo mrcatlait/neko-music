@@ -25,11 +25,7 @@
   background-position: center;
   color: transparent;
 
-  @include abstracts.screen(compact) {
-    display: none;
-  }
-
-  @include abstracts.screen(medium) {
+  @include abstracts.screen(compact, medium) {
     display: none;
   }
 }

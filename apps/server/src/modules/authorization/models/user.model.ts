@@ -1,5 +1,3 @@
-export interface UserModel {
-  id: string
-  username: string
-  permissions: string[]
-}
+import { LoginPayloadDto } from '@modules/authentication/dto'
+
+export type UserModel = LoginPayloadDto

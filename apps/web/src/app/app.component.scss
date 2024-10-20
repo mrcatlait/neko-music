@@ -11,11 +11,7 @@ neko-navigation-bar {
   display: none;
   grid-area: bottom;
 
-  @include abstracts.screen(compact) {
-    display: block;
-  }
-
-  @include abstracts.screen(medium) {
+  @include abstracts.screen(compact, medium) {
     display: block;
   }
 }
@@ -33,11 +29,7 @@ neko-navigation-drawer {
   grid-area: left;
   display: none;
 
-  @include abstracts.screen(large) {
-    display: block;
-  }
-
-  @include abstracts.screen(extra-large) {
+  @include abstracts.screen(large, extra-large) {
     display: block;
   }
 }

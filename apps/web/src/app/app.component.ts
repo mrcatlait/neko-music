@@ -11,7 +11,7 @@ import {
 } from '@angular/core'
 
 import { MediaQueryService, PortalService } from '@core/services'
-import { AuthService } from '@core/services/auth.service'
+import { AuthState } from '@core/state'
 
 @Component({
   selector: 'neko-root',
@@ -22,7 +22,7 @@ import { AuthService } from '@core/services/auth.service'
 export class AppComponent implements AfterViewInit {
   private readonly mediaQueryService = inject(MediaQueryService)
   private readonly portalService = inject(PortalService)
-  private readonly authService = inject(AuthService)
+  private readonly authState = inject(AuthState)
 
   @ViewChild('viewContainer', { read: ViewContainerRef })
   private readonly vcr!: ViewContainerRef
@@ -41,17 +41,17 @@ export class AppComponent implements AfterViewInit {
       { allowSignalWrites: true },
     )
 
-    // this.authService.setupAutomaticSilentRefresh()
+    this.authState.checkSession()
   }
 
   ngAfterViewInit(): void {
     this.portalService.attach(this.vcr)
   }
 
-  @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent) {
-    const element = event.target as HTMLButtonElement
-    element.blur()
-  }
+  // @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent) {
+  //   const element = event.target as HTMLButtonElement
+  //   element.blur()
+  // }
 
   handleExpand() {
     this.expanded.set(true)

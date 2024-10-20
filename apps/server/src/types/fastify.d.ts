@@ -5,7 +5,7 @@ import type { UserModel } from '@modules/authorization/models'
 
 declare module 'fastify' {
   interface Session extends fastifySession.FastifySessionObject {
-    user?: UserModel
+    data?: UserModel
   }
   export interface FastifyRequest {
     session: Session

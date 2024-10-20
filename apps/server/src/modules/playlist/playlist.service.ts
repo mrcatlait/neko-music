@@ -7,6 +7,7 @@ import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto, PlaylistPageOptionsDto
 
 import { UserAccountEntity } from '@modules/user/entities'
 import { PageMetaDto } from '@common/dto'
+import { UserModel } from '@modules/authorization/models'
 
 @Injectable()
 export class PlaylistService {
@@ -34,8 +35,8 @@ export class PlaylistService {
     return new PlaylistPageDto(playlists.toDtos(), pageMetaDto)
   }
 
-  createPlaylist(user: UserAccountEntity, playlistDto: CreatePlaylistDto): Promise<PlaylistDto> {
-    const playlist = this.playlistRepository.create({ userId: user.id, name: playlistDto.name })
+  createPlaylist(user: UserModel, playlistDto: CreatePlaylistDto): Promise<PlaylistDto> {
+    const playlist = this.playlistRepository.create({ userId: user.user.id, name: playlistDto.name })
 
     return this.playlistRepository.save(playlist).then((p) => p.toDto())
   }

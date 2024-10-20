@@ -14,6 +14,16 @@ const routes: Routes = [
     loadComponent: () => import('./pages/artist-details').then((c) => c.ArtistDetailsPage),
   },
   {
+    path: 'login',
+    pathMatch: 'full',
+    loadComponent: () => import('./pages/login').then((c) => c.LoginPage),
+  },
+  {
+    path: 'registration',
+    pathMatch: 'full',
+    loadComponent: () => import('./pages/registration').then((c) => c.RegistrationPage),
+  },
+  {
     path: '404',
     pathMatch: 'full',
     loadComponent: () => import('./pages/not-found').then((c) => c.NotFoundPage),

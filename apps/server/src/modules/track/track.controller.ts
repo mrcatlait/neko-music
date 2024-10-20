@@ -4,8 +4,6 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { TrackService } from './track.service'
 import { TracksPageOptionsDto, TracksPageDto } from './dto'
 
-import { Public } from '@modules/authentication/decorators'
-
 @Controller('tracks')
 @ApiTags('Tracks')
 export class TrackController {
@@ -51,7 +49,6 @@ export class TrackController {
   @ApiOkResponse({
     status: HttpStatus.OK,
   })
-  @Public()
   stream(@Param('trackId') trackId: string, @Param('filename') filename: string): StreamableFile {
     return this.service.stream(trackId, filename)
   }

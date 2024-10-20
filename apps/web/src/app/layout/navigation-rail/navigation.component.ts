@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
+import { Permission } from '@neko/permissions'
 
-import { Permission } from '@core/enum'
 import { SharedModule } from '@shared/shared.module'
 
 @Component({

@@ -6,11 +6,7 @@ $height: 64px;
   display: block;
   height: $height;
 
-  @include abstracts.screen(large) {
-    display: none;
-  }
-
-  @include abstracts.screen(extra-large) {
+  @include abstracts.screen(large, extra-large) {
     display: none;
   }
 }

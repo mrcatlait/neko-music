@@ -64,10 +64,10 @@
         <span class="label-l">Play</span>
       </li>
 
-      <hr *hasPermissions="[permissions.UpdateLibrary, permissions.UpdatePlaylist]" />
+      <hr *hasPermissions="[permissions.LibraryUpdate, permissions.PlaylistUpdate]" />
 
       <li
-        *hasPermissions="permissions.UpdateLibrary"
+        *hasPermissions="permissions.LibraryUpdate"
         [attr.tabindex]="false"
         (click)="handleMenuClick()"
         (keyup)="handleMenuClick()"
@@ -76,7 +76,7 @@
         <span class="label-l">Add to library</span>
       </li>
       <li
-        *hasPermissions="permissions.UpdatePlaylist"
+        *hasPermissions="permissions.PlaylistUpdate"
         [attr.tabindex]="false"
         (click)="handleMenuClick()"
         (keyup)="handleMenuClick()"

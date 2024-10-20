@@ -1,3 +1,9 @@
+import { Permission } from '@neko/permissions'
+
 export interface LoginResponseDto {
-  accessToken: string
+  user: {
+    id: string
+    username: string
+  }
+  permissions: Permission[]
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
+import { Permission } from '@neko/permissions'
 
-import { Permission } from '@core/enum'
 import { ScrollService } from '@core/services'
 import { SharedModule } from '@shared/shared.module'
 

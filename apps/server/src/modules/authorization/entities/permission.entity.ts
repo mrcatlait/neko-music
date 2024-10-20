@@ -1,5 +1,4 @@
 import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm'
-import { PermissionAction, PermissionGroup, PermissionType } from '@neko/permissions'
 
 import { UserRoleEntity } from './user-role.entity'
 
@@ -12,13 +11,7 @@ export class PermissionEntity {
   id: string
 
   @Column(UtilsService.toColumnOptions(PermissionTable.actionColumn))
-  action: PermissionAction
-
-  @Column(UtilsService.toColumnOptions(PermissionTable.typeColumn))
-  type: PermissionType
-
-  @Column(UtilsService.toColumnOptions(PermissionTable.groupColumn))
-  group: PermissionGroup
+  action: string
 
   @Column(UtilsService.toColumnOptions(PermissionTable.descriptionColumn))
   description: string

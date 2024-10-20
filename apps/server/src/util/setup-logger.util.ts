@@ -13,7 +13,7 @@ export const setupLogger = (fastify: FastifyInstance): void => {
   })
 
   fastify.addHook('onResponse', (request, reply, done) => {
-    const username = request.session.user?.username ?? 'Guest'
+    const username = request.session.get('data')?.user.username ?? 'Guest'
     const ip = request.headers['cf-connecting-ip'] || request.ip
 
     logger.log(

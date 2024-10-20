@@ -4,8 +4,9 @@ import { ApiTags, ApiOkResponse, ApiCreatedResponse, ApiBearerAuth } from '@nest
 import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto } from './dto'
 import { PlaylistService } from './playlist.service'
 
-import { User } from '@modules/authentication/decorators'
 import { UserAccountEntity } from '@modules/user/entities'
+import { User } from '@modules/authorization/decorators'
+import { UserModel } from '@modules/authorization/models'
 
 @Controller('playlists')
 @ApiTags('Playlists')
@@ -36,7 +37,7 @@ export class PlaylistController {
     status: HttpStatus.OK,
     type: PlaylistDto,
   })
-  createPlaylist(@User() user: UserAccountEntity, @Body() input: CreatePlaylistDto): Promise<PlaylistDto> {
+  createPlaylist(@User() user: UserModel, @Body() input: CreatePlaylistDto): Promise<PlaylistDto> {
     return this.playlistService.createPlaylist(user, input)
   }
 

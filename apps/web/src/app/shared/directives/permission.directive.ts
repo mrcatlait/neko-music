@@ -1,8 +1,8 @@
 import { NgIf } from '@angular/common'
 import { Directive, Input, OnInit, inject } from '@angular/core'
+import { Permission } from '@neko/permissions'
 
-import { Permission } from '@core/enum'
-import { PermissionService } from '@core/services/permission.service'
+import { AuthState } from '@core/state'
 
 @Directive({
   selector: '[hasPermissions]',
@@ -10,7 +10,7 @@ import { PermissionService } from '@core/services/permission.service'
 })
 export class PermissionDirective implements OnInit {
   private readonly ngIfDirective = inject(NgIf)
-  private readonly permissionService = inject(PermissionService)
+  private readonly authState = inject(AuthState)
 
   @Input('hasPermissions') permission: Permission | Permission[]
   @Input('hasPermissionsStrategy') strategy: 'any' | 'all' = 'any'
@@ -26,10 +26,10 @@ export class PermissionDirective implements OnInit {
       if (Array.isArray(this.permission)) {
         hasPermission =
           this.strategy === 'any'
-            ? this.permissionService.hasAnyPermission(this.permission)
-            : this.permissionService.hasAllPermissions(this.permission)
+            ? this.authState.hasAnyPermission(this.permission)
+            : this.authState.hasAllPermissions(this.permission)
       } else {
-        hasPermission = this.permissionService.hasPermission(this.permission)
+        hasPermission = this.authState.hasPermission(this.permission)
       }
 
       this.ngIfDirective.ngIf = hasPermission

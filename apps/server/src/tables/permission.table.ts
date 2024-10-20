@@ -1,5 +1,4 @@
 import { Table, TableColumn } from 'typeorm'
-import { PermissionAction, PermissionGroup, PermissionType } from '@neko/permissions'
 
 import { UUIDType, UUIDGenerator, CharacterTypes } from '@common/constants'
 export class PermissionTable {
@@ -17,23 +16,7 @@ export class PermissionTable {
     length: '50',
     type: CharacterTypes.varchar,
     isNullable: false,
-    enum: Object.values(PermissionAction),
-  })
-
-  static groupColumn = new TableColumn({
-    name: 'Group',
-    length: '50',
-    type: CharacterTypes.varchar,
-    isNullable: false,
-    enum: Object.values(PermissionGroup),
-  })
-
-  static readonly typeColumn = new TableColumn({
-    name: 'Type',
-    type: CharacterTypes.varchar,
-    length: '20',
-    isNullable: false,
-    enum: Object.values(PermissionType),
+    isUnique: true,
   })
 
   static descriptionColumn = new TableColumn({
@@ -45,6 +28,6 @@ export class PermissionTable {
 
   static table = new Table({
     name: 'Permission',
-    columns: [this.idColumn, this.actionColumn, this.groupColumn, this.typeColumn, this.descriptionColumn],
+    columns: [this.idColumn, this.actionColumn, this.descriptionColumn],
   })
 }
