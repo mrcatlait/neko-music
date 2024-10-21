@@ -15,7 +15,7 @@
     "@neko/permissions": "*",
     "dashjs": "^4.7.4",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.8.0"
   },
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^1.8.1",
