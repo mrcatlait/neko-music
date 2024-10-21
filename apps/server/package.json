@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.2",
-    "@fastify/static": "^7.0.4",
+    "@fastify/static": "^8.0.2",
     "@neko/eslint-config": "*",
     "@neko/vitest": "*",
     "@nestjs/cli": "^10.0.0",
