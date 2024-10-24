@@ -4,7 +4,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 
 import { EnsureModuleLoadedOnceGuard } from './guards'
 import { devtoolsImports } from '../../devtools/devtools'
-import { API_URL } from './tokens'
+import { API_URL, ENVIRONMENT } from './tokens'
 import { AuthInterceptor } from './interceptors'
 
 import { environment } from '@environment'
@@ -13,6 +13,7 @@ import { environment } from '@environment'
   imports: [BrowserModule, devtoolsImports],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
+    { provide: ENVIRONMENT, useValue: environment },
     { provide: API_URL, useValue: environment.apiUrl },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],

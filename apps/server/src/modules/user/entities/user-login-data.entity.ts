@@ -16,9 +16,6 @@ export class UserLoginDataEntity {
   @Column(UtilsService.toColumnOptions(UserLoginDataTable.passwordHashColumn))
   passwordHash: string
 
-  @Column(UtilsService.toColumnOptions(UserLoginDataTable.passwordSaltColumn))
-  passwordSalt: string
-
   @OneToOne(() => UserAccountEntity, (userAccount) => userAccount.userLoginData)
   @JoinColumn(UserLoginDataTable.userIdColumn)
   userAccount: Relation<UserAccountEntity>

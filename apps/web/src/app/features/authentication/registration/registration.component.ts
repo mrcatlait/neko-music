@@ -4,6 +4,7 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { RegistrationState } from './registration.state'
 
 import { SharedModule } from '@shared/shared.module'
+import { ENVIRONMENT } from '@core/tokens'
 
 @Component({
   standalone: true,
@@ -15,9 +16,12 @@ import { SharedModule } from '@shared/shared.module'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationComponent {
+  private readonly environment = inject(ENVIRONMENT)
   private readonly state = inject(RegistrationState)
 
   hidePassword = true
+
+  readonly applicationName = this.environment.applicationName
 
   readonly loading = this.state.loading
   readonly emailTaken = this.state.emailTaken

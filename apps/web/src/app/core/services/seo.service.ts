@@ -1,20 +1,21 @@
 import { Injectable, inject } from '@angular/core'
 import { Meta, Title } from '@angular/platform-browser'
 
-import { environment } from '@environment'
+import { ENVIRONMENT } from '@core/tokens'
 
 @Injectable({
   providedIn: 'root',
 })
 export class SeoService {
   private readonly title = inject(Title)
+  private readonly environment = inject(ENVIRONMENT)
   private readonly metaTagService = inject(Meta)
 
   setTitle(title?: string): void {
     if (!title) {
-      this.title.setTitle(environment.applicationName)
+      this.title.setTitle(this.environment.applicationName)
     } else {
-      this.title.setTitle(`${title} - ${environment.applicationName}`)
+      this.title.setTitle(`${title} - ${this.environment.applicationName}`)
     }
   }
 

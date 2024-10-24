@@ -30,6 +30,7 @@ export default defineConfig(({ mode }) => ({
         '**/*.model.ts',
         '**/*.module.ts',
         '**/*.component.ts',
+        '**/*.repository.ts',
         '**/*.spec.ts',
       ],
       reporter: ['text', 'lcov'],

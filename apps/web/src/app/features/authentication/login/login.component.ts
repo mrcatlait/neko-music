@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router'
 
 import { LoginState } from './login.state'
 
 import { SharedModule } from '@shared/shared.module'
+import { ENVIRONMENT } from '@core/tokens'
 
 @Component({
   standalone: true,
@@ -16,13 +16,14 @@ import { SharedModule } from '@shared/shared.module'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-  private readonly route = inject(ActivatedRoute)
   private readonly state = inject(LoginState)
+  private readonly environment = inject(ENVIRONMENT)
 
   hidePassword = true
 
   readonly invalidCredentials = this.state.invalidCredentials
   readonly loading = this.state.loading
+  readonly applicationName = this.environment.applicationName
 
   // readonly selectors = loginSelectors
 

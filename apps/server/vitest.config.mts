@@ -2,8 +2,9 @@
 import { defineConfig } from 'vitest/config'
 import swc from 'unplugin-swc'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
+import path from 'path'
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   plugins: [
     swc.vite({
       module: { type: 'es6' },
@@ -14,7 +15,9 @@ export default defineConfig(({ mode }) => ({
   ],
   test: {
     globals: true,
+    environment: 'node',
     watch: false,
+    setupFiles: ['src/test-setup.ts'],
     include: ['src/**/*.spec.ts'],
     exclude: ['src/**/*.pact.spec.ts'],
     reporters: ['default', 'junit'],
@@ -26,11 +29,15 @@ export default defineConfig(({ mode }) => ({
       provider: 'v8',
       include: ['src/**/*.ts'],
       exclude: [
-        'main.ts',
+        '**/main.ts',
+        'src/util/*',
         'src/migrations/*',
+        'src/seeds/*',
+        'src/modules/database-seed/*',
         '**/*.d.ts',
         '**/index.ts',
         '**/*.model.ts',
+        '**/*.enum.ts',
         '**/*.dto.ts',
         '**/*.entity.ts',
         '**/*.module.ts',
@@ -42,6 +49,12 @@ export default defineConfig(({ mode }) => ({
     },
   },
   define: {
-    'import.meta.vitest': mode !== 'production',
+    'import.meta.vitest': true,
   },
-}))
+  resolve: {
+    alias: {
+      '@common': path.resolve(__dirname, './src/common'),
+      '@modules': path.resolve(__dirname, './src/modules'),
+    },
+  },
+})

@@ -1,7 +1,8 @@
-import { Environment } from './environment.model'
+import { Environment } from '@core/models'
 
 export const environment: Environment = {
   production: true,
-  applicationName: 'Neko Music',
+  applicationName: 'NekoMusic',
   apiUrl: 'https://api.neko-music.com',
+  private: true,
 }

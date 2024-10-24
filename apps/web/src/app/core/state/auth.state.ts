@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core'
+import { computed, inject, Injectable, signal } from '@angular/core'
 import { firstValueFrom } from 'rxjs'
 import { Permission } from '@neko/permissions'
 
@@ -28,6 +28,7 @@ export class AuthState {
   private permissions = new Set<Permission>()
 
   readonly session = signal<Session | null>(null)
+  readonly isAuthenticated = computed(() => Boolean(this.session()))
 
   login(session: Session) {
     this.setSession(session)
@@ -37,6 +38,7 @@ export class AuthState {
     this.removeSessionFromCache()
     this.cookieService.delete(IS_AUTHENTICATED_COOKIE_NAME)
     this.authRepository.logout()
+    this.session.set(null)
     this.permissions.clear()
   }
 

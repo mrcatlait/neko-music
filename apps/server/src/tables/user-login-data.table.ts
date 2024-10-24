@@ -35,16 +35,9 @@ export class UserLoginDataTable {
     isNullable: false,
   })
 
-  static passwordSaltColumn = new TableColumn({
-    name: 'PasswordSalt',
-    length: '255',
-    type: CharacterTypes.varchar,
-    isNullable: false,
-  })
-
   static table = new Table({
     name: 'UserLoginData',
-    columns: [this.userIdColumn, this.emailColumn, this.passwordHashColumn, this.passwordSaltColumn],
+    columns: [this.userIdColumn, this.emailColumn, this.passwordHashColumn],
     foreignKeys: [this.userIdForeignKey],
   })
 }
