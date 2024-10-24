@@ -4,7 +4,7 @@ import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers
 import { MessageStateHandlers } from '@pact-foundation/pact'
 
 import { PactModule, PactVerifierService } from 'contract-tests/pact.module'
-import { artists, registerRepositories, tracks } from 'contract-tests/fixtures'
+import { artists, auth, registerMocks, tracks } from 'contract-tests/fixtures'
 import { ConfigService } from '@shared/services'
 import { AppModule } from '@modules/app'
 
@@ -17,6 +17,10 @@ describe('Pact Verification', () => {
     postgresContainer = await new PostgreSqlContainer().start()
 
     const stateHandlers: MessageStateHandlers = {
+      'authenticated user': () => {
+        auth.authenticatedUser()
+        return Promise.resolve()
+      },
       'list of tracks is empty': () => {
         tracks.getTracksEmpty()
 
@@ -29,11 +33,6 @@ describe('Pact Verification', () => {
       },
       'artist exists': () => {
         artists.getArtistSuccess()
-
-        return Promise.resolve()
-      },
-      'artist exists and list of tracks exists': () => {
-        artists.getArtistTracksSuccess()
 
         return Promise.resolve()
       },
@@ -67,7 +66,7 @@ describe('Pact Verification', () => {
         },
       })
 
-    registerRepositories(moduleBuilder)
+    registerMocks(moduleBuilder)
 
     const moduleRef = await moduleBuilder.compile()
 

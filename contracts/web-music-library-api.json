@@ -5,659 +5,1066 @@
   "interactions": [
     {
       "description": "a request to GET artist",
-      "providerState": "artist exists",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "artist exists"
+        }
+      ],
       "request": {
         "method": "GET",
         "path": "/artists/c76b4326-ca77-4c24-a414-f002c6be3106"
       },
       "response": {
         "body": {
-          "bio": "Bio",
-          "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-          "images": [
-            {
-              "resolution": "some string",
-              "url": "some string"
-            }
-          ],
-          "name": "Name"
+          "content": {
+            "bio": "Bio",
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+            "images": [
+              {
+                "resolution": "some string",
+                "url": "some string"
+              }
+            ],
+            "name": "Name"
+          },
+          "contentType": "application/json",
+          "encoded": false
         },
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": [
+            "application/json"
+          ]
         },
         "matchingRules": {
-          "$.body.bio": {
-            "match": "type"
+          "body": {
+            "$.bio": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.images[0].resolution": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.images[0].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
           },
-          "$.body.id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.images[0].resolution": {
-            "match": "type"
-          },
-          "$.body.images[0].url": {
-            "match": "type"
-          },
-          "$.body.name": {
-            "match": "type"
-          }
+          "status": {}
         },
         "status": 200
-      }
-    },
-    {
-      "description": "a request to GET artist",
-      "providerState": "list of tracks exists",
-      "request": {
-        "method": "GET",
-        "path": "/artists/c76b4326-ca77-4c24-a414-f002c6be3106"
       },
-      "response": {
-        "body": {
-          "bio": "Bio",
-          "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-          "images": [
-            {
-              "resolution": "some string",
-              "url": "some string"
-            }
-          ],
-          "name": "Name"
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "matchingRules": {
-          "$.body.bio": {
-            "match": "type"
-          },
-          "$.body.id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.images[0].resolution": {
-            "match": "type"
-          },
-          "$.body.images[0].url": {
-            "match": "type"
-          },
-          "$.body.name": {
-            "match": "type"
-          }
-        },
-        "status": 200
-      }
+      "type": "Synchronous/HTTP"
     },
     {
       "description": "a request to GET artist tracks",
-      "providerState": "artist exists and list of tracks exists",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "artist exists"
+        },
+        {
+          "name": "list of tracks exists"
+        }
+      ],
       "request": {
         "method": "GET",
         "path": "/artists/c76b4326-ca77-4c24-a414-f002c6be3106/tracks",
-        "query": "offset=0&take=50"
+        "query": {
+          "offset": [
+            "0"
+          ],
+          "take": [
+            "50"
+          ]
+        }
       },
       "response": {
         "body": {
-          "data": [
-            {
-              "artists": [
-                {
-                  "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                  "name": "Artist",
-                  "role": "Primary"
-                }
-              ],
-              "duration": 123,
-              "genres": [
-                "Rock"
-              ],
-              "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-              "images": [
-                {
-                  "resolution": "some string",
-                  "url": "some string"
-                }
-              ],
-              "title": "Title"
+          "content": {
+            "data": [
+              {
+                "artists": [
+                  {
+                    "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                    "name": "Artist",
+                    "role": "Primary"
+                  }
+                ],
+                "duration": 123,
+                "genres": [
+                  "Rock"
+                ],
+                "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                "images": [
+                  {
+                    "resolution": "some string",
+                    "url": "some string"
+                  }
+                ],
+                "title": "Title"
+              }
+            ],
+            "meta": {
+              "itemCount": 1,
+              "offset": 0,
+              "pageCount": 1,
+              "take": 50
             }
-          ],
-          "meta": {
-            "itemCount": 1,
-            "offset": 0,
-            "pageCount": 1,
-            "take": 50
-          }
+          },
+          "contentType": "application/json",
+          "encoded": false
         },
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": [
+            "application/json"
+          ]
         },
         "matchingRules": {
-          "$.body.data[0].artists[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+          "body": {
+            "$.data[0].artists[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].artists[0].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].artists[0].role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].duration": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.data[0].genres[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].images[0].resolution": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].images[0].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].title": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.meta.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.offset": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.pageCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.take": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
           },
-          "$.body.data[0].artists[0].name": {
-            "match": "type"
-          },
-          "$.body.data[0].artists[0].role": {
-            "match": "type"
-          },
-          "$.body.data[0].duration": {
-            "match": "integer"
-          },
-          "$.body.data[0].genres[0]": {
-            "match": "type"
-          },
-          "$.body.data[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.data[0].images[0].resolution": {
-            "match": "type"
-          },
-          "$.body.data[0].images[0].url": {
-            "match": "type"
-          },
-          "$.body.data[0].title": {
-            "match": "type"
-          },
-          "$.body.meta.itemCount": {
-            "match": "integer"
-          },
-          "$.body.meta.offset": {
-            "match": "integer"
-          },
-          "$.body.meta.pageCount": {
-            "match": "integer"
-          },
-          "$.body.meta.take": {
-            "match": "integer"
-          }
+          "status": {}
         },
         "status": 200
-      }
-    },
-    {
-      "description": "a request to GET artist tracks",
-      "providerState": "list of tracks exists",
-      "request": {
-        "method": "GET",
-        "path": "/artists/c76b4326-ca77-4c24-a414-f002c6be3106/tracks"
       },
-      "response": {
-        "body": {
-          "data": [
-            {
-              "artists": [
-                {
-                  "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                  "name": "Artist",
-                  "role": "Primary"
-                }
-              ],
-              "duration": 123,
-              "genres": [
-                "Rock"
-              ],
-              "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-              "images": [
-                {
-                  "resolution": "some string",
-                  "url": "some string"
-                }
-              ],
-              "title": "Title"
-            }
-          ],
-          "meta": {
-            "itemCount": 1,
-            "offset": 0,
-            "pageCount": 1,
-            "take": 50
-          }
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "matchingRules": {
-          "$.body.data[0].artists[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.data[0].artists[0].name": {
-            "match": "type"
-          },
-          "$.body.data[0].artists[0].role": {
-            "match": "type"
-          },
-          "$.body.data[0].duration": {
-            "match": "integer"
-          },
-          "$.body.data[0].genres[0]": {
-            "match": "type"
-          },
-          "$.body.data[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.data[0].images[0].resolution": {
-            "match": "type"
-          },
-          "$.body.data[0].images[0].url": {
-            "match": "type"
-          },
-          "$.body.data[0].title": {
-            "match": "type"
-          },
-          "$.body.meta.itemCount": {
-            "match": "integer"
-          },
-          "$.body.meta.offset": {
-            "match": "integer"
-          },
-          "$.body.meta.pageCount": {
-            "match": "integer"
-          },
-          "$.body.meta.take": {
-            "match": "integer"
-          }
-        },
-        "status": 200
-      }
+      "type": "Synchronous/HTTP"
     },
     {
       "description": "a request to GET new tracks",
-      "providerState": "list of tracks exists",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "list of tracks exists"
+        }
+      ],
       "request": {
         "method": "GET",
         "path": "/tracks/new",
-        "query": "offset=0&take=6"
+        "query": {
+          "offset": [
+            "0"
+          ],
+          "take": [
+            "6"
+          ]
+        }
       },
       "response": {
         "body": {
-          "data": [
-            {
-              "artists": [
-                {
-                  "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                  "name": "Artist",
-                  "role": "Primary"
-                }
-              ],
-              "duration": 123,
-              "genres": [
-                "Rock"
-              ],
-              "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-              "images": [
-                {
-                  "resolution": "some string",
-                  "url": "some string"
-                }
-              ],
-              "title": "Title"
+          "content": {
+            "data": [
+              {
+                "artists": [
+                  {
+                    "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                    "name": "Artist",
+                    "role": "Primary"
+                  }
+                ],
+                "duration": 123,
+                "genres": [
+                  "Rock"
+                ],
+                "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                "images": [
+                  {
+                    "resolution": "some string",
+                    "url": "some string"
+                  }
+                ],
+                "title": "Title"
+              }
+            ],
+            "meta": {
+              "itemCount": 1,
+              "offset": 0,
+              "pageCount": 1,
+              "take": 50
             }
-          ],
-          "meta": {
-            "itemCount": 1,
-            "offset": 0,
-            "pageCount": 1,
-            "take": 50
-          }
+          },
+          "contentType": "application/json",
+          "encoded": false
         },
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": [
+            "application/json"
+          ]
         },
         "matchingRules": {
-          "$.body.data[0].artists[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+          "body": {
+            "$.data[0].artists[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].artists[0].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].artists[0].role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].duration": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.data[0].genres[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].images[0].resolution": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].images[0].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].title": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.meta.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.offset": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.pageCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.take": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
           },
-          "$.body.data[0].artists[0].name": {
-            "match": "type"
-          },
-          "$.body.data[0].artists[0].role": {
-            "match": "type"
-          },
-          "$.body.data[0].duration": {
-            "match": "integer"
-          },
-          "$.body.data[0].genres[0]": {
-            "match": "type"
-          },
-          "$.body.data[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.data[0].images[0].resolution": {
-            "match": "type"
-          },
-          "$.body.data[0].images[0].url": {
-            "match": "type"
-          },
-          "$.body.data[0].title": {
-            "match": "type"
-          },
-          "$.body.meta.itemCount": {
-            "match": "integer"
-          },
-          "$.body.meta.offset": {
-            "match": "integer"
-          },
-          "$.body.meta.pageCount": {
-            "match": "integer"
-          },
-          "$.body.meta.take": {
-            "match": "integer"
-          }
+          "status": {}
         },
         "status": 200
-      }
+      },
+      "type": "Synchronous/HTTP"
     },
     {
       "description": "a request to GET new tracks",
-      "providerState": "list of tracks is empty",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "list of tracks is empty"
+        }
+      ],
       "request": {
         "method": "GET",
         "path": "/tracks/new",
-        "query": "offset=0&take=6"
+        "query": {
+          "offset": [
+            "0"
+          ],
+          "take": [
+            "6"
+          ]
+        }
       },
       "response": {
         "body": {
-          "data": [],
-          "meta": {
-            "itemCount": 0,
-            "offset": 0,
-            "pageCount": 1,
-            "take": 50
-          }
+          "content": {
+            "data": [],
+            "meta": {
+              "itemCount": 0,
+              "offset": 0,
+              "pageCount": 1,
+              "take": 50
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
         },
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": [
+            "application/json"
+          ]
         },
         "matchingRules": {
-          "$.body.meta.itemCount": {
-            "match": "integer"
+          "body": {
+            "$.meta.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.offset": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.pageCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.take": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
           },
-          "$.body.meta.offset": {
-            "match": "integer"
-          },
-          "$.body.meta.pageCount": {
-            "match": "integer"
-          },
-          "$.body.meta.take": {
-            "match": "integer"
-          }
+          "status": {}
         },
         "status": 200
-      }
+      },
+      "type": "Synchronous/HTTP"
     },
     {
       "description": "a request to GET popular tracks",
-      "providerState": "list of tracks exists",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "list of tracks exists"
+        }
+      ],
       "request": {
         "method": "GET",
         "path": "/tracks/popular",
-        "query": "offset=0&take=12"
+        "query": {
+          "offset": [
+            "0"
+          ],
+          "take": [
+            "12"
+          ]
+        }
       },
       "response": {
         "body": {
-          "data": [
-            {
-              "artists": [
-                {
-                  "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                  "name": "Artist",
-                  "role": "Primary"
-                }
-              ],
-              "duration": 123,
-              "genres": [
-                "Rock"
-              ],
-              "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-              "images": [
-                {
-                  "resolution": "some string",
-                  "url": "some string"
-                }
-              ],
-              "title": "Title"
+          "content": {
+            "data": [
+              {
+                "artists": [
+                  {
+                    "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                    "name": "Artist",
+                    "role": "Primary"
+                  }
+                ],
+                "duration": 123,
+                "genres": [
+                  "Rock"
+                ],
+                "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                "images": [
+                  {
+                    "resolution": "some string",
+                    "url": "some string"
+                  }
+                ],
+                "title": "Title"
+              }
+            ],
+            "meta": {
+              "itemCount": 1,
+              "offset": 0,
+              "pageCount": 1,
+              "take": 50
             }
-          ],
-          "meta": {
-            "itemCount": 1,
-            "offset": 0,
-            "pageCount": 1,
-            "take": 50
-          }
+          },
+          "contentType": "application/json",
+          "encoded": false
         },
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": [
+            "application/json"
+          ]
         },
         "matchingRules": {
-          "$.body.data[0].artists[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+          "body": {
+            "$.data[0].artists[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].artists[0].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].artists[0].role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].duration": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.data[0].genres[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].images[0].resolution": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].images[0].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].title": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.meta.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.offset": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.pageCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.take": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
           },
-          "$.body.data[0].artists[0].name": {
-            "match": "type"
-          },
-          "$.body.data[0].artists[0].role": {
-            "match": "type"
-          },
-          "$.body.data[0].duration": {
-            "match": "integer"
-          },
-          "$.body.data[0].genres[0]": {
-            "match": "type"
-          },
-          "$.body.data[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.data[0].images[0].resolution": {
-            "match": "type"
-          },
-          "$.body.data[0].images[0].url": {
-            "match": "type"
-          },
-          "$.body.data[0].title": {
-            "match": "type"
-          },
-          "$.body.meta.itemCount": {
-            "match": "integer"
-          },
-          "$.body.meta.offset": {
-            "match": "integer"
-          },
-          "$.body.meta.pageCount": {
-            "match": "integer"
-          },
-          "$.body.meta.take": {
-            "match": "integer"
-          }
+          "status": {}
         },
         "status": 200
-      }
+      },
+      "type": "Synchronous/HTTP"
     },
     {
       "description": "a request to GET popular tracks",
-      "providerState": "list of tracks is empty",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "list of tracks is empty"
+        }
+      ],
       "request": {
         "method": "GET",
         "path": "/tracks/popular",
-        "query": "offset=0&take=12"
-      },
-      "response": {
-        "body": {
-          "data": [],
-          "meta": {
-            "itemCount": 0,
-            "offset": 0,
-            "pageCount": 1,
-            "take": 50
-          }
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "matchingRules": {
-          "$.body.meta.itemCount": {
-            "match": "integer"
-          },
-          "$.body.meta.offset": {
-            "match": "integer"
-          },
-          "$.body.meta.pageCount": {
-            "match": "integer"
-          },
-          "$.body.meta.take": {
-            "match": "integer"
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request to GET tracks",
-      "providerState": "list of tracks exists",
-      "request": {
-        "method": "GET",
-        "path": "/tracks",
-        "query": "offset=0&take=50"
-      },
-      "response": {
-        "body": {
-          "data": [
-            {
-              "artists": [
-                {
-                  "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                  "name": "Artist",
-                  "role": "Primary"
-                }
-              ],
-              "duration": 123,
-              "genres": [
-                "Rock"
-              ],
-              "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-              "images": [
-                {
-                  "resolution": "some string",
-                  "url": "some string"
-                }
-              ],
-              "title": "Title"
-            }
+        "query": {
+          "offset": [
+            "0"
           ],
-          "meta": {
-            "itemCount": 1,
-            "offset": 0,
-            "pageCount": 1,
-            "take": 50
-          }
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "matchingRules": {
-          "$.body.data[0].artists[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.data[0].artists[0].name": {
-            "match": "type"
-          },
-          "$.body.data[0].artists[0].role": {
-            "match": "type"
-          },
-          "$.body.data[0].duration": {
-            "match": "integer"
-          },
-          "$.body.data[0].genres[0]": {
-            "match": "type"
-          },
-          "$.body.data[0].id": {
-            "match": "regex",
-            "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-          },
-          "$.body.data[0].images[0].resolution": {
-            "match": "type"
-          },
-          "$.body.data[0].images[0].url": {
-            "match": "type"
-          },
-          "$.body.data[0].title": {
-            "match": "type"
-          },
-          "$.body.meta.itemCount": {
-            "match": "integer"
-          },
-          "$.body.meta.offset": {
-            "match": "integer"
-          },
-          "$.body.meta.pageCount": {
-            "match": "integer"
-          },
-          "$.body.meta.take": {
-            "match": "integer"
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request to GET tracks",
-      "providerState": "list of tracks is empty",
-      "request": {
-        "method": "GET",
-        "path": "/tracks",
-        "query": "offset=0&take=50"
+          "take": [
+            "12"
+          ]
+        }
       },
       "response": {
         "body": {
-          "data": [],
-          "meta": {
-            "itemCount": 0,
-            "offset": 0,
-            "pageCount": 1,
-            "take": 50
-          }
+          "content": {
+            "data": [],
+            "meta": {
+              "itemCount": 0,
+              "offset": 0,
+              "pageCount": 1,
+              "take": 50
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
         },
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": [
+            "application/json"
+          ]
         },
         "matchingRules": {
-          "$.body.meta.itemCount": {
-            "match": "integer"
+          "body": {
+            "$.meta.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.offset": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.pageCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.take": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
           },
-          "$.body.meta.offset": {
-            "match": "integer"
-          },
-          "$.body.meta.pageCount": {
-            "match": "integer"
-          },
-          "$.body.meta.take": {
-            "match": "integer"
-          }
+          "status": {}
         },
         "status": 200
-      }
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to GET tracks",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "list of tracks exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/tracks",
+        "query": {
+          "offset": [
+            "0"
+          ],
+          "take": [
+            "50"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "content": {
+            "data": [
+              {
+                "artists": [
+                  {
+                    "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                    "name": "Artist",
+                    "role": "Primary"
+                  }
+                ],
+                "duration": 123,
+                "genres": [
+                  "Rock"
+                ],
+                "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                "images": [
+                  {
+                    "resolution": "some string",
+                    "url": "some string"
+                  }
+                ],
+                "title": "Title"
+              }
+            ],
+            "meta": {
+              "itemCount": 1,
+              "offset": 0,
+              "pageCount": 1,
+              "take": 50
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.data[0].artists[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].artists[0].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].artists[0].role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].duration": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.data[0].genres[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].images[0].resolution": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].images[0].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].title": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.meta.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.offset": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.pageCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.take": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to GET tracks",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "list of tracks is empty"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/tracks",
+        "query": {
+          "offset": [
+            "0"
+          ],
+          "take": [
+            "50"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "content": {
+            "data": [],
+            "meta": {
+              "itemCount": 0,
+              "offset": 0,
+              "pageCount": 1,
+              "take": 50
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.meta.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.offset": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.pageCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.take": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
     }
   ],
   "metadata": {
-    "pact-js": {
-      "version": "13.1.4"
-    },
     "pactRust": {
       "ffi": "0.4.22",
       "models": "1.2.3"
     },
     "pactSpecification": {
-      "version": "2.0.0"
+      "version": "4.0"
     }
   },
   "provider": {

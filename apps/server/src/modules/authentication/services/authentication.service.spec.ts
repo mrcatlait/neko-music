@@ -2,11 +2,11 @@ import { Test } from '@nestjs/testing'
 import { PartiallyMocked } from 'vitest'
 
 import { AuthenticationService } from './authentication.service'
-import { CryptoService } from './crypto.service'
 import { UserLoginDto } from '../dto'
 
 import { UserLoginDataService } from '@modules/user/services'
 import { UserAccountEntity, UserLoginDataEntity } from '@modules/user/entities'
+import { CryptoService } from '@shared/services'
 
 describe('AuthenticationService', () => {
   let authenticationService: AuthenticationService

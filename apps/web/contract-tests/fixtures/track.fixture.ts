@@ -1,7 +1,7 @@
-import { InteractionObject, Matcher, MatchersV3 } from '@pact-foundation/pact'
+import { Matcher, MatchersV3 } from '@pact-foundation/pact'
 
 import { PageResponseDto, TrackDto } from '@core/dto'
-import { PactMatcher, PactResponseOptions } from 'contract-tests/types'
+import { PactMatcher } from 'contract-tests/types'
 import { mapTrackDtoToModel } from '@core/mappers'
 import { ArtistRole } from '@core/enum'
 
@@ -51,54 +51,3 @@ export const getTracksEmptyResponseBody: PactMatcher<PageResponseDto<TrackDto>> 
 }
 
 export const getTracksEmpty = extractPayload(getTracksEmptyResponseBody.data)
-
-export const trackResponses = {
-  getTracksSuccess: {
-    willRespondWith: {
-      status: 200,
-      body: getTracksSuccessResponseBody,
-    } as PactResponseOptions,
-  },
-  getTracksEmpty: {
-    willRespondWith: {
-      status: 200,
-      body: getTracksEmptyResponseBody,
-    } as PactResponseOptions,
-  },
-}
-
-export const requestToGetTracks: Pick<InteractionObject, 'uponReceiving' | 'withRequest'> = {
-  uponReceiving: 'a request to GET tracks',
-  withRequest: {
-    method: 'GET',
-    path: '/tracks',
-    query: {
-      take: '50',
-      offset: '0',
-    },
-  },
-}
-
-export const requestToGetNewTracks: Pick<InteractionObject, 'uponReceiving' | 'withRequest'> = {
-  uponReceiving: 'a request to GET new tracks',
-  withRequest: {
-    method: 'GET',
-    path: '/tracks/new',
-    query: {
-      take: '6',
-      offset: '0',
-    },
-  },
-}
-
-export const requestToGetPopularTracks: Pick<InteractionObject, 'uponReceiving' | 'withRequest'> = {
-  uponReceiving: 'a request to GET popular tracks',
-  withRequest: {
-    method: 'GET',
-    path: '/tracks/popular',
-    query: {
-      take: '12',
-      offset: '0',
-    },
-  },
-}

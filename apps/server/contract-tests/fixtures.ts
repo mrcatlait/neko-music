@@ -5,6 +5,7 @@ import { repositoryMockFactory } from 'contract-tests/utils'
 import { artistFactory, trackFactory } from 'contract-tests/factories'
 import { ArtistEntity, ArtistImageEntity } from '@modules/artist/entities'
 import { TrackEntity, TrackImageEntity, TrackArtistEntity, GenreEntity } from '@modules/track/entities'
+import { AuthGuard } from '@modules/authentication/guards'
 
 const trackRepositoryMock = repositoryMockFactory<TrackEntity>()
 const trackImageRepositoryMock = repositoryMockFactory<TrackImageEntity>()
@@ -14,20 +15,30 @@ const genreRepositoryMock = repositoryMockFactory<GenreEntity>()
 const artistRepositoryMock = repositoryMockFactory<ArtistEntity>()
 const artistImageRepositoryMock = repositoryMockFactory<ArtistImageEntity>()
 
-export const registerRepositories = (builder: TestingModuleBuilder): TestingModuleBuilder => {
-  return builder
-    .overrideProvider(getRepositoryToken(TrackEntity))
-    .useValue(trackRepositoryMock)
-    .overrideProvider(getRepositoryToken(TrackImageEntity))
-    .useValue(trackImageRepositoryMock)
-    .overrideProvider(getRepositoryToken(TrackArtistEntity))
-    .useValue(trackArtistRepositoryMock)
-    .overrideProvider(getRepositoryToken(GenreEntity))
-    .useValue(genreRepositoryMock)
-    .overrideProvider(getRepositoryToken(ArtistEntity))
-    .useValue(artistRepositoryMock)
-    .overrideProvider(getRepositoryToken(ArtistImageEntity))
-    .useValue(artistImageRepositoryMock)
+const authGuardMock = {
+  canActivate: vi.fn(),
+}
+
+export const registerMocks = (builder: TestingModuleBuilder): TestingModuleBuilder => {
+  return (
+    builder
+      // Repositories
+      .overrideProvider(getRepositoryToken(TrackEntity))
+      .useValue(trackRepositoryMock)
+      .overrideProvider(getRepositoryToken(TrackImageEntity))
+      .useValue(trackImageRepositoryMock)
+      .overrideProvider(getRepositoryToken(TrackArtistEntity))
+      .useValue(trackArtistRepositoryMock)
+      .overrideProvider(getRepositoryToken(GenreEntity))
+      .useValue(genreRepositoryMock)
+      .overrideProvider(getRepositoryToken(ArtistEntity))
+      .useValue(artistRepositoryMock)
+      .overrideProvider(getRepositoryToken(ArtistImageEntity))
+      .useValue(artistImageRepositoryMock)
+      // Other
+      .overrideProvider(AuthGuard)
+      .useValue(authGuardMock)
+  )
 }
 
 const getTracksEmpty = () => {
@@ -40,11 +51,15 @@ const getTracksSuccess = () => {
 
 const getArtistSuccess = () => {
   artistRepositoryMock.findOne?.mockImplementation(() => Promise.resolve(artistFactory()))
+  artistRepositoryMock.existsBy?.mockImplementation(() => Promise.resolve(true))
 }
 
-const getArtistTracksSuccess = () => {
-  artistRepositoryMock.existsBy?.mockImplementation(() => Promise.resolve(true))
-  trackRepositoryMock.findAndCount?.mockImplementation(() => Promise.resolve([[trackFactory()], 1]))
+const authenticatedUser = () => {
+  authGuardMock.canActivate.mockImplementation(() => Promise.resolve(true))
+}
+
+export const auth = {
+  authenticatedUser,
 }
 
 export const tracks = {
@@ -54,5 +69,4 @@ export const tracks = {
 
 export const artists = {
   getArtistSuccess,
-  getArtistTracksSuccess,
 }

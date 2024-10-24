@@ -78,7 +78,7 @@ import { UserModule } from '@modules/user'
     },
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useExisting: AuthGuard,
     },
   ],
 })

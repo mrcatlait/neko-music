@@ -58,18 +58,14 @@ describe('Tracks', () => {
   })
 
   describe('/tracks (GET)', () => {
-    it('should return list of tracks', () => {
+    it('should return 401 if user is not authenticated', () => {
       return app
         .inject({
           method: 'GET',
           url: '/tracks',
         })
         .then((response) => {
-          expect(response.statusCode).toEqual(200)
-
-          const body = JSON.parse(response.body) as TracksPageDto
-          expect(body.data.length).toBe(3)
-          expect(body.data[0].title).toBe('Bad Romance')
+          expect(response.statusCode).toEqual(401)
         })
     })
   })
