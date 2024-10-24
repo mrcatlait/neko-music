@@ -178,7 +178,7 @@ describe('TrackService', () => {
       const mockFilePath = '/path/to/file'
       vi.spyOn(path, 'join').mockReturnValue(mockFilePath)
       vi.spyOn(fs, 'existsSync').mockReturnValue(true)
-      vi.spyOn(fs, 'createReadStream').mockReturnValue({} as any)
+      vi.spyOn(fs, 'createReadStream').mockReturnValue({} as fs.ReadStream)
 
       // Act
       const result = trackService.stream('trackId', 'filename')

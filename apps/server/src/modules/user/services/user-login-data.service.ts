@@ -4,7 +4,7 @@ import { Repository } from 'typeorm'
 
 import { UserLoginDataEntity } from '../entities'
 
-import { CryptoService } from '@modules/authentication/services'
+import { CryptoService } from '@shared/services'
 
 @Injectable()
 export class UserLoginDataService {

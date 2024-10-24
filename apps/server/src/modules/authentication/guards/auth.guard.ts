@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
 
     const { session } = context.switchToHttp().getRequest<FastifyRequest>()
 
-    if (!session.get('data')) {
+    if (!session || !session.get('data')) {
       throw new UnauthorizedException()
     }
 

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 
-import { CryptoService } from './crypto.service'
 import { UserLoginDto } from '../dto'
 
 import { UserLoginDataService } from '@modules/user/services'
 import { UserAccountEntity } from '@modules/user/entities'
+import { CryptoService } from '@shared/services'
 
 @Injectable()
 export class AuthenticationService {

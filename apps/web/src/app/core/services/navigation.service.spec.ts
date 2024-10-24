@@ -8,7 +8,7 @@ import { NavigationService } from './navigation.service'
 
 describe('NavigationService', () => {
   let service: NavigationService
-  let routerMock: Omit<PartiallyMocked<Router>, 'events'> & { events: Subject<any> }
+  let routerMock: Omit<PartiallyMocked<Router>, 'events'> & { events: Subject<NavigationEnd> }
   let locationMock: PartiallyMocked<Location>
 
   beforeEach(() => {

@@ -1,8 +1,8 @@
 import { Global, Module } from '@nestjs/common'
 
-import { ConfigService, ImageProcessingService, VideoProcessingService } from './services'
+import { ConfigService, CryptoService, ImageProcessingService, VideoProcessingService } from './services'
 
-const providers = [ConfigService, ImageProcessingService, VideoProcessingService]
+const providers = [ConfigService, CryptoService, ImageProcessingService, VideoProcessingService]
 
 @Global()
 @Module({

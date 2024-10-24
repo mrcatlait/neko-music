@@ -1,4 +1,5 @@
 export * from './config.service'
+export * from './crypto.service'
 export * from './image-processing.service'
 export * from './utils.service'
 export * from './video-processing.service'

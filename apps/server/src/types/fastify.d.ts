@@ -8,7 +8,7 @@ declare module 'fastify' {
     data?: UserModel
   }
   export interface FastifyRequest {
-    session: Session
+    session?: Session
     res: FastifyReply
   }
 

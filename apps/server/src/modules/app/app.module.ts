@@ -18,6 +18,7 @@ import { TrackModule } from '@modules/track'
 import { NODE_ENV } from '@common/constants'
 import { PlaylistModule } from '@modules/playlist'
 import { AuthGuard } from '@modules/authentication/guards'
+import { UserModule } from '@modules/user'
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AuthGuard } from '@modules/authentication/guards'
     ArtistModule,
     TrackModule,
     PlaylistModule,
+    UserModule,
     TypeOrmModule.forRootAsync({
       useFactory(configService: ConfigService) {
         return {

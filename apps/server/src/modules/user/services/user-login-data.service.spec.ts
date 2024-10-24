@@ -6,7 +6,7 @@ import { Repository } from 'typeorm'
 import { UserLoginDataService } from './user-login-data.service'
 import { UserLoginDataEntity } from '../entities'
 
-import { CryptoService } from '@modules/authentication/services'
+import { CryptoService } from '@shared/services'
 
 describe('UserLoginDataService', () => {
   let userLoginDataService: UserLoginDataService

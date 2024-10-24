@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  HostListener,
   inject,
   signal,
   ViewChild,
