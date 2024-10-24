@@ -1,17 +1,25 @@
 import { Test } from '@nestjs/testing'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql'
+import { PartiallyMocked } from 'vitest'
+import { UnauthorizedException } from '@nestjs/common'
 
 import { ConfigService } from '@shared/services'
 import { AppModule } from '@modules/app'
 import { TracksPageDto } from '@modules/track/dto'
+import { AuthGuard } from '@modules/authentication/guards'
 
 describe('Tracks', () => {
+  let authGuardMock: PartiallyMocked<AuthGuard>
   let postgresContainer: StartedPostgreSqlContainer
   let app: NestFastifyApplication
 
   beforeAll(async () => {
     postgresContainer = await new PostgreSqlContainer().start()
+
+    authGuardMock = {
+      canActivate: vi.fn().mockRejectedValueOnce(new UnauthorizedException()),
+    }
 
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
@@ -40,6 +48,8 @@ describe('Tracks', () => {
           }
         },
       })
+      .overrideProvider(AuthGuard)
+      .useValue(authGuardMock)
       .compile()
 
     app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter())
@@ -66,6 +76,22 @@ describe('Tracks', () => {
         })
         .then((response) => {
           expect(response.statusCode).toEqual(401)
+        })
+    })
+
+    it('should return list of tracks if user is authenticated', () => {
+      authGuardMock.canActivate?.mockResolvedValue(true)
+
+      return app
+        .inject({
+          method: 'GET',
+          url: '/tracks',
+        })
+        .then((response) => {
+          expect(response.statusCode).toEqual(200)
+
+          const body = JSON.parse(response.body) as TracksPageDto
+          expect(body.data.length).toBe(0)
         })
     })
   })

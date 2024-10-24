@@ -84,7 +84,7 @@ export class VideoProcessingService {
   getDashStreamDuration(options: DashStreamDurationOptions): number {
     const filePath = join(STREAM_PATH, options.folderPath, 'manifest.mpd')
     const data = readFileSync(filePath, 'utf8')
-    const match = data.match(/(mediaPresentationDuration=")(.+)"/)
+    const match = /(mediaPresentationDuration=")(.+)"/.exec(data)
 
     if (!match) {
       throw new InternalServerErrorException()
@@ -99,7 +99,6 @@ export class VideoProcessingService {
     return hours + minutes + seconds
   }
 
-  // @todo: move to utils
   private parseISO8601Duration(iso8601Duration: string) {
     const iso8601DurationRegex =
       /(-)?P(?:([.,\d]+)Y)?(?:([.,\d]+)M)?(?:([.,\d]+)W)?(?:([.,\d]+)D)?T(?:([.,\d]+)H)?(?:([.,\d]+)M)?(?:([.,\d]+)S)?/

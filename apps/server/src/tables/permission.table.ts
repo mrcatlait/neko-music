@@ -2,7 +2,7 @@ import { Table, TableColumn } from 'typeorm'
 
 import { UUIDType, UUIDGenerator, CharacterTypes } from '@common/constants'
 export class PermissionTable {
-  static idColumn = new TableColumn({
+  static readonly idColumn = new TableColumn({
     name: 'Id',
     type: UUIDType,
     default: UUIDGenerator,
@@ -11,7 +11,7 @@ export class PermissionTable {
     isPrimary: true,
   })
 
-  static actionColumn = new TableColumn({
+  static readonly actionColumn = new TableColumn({
     name: 'Action',
     length: '50',
     type: CharacterTypes.varchar,
@@ -19,14 +19,14 @@ export class PermissionTable {
     isUnique: true,
   })
 
-  static descriptionColumn = new TableColumn({
+  static readonly descriptionColumn = new TableColumn({
     name: 'Description',
     length: '255',
     type: CharacterTypes.varchar,
     isNullable: true,
   })
 
-  static table = new Table({
+  static readonly table = new Table({
     name: 'Permission',
     columns: [this.idColumn, this.actionColumn, this.descriptionColumn],
   })

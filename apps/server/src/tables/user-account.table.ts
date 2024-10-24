@@ -5,7 +5,7 @@ import { UserRoleTable } from './user-role.table'
 import { UUIDType, UUIDGenerator, CharacterTypes } from '@common/constants'
 
 export class UserAccountTable {
-  static idColumn = new TableColumn({
+  static readonly idColumn = new TableColumn({
     name: 'Id',
     type: UUIDType,
     default: UUIDGenerator,
@@ -14,7 +14,7 @@ export class UserAccountTable {
     isPrimary: true,
   })
 
-  static usernameColumn = new TableColumn({
+  static readonly usernameColumn = new TableColumn({
     name: 'Username',
     length: '255',
     type: CharacterTypes.varchar,
@@ -35,7 +35,7 @@ export class UserAccountTable {
     isNullable: false,
   })
 
-  static table = new Table({
+  static readonly table = new Table({
     name: 'UserAccount',
     columns: [this.idColumn, this.usernameColumn, this.roleIdColumn],
     foreignKeys: [this.roleIdForeignKey],

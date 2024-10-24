@@ -5,13 +5,13 @@ import { UserAccountTable } from './user-account.table'
 import { UUIDType, CharacterTypes } from '@common/constants'
 
 export class UserLoginDataTable {
-  static userIdForeignKey = new TableForeignKey({
+  static readonly userIdForeignKey = new TableForeignKey({
     columnNames: ['UserId'],
     referencedTableName: UserAccountTable.table.name,
     referencedColumnNames: [UserAccountTable.idColumn.name],
   })
 
-  static userIdColumn = new TableColumn({
+  static readonly userIdColumn = new TableColumn({
     name: 'UserId',
     type: UUIDType,
     foreignKeyConstraintName: this.userIdForeignKey.name,
@@ -20,7 +20,7 @@ export class UserLoginDataTable {
     isUnique: true,
   })
 
-  static emailColumn = new TableColumn({
+  static readonly emailColumn = new TableColumn({
     name: 'Email',
     length: '255',
     type: CharacterTypes.varchar,
@@ -28,14 +28,14 @@ export class UserLoginDataTable {
     isUnique: true,
   })
 
-  static passwordHashColumn = new TableColumn({
+  static readonly passwordHashColumn = new TableColumn({
     name: 'PasswordHash',
     length: '255',
     type: CharacterTypes.varchar,
     isNullable: false,
   })
 
-  static table = new Table({
+  static readonly table = new Table({
     name: 'UserLoginData',
     columns: [this.userIdColumn, this.emailColumn, this.passwordHashColumn],
     foreignKeys: [this.userIdForeignKey],

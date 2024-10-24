@@ -85,7 +85,7 @@ export class DatabaseSeedService {
 
     const seeds = this.seeds.map((seed) => {
       const seedClassName = seed.constructor.name
-      const seedTimestamp = parseInt(seedClassName.substr(-13), 10)
+      const seedTimestamp = parseInt(seedClassName.slice(-13), 10)
 
       if (!seedTimestamp || isNaN(seedTimestamp)) {
         throw new InternalServerErrorException(

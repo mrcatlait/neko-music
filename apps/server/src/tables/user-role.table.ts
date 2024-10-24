@@ -3,7 +3,7 @@ import { Table, TableColumn } from 'typeorm'
 import { CharacterTypes, UUIDGenerator, UUIDType } from '@common/constants'
 
 export class UserRoleTable {
-  static idColumn = new TableColumn({
+  static readonly idColumn = new TableColumn({
     name: 'Id',
     type: UUIDType,
     default: UUIDGenerator,
@@ -12,7 +12,7 @@ export class UserRoleTable {
     isPrimary: true,
   })
 
-  static nameColumn = new TableColumn({
+  static readonly nameColumn = new TableColumn({
     name: 'Name',
     length: '20',
     type: CharacterTypes.varchar,
@@ -20,14 +20,14 @@ export class UserRoleTable {
     isUnique: true,
   })
 
-  static descriptionColumn = new TableColumn({
+  static readonly descriptionColumn = new TableColumn({
     name: 'Description',
     length: '255',
     type: CharacterTypes.varchar,
     isNullable: true,
   })
 
-  static table = new Table({
+  static readonly table = new Table({
     name: 'UserRole',
     columns: [this.idColumn, this.nameColumn, this.descriptionColumn],
   })
