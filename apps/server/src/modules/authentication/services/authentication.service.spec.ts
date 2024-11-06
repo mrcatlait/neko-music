@@ -4,18 +4,23 @@ import { PartiallyMocked } from 'vitest'
 import { AuthenticationService } from './authentication.service'
 import { UserLoginDto } from '../dto'
 
-import { UserLoginDataService } from '@modules/user/services'
+import { UserAccountService, UserLoginDataService } from '@modules/user/services'
 import { UserAccountEntity, UserLoginDataEntity } from '@modules/user/entities'
 import { CryptoService } from '@shared/services'
 
 describe('AuthenticationService', () => {
   let authenticationService: AuthenticationService
   let userLoginDataServiceMock: PartiallyMocked<UserLoginDataService>
+  let userAccountServiceMock: PartiallyMocked<UserAccountService>
   let cryptoServiceMock: PartiallyMocked<CryptoService>
 
   beforeEach(async () => {
     userLoginDataServiceMock = {
       findByEmail: vi.fn(),
+    }
+
+    userAccountServiceMock = {
+      createUserAccount: vi.fn(),
     }
 
     cryptoServiceMock = {
@@ -25,6 +30,10 @@ describe('AuthenticationService', () => {
     const module = await Test.createTestingModule({
       providers: [
         AuthenticationService,
+        {
+          provide: UserAccountService,
+          useValue: userAccountServiceMock,
+        },
         {
           provide: UserLoginDataService,
           useValue: userLoginDataServiceMock,

@@ -11,28 +11,6 @@ describe('Login', () => {
     login.assertVisible()
   })
 
-  it('should display an error message when invalid credentials are provided', () => {
-    interceptors.mockInvalidCredentials()
-
-    login.login({
-      email: 'invalid-email@example.com',
-      password: 'invalid-password',
-    })
-
-    login.assertCredentialsErrorVisible()
-  })
-
-  it('should navigate to homepage after login', () => {
-    interceptors.mockValidCredentials()
-
-    login.login({
-      email: 'valid-email@example.com',
-      password: 'valid-password',
-    })
-
-    cy.url().should('eq', Cypress.config().baseUrl)
-  })
-
   it('should navigate to the registration page', () => {
     login.assertRegistrationLink()
   })
@@ -63,6 +41,30 @@ describe('Login', () => {
       login.assertPasswordVisibility(true)
       login.clickPasswordVisibilityButton()
       login.assertPasswordVisibility(false)
+    })
+  })
+
+  describe('Submit', () => {
+    it('should successfully login with valid credentials', () => {
+      interceptors.mockValidCredentials()
+
+      login.login({
+        email: 'valid-email@example.com',
+        password: 'valid-password',
+      })
+
+      cy.url().should('eq', Cypress.config().baseUrl)
+    })
+
+    it('should display an error message when invalid credentials are provided', () => {
+      interceptors.mockInvalidCredentials()
+
+      login.login({
+        email: 'invalid-email@example.com',
+        password: 'invalid-password',
+      })
+
+      login.assertCredentialsErrorVisible()
     })
   })
 })

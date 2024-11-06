@@ -1,5 +1,7 @@
 import { navigation, registration } from '@neko/web-test-utils/dsl'
 
+import { interceptors } from 'integration-tests/interceptors'
+
 describe('Registration', () => {
   beforeEach(() => {
     navigation.goToRegistration()
@@ -52,6 +54,39 @@ describe('Registration', () => {
       registration.assertPasswordVisibility(true)
       registration.clickPasswordVisibilityButton()
       registration.assertPasswordVisibility(false)
+    })
+  })
+
+  describe('Submit', () => {
+    it('should successfully register with valid credentials', () => {
+      interceptors.mockSuccessfulRegistration()
+      registration.register({
+        username: 'valid-username',
+        email: 'valid-email@example.com',
+        password: 'valid-password',
+      })
+
+      cy.url().should('eq', Cypress.config().baseUrl)
+    })
+
+    it('should display an error message when username is already taken', () => {
+      interceptors.mockUsernameAlreadyTaken()
+      registration.register({
+        username: 'taken-username',
+        email: 'taken-email@example.com',
+        password: 'valid-password',
+      })
+      registration.assertUsernameTakenErrorVisible()
+    })
+
+    it('should display an error message when email is already taken', () => {
+      interceptors.mockEmailAlreadyTaken()
+      registration.register({
+        username: 'taken-username',
+        email: 'taken-email@example.com',
+        password: 'valid-password',
+      })
+      registration.assertEmailTakenErrorVisible()
     })
   })
 })

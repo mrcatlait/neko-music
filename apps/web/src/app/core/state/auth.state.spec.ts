@@ -44,7 +44,7 @@ describe('AuthState', () => {
   describe('login', () => {
     it('should set the session', () => {
       // Arrange
-      const setSessionSpy = vi.spyOn(authState as any, 'setSession')
+      const setSessionSpy = vi.spyOn(authState, 'setSession')
 
       // Act
       authState.login(mockSession)
@@ -76,7 +76,7 @@ describe('AuthState', () => {
     it('should not get session if not authenticated', () => {
       // Arrange
       cookieServiceMock.get?.mockReturnValue(undefined)
-      const getSessionSilentlySpy = vi.spyOn(authState as any, 'getSessionSilently')
+      const getSessionSilentlySpy = vi.spyOn(authState, 'getSessionSilently')
 
       // Act
       authState.checkSession()
@@ -88,7 +88,7 @@ describe('AuthState', () => {
     it('should get session silently if authenticated', () => {
       // Arrange
       cookieServiceMock.get?.mockReturnValue('true')
-      const getSessionSilentlySpy = vi.spyOn(authState as any, 'getSessionSilently')
+      const getSessionSilentlySpy = vi.spyOn(authState, 'getSessionSilently')
 
       // Act
       authState.checkSession()
@@ -155,11 +155,11 @@ describe('AuthState', () => {
   describe('getSessionSilently', () => {
     it('should use cached session if available', async () => {
       // Arrange
-      const getSessionFromCacheSpy = vi.spyOn(authState as any, 'getSessionFromCache').mockReturnValue(mockSession)
-      const setSessionSpy = vi.spyOn(authState as any, 'setSession')
+      const getSessionFromCacheSpy = vi.spyOn(authState, 'getSessionFromCache').mockReturnValue(mockSession)
+      const setSessionSpy = vi.spyOn(authState, 'setSession')
 
       // Act
-      await (authState as any).getSessionSilently()
+      await authState.getSessionSilently()
 
       // Assert
       expect(getSessionFromCacheSpy).toHaveBeenCalled()
@@ -168,11 +168,11 @@ describe('AuthState', () => {
 
     it('should call whoAmI if no cached session', async () => {
       // Arrange
-      vi.spyOn(authState as any, 'getSessionFromCache').mockReturnValue(null)
-      const getSessionUsingWhoAmISpy = vi.spyOn(authState as any, 'getSessionUsingWhoAmI')
+      vi.spyOn(authState, 'getSessionFromCache').mockReturnValue(null)
+      const getSessionUsingWhoAmISpy = vi.spyOn(authState, 'getSessionUsingWhoAmI')
 
       // Act
-      await (authState as any).getSessionSilently()
+      await authState.getSessionSilently()
 
       // Assert
       expect(getSessionUsingWhoAmISpy).toHaveBeenCalled()
@@ -183,11 +183,11 @@ describe('AuthState', () => {
     it('should set session on successful whoAmI', async () => {
       // Arrange
       authRepositoryMock.whoAmI?.mockReturnValue(of(mockSession))
-      const saveSessionInCacheSpy = vi.spyOn(authState as any, 'saveSessionInCache')
-      const setSessionSpy = vi.spyOn(authState as any, 'setSession')
+      const saveSessionInCacheSpy = vi.spyOn(authState, 'saveSessionInCache')
+      const setSessionSpy = vi.spyOn(authState, 'setSession')
 
       // Act
-      await (authState as any).getSessionUsingWhoAmI()
+      await authState.getSessionUsingWhoAmI()
 
       // Assert
       expect(saveSessionInCacheSpy).toHaveBeenCalledWith(mockSession)
@@ -200,7 +200,7 @@ describe('AuthState', () => {
       const logoutSpy = vi.spyOn(authState, 'logout')
 
       // Act
-      await (authState as any).getSessionUsingWhoAmI()
+      await authState.getSessionUsingWhoAmI()
 
       // Assert
       expect(logoutSpy).toHaveBeenCalled()

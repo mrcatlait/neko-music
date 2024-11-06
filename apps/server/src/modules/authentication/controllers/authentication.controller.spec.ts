@@ -107,7 +107,7 @@ describe('AuthenticationController', () => {
       // Assert
       expect(result.user.id).toEqual(mockUserModel.user.id)
       expect(mockResponse.header).toHaveBeenCalledWith('Cache-Control', 'no-store')
-      expect(mockRequest.session.regenerate).toHaveBeenCalledWith(['user'])
+      expect(mockRequest.session.regenerate).toHaveBeenCalledWith(['data'])
       expect(mockRequest.session.save).toHaveBeenCalled()
     })
   })

@@ -41,4 +41,34 @@ export const interceptors = {
       },
     }).as('login')
   },
+  mockUsernameAlreadyTaken() {
+    cy.intercept('POST', '/auth/register', {
+      statusCode: 400,
+      body: {
+        usernameTaken: true,
+      },
+    }).as('register')
+  },
+  mockEmailAlreadyTaken() {
+    cy.intercept('POST', '/auth/register', {
+      statusCode: 400,
+      body: {
+        emailTaken: true,
+      },
+    }).as('register')
+  },
+  mockSuccessfulRegistration() {
+    const mockSession = {
+      user: {
+        id: '1',
+        username: 'testuser',
+      },
+      permissions: ['track:read', 'track:create'],
+    }
+
+    cy.intercept('POST', '/auth/register', {
+      statusCode: 200,
+      body: mockSession,
+    }).as('register')
+  },
 }

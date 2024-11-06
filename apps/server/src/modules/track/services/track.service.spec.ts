@@ -7,8 +7,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 
 import { TrackService } from './track.service'
-import { TrackEntity } from './entities'
-import { TracksPageOptionsDto } from './dto'
+import { TrackEntity } from '../entities'
+import { TracksPageOptionsDto } from '../dto'
 
 import { ArtistService } from '@modules/artist/services'
 

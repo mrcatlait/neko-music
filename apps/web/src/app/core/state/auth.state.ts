@@ -66,7 +66,7 @@ export class AuthState {
     return permissions.every((permission) => this.permissions.has(permission))
   }
 
-  private async getSessionSilently() {
+  async getSessionSilently() {
     const session = this.getSessionFromCache()
 
     if (session) {
@@ -77,7 +77,7 @@ export class AuthState {
     this.getSessionUsingWhoAmI()
   }
 
-  private async getSessionUsingWhoAmI() {
+  async getSessionUsingWhoAmI() {
     try {
       const session = await firstValueFrom(this.authRepository.whoAmI())
       this.login(session)
@@ -86,18 +86,18 @@ export class AuthState {
     }
   }
 
-  private setSession(session: Session) {
+  setSession(session: Session) {
     this.session.set(session)
     this.saveSessionInCache(session)
     this.permissions = new Set(session.permissions)
   }
 
-  private getSessionFromCache(): Session | null {
+  getSessionFromCache(): Session | null {
     const session = sessionStorage.getItem(SESSION_KEY)
     return session ? JSON.parse(session) : null
   }
 
-  private saveSessionInCache(session: Session): void {
+  saveSessionInCache(session: Session): void {
     this.cookieService.set({
       name: IS_AUTHENTICATED_COOKIE_NAME,
       value: 'true',
@@ -109,7 +109,7 @@ export class AuthState {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(session))
   }
 
-  private removeSessionFromCache(): void {
+  removeSessionFromCache(): void {
     sessionStorage.removeItem(SESSION_KEY)
   }
 }

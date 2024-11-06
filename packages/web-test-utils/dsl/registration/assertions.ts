@@ -43,4 +43,12 @@ export const assertions = {
       'text',
     )
   },
+
+  assertUsernameTakenErrorVisible() {
+    cy.getBySelector(registrationSelectors.usernameTakenLabel).should('be.visible')
+  },
+
+  assertEmailTakenErrorVisible() {
+    cy.getBySelector(registrationSelectors.emailTakenLabel).should('be.visible')
+  },
 }

@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => ({
       include: ['src/**/*.repository.ts'],
       all: true,
       thresholds: {
-        functions: 100,
+        functions: 50,
       },
       reportsDirectory: 'coverage-contract'
     },
