@@ -5,7 +5,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { EnsureModuleLoadedOnceGuard } from './guards'
 import { devtoolsImports } from '../../devtools/devtools'
 import { API_URL, ENVIRONMENT } from './tokens'
-import { AuthInterceptor } from './interceptors'
+import { AuthInterceptor, ErrorInterceptor } from './interceptors'
 
 import { environment } from '@environment'
 
@@ -16,6 +16,7 @@ import { environment } from '@environment'
     { provide: ENVIRONMENT, useValue: environment },
     { provide: API_URL, useValue: environment.apiUrl },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {

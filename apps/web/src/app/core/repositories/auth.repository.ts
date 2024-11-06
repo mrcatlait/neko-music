@@ -16,8 +16,8 @@ export class AuthRepository {
     return this.httpClient.post<LoginResponseDto>(`${this.apiUrl}/auth/login`, { email, password })
   }
 
-  register(payload: { username: string; email: string; password: string }) {
-    return this.httpClient.post<unknown>(`${this.apiUrl}/auth/register`, payload)
+  register(payload: { username: string; email: string; password: string }): Observable<LoginResponseDto> {
+    return this.httpClient.post<LoginResponseDto>(`${this.apiUrl}/auth/register`, payload)
   }
 
   logout(): Observable<void> {
@@ -25,6 +25,6 @@ export class AuthRepository {
   }
 
   whoAmI(): Observable<LoginResponseDto> {
-    return this.httpClient.post<LoginResponseDto>(`${this.apiUrl}/auth/whoami`, {})
+    return this.httpClient.get<LoginResponseDto>(`${this.apiUrl}/auth/whoami`)
   }
 }

@@ -7,6 +7,7 @@ export class CreateRoles1000000000020 implements SeedInterface {
   async up(queryRunner: QueryRunner): Promise<void> {
     const userRole = queryRunner.manager.create(UserRoleEntity, {
       name: 'user',
+      default: true,
     })
     const adminRole = queryRunner.manager.create(UserRoleEntity, {
       name: 'admin',

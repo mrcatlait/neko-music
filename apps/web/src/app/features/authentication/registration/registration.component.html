@@ -18,8 +18,8 @@
     <h1 class="headline-l">Sign up to {{ applicationName }}</h1>
 
     <div class="registration-content-error-banner">
-      <p *ngIf="usernameTaken()">Username has already been taken</p>
-      <p *ngIf="emailTaken()">Email has already been taken</p>
+      <span *ngIf="usernameTaken()">Username has already been taken. </span>
+      <span *ngIf="emailTaken()">Email has already been taken. </span>
     </div>
 
     <form

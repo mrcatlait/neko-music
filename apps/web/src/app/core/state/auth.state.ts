@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
 import { firstValueFrom } from 'rxjs'
 import { Permission } from '@neko/permissions'
+import { Router } from '@angular/router'
 
 import { AuthRepository } from '@core/repositories'
 import { CookieService } from '@core/services'
@@ -22,6 +23,7 @@ interface Session {
   providedIn: 'root',
 })
 export class AuthState {
+  private readonly router = inject(Router)
   private readonly authRepository = inject(AuthRepository)
   private readonly cookieService = inject(CookieService)
 
@@ -32,6 +34,7 @@ export class AuthState {
 
   login(session: Session) {
     this.setSession(session)
+    this.router.navigate(['/'])
   }
 
   logout() {
@@ -76,8 +79,7 @@ export class AuthState {
   private async getSessionUsingWhoAmI() {
     try {
       const session = await firstValueFrom(this.authRepository.whoAmI())
-      this.saveSessionInCache(session)
-      this.setSession(session)
+      this.login(session)
     } catch {
       this.logout()
     }
@@ -85,6 +87,7 @@ export class AuthState {
 
   private setSession(session: Session) {
     this.session.set(session)
+    this.saveSessionInCache(session)
     this.permissions = new Set(session.permissions)
   }
 

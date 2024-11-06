@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 
 import { StateModel } from '@core/models'
 import { AuthRepository } from '@core/repositories'
+import { AuthState } from '@core/state'
 
 export interface RegistrationStateModel {
   loading: boolean
@@ -14,6 +15,7 @@ export interface RegistrationStateModel {
 @Injectable()
 export class RegistrationState implements StateModel<RegistrationStateModel> {
   private readonly repository = inject(AuthRepository)
+  private readonly authState = inject(AuthState)
 
   readonly loading = signal(false)
   readonly emailTaken = signal(false)
@@ -28,8 +30,9 @@ export class RegistrationState implements StateModel<RegistrationStateModel> {
       .register(payload)
       .pipe(take(1))
       .subscribe({
-        next: () => {
+        next: (response) => {
           this.loading.set(false)
+          this.authState.login(response)
         },
         error: (error) => {
           this.handleError({ error })
@@ -38,18 +41,19 @@ export class RegistrationState implements StateModel<RegistrationStateModel> {
   }
 
   private handleError(payload: { error: Error }) {
-    if (payload.error.name === 'HttpErrorResponse') {
-      const httpError = payload.error as HttpErrorResponse
+    this.loading.set(false)
+
+    if (payload.error instanceof HttpErrorResponse) {
+      const httpError = payload.error
 
       if (httpError.status !== 400 || !httpError.error) {
-        throw httpError
+        return
       }
 
       const { emailTaken, usernameTaken } = httpError.error
 
       this.emailTaken.set(emailTaken)
       this.usernameTaken.set(usernameTaken)
-      this.loading.set(false)
     }
   }
 }

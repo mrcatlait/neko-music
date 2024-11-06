@@ -32,14 +32,20 @@ export class UserAccountService {
       ])
 
       if (usernameTaken || emailTaken) {
-        throw new BadRequestException({ usernameTaken, emailTaken })
+        throw new BadRequestException({ usernameTaken: Boolean(usernameTaken), emailTaken: Boolean(emailTaken) })
       }
 
-      const userAccount = await manager.save(this.usersAccountRepository.create({ username, role }))
+      const userAccount = this.usersAccountRepository.create({ username, role })
+      await manager.save(userAccount)
 
-      await manager.save(this.userLoginDataService.createUserLoginDataEntity(userAccount.id, email, password))
+      await manager.save(await this.userLoginDataService.createUserLoginDataEntity(userAccount.id, email, password))
 
-      return userAccount
+      const userAccountWithRole = await manager.findOneOrFail(UserAccountEntity, {
+        where: { id: userAccount.id },
+        relations: { role: { permissions: true } },
+      })
+
+      return userAccountWithRole
     })
   }
 

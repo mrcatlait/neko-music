@@ -36,12 +36,12 @@ export class LoginState implements StateModel<LoginStateModel> {
   }
 
   private handleError(payload: { error: Error }): void {
+    this.loading.set(false)
+
     if (payload.error instanceof HttpErrorResponse) {
       if (payload.error.status === 401) {
         this.invalidCredentials.set(true)
       }
     }
-
-    this.loading.set(false)
   }
 }
