@@ -2,11 +2,12 @@ import { inject, Injectable } from '@angular/core'
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
-import { Router } from '@angular/router'
+
+import { AuthState } from '@core/state'
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private readonly router = inject(Router)
+  private readonly authState = inject(AuthState)
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     request = request.clone({
@@ -16,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401 && !this.isAuthRoute(request.url)) {
-          this.router.navigate(['/login'])
+          this.authState.logout()
         }
 
         return throwError(() => error)

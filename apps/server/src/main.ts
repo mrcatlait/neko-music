@@ -40,6 +40,7 @@ async function bootstrap() {
   await app.register(fastifyCookie)
   await app.register(fastifySession, {
     secret: COOKIE_SECRET,
+    cookieName: 'neko.session',
     cookie: { sameSite: 'strict', maxAge: DAY * 3 },
   })
 

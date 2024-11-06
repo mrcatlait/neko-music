@@ -43,6 +43,7 @@ export class AuthState {
     this.authRepository.logout()
     this.session.set(null)
     this.permissions.clear()
+    this.router.navigate(['/login'])
   }
 
   checkSession() {

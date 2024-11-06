@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms'
+import { registrationSelectors } from '@selectors'
 
 import { RegistrationState } from './registration.state'
 
@@ -26,6 +27,8 @@ export class RegistrationComponent {
   readonly loading = this.state.loading
   readonly emailTaken = this.state.emailTaken
   readonly usernameTaken = this.state.usernameTaken
+
+  readonly selectors = registrationSelectors
 
   form = new FormGroup({
     username: new FormControl('', [Validators.required]),

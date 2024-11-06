@@ -4,6 +4,7 @@ import { interceptors } from '../interceptors'
 
 describe('Track List New Releases', () => {
   beforeEach(() => {
+    interceptors.mockLoggedInState()
     interceptors.mockTrackNewReleases()
     navigation.goToHome()
   })

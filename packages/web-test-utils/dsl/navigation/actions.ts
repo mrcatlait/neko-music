@@ -9,4 +9,12 @@ export const actions = {
   goToExplore() {
     cy.getBySelector(navigationSelectors.exploreLink).click()
   },
+
+  goToLogin() {
+    cy.visit(routes.LOGIN)
+  },
+
+  goToRegistration() {
+    cy.visit(routes.REGISTRATION)
+  },
 }

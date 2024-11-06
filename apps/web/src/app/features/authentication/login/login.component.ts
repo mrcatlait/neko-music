@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { loginSelectors } from '@selectors'
 
 import { LoginState } from './login.state'
 
@@ -25,7 +26,7 @@ export class LoginComponent {
   readonly loading = this.state.loading
   readonly applicationName = this.environment.applicationName
 
-  // readonly selectors = loginSelectors
+  readonly selectors = loginSelectors
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),

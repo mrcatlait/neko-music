@@ -1,4 +1,6 @@
 export * from './components'
+export * from './login'
 export * from './navigation'
 export * from './player'
+export * from './registration'
 export * from './track-list-new-releases'

@@ -4,6 +4,7 @@ import { interceptors } from '../interceptors'
 
 describe('Player', () => {
   beforeEach(() => {
+    interceptors.mockLoggedInState()
     interceptors.mockTrackNewReleases()
     navigation.goToHome()
     trackListNewReleases.playTrack('Flutter')

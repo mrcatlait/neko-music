@@ -66,7 +66,7 @@ export class AuthenticationController {
     @User() user: UserModel,
   ): Promise<LoginPayloadDto> {
     res.header('Cache-Control', 'no-store')
-    await req.session.regenerate(['user'])
+    await req.session.regenerate(['data'])
     await req.session.save()
 
     return user

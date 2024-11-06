@@ -7,7 +7,8 @@ import { MediaQueryService } from '@core/services'
 
 @Component({
   selector: 'neko-layout-container',
-  templateUrl: './layout-container.component.html',
+  templateUrl: 'layout-container.component.html',
+  styleUrl: 'layout-container.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutContainerComponent {
