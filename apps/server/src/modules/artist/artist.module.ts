@@ -1,7 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { ArtistsController } from './artist.controller'
+import { ArtistsController } from './controllers'
 import { ArtistEntity, ArtistImageEntity } from './entities'
 import { ArtistService } from './services'
 

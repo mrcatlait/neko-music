@@ -1,8 +1,8 @@
 import { forwardRef, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { TrackService } from './track.service'
-import { TrackController } from './track.controller'
+import { TrackService } from './services'
+import { TrackController } from './controllers'
 import { GenreEntity, TrackArtistEntity, TrackEntity, TrackImageEntity } from './entities'
 
 import { ArtistModule } from '@modules/artist'

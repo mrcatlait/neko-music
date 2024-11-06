@@ -17,17 +17,12 @@ export class UserAccountService {
     private readonly userLoginDataService: UserLoginDataService,
   ) {}
 
-  async createUserAccount(
-    username: string,
-    email: string,
-    password: string,
-    roleName: string,
-  ): Promise<UserAccountEntity> {
+  async createUserAccount(username: string, email: string, password: string): Promise<UserAccountEntity> {
     return this.usersAccountRepository.manager.transaction(async (manager) => {
-      const role = await manager.findOne(UserRoleEntity, { where: { name: roleName } })
+      const role = await manager.findOne(UserRoleEntity, { where: { default: true } })
 
       if (!role) {
-        this.logger.error(`Failed to find role with name "${roleName}"`)
+        this.logger.error(`Failed to find default role`)
         throw new InternalServerErrorException()
       }
 

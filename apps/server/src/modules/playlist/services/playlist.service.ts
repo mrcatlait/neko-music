@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { PlaylistEntity, PlaylistTrackEntity } from './entities'
-import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto, PlaylistPageOptionsDto, UpdatePlaylistDto } from './dto'
+import { PlaylistEntity, PlaylistTrackEntity } from '../entities'
+import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto, PlaylistPageOptionsDto, UpdatePlaylistDto } from '../dto'
 
 import { UserAccountEntity } from '@modules/user/entities'
 import { PageMetaDto } from '@common/dto'

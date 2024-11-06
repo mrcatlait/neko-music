@@ -1,8 +1,8 @@
 import { Controller, Get, HttpStatus, Param, Query, StreamableFile, ValidationPipe } from '@nestjs/common'
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
-import { TrackService } from './track.service'
-import { TracksPageOptionsDto, TracksPageDto } from './dto'
+import { TrackService } from '../services'
+import { TracksPageOptionsDto, TracksPageDto } from '../dto'
 
 @Controller('tracks')
 @ApiTags('Tracks')

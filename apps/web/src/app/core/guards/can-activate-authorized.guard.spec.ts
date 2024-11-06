@@ -5,10 +5,13 @@ import { PartiallyMocked } from 'vitest'
 import { canActivateAuthorized } from './can-activate-authorized.guard'
 
 import { AuthState } from '@core/state'
+import { ENVIRONMENT } from '@core/tokens'
+import { Environment } from '@core/models'
 
 describe('canActivateAuthorized', () => {
   let authStateMock: PartiallyMocked<AuthState>
   let routerMock: PartiallyMocked<Router>
+  let environmentMock: PartiallyMocked<Environment>
 
   const route = {} as ActivatedRouteSnapshot
   const state = {} as RouterStateSnapshot
@@ -22,10 +25,15 @@ describe('canActivateAuthorized', () => {
       navigate: vi.fn(),
     }
 
+    environmentMock = {
+      private: true,
+    }
+
     TestBed.configureTestingModule({
       providers: [
         { provide: AuthState, useValue: authStateMock },
         { provide: Router, useValue: routerMock },
+        { provide: ENVIRONMENT, useValue: environmentMock },
       ],
     })
   })

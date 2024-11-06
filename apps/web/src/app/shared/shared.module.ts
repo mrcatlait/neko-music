@@ -14,6 +14,7 @@ import {
 } from './directives'
 import {
   AppBarComponent,
+  ErrorComponent,
   LogoComponent,
   MediaCardComponent,
   MediaCardSubtitleDirective,
@@ -30,6 +31,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     AppBarComponent,
     ButtonDirective,
     DropdownTriggerDirective,
+    ErrorComponent,
     ImageUrlPipe,
     LogoComponent,
     MediaCardComponent,
@@ -50,6 +52,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     ButtonDirective,
     CommonModule,
     DropdownTriggerDirective,
+    ErrorComponent,
     ImageUrlPipe,
     LogoComponent,
     MediaCardComponent,

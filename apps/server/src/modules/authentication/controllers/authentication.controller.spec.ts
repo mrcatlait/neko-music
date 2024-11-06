@@ -5,7 +5,7 @@ import { describe, it, expect, beforeEach, PartiallyMocked } from 'vitest'
 
 import { AuthenticationController } from './authentication.controller'
 import { AuthenticationService } from '../services'
-import { UserLoginDto, LoginPayloadDto } from '../dto'
+import { UserLoginDto, LoginPayloadDto, UserRegisterDto } from '../dto'
 
 import { UserModel } from '@modules/authorization/models'
 import { UserAccountEntity } from '@modules/user/entities'
@@ -17,6 +17,7 @@ describe('AuthenticationController', () => {
   beforeEach(async () => {
     authenticationServiceMock = {
       validateUser: vi.fn(),
+      register: vi.fn(),
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -108,6 +109,53 @@ describe('AuthenticationController', () => {
       expect(mockResponse.header).toHaveBeenCalledWith('Cache-Control', 'no-store')
       expect(mockRequest.session.regenerate).toHaveBeenCalledWith(['user'])
       expect(mockRequest.session.save).toHaveBeenCalled()
+    })
+  })
+
+  describe('register', () => {
+    it('should successfully register a new user and return LoginPayloadDto', async () => {
+      // Arrange
+      const mockUserEntity = new UserAccountEntity()
+      Object.assign(mockUserEntity, {
+        id: '1',
+        username: 'newuser',
+        email: 'newuser@example.com',
+        role: { permissions: [] },
+      })
+
+      const mockInput: UserRegisterDto = {
+        email: 'newuser@example.com',
+        password: 'password123',
+        username: 'newuser',
+      }
+
+      const expectedLoginPayload = new LoginPayloadDto(mockUserEntity)
+
+      authenticationServiceMock.register?.mockResolvedValue(expectedLoginPayload)
+
+      // Act
+      const result = await controller.register(mockInput)
+
+      // Assert
+      expect(authenticationServiceMock.register).toHaveBeenCalledWith(mockInput)
+      expect(result).toBeInstanceOf(LoginPayloadDto)
+      expect(result).toEqual(expectedLoginPayload)
+    })
+
+    it('should pass through any errors from the authentication service', async () => {
+      // Arrange
+      const mockInput: UserRegisterDto = {
+        email: 'existing@example.com',
+        password: 'password123',
+        username: 'existinguser',
+      }
+
+      const mockError = new Error('User already exists')
+
+      authenticationServiceMock.register?.mockRejectedValue(mockError)
+
+      // Act & Assert
+      await expect(controller.register(mockInput)).rejects.toThrow(mockError)
     })
   })
 })

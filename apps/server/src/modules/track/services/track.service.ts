@@ -4,8 +4,8 @@ import { Repository } from 'typeorm'
 import { join } from 'path'
 import { createReadStream, existsSync } from 'fs'
 
-import { TrackEntity } from './entities'
-import { TrackDto, TracksPageOptionsDto, TracksPageDto } from './dto'
+import { TrackEntity } from '../entities'
+import { TrackDto, TracksPageOptionsDto, TracksPageDto } from '../dto'
 
 import { PageMetaDto } from '@common/dto'
 import { ArtistService } from '@modules/artist/services'

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 
-import { UserLoginDto } from '../dto'
+import { LoginPayloadDto, UserLoginDto, UserRegisterDto } from '../dto'
 
-import { UserLoginDataService } from '@modules/user/services'
+import { UserLoginDataService, UserAccountService } from '@modules/user/services'
 import { UserAccountEntity } from '@modules/user/entities'
 import { CryptoService } from '@shared/services'
 
@@ -10,6 +10,7 @@ import { CryptoService } from '@shared/services'
 export class AuthenticationService {
   constructor(
     private readonly userLoginDataService: UserLoginDataService,
+    private readonly userAccountService: UserAccountService,
     private readonly cryptoService: CryptoService,
   ) {}
 
@@ -31,5 +32,11 @@ export class AuthenticationService {
     }
 
     return null
+  }
+
+  async register(input: UserRegisterDto): Promise<LoginPayloadDto> {
+    const userAccount = await this.userAccountService.createUserAccount(input.username, input.email, input.password)
+
+    return new LoginPayloadDto(userAccount)
   }
 }

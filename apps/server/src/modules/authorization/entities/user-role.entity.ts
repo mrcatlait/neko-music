@@ -16,6 +16,9 @@ export class UserRoleEntity {
   @Column(UtilsService.toColumnOptions(UserRoleTable.descriptionColumn))
   description: string
 
+  @Column(UtilsService.toColumnOptions(UserRoleTable.defaultColumn))
+  default: boolean
+
   @ManyToMany(() => PermissionEntity, (permission) => permission.roles)
   @JoinTable({
     name: GrantedPermissionTable.table.name,

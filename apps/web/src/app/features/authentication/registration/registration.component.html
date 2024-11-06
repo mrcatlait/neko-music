@@ -28,11 +28,14 @@
     >
       <neko-textfield>
         <label>Email</label>
+
         <input
           formControlName="email"
           nekoTextfield
           type="email"
         />
+
+        <neko-error [control]="form.controls.email" />
       </neko-textfield>
 
       <neko-textfield>
@@ -53,15 +56,20 @@
         >
           <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
         </button>
+
+        <neko-error [control]="form.controls.password" />
       </neko-textfield>
 
       <neko-textfield>
         <label>Username</label>
+
         <input
           formControlName="username"
           nekoTextfield
           type="email"
         />
+
+        <neko-error [control]="form.controls.username" />
       </neko-textfield>
 
       <button

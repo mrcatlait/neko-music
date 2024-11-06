@@ -40,4 +40,11 @@
   neko-textfield [nekoSlot='left'] {
     margin-left: 12px;
   }
+
+  neko-textfield neko-error {
+    margin-top: 4px;
+    padding: 0 16px;
+    color: var(--color-error);
+    @include abstracts.typography('body-small');
+  }
 }

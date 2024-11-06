@@ -1,16 +1,3 @@
-<neko-navigation-bar />
-
-<neko-navigation-rail (expand)="handleExpand()" />
-@if (expanded()) {
-  <neko-navigation-modal-drawer (collapse)="handleCollapse()" />
-}
-
-<neko-navigation-drawer />
-
-<main>
-  <router-outlet />
-
-  <neko-player />
-</main>
+<neko-layout-container />
 
 <ng-container #viewContainer></ng-container>

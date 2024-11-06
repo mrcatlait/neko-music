@@ -35,6 +35,9 @@
     --color-surface-container-high: #262626;
     --color-surface-container-lowest: #000;
     --color-surface-container-lowest-rgb: #{abstracts.hex-to-rgb(#000)};
+
+    // Error
+    --color-error: #ffb4ab;
   }
 
   html {

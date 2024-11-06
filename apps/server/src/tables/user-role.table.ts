@@ -27,8 +27,15 @@ export class UserRoleTable {
     isNullable: true,
   })
 
+  static readonly defaultColumn = new TableColumn({
+    name: 'Default',
+    type: 'boolean',
+    default: false,
+    isNullable: false,
+  })
+
   static readonly table = new Table({
     name: 'UserRole',
-    columns: [this.idColumn, this.nameColumn, this.descriptionColumn],
+    columns: [this.idColumn, this.nameColumn, this.descriptionColumn, this.defaultColumn],
   })
 }

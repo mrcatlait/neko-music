@@ -3,8 +3,8 @@ import { StreamableFile } from '@nestjs/common'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import { TrackController } from './track.controller'
-import { TrackService } from './track.service'
-import { TracksPageOptionsDto, TracksPageDto } from './dto'
+import { TrackService } from '../services'
+import { TracksPageOptionsDto, TracksPageDto } from '../dto'
 
 describe('TrackController', () => {
   let controller: TrackController

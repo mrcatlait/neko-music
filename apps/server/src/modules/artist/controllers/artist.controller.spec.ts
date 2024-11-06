@@ -2,10 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { PartiallyMocked } from 'vitest'
 
 import { ArtistsController } from './artist.controller'
-import { ArtistService } from './services'
-import { ArtistDto } from './dto'
+import { ArtistService } from '../services'
+import { ArtistDto } from '../dto'
 
-import { TrackService } from '@modules/track/track.service'
+import { TrackService } from '@modules/track/services'
 import { TracksPageDto, TracksPageOptionsDto } from '@modules/track/dto'
 
 describe('ArtistsController', () => {

@@ -5,9 +5,9 @@ import { Repository } from 'typeorm'
 import { NotFoundException } from '@nestjs/common'
 
 import { PlaylistService } from './playlist.service'
-import { PlaylistEntity, PlaylistTrackEntity } from './entities'
-import { PlaylistPageOptionsDto, CreatePlaylistDto, UpdatePlaylistDto } from './dto'
-import { PlaylistType } from './constants'
+import { PlaylistEntity, PlaylistTrackEntity } from '../entities'
+import { PlaylistPageOptionsDto, CreatePlaylistDto, UpdatePlaylistDto } from '../dto'
+import { PlaylistType } from '../constants'
 
 import { UserAccountEntity } from '@modules/user/entities'
 import { UserModel } from '@modules/authorization/models'

@@ -1,4 +1,5 @@
 export * from './app-bar/app-bar.component'
+export * from './error/error.component'
 export * from './logo/logo.component'
 export * from './media-card/media-card.component'
 export * from './menu/menu.component'

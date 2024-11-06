@@ -1,10 +1,10 @@
 import { Controller, Get, HttpStatus, Param, Query, ValidationPipe } from '@nestjs/common'
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
-import { ArtistByIdDto, ArtistDto } from './dto'
-import { ArtistService } from './services'
+import { ArtistByIdDto, ArtistDto } from '../dto'
+import { ArtistService } from '../services'
 
-import { TrackService } from '@modules/track/track.service'
+import { TrackService } from '@modules/track/services'
 import { TracksPageDto, TracksPageOptionsDto } from '@modules/track/dto'
 
 @Controller('artists')

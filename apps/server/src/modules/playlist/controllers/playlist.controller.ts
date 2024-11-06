@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common'
 import { ApiTags, ApiOkResponse, ApiCreatedResponse, ApiBearerAuth } from '@nestjs/swagger'
 
-import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto } from './dto'
-import { PlaylistService } from './playlist.service'
+import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto } from '../dto'
+import { PlaylistService } from '../services'
 
 import { UserAccountEntity } from '@modules/user/entities'
 import { User } from '@modules/authorization/decorators'

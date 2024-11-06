@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { PlaylistService } from './playlist.service'
+import { PlaylistService } from './services'
 import { PlaylistEntity, PlaylistTrackEntity } from './entities'
-import { PlaylistController } from './playlist.controller'
+import { PlaylistController } from './controllers'
 
 @Module({
   imports: [TypeOrmModule.forFeature([PlaylistTrackEntity, PlaylistEntity])],

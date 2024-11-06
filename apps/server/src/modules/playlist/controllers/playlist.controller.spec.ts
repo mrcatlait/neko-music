@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { PartiallyMocked } from 'vitest'
 
 import { PlaylistController } from './playlist.controller'
-import { PlaylistService } from './playlist.service'
-import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto } from './dto'
-import { PlaylistType } from './constants'
+import { PlaylistService } from '../services'
+import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto } from '../dto'
+import { PlaylistType } from '../constants'
 
 import { UserAccountEntity } from '@modules/user/entities'
 import { UserModel } from '@modules/authorization/models'

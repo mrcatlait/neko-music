@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 
-import { UserLoginDto, LoginPayloadDto } from '../dto'
+import { UserLoginDto, LoginPayloadDto, UserRegisterDto } from '../dto'
 import { AuthenticationService } from '../services'
 import { Public } from '../decorators'
 
@@ -70,5 +70,15 @@ export class AuthenticationController {
     await req.session.save()
 
     return user
+  }
+
+  @Post('/register')
+  @Public()
+  @ApiOkResponse({
+    status: HttpStatus.OK,
+    type: LoginPayloadDto,
+  })
+  register(@Body() input: UserRegisterDto): Promise<LoginPayloadDto> {
+    return this.authenticationService.register(input)
   }
 }

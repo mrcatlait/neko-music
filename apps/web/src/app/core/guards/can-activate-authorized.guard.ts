@@ -13,7 +13,8 @@ export const canActivateAuthorized: CanActivateFn = () => {
 
   if (!isAuthenticated && environment.private) {
     router.navigate(['/login'])
+    return false
   }
 
-  return isAuthenticated
+  return true
 }
