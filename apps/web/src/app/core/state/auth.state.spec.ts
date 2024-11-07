@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing'
 import { PartiallyMocked } from 'vitest'
 import { of, throwError } from 'rxjs'
 import { Permission } from '@neko/permissions'
+import { Router } from '@angular/router'
 
 import { AuthState } from './auth.state'
 
@@ -10,6 +11,7 @@ import { CookieService } from '@core/services'
 
 describe('AuthState', () => {
   let authState: AuthState
+  let routerMock: PartiallyMocked<Router>
   let authRepositoryMock: PartiallyMocked<AuthRepository>
   let cookieServiceMock: PartiallyMocked<CookieService>
 
@@ -30,11 +32,16 @@ describe('AuthState', () => {
       delete: vi.fn(),
     }
 
+    routerMock = {
+      navigate: vi.fn(),
+    }
+
     TestBed.configureTestingModule({
       providers: [
         AuthState,
         { provide: AuthRepository, useValue: authRepositoryMock },
         { provide: CookieService, useValue: cookieServiceMock },
+        { provide: Router, useValue: routerMock },
       ],
     })
 

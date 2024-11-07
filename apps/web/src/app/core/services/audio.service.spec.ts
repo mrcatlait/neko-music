@@ -23,6 +23,7 @@ const mediaPlayerMock: PartiallyMocked<MediaPlayerClass> = {
   getVolume: vi.fn(),
   setVolume: vi.fn(),
   destroy: vi.fn(),
+  setXHRWithCredentialsForType: vi.fn(),
 }
 
 vi.mock('dashjs', () => {
