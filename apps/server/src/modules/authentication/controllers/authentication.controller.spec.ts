@@ -128,13 +128,19 @@ describe('AuthenticationController', () => {
         password: 'password123',
         username: 'newuser',
       }
+      const mockRequest = {
+        session: {
+          set: vi.fn(),
+          save: vi.fn(),
+        },
+      } as unknown as FastifyRequest
 
       const expectedLoginPayload = new LoginPayloadDto(mockUserEntity)
 
       authenticationServiceMock.register?.mockResolvedValue(expectedLoginPayload)
 
       // Act
-      const result = await controller.register(mockInput)
+      const result = await controller.register(mockRequest, mockInput)
 
       // Assert
       expect(authenticationServiceMock.register).toHaveBeenCalledWith(mockInput)
@@ -149,13 +155,19 @@ describe('AuthenticationController', () => {
         password: 'password123',
         username: 'existinguser',
       }
+      const mockRequest = {
+        session: {
+          set: vi.fn(),
+          save: vi.fn(),
+        },
+      } as unknown as FastifyRequest
 
       const mockError = new Error('User already exists')
 
       authenticationServiceMock.register?.mockRejectedValue(mockError)
 
       // Act & Assert
-      await expect(controller.register(mockInput)).rejects.toThrow(mockError)
+      await expect(controller.register(mockRequest, mockInput)).rejects.toThrow(mockError)
     })
   })
 })
