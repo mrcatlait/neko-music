@@ -22,9 +22,4 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.portalService.attach(this.vcr)
   }
-
-  // @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent) {
-  //   const element = event.target as HTMLButtonElement
-  //   element.blur()
-  // }
 }

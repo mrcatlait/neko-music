@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input } from '@angular/core'
+import { Directive, HostBinding, HostListener, Input } from '@angular/core'
 
 type VariantFilled = 'filled'
 type VariantOutlined = 'outlined'
@@ -19,4 +19,9 @@ export class ButtonDirective {
   @Input()
   @HostBinding('attr.data-color')
   color: Colors = 'primary'
+
+  @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent) {
+    const element = event.target as HTMLButtonElement
+    element.blur()
+  }
 }

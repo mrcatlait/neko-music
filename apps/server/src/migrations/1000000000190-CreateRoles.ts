@@ -3,7 +3,7 @@ import { In, QueryRunner } from 'typeorm'
 import { SeedInterface } from '@modules/database-seed/types'
 import { UserRoleEntity } from '@modules/authorization/entities'
 
-export class CreateRoles1000000000020 implements SeedInterface {
+export class CreateRoles1000000000190 implements SeedInterface {
   async up(queryRunner: QueryRunner): Promise<void> {
     const userRole = queryRunner.manager.create(UserRoleEntity, {
       name: 'user',

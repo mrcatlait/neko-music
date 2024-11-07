@@ -41,7 +41,7 @@ export class CookieService {
 
     if (expires) {
       if (typeof expires === 'number') {
-        const dateExpires: Date = new Date(new Date().getTime() + expires * DAY)
+        const dateExpires = new Date(new Date().getTime() + expires * DAY)
 
         cookieString += 'Expires=' + dateExpires.toUTCString() + ';'
       } else {

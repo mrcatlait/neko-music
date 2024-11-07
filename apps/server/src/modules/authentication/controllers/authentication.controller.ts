@@ -78,7 +78,13 @@ export class AuthenticationController {
     status: HttpStatus.OK,
     type: LoginPayloadDto,
   })
-  register(@Body() input: UserRegisterDto): Promise<LoginPayloadDto> {
-    return this.authenticationService.register(input)
+  async register(@Req() req: FastifyRequest, @Body() input: UserRegisterDto): Promise<LoginPayloadDto> {
+    const dto = await this.authenticationService.register(input)
+
+    req.session.set('data', dto)
+
+    await req.session.save()
+
+    return dto
   }
 }

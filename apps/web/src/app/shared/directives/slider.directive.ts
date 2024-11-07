@@ -38,6 +38,11 @@ export class SliderDirective implements OnChanges {
     this.element.style.setProperty('--n-slider-fill-ratio', String(ratio))
   }
 
+  @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent) {
+    const element = event.target as HTMLButtonElement
+    element.blur()
+  }
+
   private get element(): HTMLInputElement {
     return this.elRef.nativeElement
   }

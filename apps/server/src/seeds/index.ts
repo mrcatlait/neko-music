@@ -1,11 +1,7 @@
-import { CreatePermissions1000000000010 } from './1000000000010-CreatePermissions'
-import { CreateRoles1000000000020 } from './1000000000020-CreateRoles'
-import { GrantPermissions1000000000030 } from './1000000000030-GrantPermissions'
+import { CreateGenres1000000000010 } from './1000000000010-CreateGenres'
+import { CreateArtists1000000000020 } from './1000000000020-CreateArtists'
+import { CreateTracks1000000000030 } from './1000000000030-CreateTracks'
 
 import { SeedClass } from '@modules/database-seed/types'
 
-export const seeds: SeedClass[] = [
-  CreatePermissions1000000000010,
-  CreateRoles1000000000020,
-  GrantPermissions1000000000030,
-]
+export const seeds: SeedClass[] = [CreateGenres1000000000010, CreateArtists1000000000020, CreateTracks1000000000030]

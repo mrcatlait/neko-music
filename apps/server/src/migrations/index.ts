@@ -17,6 +17,9 @@ import { CreateUserAccountTable1000000000140 } from './1000000000140-CreateUserA
 import { CreateUserLoginDataTable1000000000150 } from './1000000000150-CreateUserLoginDataTable'
 import { CreatePlaylistTable1000000000160 } from './1000000000160-CreatePlaylistTable'
 import { CreatePlaylistTrackTable1000000000170 } from './1000000000170-CreatePlaylistTrackTable'
+import { CreatePermissions1000000000180 } from './1000000000180-CreatePermissions'
+import { CreateRoles1000000000190 } from './1000000000190-CreateRoles'
+import { GrantPermissions1000000000200 } from './1000000000200-GrantPermissions'
 
 export type MigrationClass = new () => MigrationInterface
 
@@ -38,4 +41,7 @@ export const migrations: MigrationClass[] = [
   CreateUserLoginDataTable1000000000150,
   CreatePlaylistTable1000000000160,
   CreatePlaylistTrackTable1000000000170,
+  CreatePermissions1000000000180,
+  CreateRoles1000000000190,
+  GrantPermissions1000000000200,
 ]

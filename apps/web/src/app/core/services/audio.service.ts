@@ -22,6 +22,7 @@ export class AudioService implements OnDestroy {
 
   constructor() {
     this.player.initialize(this.audio, undefined, false)
+    this.player.setXHRWithCredentialsForType('', true)
     this.registerEvents()
   }
 

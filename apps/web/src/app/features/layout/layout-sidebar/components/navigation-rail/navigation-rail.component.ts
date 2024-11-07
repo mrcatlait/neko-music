@@ -3,8 +3,8 @@ import { Permission } from '@neko/permissions'
 
 @Component({
   selector: 'neko-navigation-rail',
-  templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.scss',
+  templateUrl: './navigation-rail.component.html',
+  styleUrl: './navigation-rail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationRailComponent {

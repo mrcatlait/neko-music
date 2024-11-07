@@ -8,8 +8,7 @@ import { CookieService } from '@core/services'
 
 const IS_AUTHENTICATED_COOKIE_NAME = 'is.authenticated'
 const SESSION_KEY = 'neko.session'
-const DAY = 1000 * 60 * 60 * 24
-const SESSION_CHECK_EXPIRY_DAYS = DAY * 2
+const SESSION_CHECK_EXPIRY_DAYS = 2
 
 interface Session {
   user: {

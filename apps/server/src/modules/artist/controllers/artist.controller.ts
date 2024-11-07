@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param, Query, ValidationPipe } from '@nestjs/common'
+import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common'
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { ArtistByIdDto, ArtistDto } from '../dto'
@@ -31,8 +31,7 @@ export class ArtistsController {
   })
   tracksByArtistId(
     @Param() params: ArtistByIdDto,
-    @Query(new ValidationPipe({ transform: true }))
-    pageOptionsDto: TracksPageOptionsDto,
+    @Query() pageOptionsDto: TracksPageOptionsDto,
   ): Promise<TracksPageDto> {
     return this.trackService.getArtistTracks(params.artistId, pageOptionsDto)
   }

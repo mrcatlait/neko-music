@@ -4,7 +4,7 @@ import { Permission } from '@neko/permissions'
 import { SeedInterface } from '@modules/database-seed/types'
 import { GrantedPermissionEntity, PermissionEntity, UserRoleEntity } from '@modules/authorization/entities'
 
-export class GrantPermissions1000000000030 implements SeedInterface {
+export class GrantPermissions1000000000200 implements SeedInterface {
   async up(queryRunner: QueryRunner): Promise<void> {
     const roles = await queryRunner.manager.find(UserRoleEntity, {})
     const userRole = roles.find((role) => role.name === 'user')
