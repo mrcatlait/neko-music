@@ -4,3 +4,24 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "@types/node"
+    groups:
+      angular:
+        applies-to: version-updates
+        patterns:
+          - "@angular*"
+          - "rxjs"
+          - "tslib"
+          - "typescript"
+          - "angular-eslint"
+        update-types:
+          - "patch"
+      nest:
+        applies-to: version-updates
+        patterns:
+          - "@nestjs*"
+          - "@fastify*"
+          - "@nest-lab*"
+        update-types:
+          - "patch"
