@@ -23,7 +23,7 @@ export class TrackEntity extends AbstractEntity<TrackDto> {
   @Column(UtilsService.toColumnOptions(TrackTable.releaseDateColumn))
   releaseDate: Date
 
-  @OneToMany(() => TrackImageEntity, (image) => image.track)
+  @OneToMany(() => TrackImageEntity, (image) => image.track, { onDelete: 'CASCADE' })
   images: TrackImageEntity[]
 
   @ManyToMany(() => GenreEntity, (genre) => genre.tracks)
@@ -34,7 +34,7 @@ export class TrackEntity extends AbstractEntity<TrackDto> {
   })
   genres?: GenreEntity[]
 
-  @OneToMany(() => TrackArtistEntity, (artist) => artist.track)
+  @OneToMany(() => TrackArtistEntity, (artist) => artist.track, { onDelete: 'CASCADE' })
   artists: TrackArtistEntity[]
 
   dtoClass = TrackDto

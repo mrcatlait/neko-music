@@ -1,6 +1,4 @@
-// @todo move to setup-test
 import '../src/polyfill'
-
 import { DynamicModule, INestApplication, Inject, Injectable, Module, ValueProvider } from '@nestjs/common'
 import { Verifier, VerifierOptions } from '@pact-foundation/pact'
 import { resolve } from 'path'

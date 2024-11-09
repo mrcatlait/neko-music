@@ -1,13 +1,16 @@
 import { Controller, Get, HttpStatus, Param, Query, StreamableFile, ValidationPipe } from '@nestjs/common'
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiOkResponse, ApiProduces, ApiTags } from '@nestjs/swagger'
 
-import { TrackService } from '../services'
+import { TrackService, TrackStreamingService } from '../services'
 import { TracksPageOptionsDto, TracksPageDto } from '../dto'
 
 @Controller('tracks')
 @ApiTags('Tracks')
 export class TrackController {
-  constructor(private readonly service: TrackService) {}
+  constructor(
+    private readonly service: TrackService,
+    private readonly streamingService: TrackStreamingService,
+  ) {}
 
   @Get('')
   @ApiOkResponse({
@@ -45,11 +48,29 @@ export class TrackController {
     return this.service.getNewTracks(pageOptionsDto)
   }
 
-  @Get('/:trackId/stream/:filename')
+  @Get('/:trackId/stream/manifest.mpd')
+  @ApiProduces('application/dash+xml')
   @ApiOkResponse({
     status: HttpStatus.OK,
+    schema: {
+      type: 'string',
+      format: 'binary',
+    },
   })
-  stream(@Param('trackId') trackId: string, @Param('filename') filename: string): StreamableFile {
-    return this.service.stream(trackId, filename)
+  streamManifest(@Param('trackId') trackId: string): StreamableFile {
+    return this.streamingService.streamManifest(trackId)
+  }
+
+  @Get('/:trackId/stream/:segmentId')
+  @ApiProduces('application/dash+xml')
+  @ApiOkResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'string',
+      format: 'binary',
+    },
+  })
+  streamSegment(@Param('trackId') trackId: string, @Param('segmentId') segmentId: string): StreamableFile {
+    return this.streamingService.streamSegment(trackId, segmentId)
   }
 }

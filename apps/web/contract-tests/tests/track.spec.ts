@@ -27,9 +27,9 @@ describe('Tracks', () => {
       await provider
         .addInteraction()
         .given('authenticated user')
-        .given('list of tracks exists')
+        .given('has tracks')
         .uponReceiving('a request to GET tracks')
-        .withRequest('GET', '/tracks', (builder) => builder.query({ take: '50', offset: '0' }))
+        .withRequest('GET', '/tracks', (builder) => builder.query({ take: String(take), offset: String(offset) }))
         .willRespondWith(200, (builder) => builder.jsonBody(getTracksSuccessResponseBody))
         .executeTest(async (mockServer) => {
           const repository = repositoryProvider(TrackRepository, mockServer)
@@ -44,9 +44,9 @@ describe('Tracks', () => {
       await provider
         .addInteraction()
         .given('authenticated user')
-        .given('list of tracks is empty')
+        .given('has no tracks')
         .uponReceiving('a request to GET tracks')
-        .withRequest('GET', '/tracks', (builder) => builder.query({ take: '50', offset: '0' }))
+        .withRequest('GET', '/tracks', (builder) => builder.query({ take: String(take), offset: String(offset) }))
         .willRespondWith(200, (builder) => builder.jsonBody(getTracksEmptyResponseBody))
         .executeTest(async (mockServer) => {
           const repository = repositoryProvider(TrackRepository, mockServer)
@@ -59,13 +59,16 @@ describe('Tracks', () => {
   })
 
   describe('GET /tracks/new', () => {
+    const take = 6
+    const offset = 0
+
     it('returns an HTTP 200 and a list of tracks', async () => {
       await provider
         .addInteraction()
         .given('authenticated user')
-        .given('list of tracks exists')
+        .given('has tracks')
         .uponReceiving('a request to GET new tracks')
-        .withRequest('GET', '/tracks/new', (builder) => builder.query({ take: '6', offset: '0' }))
+        .withRequest('GET', '/tracks/new', (builder) => builder.query({ take: String(take), offset: String(offset) }))
         .willRespondWith(200, (builder) => builder.jsonBody(getTracksSuccessResponseBody))
         .executeTest(async (mockServer) => {
           const repository = repositoryProvider(TrackRepository, mockServer)
@@ -80,9 +83,9 @@ describe('Tracks', () => {
       await provider
         .addInteraction()
         .given('authenticated user')
-        .given('list of tracks is empty')
+        .given('has no tracks')
         .uponReceiving('a request to GET new tracks')
-        .withRequest('GET', '/tracks/new', (builder) => builder.query({ take: '6', offset: '0' }))
+        .withRequest('GET', '/tracks/new', (builder) => builder.query({ take: String(take), offset: String(offset) }))
         .willRespondWith(200, (builder) => builder.jsonBody(getTracksEmptyResponseBody))
         .executeTest(async (mockServer) => {
           const repository = repositoryProvider(TrackRepository, mockServer)
@@ -95,13 +98,18 @@ describe('Tracks', () => {
   })
 
   describe('GET /tracks/popular', () => {
+    const take = 12
+    const offset = 0
+
     it('returns an HTTP 200 and a list of tracks', async () => {
       await provider
         .addInteraction()
         .given('authenticated user')
-        .given('list of tracks exists')
+        .given('has tracks')
         .uponReceiving('a request to GET popular tracks')
-        .withRequest('GET', '/tracks/popular', (builder) => builder.query({ take: '12', offset: '0' }))
+        .withRequest('GET', '/tracks/popular', (builder) =>
+          builder.query({ take: String(take), offset: String(offset) }),
+        )
         .willRespondWith(200, (builder) => builder.jsonBody(getTracksSuccessResponseBody))
         .executeTest(async (mockServer) => {
           const repository = repositoryProvider(TrackRepository, mockServer)
@@ -116,9 +124,11 @@ describe('Tracks', () => {
       await provider
         .addInteraction()
         .given('authenticated user')
-        .given('list of tracks is empty')
+        .given('has no tracks')
         .uponReceiving('a request to GET popular tracks')
-        .withRequest('GET', '/tracks/popular', (builder) => builder.query({ take: '12', offset: '0' }))
+        .withRequest('GET', '/tracks/popular', (builder) =>
+          builder.query({ take: String(take), offset: String(offset) }),
+        )
         .willRespondWith(200, (builder) => builder.jsonBody(getTracksEmptyResponseBody))
         .executeTest(async (mockServer) => {
           const repository = repositoryProvider(TrackRepository, mockServer)

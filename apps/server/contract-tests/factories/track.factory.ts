@@ -1,20 +1,16 @@
 import { faker } from '@faker-js/faker'
 
-import { genreFactory } from './genre.factory'
-import { trackArtistFactory } from './track-artist.factory'
-import { trackImageFactory } from './track-image.factory'
-
 import { TrackEntity } from '@modules/track/entities'
 
 export const trackFactory = (): TrackEntity => {
   const trackMock: Omit<TrackEntity, 'dtoClass' | 'toDto'> = {
     id: faker.string.uuid(),
-    duration: faker.number.int(),
+    duration: faker.number.int({ min: 1, max: 10000 }),
     title: faker.string.sample(),
     releaseDate: faker.date.past(),
-    images: [trackImageFactory()],
-    artists: [trackArtistFactory()],
-    genres: [genreFactory()],
+    images: [],
+    artists: [],
+    genres: [],
   }
 
   const track = new TrackEntity()

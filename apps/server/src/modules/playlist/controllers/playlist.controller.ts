@@ -14,7 +14,7 @@ import { UserModel } from '@modules/authorization/models'
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
-  @Get('/my')
+  @Get('/me')
   @ApiOkResponse({
     status: HttpStatus.OK,
     type: PlaylistPageDto,

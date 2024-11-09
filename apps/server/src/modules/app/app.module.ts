@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { ScheduleModule } from '@nestjs/schedule'
@@ -11,6 +11,7 @@ import { AuthenticationModule } from '../authentication'
 import { AuthorizationModule } from '../authorization'
 import { DatabaseSeedModule } from '../database-seed'
 import { SharedModule } from '../shared'
+import { SecurityHeadersMiddleware } from '../../middlewares'
 
 import { ConfigService } from '@shared/services'
 import { ArtistModule } from '@modules/artist'
@@ -82,4 +83,8 @@ import { UserModule } from '@modules/user'
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(SecurityHeadersMiddleware).forRoutes('*')
+  }
+}

@@ -1,15 +1,12 @@
-import { Injectable, Logger, NotFoundException, StreamableFile } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { join } from 'path'
-import { createReadStream, existsSync } from 'fs'
 
 import { TrackEntity } from '../entities'
 import { TrackDto, TracksPageOptionsDto, TracksPageDto } from '../dto'
 
 import { PageMetaDto } from '@common/dto'
 import { ArtistService } from '@modules/artist/services'
-import { STREAM_PATH } from '@common/constants'
 
 @Injectable()
 export class TrackService {
@@ -36,7 +33,7 @@ export class TrackService {
 
   async getTracks(pageOptionsDto: TracksPageOptionsDto): Promise<TracksPageDto> {
     const [tracks, trackCount] = await this.repository.findAndCount({
-      relations: { images: true, artists: { artist: true } },
+      relations: { images: true, artists: { artist: true }, genres: true },
       order: { title: 'asc' },
       skip: pageOptionsDto.offset,
       take: pageOptionsDto.take,
@@ -59,7 +56,7 @@ export class TrackService {
 
     const [tracks, trackCount] = await this.repository.findAndCount({
       where: { artists: { artistId } },
-      relations: { images: true, artists: { artist: true } },
+      relations: { images: true, artists: { artist: true }, genres: true },
       order: { releaseDate: 'desc' },
       skip: pageOptionsDto.offset,
       take: pageOptionsDto.take,
@@ -75,7 +72,7 @@ export class TrackService {
 
   async getPopularTracks(pageOptionsDto: TracksPageOptionsDto): Promise<TracksPageDto> {
     const [tracks, trackCount] = await this.repository.findAndCount({
-      relations: { images: true, artists: { artist: true } },
+      relations: { images: true, artists: { artist: true }, genres: true },
       order: { title: 'asc' },
       skip: pageOptionsDto.offset,
       take: pageOptionsDto.take,
@@ -91,7 +88,7 @@ export class TrackService {
 
   async getNewTracks(pageOptionsDto: TracksPageOptionsDto): Promise<TracksPageDto> {
     const [tracks, trackCount] = await this.repository.findAndCount({
-      relations: { images: true, artists: { artist: true } },
+      relations: { images: true, artists: { artist: true }, genres: true },
       order: { title: 'asc', releaseDate: 'desc' },
       skip: pageOptionsDto.offset,
       take: pageOptionsDto.take,
@@ -103,15 +100,5 @@ export class TrackService {
     })
 
     return new TracksPageDto(tracks.toDtos(), pageMetaDto)
-  }
-
-  stream(trackId: string, filename: string): StreamableFile {
-    const filePath = join(STREAM_PATH, 'tracks', trackId, filename)
-
-    if (!existsSync(filePath)) {
-      throw new NotFoundException()
-    }
-
-    return new StreamableFile(createReadStream(filePath))
   }
 }

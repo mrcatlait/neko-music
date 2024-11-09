@@ -11,7 +11,10 @@
           "name": "authenticated user"
         },
         {
-          "name": "artist exists"
+          "name": "has artist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
         }
       ],
       "request": {
@@ -97,10 +100,16 @@
           "name": "authenticated user"
         },
         {
-          "name": "artist exists"
+          "name": "has artist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
         },
         {
-          "name": "list of tracks exists"
+          "name": "has artist tracks",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
         }
       ],
       "request": {
@@ -279,7 +288,7 @@
           "name": "authenticated user"
         },
         {
-          "name": "list of tracks exists"
+          "name": "has no tracks"
         }
       ],
       "request": {
@@ -297,31 +306,9 @@
       "response": {
         "body": {
           "content": {
-            "data": [
-              {
-                "artists": [
-                  {
-                    "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                    "name": "Artist",
-                    "role": "Primary"
-                  }
-                ],
-                "duration": 123,
-                "genres": [
-                  "Rock"
-                ],
-                "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
-                "images": [
-                  {
-                    "resolution": "some string",
-                    "url": "some string"
-                  }
-                ],
-                "title": "Title"
-              }
-            ],
+            "data": [],
             "meta": {
-              "itemCount": 1,
+              "itemCount": 0,
               "offset": 0,
               "pageCount": 1,
               "take": 50
@@ -337,80 +324,6 @@
         },
         "matchingRules": {
           "body": {
-            "$.data[0].artists[0].id": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "regex",
-                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-                }
-              ]
-            },
-            "$.data[0].artists[0].name": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            },
-            "$.data[0].artists[0].role": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            },
-            "$.data[0].duration": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "integer"
-                }
-              ]
-            },
-            "$.data[0].genres[0]": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            },
-            "$.data[0].id": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "regex",
-                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-                }
-              ]
-            },
-            "$.data[0].images[0].resolution": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            },
-            "$.data[0].images[0].url": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            },
-            "$.data[0].title": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            },
             "$.meta.itemCount": {
               "combine": "AND",
               "matchers": [
@@ -458,7 +371,7 @@
           "name": "authenticated user"
         },
         {
-          "name": "list of tracks is empty"
+          "name": "has tracks"
         }
       ],
       "request": {
@@ -476,6 +389,185 @@
       "response": {
         "body": {
           "content": {
+            "data": [
+              {
+                "artists": [
+                  {
+                    "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                    "name": "Artist",
+                    "role": "Primary"
+                  }
+                ],
+                "duration": 123,
+                "genres": [
+                  "Rock"
+                ],
+                "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                "images": [
+                  {
+                    "resolution": "some string",
+                    "url": "some string"
+                  }
+                ],
+                "title": "Title"
+              }
+            ],
+            "meta": {
+              "itemCount": 1,
+              "offset": 0,
+              "pageCount": 1,
+              "take": 50
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.data[0].artists[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].artists[0].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].artists[0].role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].duration": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.data[0].genres[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].images[0].resolution": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].images[0].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].title": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.meta.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.offset": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.pageCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.meta.take": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to GET popular tracks",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "has no tracks"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/tracks/popular",
+        "query": {
+          "offset": [
+            "0"
+          ],
+          "take": [
+            "12"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "content": {
             "data": [],
             "meta": {
               "itemCount": 0,
@@ -541,7 +633,7 @@
           "name": "authenticated user"
         },
         {
-          "name": "list of tracks exists"
+          "name": "has tracks"
         }
       ],
       "request": {
@@ -713,25 +805,25 @@
       "type": "Synchronous/HTTP"
     },
     {
-      "description": "a request to GET popular tracks",
+      "description": "a request to GET tracks",
       "pending": false,
       "providerStates": [
         {
           "name": "authenticated user"
         },
         {
-          "name": "list of tracks is empty"
+          "name": "has no tracks"
         }
       ],
       "request": {
         "method": "GET",
-        "path": "/tracks/popular",
+        "path": "/tracks",
         "query": {
           "offset": [
             "0"
           ],
           "take": [
-            "12"
+            "50"
           ]
         }
       },
@@ -803,7 +895,7 @@
           "name": "authenticated user"
         },
         {
-          "name": "list of tracks exists"
+          "name": "has tracks"
         }
       ],
       "request": {
@@ -975,19 +1067,653 @@
       "type": "Synchronous/HTTP"
     },
     {
-      "description": "a request to GET tracks",
+      "description": "a request to GET whoami",
+      "pending": false,
+      "request": {
+        "method": "GET",
+        "path": "/auth/whoami"
+      },
+      "response": {
+        "status": 401
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to GET whoami",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/auth/whoami"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "permissions": [
+              "some string"
+            ],
+            "user": {
+              "id": "e2490de5-5bd3-43d5-b7c4-526e33f71304",
+              "username": "user.username"
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.permissions": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.permissions[*]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.user.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.user.username": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to POST login",
+      "pending": false,
+      "request": {
+        "body": {
+          "content": {
+            "email": "test@test.com",
+            "password": "password"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.email": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.password": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "method": "POST",
+        "path": "/auth/login"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "permissions": [
+              "some string"
+            ],
+            "user": {
+              "id": "e2490de5-5bd3-43d5-b7c4-526e33f71304",
+              "username": "user.username"
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.permissions": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.permissions[*]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.user.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.user.username": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to POST register",
+      "pending": false,
+      "request": {
+        "body": {
+          "content": {
+            "email": "test@test.com",
+            "password": "password",
+            "username": "username"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.email": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.password": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.username": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "method": "POST",
+        "path": "/auth/register"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "permissions": [
+              "some string"
+            ],
+            "user": {
+              "id": "e2490de5-5bd3-43d5-b7c4-526e33f71304",
+              "username": "user.username"
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.permissions": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.permissions[*]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.user.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.user.username": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 201
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to add tracks to a playlist",
       "pending": false,
       "providerStates": [
         {
           "name": "authenticated user"
         },
         {
-          "name": "list of tracks is empty"
+          "name": "has own playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "tracks": [
+              "e2490de5-5bd3-43d5-b7c4-526e33f71304"
+            ]
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "generators": {
+          "body": {
+            "$.tracks[0]": {
+              "type": "Uuid"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.tracks[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            }
+          }
+        },
+        "method": "POST",
+        "path": "/playlists/c76b4326-ca77-4c24-a414-f002c6be3106/tracks"
+      },
+      "response": {
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to create a playlist",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "description": "Description",
+            "isPublic": true,
+            "name": "Name"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.description": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.isPublic": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "method": "POST",
+        "path": "/playlists"
+      },
+      "response": {
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to delete a playlist",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "has own playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "path": "/playlists/c76b4326-ca77-4c24-a414-f002c6be3106"
+      },
+      "response": {
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to get a playlist",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "has own playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
+        },
+        {
+          "name": "has tracks in playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
         }
       ],
       "request": {
         "method": "GET",
-        "path": "/tracks",
+        "path": "/playlists/c76b4326-ca77-4c24-a414-f002c6be3106"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "description": "Description",
+            "id": "ID",
+            "isPublic": true,
+            "name": "Name",
+            "tracks": [
+              {
+                "artists": [
+                  {
+                    "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                    "name": "Artist",
+                    "role": "Primary"
+                  }
+                ],
+                "duration": 123,
+                "genres": [
+                  "Rock"
+                ],
+                "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                "images": [
+                  {
+                    "resolution": "some string",
+                    "url": "some string"
+                  }
+                ],
+                "title": "Title"
+              }
+            ]
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.description": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.isPublic": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.tracks": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.tracks[*].artists[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.tracks[*].artists[0].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.tracks[*].artists[0].role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.tracks[*].duration": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.tracks[*].genres[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.tracks[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.tracks[*].images[0].resolution": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.tracks[*].images[0].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.tracks[*].title": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to get my playlists",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "has own playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
+        },
+        {
+          "name": "has tracks in playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/playlists/me",
         "query": {
           "offset": [
             "0"
@@ -1000,9 +1726,39 @@
       "response": {
         "body": {
           "content": {
-            "data": [],
+            "data": [
+              {
+                "description": "Description",
+                "id": "ID",
+                "isPublic": true,
+                "name": "Name",
+                "tracks": [
+                  {
+                    "artists": [
+                      {
+                        "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                        "name": "Artist",
+                        "role": "Primary"
+                      }
+                    ],
+                    "duration": 123,
+                    "genres": [
+                      "Rock"
+                    ],
+                    "id": "c76b4326-ca77-4c24-a414-f002c6be3106",
+                    "images": [
+                      {
+                        "resolution": "some string",
+                        "url": "some string"
+                      }
+                    ],
+                    "title": "Title"
+                  }
+                ]
+              }
+            ],
             "meta": {
-              "itemCount": 0,
+              "itemCount": 1,
               "offset": 0,
               "pageCount": 1,
               "take": 50
@@ -1018,6 +1774,121 @@
         },
         "matchingRules": {
           "body": {
+            "$.data[0].description": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].isPublic": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].tracks": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data[0].tracks[*].artists[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].tracks[*].artists[0].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].tracks[*].artists[0].role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].tracks[*].duration": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.data[0].tracks[*].genres[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].tracks[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.data[0].tracks[*].images[0].resolution": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].tracks[*].images[0].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[0].tracks[*].title": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
             "$.meta.itemCount": {
               "combine": "AND",
               "matchers": [
@@ -1053,6 +1924,193 @@
           },
           "status": {}
         },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to remove tracks from a playlist",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "has own playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "tracks": [
+              "e2490de5-5bd3-43d5-b7c4-526e33f71304"
+            ]
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "generators": {
+          "body": {
+            "$.tracks[0]": {
+              "type": "Uuid"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.tracks[0]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            }
+          }
+        },
+        "method": "DELETE",
+        "path": "/playlists/c76b4326-ca77-4c24-a414-f002c6be3106/tracks"
+      },
+      "response": {
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to update a playlist",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "has own playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "description": "Description",
+            "isPublic": true,
+            "name": "Name"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.description": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.isPublic": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "method": "PUT",
+        "path": "/playlists/c76b4326-ca77-4c24-a414-f002c6be3106"
+      },
+      "response": {
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "a request to update tracks in a playlist",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "authenticated user"
+        },
+        {
+          "name": "has own playlist",
+          "params": {
+            "id": "c76b4326-ca77-4c24-a414-f002c6be3106"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "insertBefore": 0,
+            "rangeEnd": 1,
+            "rangeStart": 0
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.insertBefore": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.rangeEnd": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.rangeStart": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "method": "PUT",
+        "path": "/playlists/c76b4326-ca77-4c24-a414-f002c6be3106/tracks"
+      },
+      "response": {
         "status": 200
       },
       "type": "Synchronous/HTTP"

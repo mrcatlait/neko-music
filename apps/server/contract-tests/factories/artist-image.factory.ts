@@ -2,13 +2,13 @@ import { faker } from '@faker-js/faker'
 
 import { ArtistEntity, ArtistImageEntity } from '@modules/artist/entities'
 
-export const artistImageFactory = (): ArtistImageEntity => {
+export const artistImageFactory = (artist: ArtistEntity): ArtistImageEntity => {
   const artistImageMock: Omit<ArtistImageEntity, 'dtoClass' | 'toDto'> = {
     id: faker.string.uuid(),
-    artistId: faker.string.uuid(),
+    artistId: artist.id,
     resolution: faker.string.sample(),
     url: faker.internet.url(),
-    artist: {} as ArtistEntity,
+    artist,
   }
 
   const artistImage = new ArtistImageEntity()

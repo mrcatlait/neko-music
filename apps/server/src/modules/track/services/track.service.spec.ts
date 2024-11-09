@@ -2,18 +2,13 @@ import { Test } from '@nestjs/testing'
 import { PartiallyMocked } from 'vitest'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { NotFoundException, StreamableFile } from '@nestjs/common'
-import * as fs from 'fs'
-import * as path from 'path'
+import { NotFoundException } from '@nestjs/common'
 
 import { TrackService } from './track.service'
 import { TrackEntity } from '../entities'
 import { TracksPageOptionsDto } from '../dto'
 
 import { ArtistService } from '@modules/artist/services'
-
-vi.mock('fs')
-vi.mock('path')
 
 describe('TrackService', () => {
   let trackService: TrackService
@@ -169,32 +164,6 @@ describe('TrackService', () => {
       expect(result.data).toHaveLength(2)
       expect(result.meta).toBeDefined()
       expect(result.meta.itemCount).toBe(2)
-    })
-  })
-
-  describe('stream', () => {
-    it('should return a StreamableFile when file exists', () => {
-      // Arrange
-      const mockFilePath = '/path/to/file'
-      vi.spyOn(path, 'join').mockReturnValue(mockFilePath)
-      vi.spyOn(fs, 'existsSync').mockReturnValue(true)
-      vi.spyOn(fs, 'createReadStream').mockReturnValue({} as fs.ReadStream)
-
-      // Act
-      const result = trackService.stream('trackId', 'filename')
-
-      // Assert
-      expect(result).toBeInstanceOf(StreamableFile)
-    })
-
-    it('should throw NotFoundException when file does not exist', () => {
-      // Arrange
-      const mockFilePath = '/path/to/file'
-      vi.spyOn(path, 'join').mockReturnValue(mockFilePath)
-      vi.spyOn(fs, 'existsSync').mockReturnValue(false)
-
-      // Act & Assert
-      expect(() => trackService.stream('trackId', 'filename')).toThrow(NotFoundException)
     })
   })
 })

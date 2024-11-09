@@ -18,6 +18,6 @@ export class UserAccountEntity {
   @JoinColumn({ name: UserAccountTable.roleIdColumn.name, referencedColumnName: 'id' })
   role: UserRoleEntity
 
-  @OneToOne(() => UserLoginDataEntity, (userLoginData) => userLoginData.userAccount)
+  @OneToOne(() => UserLoginDataEntity, (userLoginData) => userLoginData.userAccount, { onDelete: 'CASCADE' })
   userLoginData: UserLoginDataEntity
 }

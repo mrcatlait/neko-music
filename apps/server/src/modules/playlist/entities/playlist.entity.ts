@@ -22,7 +22,7 @@ export class PlaylistEntity extends AbstractEntity<PlaylistDto> {
   @Column(UtilsService.toColumnOptions(PlaylistTable.userIdColumn))
   userId: string
 
-  @ManyToMany(() => TrackEntity)
+  @ManyToMany(() => TrackEntity, { onDelete: 'CASCADE' })
   @JoinTable({
     name: PlaylistTrackTable.table.name,
     joinColumn: { name: PlaylistTrackTable.trackIdColumn.name, referencedColumnName: 'id' },

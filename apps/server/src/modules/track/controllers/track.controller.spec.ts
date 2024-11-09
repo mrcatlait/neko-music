@@ -3,19 +3,23 @@ import { StreamableFile } from '@nestjs/common'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import { TrackController } from './track.controller'
-import { TrackService } from '../services'
+import { TrackService, TrackStreamingService } from '../services'
 import { TracksPageOptionsDto, TracksPageDto } from '../dto'
 
 describe('TrackController', () => {
   let controller: TrackController
   let mockTrackService: Partial<TrackService>
+  let mockTrackStreamingService: Partial<TrackStreamingService>
 
   beforeEach(async () => {
     mockTrackService = {
       getTracks: vi.fn(),
       getPopularTracks: vi.fn(),
       getNewTracks: vi.fn(),
-      stream: vi.fn(),
+    }
+
+    mockTrackStreamingService = {
+      streamSegment: vi.fn(),
     }
 
     const module = await Test.createTestingModule({
@@ -24,6 +28,10 @@ describe('TrackController', () => {
         {
           provide: TrackService,
           useValue: mockTrackService,
+        },
+        {
+          provide: TrackStreamingService,
+          useValue: mockTrackStreamingService,
         },
       ],
     }).compile()
@@ -88,20 +96,36 @@ describe('TrackController', () => {
     })
   })
 
-  describe('stream', () => {
+  describe('streamManifest', () => {
+    it('should return a StreamableFile', () => {
+      // Arrange
+      const trackId = '123'
+      const expectedResult = new StreamableFile(Buffer.from(''))
+      mockTrackStreamingService.streamManifest = vi.fn().mockReturnValue(expectedResult)
+
+      // Act
+      const result = controller.streamManifest(trackId)
+
+      // Assert
+      expect(result).toEqual(expectedResult)
+      expect(mockTrackStreamingService.streamManifest).toHaveBeenCalledWith(trackId)
+    })
+  })
+
+  describe('streamSegment', () => {
     it('should return a StreamableFile', () => {
       // Arrange
       const trackId = '123'
       const filename = 'track.mp3'
       const expectedResult = new StreamableFile(Buffer.from(''))
-      mockTrackService.stream = vi.fn().mockReturnValue(expectedResult)
+      mockTrackStreamingService.streamSegment = vi.fn().mockReturnValue(expectedResult)
 
       // Act
-      const result = controller.stream(trackId, filename)
+      const result = controller.streamSegment(trackId, filename)
 
       // Assert
       expect(result).toEqual(expectedResult)
-      expect(mockTrackService.stream).toHaveBeenCalledWith(trackId, filename)
+      expect(mockTrackStreamingService.streamSegment).toHaveBeenCalledWith(trackId, filename)
     })
   })
 })

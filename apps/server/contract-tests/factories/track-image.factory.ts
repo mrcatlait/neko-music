@@ -2,13 +2,13 @@ import { faker } from '@faker-js/faker'
 
 import { TrackImageEntity, TrackEntity } from '@modules/track/entities'
 
-export const trackImageFactory = (): TrackImageEntity => {
+export const trackImageFactory = (track: TrackEntity): TrackImageEntity => {
   const trackImageMock: Omit<TrackImageEntity, 'dtoClass' | 'toDto'> = {
     id: faker.string.uuid(),
-    trackId: faker.string.uuid(),
+    trackId: track.id,
     resolution: faker.string.sample(),
     url: faker.internet.url(),
-    track: {} as TrackEntity,
+    track,
   }
 
   const trackImage = new TrackImageEntity()

@@ -1,19 +1,33 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import bcrypt from 'bcrypt'
 
 import { CryptoService } from './crypto.service'
+import { ConfigService } from './config.service'
 
 describe('CryptoService', () => {
   let cryptoService: CryptoService
+  let configService: ConfigService
+
+  const mockPepper = 'test-pepper'
+  const mockSaltRounds = 10
 
   beforeEach(() => {
-    cryptoService = new CryptoService()
+    configService = {
+      get: vi.fn((key: string) => {
+        if (key === 'PASSWORD_PEPPER') return mockPepper
+        if (key === 'USER_PASSWORD_SALT_ROUNDS') return mockSaltRounds
+        return undefined
+      }),
+    } as unknown as ConfigService
+
+    cryptoService = new CryptoService(configService)
   })
 
   describe('generateHash', () => {
     it('should generate a hash from a password', async () => {
       // Arrange
       const password = 'testPassword123'
+      const expectedPepperedPassword = `${password}${mockPepper}`
 
       // Act
       const hash = await cryptoService.generateHash(password)
@@ -21,7 +35,9 @@ describe('CryptoService', () => {
       // Assert
       expect(hash).toBeDefined()
       expect(hash).not.toBe(password)
-      expect(bcrypt.compareSync(password, hash)).toBe(true)
+      expect(bcrypt.compareSync(expectedPepperedPassword, hash)).toBe(true)
+      expect(configService.get).toHaveBeenCalledWith('PASSWORD_PEPPER')
+      expect(configService.get).toHaveBeenCalledWith('USER_PASSWORD_SALT_ROUNDS')
     })
 
     it('should generate different hashes for the same password', async () => {
@@ -48,6 +64,7 @@ describe('CryptoService', () => {
 
       // Assert
       expect(result).toBe(true)
+      expect(configService.get).toHaveBeenCalledWith('PASSWORD_PEPPER')
     })
 
     it('should return false for non-matching password and hash', async () => {
@@ -61,6 +78,7 @@ describe('CryptoService', () => {
 
       // Assert
       expect(result).toBe(false)
+      expect(configService.get).toHaveBeenCalledWith('PASSWORD_PEPPER')
     })
   })
 })

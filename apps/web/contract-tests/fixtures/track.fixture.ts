@@ -7,7 +7,7 @@ import { ArtistRole } from '@core/enum'
 
 const { extractPayload, integer, string, uuid } = MatchersV3
 
-const trackDto: PactMatcher<TrackDto> = {
+export const trackDto: PactMatcher<TrackDto> = {
   id: uuid('c76b4326-ca77-4c24-a414-f002c6be3106'),
   title: string('Title'),
   duration: integer(123),

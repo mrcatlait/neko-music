@@ -20,7 +20,7 @@ const artistDto: PactMatcher<ArtistDto> = {
   ],
 }
 
-export const getArtistSuccessResponseBody: PactMatcher<ArtistDto> = artistDto
+export const getArtistSuccessResponseBody = artistDto
 export const getArtistSuccess = mapArtistDtoToModel(
   extractPayload(getArtistSuccessResponseBody) as unknown as ArtistDto,
 )

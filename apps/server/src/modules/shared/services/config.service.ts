@@ -19,6 +19,7 @@ interface Config {
   COOKIE_SECRET: string
   // Bcrypt
   USER_PASSWORD_SALT_ROUNDS: number
+  PASSWORD_PEPPER: string
   // Root user
   ROOT_USER_EMAIL: string
   ROOT_USER_PASSWORD: string

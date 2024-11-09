@@ -72,6 +72,10 @@ export class AuthenticationController {
     return user
   }
 
+  @Throttle({
+    short: { limit: 2, ttl: 1000 },
+    long: { limit: 5, ttl: 60000 },
+  })
   @Post('/register')
   @Public()
   @ApiOkResponse({

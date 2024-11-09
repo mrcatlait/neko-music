@@ -16,7 +16,7 @@ export class ArtistEntity extends AbstractEntity<ArtistDto> {
   @Column(UtilsService.toColumnOptions(ArtistTable.nameColumn))
   name: string
 
-  @OneToMany(() => ArtistImageEntity, (image) => image.artist)
+  @OneToMany(() => ArtistImageEntity, (image) => image.artist, { onDelete: 'CASCADE' })
   images?: ArtistImageEntity[]
 
   @Column(UtilsService.toColumnOptions(ArtistTable.bioColumn))

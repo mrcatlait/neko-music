@@ -1,12 +1,20 @@
 import { Test } from '@nestjs/testing'
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
+import { NestFastifyApplication } from '@nestjs/platform-fastify'
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql'
-import { MessageStateHandlers } from '@pact-foundation/pact'
+import { VerifierOptions as PactVerifierOptions } from '@pact-foundation/pact'
+import { StateFuncWithSetup } from '@pact-foundation/pact/src/dsl/verifier/proxy/types'
 
 import { PactModule, PactVerifierService } from 'contract-tests/pact.module'
-import { artists, auth, registerMocks, tracks } from 'contract-tests/fixtures'
+import { artists, playlists, registerDatabaseMocks, tracks } from 'contract-tests/fixtures'
 import { ConfigService } from '@shared/services'
 import { AppModule } from '@modules/app'
+import { mockSessionMiddleware } from 'contract-tests/mock-session.middleware'
+import { createTestApp } from 'src/util'
+
+// Pact has a bug with stateHandlers, it expects a string as a first argument
+interface VerifierOptions extends Omit<PactVerifierOptions, 'stateHandlers'> {
+  stateHandlers?: Record<string, StateFuncWithSetup>
+}
 
 describe('Pact Verification', () => {
   let postgresContainer: StartedPostgreSqlContainer
@@ -16,30 +24,35 @@ describe('Pact Verification', () => {
   beforeAll(async () => {
     postgresContainer = await new PostgreSqlContainer().start()
 
-    const stateHandlers: MessageStateHandlers = {
-      'authenticated user': () => {
-        auth.authenticatedUser()
-        return Promise.resolve()
-      },
-      'list of tracks is empty': () => {
-        tracks.getTracksEmpty()
+    let token = ''
 
-        return Promise.resolve()
+    const options: VerifierOptions = {
+      stateHandlers: {
+        'authenticated user': {
+          setup: () => {
+            token = 'mock-session'
+            return Promise.resolve()
+          },
+          teardown: () => {
+            token = ''
+            return Promise.resolve()
+          },
+        },
+        'has tracks': tracks.getTracksSuccess,
+        'has no tracks': tracks.getTracksEmpty,
+        'has artist': artists.getArtistSuccess,
+        'has artist tracks': artists.getArtistTracksSuccess,
+        'has own playlist': playlists.getMyPlaylistSuccess,
+        'has tracks in playlist': playlists.getPlaylistTracksSuccess,
       },
-      'list of tracks exists': () => {
-        tracks.getTracksSuccess()
-
-        return Promise.resolve()
-      },
-      'artist exists': () => {
-        artists.getArtistSuccess()
-
-        return Promise.resolve()
+      requestFilter: (req, res, next) => {
+        req.headers['Authorization'] = token
+        next()
       },
     }
 
-    const moduleBuilder = Test.createTestingModule({
-      imports: [PactModule.register({ stateHandlers }), AppModule],
+    const moduleRef = await Test.createTestingModule({
+      imports: [PactModule.register(options as PactVerifierOptions), AppModule],
     })
       .overrideProvider(ConfigService)
       .useValue({
@@ -65,14 +78,15 @@ describe('Pact Verification', () => {
           }
         },
       })
-
-    registerMocks(moduleBuilder)
-
-    const moduleRef = await moduleBuilder.compile()
+      .compile()
 
     verifierService = moduleRef.get(PactVerifierService)
 
-    app = moduleRef.createNestApplication(new FastifyAdapter())
+    registerDatabaseMocks(moduleRef)
+
+    app = await createTestApp(moduleRef)
+
+    app.getHttpAdapter().getInstance().addHook('preHandler', mockSessionMiddleware)
 
     await app.init()
   })
@@ -80,10 +94,6 @@ describe('Pact Verification', () => {
   afterAll(async () => {
     await app.close()
     await postgresContainer.stop()
-  })
-
-  afterEach(() => {
-    vi.clearAllMocks()
   })
 
   it('validates the expectations of Matching Service', async () => {
