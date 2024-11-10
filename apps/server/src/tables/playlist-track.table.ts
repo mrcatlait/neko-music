@@ -3,7 +3,7 @@ import { Table, TableColumn, TableForeignKey } from 'typeorm'
 import { TrackTable } from './track.table'
 import { PlaylistTable } from './playlist.table'
 
-import { UUIDType, UUIDGenerator } from '@common/constants'
+import { UUIDType, UUIDGenerator, NumericTypes } from '@common/constants'
 
 export class PlaylistTrackTable {
   static readonly idColumn = new TableColumn({
@@ -41,9 +41,15 @@ export class PlaylistTrackTable {
     isNullable: false,
   })
 
+  static readonly positionColumn = new TableColumn({
+    name: 'Position',
+    type: NumericTypes.integer,
+    isNullable: false,
+  })
+
   static readonly table = new Table({
     name: 'PlaylistTrack',
-    columns: [this.idColumn, this.playlistIdColumn, this.trackIdColumn],
+    columns: [this.idColumn, this.playlistIdColumn, this.trackIdColumn, this.positionColumn],
     foreignKeys: [this.playlistIdForeignKey, this.trackIdForeignKey],
   })
 }

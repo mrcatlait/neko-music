@@ -5,5 +5,8 @@ export class UpdatePlaylistDto {
   readonly name?: string
 
   @ApiProperty()
-  readonly addSong?: string
+  readonly description?: string
+
+  @ApiProperty()
+  readonly isPublic?: boolean
 }

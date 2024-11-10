@@ -3,12 +3,12 @@ import {
   EmbeddedViewRef,
   inject,
   Injectable,
-  Injector,
   INJECTOR,
   TemplateRef,
-  Type,
   ViewContainerRef,
 } from '@angular/core'
+
+import { PortalComponent } from '@core/classes'
 
 @Injectable({
   providedIn: 'root',
@@ -22,26 +22,26 @@ export class PortalService {
     this.vcr = vcr
   }
 
-  add<C>(component: Type<C>): ComponentRef<C> {
-    const injector = this.createInjector()
-    const ref = this.safeHost.createComponent(component, { injector })
+  add<Component, Context>(portalComponent: PortalComponent<Component>, context?: Context): ComponentRef<Component> {
+    const injector = portalComponent.createInjector(this.injector, context)
+    const ref = this.safeHost.createComponent(portalComponent.component, { injector })
 
     ref.changeDetectorRef.detectChanges()
 
     return ref
   }
 
-  remove<C>({ hostView }: ComponentRef<C>): void {
+  remove<Component>({ hostView }: ComponentRef<Component>): void {
     if (!hostView.destroyed) {
       hostView.destroy()
     }
   }
 
-  addTemplate<C>(templateRef: TemplateRef<C>, context?: C): EmbeddedViewRef<C> {
+  addTemplate<Context>(templateRef: TemplateRef<Context>, context?: Context): EmbeddedViewRef<Context> {
     return this.safeHost.createEmbeddedView(templateRef, context)
   }
 
-  removeTemplate<C>(viewRef: EmbeddedViewRef<C>): void {
+  removeTemplate<Context>(viewRef: EmbeddedViewRef<Context>): void {
     if (!viewRef.destroyed) {
       viewRef.destroy()
     }
@@ -53,12 +53,5 @@ export class PortalService {
     }
 
     return this.vcr
-  }
-
-  private createInjector(): Injector {
-    return Injector.create({
-      parent: this.injector,
-      providers: [], // @todo provide token with id
-    })
   }
 }

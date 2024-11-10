@@ -1,0 +1,11 @@
+@mixin scrollbar-hidden() {
+  /* stylelint-disable*/
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* stylelint-enable*/
+
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-thumb {
+      display: none;
+  }
+}

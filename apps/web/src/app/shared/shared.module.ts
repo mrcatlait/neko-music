@@ -5,8 +5,10 @@ import { RouterModule } from '@angular/router'
 
 import {
   ButtonDirective,
+  DialogCloseDirective,
   DropdownTriggerDirective,
   PermissionDirective,
+  PortalOutletDirective,
   SelectorDirective,
   SliderDirective,
   SlotDirective,
@@ -30,6 +32,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
   declarations: [
     AppBarComponent,
     ButtonDirective,
+    DialogCloseDirective,
     DropdownTriggerDirective,
     ErrorComponent,
     ImageUrlPipe,
@@ -41,6 +44,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     NumberSequencePipe,
     PermissionDirective,
     PlayIconComponent,
+    PortalOutletDirective,
     SelectorDirective,
     SliderDirective,
     SlotDirective,
@@ -51,6 +55,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     AppBarComponent,
     ButtonDirective,
     CommonModule,
+    DialogCloseDirective,
     DropdownTriggerDirective,
     ErrorComponent,
     ImageUrlPipe,
@@ -63,6 +68,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     NumberSequencePipe,
     PermissionDirective,
     PlayIconComponent,
+    PortalOutletDirective,
     ReactiveFormsModule,
     RouterModule,
     SelectorDirective,

@@ -26,6 +26,7 @@ describe('Auth', () => {
     it('returns an HTTP 200 and a login response', async () => {
       await provider
         .addInteraction()
+        .given('user exists', { email: 'test@test.com', password: 'password' })
         .uponReceiving('a request to POST login')
         .withRequest('POST', '/auth/login', (builder) => builder.jsonBody(loginDto))
         .willRespondWith(200, (builder) => builder.jsonBody(loginSuccessResponseBody))

@@ -1,0 +1,32 @@
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin: auto;
+  inline-size: auto;
+
+  max-height: min(560px, calc(100% - 48px));
+  max-width: min(560px, calc(100% - 48px));
+  min-height: 140px;
+  min-width: 280px;
+
+  border-radius: var(--shape-corner-extra-large);
+
+  background-color: var(--color-surface-container-high);
+  color: var(--color-text-high-emphasis);
+
+  padding: 24px;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}

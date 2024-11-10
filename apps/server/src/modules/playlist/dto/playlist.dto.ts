@@ -24,6 +24,6 @@ export class PlaylistDto {
     this.id = playlist.id
     this.name = playlist.name
     this.type = playlist.type
-    this.tracks = playlist.tracks.toDtos()
+    this.tracks = playlist.tracks?.toDtos() ?? []
   }
 }

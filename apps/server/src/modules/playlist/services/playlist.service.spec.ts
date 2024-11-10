@@ -1,13 +1,12 @@
 import { Test } from '@nestjs/testing'
 import { PartiallyMocked } from 'vitest'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { In, Repository } from 'typeorm'
 import { NotFoundException } from '@nestjs/common'
 
 import { PlaylistService } from './playlist.service'
 import { PlaylistEntity, PlaylistTrackEntity } from '../entities'
-import { PlaylistPageOptionsDto, CreatePlaylistDto, UpdatePlaylistDto } from '../dto'
-import { PlaylistType } from '../constants'
+import { PlaylistPageOptionsDto, CreatePlaylistDto } from '../dto'
 
 import { UserAccountEntity } from '@modules/user/entities'
 import { UserModel } from '@modules/authorization/models'
@@ -23,10 +22,12 @@ describe('PlaylistService', () => {
       create: vi.fn(),
       save: vi.fn(),
       findOne: vi.fn(),
+      delete: vi.fn(),
     }
 
     playlistTrackRepositoryMock = {
       insert: vi.fn(),
+      delete: vi.fn(),
     }
 
     const module = await Test.createTestingModule({
@@ -75,7 +76,7 @@ describe('PlaylistService', () => {
     it('should create a new playlist', async () => {
       // Arrange
       const mockUser: UserModel = { user: { id: '1' } } as UserModel
-      const createPlaylistDto: CreatePlaylistDto = { name: 'New Playlist', type: PlaylistType.PUBLIC }
+      const createPlaylistDto: CreatePlaylistDto = { name: 'New Playlist', isPublic: true }
       const mockPlaylist = new PlaylistEntity()
       Object.assign(mockPlaylist, { id: '1', name: 'New Playlist', tracks: [] })
       playlistRepositoryMock.create?.mockReturnValue(mockPlaylist)
@@ -88,36 +89,6 @@ describe('PlaylistService', () => {
       expect(result).toBeDefined()
       expect(result.id).toBe('1')
       expect(result.name).toBe('New Playlist')
-    })
-  })
-
-  describe('updatePlaylist', () => {
-    it('should update a playlist by adding a song', async () => {
-      // Arrange
-      const mockPlaylist = new PlaylistEntity()
-      Object.assign(mockPlaylist, { id: '1', tracks: [] })
-      playlistRepositoryMock.findOne?.mockResolvedValue(mockPlaylist)
-      const updatePlaylistDto: UpdatePlaylistDto = { addSong: 'song1' }
-
-      // Act
-      await playlistService.updatePlaylist('1', updatePlaylistDto)
-
-      // Assert
-      expect(playlistTrackRepositoryMock.insert).toHaveBeenCalledWith(
-        expect.objectContaining({
-          playlistId: '1',
-          trackId: 'song1',
-        }),
-      )
-    })
-
-    it('should throw NotFoundException when playlist is not found', async () => {
-      // Arrange
-      playlistRepositoryMock.findOne?.mockResolvedValue(null)
-      const updatePlaylistDto: UpdatePlaylistDto = { addSong: 'song1' }
-
-      // Act & Assert
-      await expect(playlistService.updatePlaylist('1', updatePlaylistDto)).rejects.toThrow(NotFoundException)
     })
   })
 
@@ -143,6 +114,82 @@ describe('PlaylistService', () => {
 
       // Act & Assert
       await expect(playlistService.searchPlaylist('1')).rejects.toThrow(NotFoundException)
+    })
+  })
+
+  describe('updatePlaylist', () => {
+    it('should update a playlist', async () => {
+      // Arrange
+      const mockUser: UserModel = { user: { id: '1' } } as UserModel
+      const mockPlaylist = new PlaylistEntity()
+      Object.assign(mockPlaylist, { id: '1', name: 'Test Playlist', tracks: [] })
+      playlistRepositoryMock.findOne?.mockResolvedValue(mockPlaylist)
+      playlistRepositoryMock.create?.mockReturnValue(mockPlaylist)
+      playlistRepositoryMock.save?.mockResolvedValue(mockPlaylist)
+
+      // Act
+      const result = await playlistService.updatePlaylist(mockUser, '1', { name: 'Updated Playlist' })
+
+      // Assert
+      expect(result).toBeUndefined()
+      expect(playlistRepositoryMock.save).toHaveBeenCalledWith(mockPlaylist)
+    })
+  })
+
+  describe('deletePlaylist', () => {
+    it('should delete a playlist', async () => {
+      // Arrange
+      const mockUser: UserModel = { user: { id: '1' } } as UserModel
+      const mockPlaylist = new PlaylistEntity()
+      Object.assign(mockPlaylist, { id: '1', name: 'Test Playlist', tracks: [] })
+      playlistRepositoryMock.findOne?.mockResolvedValue(mockPlaylist)
+      playlistRepositoryMock.delete?.mockResolvedValue({ affected: 1, raw: [] })
+
+      // Act
+      const result = await playlistService.deletePlaylist(mockUser, '1')
+
+      // Assert
+      expect(result).toBeUndefined()
+      expect(playlistRepositoryMock.delete).toHaveBeenCalledWith('1')
+    })
+  })
+
+  describe('addTracksToPlaylist', () => {
+    it('should add tracks to a playlist', async () => {
+      // Arrange
+      const mockUser: UserModel = { user: { id: '1' } } as UserModel
+      const mockPlaylist = new PlaylistEntity()
+      Object.assign(mockPlaylist, { id: '1', name: 'Test Playlist', tracks: [] })
+      playlistRepositoryMock.findOne?.mockResolvedValue(mockPlaylist)
+      playlistTrackRepositoryMock.insert?.mockResolvedValue({ raw: [], identifiers: [], generatedMaps: [] })
+
+      // Act
+      const result = await playlistService.addTracksToPlaylist(mockUser, '1', { tracks: ['1', '2'] })
+
+      // Assert
+      expect(result).toBeUndefined()
+      expect(playlistTrackRepositoryMock.insert).toHaveBeenCalledWith([
+        { playlistId: '1', trackId: '1' },
+        { playlistId: '1', trackId: '2' },
+      ])
+    })
+  })
+
+  describe('removeTracksFromPlaylist', () => {
+    it('should remove tracks from a playlist', async () => {
+      // Arrange
+      const mockUser: UserModel = { user: { id: '1' } } as UserModel
+      const mockPlaylist = new PlaylistEntity()
+      Object.assign(mockPlaylist, { id: '1', name: 'Test Playlist', tracks: [] })
+      playlistRepositoryMock.findOne?.mockResolvedValue(mockPlaylist)
+      playlistTrackRepositoryMock.delete?.mockResolvedValue({ affected: 1, raw: [] })
+
+      // Act
+      const result = await playlistService.removeTracksFromPlaylist(mockUser, '1', { tracks: ['1', '2'] })
+
+      // Assert
+      expect(result).toBeUndefined()
+      expect(playlistTrackRepositoryMock.delete).toHaveBeenCalledWith({ playlistId: '1', trackId: In(['1', '2']) })
     })
   })
 })

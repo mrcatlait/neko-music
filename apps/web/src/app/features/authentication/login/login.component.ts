@@ -34,13 +34,14 @@ export class LoginComponent {
   })
 
   handleSubmit(): void {
-    if (this.form.valid) {
-      const email = this.form.controls.email.value ?? ''
-      const password = this.form.controls.password.value ?? ''
-
-      this.state.login({ email, password })
-    } else {
+    if (this.form.invalid) {
       this.form.markAllAsTouched()
+      return
     }
+
+    const email = this.form.controls.email.value ?? ''
+    const password = this.form.controls.password.value ?? ''
+
+    this.state.login({ email, password })
   }
 }

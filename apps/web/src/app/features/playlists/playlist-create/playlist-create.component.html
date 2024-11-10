@@ -1,0 +1,64 @@
+<div class="header">
+  <h1 class="headline-s">Create Playlist</h1>
+
+  <button
+    aria-label="Close dialog"
+    dialogClose
+    nekoIconButton
+    variant="text"
+  >
+    <i>close</i>
+  </button>
+</div>
+
+<form [formGroup]="form">
+  <neko-textfield>
+    <label>Name</label>
+
+    <input
+      formControlName="name"
+      nekoTextfield
+      placeholder="Name"
+      type="text"
+    />
+
+    <neko-error [control]="form.controls.name" />
+  </neko-textfield>
+
+  <neko-textfield>
+    <label>Description</label>
+
+    <input
+      formControlName="description"
+      nekoTextfield
+      placeholder="Description"
+      type="text"
+    />
+  </neko-textfield>
+
+  <input
+    formControlName="isPublic"
+    nekoCheckbox
+    type="checkbox"
+  />
+  <label>Public</label>
+</form>
+
+<div class="actions">
+  <button
+    aria-label="Cancel"
+    dialogClose
+    nekoButton
+    variant="text"
+  >
+    Cancel
+  </button>
+
+  <button
+    aria-label="Create playlist"
+    nekoButton
+    variant="filled"
+  >
+    Create
+  </button>
+</div>

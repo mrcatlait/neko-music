@@ -13,4 +13,7 @@ export class PlaylistTrackEntity {
 
   @Column(UtilsService.toColumnOptions(PlaylistTrackTable.trackIdColumn))
   trackId: string
+
+  @Column(UtilsService.toColumnOptions(PlaylistTrackTable.positionColumn))
+  position: number
 }

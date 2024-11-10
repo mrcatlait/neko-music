@@ -5,6 +5,8 @@ import { Permission } from '@neko/permissions'
 import { LinkedTrack } from '../../models'
 
 import { PlaybackState } from '@core/state'
+import { PlaylistAddComponent } from '@features/playlists/playlist-add'
+import { DialogService } from '@core/services'
 
 @Component({
   selector: 'neko-track-list-item',
@@ -13,6 +15,7 @@ import { PlaybackState } from '@core/state'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackListItemComponent {
+  private readonly dialogService = inject(DialogService)
   private readonly playbackState = inject(PlaybackState)
 
   @Input({ required: true }) track: LinkedTrack
@@ -26,6 +29,12 @@ export class TrackListItemComponent {
   menuOpen = false
 
   @Output() togglePlay = new EventEmitter<void>()
+
+  handleAddToPlaylist() {
+    this.dialogService.open(PlaylistAddComponent, {
+      trackId: this.track.id,
+    })
+  }
 
   handleMenuClick(): void {
     this.menuOpen = false

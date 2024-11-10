@@ -7,6 +7,7 @@ export const playlistTrackFactory = (playlist: PlaylistEntity, track: TrackEntit
   const playlistTrackMock: Omit<PlaylistTrackEntity, 'dtoClass' | 'toDto'> = {
     id: faker.string.uuid(),
     playlistId: playlist.id,
+    position: faker.number.int({ min: 1, max: 100 }),
     trackId: track.id,
   }
 

@@ -1,4 +1,4 @@
-import { MatchersV3, TemplateHeaders } from '@pact-foundation/pact'
+import { MatchersV3 } from '@pact-foundation/pact'
 import { Permission } from '@neko/permissions'
 
 import { LoginDto, LoginResponseDto, RegisterDto } from '@core/dto'
@@ -14,7 +14,7 @@ export const loginDto: PactMatcher<LoginDto> = {
 export const loginSuccessResponseBody: PactMatcher<LoginResponseDto> = {
   user: {
     id: uuid('e2490de5-5bd3-43d5-b7c4-526e33f71304'),
-    username: string('user.username'),
+    username: string('test'),
   },
   permissions: eachLike(string(), 1) as unknown as Permission[],
 }

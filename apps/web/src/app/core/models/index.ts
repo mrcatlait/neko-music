@@ -1,6 +1,7 @@
 export * from './artist.model'
 export * from './environment.model'
 export * from './image.model'
+export * from './playlist.model'
 export * from './queue.model'
 export * from './state.model'
 export * from './track.model'

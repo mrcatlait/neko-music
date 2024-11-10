@@ -78,8 +78,8 @@
       <li
         *hasPermissions="permissions.PlaylistUpdate"
         [attr.tabindex]="false"
-        (click)="handleMenuClick()"
-        (keyup)="handleMenuClick()"
+        (click)="handleAddToPlaylist(); handleMenuClick()"
+        (keyup)="handleAddToPlaylist(); handleMenuClick()"
       >
         <i class="secondary-text">playlist_add</i>
         <span class="label-l">Add to playlist</span>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
-import { Observable } from 'rxjs'
+import { map, Observable } from 'rxjs'
 
 import { API_URL } from '@core/tokens'
 import {
@@ -13,6 +13,8 @@ import {
   UpdatePlaylistDto,
   UpdatePlaylistTracksDto,
 } from '@core/dto'
+import { mapPlaylistDtoToModel } from '@core/mappers'
+import { Playlist } from '@core/models'
 
 @Injectable({
   providedIn: 'root',
@@ -37,10 +39,12 @@ export class PlaylistRepository {
     return this.httpClient.get<PlaylistDto>(`${this.apiUrl}/playlists/${playlistId}`)
   }
 
-  getMyPlaylists({ take, offset }: PageOptionsDto): Observable<PageResponseDto<PlaylistDto>> {
-    return this.httpClient.get<PageResponseDto<PlaylistDto>>(`${this.apiUrl}/playlists/me`, {
-      params: { take, offset } as PageOptionsDto,
-    })
+  getMyPlaylists({ take, offset }: PageOptionsDto): Observable<Playlist[]> {
+    return this.httpClient
+      .get<PageResponseDto<PlaylistDto>>(`${this.apiUrl}/playlists/me`, {
+        params: { take, offset } as PageOptionsDto,
+      })
+      .pipe(map((dto) => dto.data.map(mapPlaylistDtoToModel)))
   }
 
   addTracksToPlaylist(playlistId: string, addPlaylistTrackDto: AddPlaylistTrackDto): Observable<void> {

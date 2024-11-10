@@ -1255,6 +1255,117 @@
       "type": "Synchronous/HTTP"
     },
     {
+      "description": "a request to POST login",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "user exists",
+          "params": {
+            "email": "test@test.com",
+            "password": "password"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "email": "test@test.com",
+            "password": "password"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.email": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.password": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "method": "POST",
+        "path": "/auth/login"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "permissions": [
+              "some string"
+            ],
+            "user": {
+              "id": "e2490de5-5bd3-43d5-b7c4-526e33f71304",
+              "username": "user.username"
+            }
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.permissions": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.permissions[*]": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.user.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                }
+              ]
+            },
+            "$.user.username": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
       "description": "a request to POST register",
       "pending": false,
       "request": {

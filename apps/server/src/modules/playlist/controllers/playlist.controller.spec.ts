@@ -3,7 +3,14 @@ import { PartiallyMocked } from 'vitest'
 
 import { PlaylistController } from './playlist.controller'
 import { PlaylistService } from '../services'
-import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto } from '../dto'
+import {
+  AddPlaylistTrackDto,
+  CreatePlaylistDto,
+  PlaylistDto,
+  PlaylistPageDto,
+  RemovePlaylistTrackDto,
+  UpdatePlaylistTracksDto,
+} from '../dto'
 import { PlaylistType } from '../constants'
 
 import { UserAccountEntity } from '@modules/user/entities'
@@ -18,6 +25,11 @@ describe('PlaylistController', () => {
       getPlaylists: vi.fn(),
       searchPlaylist: vi.fn(),
       createPlaylist: vi.fn(),
+      updatePlaylist: vi.fn(),
+      deletePlaylist: vi.fn(),
+      addTracksToPlaylist: vi.fn(),
+      removeTracksFromPlaylist: vi.fn(),
+      updateTracksInPlaylist: vi.fn(),
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -72,7 +84,7 @@ describe('PlaylistController', () => {
     it('should create a new playlist', async () => {
       // Arrange
       const user: UserModel = { user: { id: '1', username: 'testuser' }, permissions: [] }
-      const input: CreatePlaylistDto = { name: 'New Playlist', type: PlaylistType.PUBLIC }
+      const input: CreatePlaylistDto = { name: 'New Playlist', isPublic: true }
       const expectedResult: PlaylistDto = { id: '2', name: 'New Playlist', type: PlaylistType.PUBLIC, tracks: [] }
       playlistServiceMock.createPlaylist?.mockResolvedValue(expectedResult)
 
@@ -82,6 +94,57 @@ describe('PlaylistController', () => {
       // Assert
       expect(result).toEqual(expectedResult)
       expect(playlistServiceMock.createPlaylist).toHaveBeenCalledWith(user, input)
+    })
+  })
+
+  describe('updateTracksInPlaylist', () => {
+    it('should update tracks in playlist', async () => {
+      // Arrange
+      const user: UserModel = { user: { id: '1', username: 'testuser' }, permissions: [] }
+      const playlistId = '1'
+      const input: UpdatePlaylistTracksDto = { rangeStart: 0, rangeEnd: 1, insertBefore: 0 }
+      playlistServiceMock.updateTracksInPlaylist?.mockResolvedValue()
+
+      // Act
+      const result = await controller.updateTracksInPlaylist(user, playlistId, input)
+
+      // Assert
+      expect(result).toBeUndefined()
+      expect(playlistServiceMock.updateTracksInPlaylist).toHaveBeenCalledWith(user, playlistId, input)
+    })
+  })
+
+  describe('addTracksToPlaylist', () => {
+    it('should add tracks to playlist', async () => {
+      // Arrange
+      const user: UserModel = { user: { id: '1', username: 'testuser' }, permissions: [] }
+      const playlistId = '1'
+      const input: AddPlaylistTrackDto = { tracks: ['1', '2'] }
+      playlistServiceMock.addTracksToPlaylist?.mockResolvedValue()
+
+      // Act
+      const result = await controller.addTracksToPlaylist(user, playlistId, input)
+
+      // Assert
+      expect(result).toBeUndefined()
+      expect(playlistServiceMock.addTracksToPlaylist).toHaveBeenCalledWith(user, playlistId, input)
+    })
+  })
+
+  describe('removeTracksFromPlaylist', () => {
+    it('should remove tracks from playlist', async () => {
+      // Arrange
+      const user: UserModel = { user: { id: '1', username: 'testuser' }, permissions: [] }
+      const playlistId = '1'
+      const input: RemovePlaylistTrackDto = { tracks: ['1', '2'] }
+      playlistServiceMock.removeTracksFromPlaylist?.mockResolvedValue()
+
+      // Act
+      const result = await controller.removeTracksFromPlaylist(user, playlistId, input)
+
+      // Assert
+      expect(result).toBeUndefined()
+      expect(playlistServiceMock.removeTracksFromPlaylist).toHaveBeenCalledWith(user, playlistId, input)
     })
   })
 })

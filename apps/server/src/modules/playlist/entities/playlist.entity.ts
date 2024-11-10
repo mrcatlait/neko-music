@@ -28,7 +28,7 @@ export class PlaylistEntity extends AbstractEntity<PlaylistDto> {
     joinColumn: { name: PlaylistTrackTable.trackIdColumn.name, referencedColumnName: 'id' },
     inverseJoinColumn: { name: PlaylistTrackTable.playlistIdColumn.name, referencedColumnName: 'id' },
   })
-  tracks: TrackEntity[]
+  tracks?: TrackEntity[]
 
   dtoClass = PlaylistDto
 }

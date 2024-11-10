@@ -17,6 +17,7 @@
     box-sizing: border-box;
     flex-grow: 1;
     padding: 0 16px;
+    @include abstracts.typography('body-large');
 
     &:focus,
     &:focus-visible {
@@ -26,6 +27,7 @@
 
     &::placeholder {
       color: var(--n-input-placeholder-color);
+      @include abstracts.typography('body-large');
     }
   }
 
@@ -34,6 +36,7 @@
   }
 
   neko-textfield label {
+    padding-left: 4px;
     padding-bottom: 8px;
   }
 

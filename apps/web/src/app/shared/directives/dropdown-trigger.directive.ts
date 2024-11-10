@@ -21,6 +21,7 @@ interface Position {
   y: number
 }
 
+// projects\core\directives\dropdown\dropdown-position-sided.directive.ts
 @Directive({
   selector: '[nekoDropdownTrigger]',
 })

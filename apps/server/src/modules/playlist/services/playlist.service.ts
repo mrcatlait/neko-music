@@ -1,9 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { In, Repository } from 'typeorm'
 
 import { PlaylistEntity, PlaylistTrackEntity } from '../entities'
-import { CreatePlaylistDto, PlaylistDto, PlaylistPageDto, PlaylistPageOptionsDto, UpdatePlaylistDto } from '../dto'
+import {
+  AddPlaylistTrackDto,
+  CreatePlaylistDto,
+  PlaylistDto,
+  PlaylistPageDto,
+  PlaylistPageOptionsDto,
+  RemovePlaylistTrackDto,
+  UpdatePlaylistDto,
+  UpdatePlaylistTracksDto,
+} from '../dto'
+import { PlaylistType } from '../constants'
 
 import { UserAccountEntity } from '@modules/user/entities'
 import { PageMetaDto } from '@common/dto'
@@ -36,25 +46,113 @@ export class PlaylistService {
   }
 
   createPlaylist(user: UserModel, playlistDto: CreatePlaylistDto): Promise<PlaylistDto> {
-    const playlist = this.playlistRepository.create({ userId: user.user.id, name: playlistDto.name })
+    const playlist = this.playlistRepository.create({
+      userId: user.user.id,
+      name: playlistDto.name,
+      type: playlistDto.isPublic ? PlaylistType.PUBLIC : PlaylistType.PRIVATE,
+    })
 
     return this.playlistRepository.save(playlist).then((p) => p.toDto())
   }
 
-  async updatePlaylist(playlistId: string, playlistDto: UpdatePlaylistDto): Promise<void> {
-    const playlist = await this.playlistRepository.findOne({ relations: { tracks: true }, where: { id: playlistId } })
+  async updatePlaylist(user: UserModel, playlistId: string, playlistDto: UpdatePlaylistDto): Promise<void> {
+    const playlist = await this.playlistRepository.findOne({
+      relations: { tracks: true },
+      where: { id: playlistId, userId: user.user.id },
+    })
 
     if (!playlist) {
       throw new NotFoundException()
     }
 
-    if (playlistDto.addSong && !playlist.tracks.some((song) => song.id === playlistDto.addSong)) {
-      const playlistTrack = new PlaylistTrackEntity()
-      playlistTrack.playlistId = playlist.id
-      playlistTrack.trackId = playlistDto.addSong
+    const updatedPlaylist = this.playlistRepository.create({
+      ...playlist,
+      ...playlistDto,
+      type: playlistDto.isPublic ? PlaylistType.PUBLIC : PlaylistType.PRIVATE,
+    })
 
-      await this.playlistTrackRepository.insert(playlistTrack)
+    await this.playlistRepository.save(updatedPlaylist)
+  }
+
+  async deletePlaylist(user: UserModel, playlistId: string): Promise<void> {
+    const playlist = await this.playlistRepository.findOne({ where: { id: playlistId, userId: user.user.id } })
+
+    if (!playlist) {
+      throw new NotFoundException()
     }
+
+    await this.playlistRepository.delete(playlistId)
+  }
+
+  async addTracksToPlaylist(
+    user: UserModel,
+    playlistId: string,
+    addPlaylistTrackDto: AddPlaylistTrackDto,
+  ): Promise<void> {
+    const playlist = await this.playlistRepository.findOne({ where: { id: playlistId, userId: user.user.id } })
+
+    if (!playlist) {
+      throw new NotFoundException()
+    }
+
+    const currentMaxPosition = (await this.playlistTrackRepository.maximum('position', { playlistId })) || 1
+
+    await this.playlistTrackRepository.insert(
+      addPlaylistTrackDto.tracks.map((trackId, index) => ({
+        playlistId,
+        trackId,
+        position: currentMaxPosition + index,
+      })),
+    )
+  }
+
+  async removeTracksFromPlaylist(
+    user: UserModel,
+    playlistId: string,
+    removePlaylistTrackDto: RemovePlaylistTrackDto,
+  ): Promise<void> {
+    const playlist = await this.playlistRepository.findOne({ where: { id: playlistId, userId: user.user.id } })
+
+    if (!playlist) {
+      throw new NotFoundException()
+    }
+
+    await this.playlistTrackRepository.delete({ playlistId, trackId: In(removePlaylistTrackDto.tracks) })
+  }
+
+  async updateTracksInPlaylist(
+    user: UserModel,
+    playlistId: string,
+    updatePlaylistTracksDto: UpdatePlaylistTracksDto,
+  ): Promise<void> {
+    const playlist = await this.playlistRepository.findOne({
+      where: { id: playlistId, userId: user.user.id },
+      relations: { tracks: true },
+    })
+
+    if (!playlist) {
+      throw new NotFoundException()
+    }
+
+    const { rangeStart, rangeEnd, insertBefore } = updatePlaylistTracksDto
+
+    const playlistTracks = await this.playlistTrackRepository.find({
+      where: { playlistId },
+      order: { position: 'asc' },
+    })
+
+    const tracksToMove = playlistTracks.slice(rangeStart, rangeEnd + 1)
+
+    const remainingTracks = playlistTracks.filter((_, index) => index < rangeStart || index > rangeEnd)
+
+    remainingTracks.splice(insertBefore, 0, ...tracksToMove)
+
+    const updates = remainingTracks.map((track, index) => ({
+      id: track.id,
+      position: index,
+    }))
+
+    await this.playlistTrackRepository.save(updates)
   }
 
   async searchPlaylist(playlistId: string): Promise<PlaylistDto> {

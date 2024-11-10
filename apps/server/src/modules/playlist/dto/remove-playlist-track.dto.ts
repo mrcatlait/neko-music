@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsUUID } from 'class-validator'
+import { IsArray, IsNotEmpty, IsUUID } from 'class-validator'
 
 export class RemovePlaylistTrackDto {
-  @IsUUID(4)
+  @IsArray()
   @IsNotEmpty()
   @ApiProperty()
-  readonly trackId: string
+  @IsUUID(4, { each: true })
+  readonly tracks: string[]
 }

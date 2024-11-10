@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, IsString, Matches } from 'class-validator'
-
-import { PlaylistType } from '../constants'
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
 export class CreatePlaylistDto {
   @IsString()
@@ -9,10 +7,13 @@ export class CreatePlaylistDto {
   @ApiProperty()
   readonly name: string
 
+  @IsString()
   @IsOptional()
-  @Matches(`^${[PlaylistType.PRIVATE, PlaylistType.PUBLIC].join('|')}$`, 'i')
-  @ApiProperty({
-    enum: PlaylistType,
-  })
-  readonly type: PlaylistType
+  @ApiProperty()
+  readonly description?: string
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty()
+  readonly isPublic: boolean
 }

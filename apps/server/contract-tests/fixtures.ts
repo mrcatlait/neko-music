@@ -2,6 +2,7 @@ import { TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { StateFuncWithSetup } from '@pact-foundation/pact/src/dsl/verifier/proxy/types'
+import { hash } from 'bcrypt'
 
 import { mockedUser } from './mock-session.middleware'
 
@@ -25,6 +26,7 @@ import {
 } from '@modules/track/entities'
 import { UserAccountEntity, UserLoginDataEntity } from '@modules/user/entities'
 import { PlaylistEntity, PlaylistTrackEntity } from '@modules/playlist/entities'
+import { UserRoleEntity } from '@modules/authorization/entities'
 
 let trackRepository: Repository<TrackEntity>
 let trackImageRepository: Repository<TrackImageEntity>
@@ -38,7 +40,7 @@ let artistImageRepository: Repository<ArtistImageEntity>
 
 let userAccountRepository: Repository<UserAccountEntity>
 let userLoginDataRepository: Repository<UserLoginDataEntity>
-
+let userRoleRepository: Repository<UserRoleEntity>
 let playlistRepository: Repository<PlaylistEntity>
 let playlistTrackRepository: Repository<PlaylistTrackEntity>
 
@@ -55,6 +57,7 @@ export const registerDatabaseMocks = (moduleRef: TestingModule): void => {
 
   userAccountRepository = moduleRef.get(getRepositoryToken(UserAccountEntity))
   userLoginDataRepository = moduleRef.get(getRepositoryToken(UserLoginDataEntity))
+  userRoleRepository = moduleRef.get(getRepositoryToken(UserRoleEntity))
 
   playlistRepository = moduleRef.get(getRepositoryToken(PlaylistEntity))
   playlistTrackRepository = moduleRef.get(getRepositoryToken(PlaylistTrackEntity))
@@ -76,6 +79,27 @@ const clearDatabase = async () => {
     userAccountRepository.delete({}),
     playlistRepository.delete({}),
   ])
+}
+const userExists: StateFuncWithSetup = {
+  setup: async (params: { email: string; password: string }) => {
+    const passwordHash = await hash(params.password, 10)
+    const role = await userRoleRepository.findOneByOrFail({ default: true })
+    const userAccount = userAccountRepository.create({
+      username: 'test',
+      role,
+    })
+    await userAccountRepository.save(userAccount)
+    const userLoginData = userLoginDataRepository.create({
+      userId: userAccount.id,
+      passwordHash,
+      email: params.email,
+    })
+    await userLoginDataRepository.save(userLoginData)
+  },
+  teardown: async () => {
+    await userLoginDataRepository.delete({})
+    await userAccountRepository.delete({})
+  },
 }
 
 const getTracksEmpty: StateFuncWithSetup = {
@@ -159,6 +183,10 @@ const getPlaylistTracksSuccess: StateFuncWithSetup = {
   teardown: async () => {
     await clearDatabase()
   },
+}
+
+export const auth = {
+  userExists,
 }
 
 export const tracks = {
