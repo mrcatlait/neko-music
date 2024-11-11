@@ -7,7 +7,7 @@
   "dependencies": {
     "@fastify/cookie": "^9.4.0",
     "@fastify/multipart": "^8.3.0",
-    "@fastify/session": "^10.9.0",
+    "@fastify/session": "^11.0.1",
     "@neko/permissions": "*",
     "@nest-lab/fastify-multer": "^1.2.0",
     "@nestjs/common": "^10.4.7",
