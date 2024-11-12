@@ -95,13 +95,28 @@ export class PlaylistService {
       throw new NotFoundException()
     }
 
-    const currentMaxPosition = (await this.playlistTrackRepository.maximum('position', { playlistId })) || 1
+    // Get existing tracks in playlist
+    const existingTracks = await this.playlistTrackRepository.find({
+      where: { playlistId },
+      select: ['trackId'],
+    })
+
+    const existingTrackIds = new Set(existingTracks.map((track) => track.trackId))
+
+    // Filter out tracks that already exist in playlist
+    const newTracks = addPlaylistTrackDto.tracks.filter((trackId) => !existingTrackIds.has(trackId))
+
+    if (newTracks.length === 0) {
+      return
+    }
+
+    const currentMaxPosition = (await this.playlistTrackRepository.maximum('position', { playlistId })) || 0
 
     await this.playlistTrackRepository.insert(
-      addPlaylistTrackDto.tracks.map((trackId, index) => ({
+      newTracks.map((trackId, index) => ({
         playlistId,
         trackId,
-        position: currentMaxPosition + index,
+        position: currentMaxPosition + index + 1,
       })),
     )
   }

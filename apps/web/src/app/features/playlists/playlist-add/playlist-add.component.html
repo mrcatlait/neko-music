@@ -1,15 +1,4 @@
-<div class="header">
-  <h1 class="headline-s">Add to Playlist</h1>
-
-  <button
-    aria-label="Close dialog"
-    dialogClose
-    nekoIconButton
-    variant="text"
-  >
-    <i>close</i>
-  </button>
-</div>
+<neko-dialog-title>Add to Playlist</neko-dialog-title>
 
 <neko-textfield>
   <i nekoSlot="left">search</i>
@@ -23,40 +12,43 @@
   />
 </neko-textfield>
 
-<button
-  aria-label="Create new playlist"
-  nekoButton
-  variant="outlined"
-  (click)="handleCreatePlaylist()"
->
-  <i>add</i>
-  Create New Playlist
-</button>
+<neko-dialog-content>
+  <button
+    aria-label="Create new playlist"
+    nekoButton
+    variant="outlined"
+    (click)="handleCreatePlaylist()"
+  >
+    <i>add</i>
+    Create New Playlist
+  </button>
 
-@if (loading()) {
-} @else {
-  @if (hasPlaylists()) {
-    <h2 class="title-m">All Playlists</h2>
-
-    @for (playlist of filteredPlaylists(); track playlist.id) {
-      <button
-        [attr.aria-label]="'Add to ' + playlist.name"
-        class="playlist-item"
-        nekoButton
-        variant="text"
-      >
-        <i>playlist_play</i>
-        <span>{{ playlist.name }}</span>
-      </button>
-    }
+  @if (loading()) {
   } @else {
-    <div class="empty-state-container">
-      <div class="empty-state">
-        <i class="outlined">queue_music</i>
-      </div>
+    @if (hasPlaylists()) {
+      <h2 class="title-m">All Playlists</h2>
 
-      <span class="title-m">You don’t have any playlists yet.</span>
-      <span class="subtitle-m secondary-text">Create one to get started.</span>
-    </div>
+      @for (playlist of filteredPlaylists(); track playlist.id) {
+        <button
+          [attr.aria-label]="'Add to ' + playlist.name"
+          class="playlist-item"
+          nekoButton
+          variant="text"
+          (click)="handleAddToPlaylist(playlist.id)"
+        >
+          <i>playlist_play</i>
+          <span>{{ playlist.name }}</span>
+        </button>
+      }
+    } @else {
+      <div class="empty-state-container">
+        <div class="empty-state">
+          <i class="outlined">queue_music</i>
+        </div>
+
+        <span class="title-m">You don’t have any playlists yet.</span>
+        <span class="subtitle-m secondary-text">Create one to get started.</span>
+      </div>
+    }
   }
-}
+</neko-dialog-content>

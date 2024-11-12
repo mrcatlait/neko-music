@@ -17,6 +17,9 @@ import { DialogService } from '@core/services'
   styleUrl: 'playlist-add.component.scss',
   imports: [SharedModule],
   providers: [PlaylistAddState],
+  host: {
+    class: 'dialog',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlaylistAddComponent implements OnInit {
@@ -27,6 +30,7 @@ export class PlaylistAddComponent implements OnInit {
 
   readonly playlists = this.state.playlists
   readonly loading = this.state.loading
+  readonly updating = this.state.updating
 
   readonly searchControl = new FormControl('')
   private readonly searchInput = toSignal(
@@ -56,4 +60,8 @@ export class PlaylistAddComponent implements OnInit {
   //   const playlist = this.playlists()?.find((p) => p.id === playlistId)
   //   return playlist?.tracks.some((t) => t.id === this.data.trackId) ?? false
   // }
+
+  handleAddToPlaylist(playlistId: string) {
+    this.state.addToPlaylist(playlistId, [this.context.data?.trackId])
+  }
 }

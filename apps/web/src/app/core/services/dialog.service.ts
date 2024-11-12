@@ -6,7 +6,7 @@ import { DIALOGS } from '@core/tokens/dialogs.token'
 
 export interface DialogRef<T = any> {
   id: string
-  context?: PortalContext
+  context?: PortalContext<unknown>
   component: PortalComponent<T>
   close: () => void
 }

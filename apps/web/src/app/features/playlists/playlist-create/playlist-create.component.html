@@ -1,50 +1,41 @@
-<div class="header">
-  <h1 class="headline-s">Create Playlist</h1>
+<neko-dialog-title>Create Playlist</neko-dialog-title>
 
-  <button
-    aria-label="Close dialog"
-    dialogClose
-    nekoIconButton
-    variant="text"
-  >
-    <i>close</i>
-  </button>
-</div>
+<neko-dialog-content>
+  <form [formGroup]="form">
+    <neko-textfield>
+      <label>Name</label>
 
-<form [formGroup]="form">
-  <neko-textfield>
-    <label>Name</label>
+      <input
+        formControlName="name"
+        nekoTextfield
+        placeholder="Name"
+        type="text"
+      />
 
-    <input
-      formControlName="name"
-      nekoTextfield
-      placeholder="Name"
-      type="text"
-    />
+      <neko-error [control]="form.controls.name" />
+    </neko-textfield>
 
-    <neko-error [control]="form.controls.name" />
-  </neko-textfield>
+    <neko-textfield>
+      <label>Description</label>
 
-  <neko-textfield>
-    <label>Description</label>
+      <input
+        formControlName="description"
+        nekoTextfield
+        placeholder="Description"
+        type="text"
+      />
+    </neko-textfield>
 
     <input
-      formControlName="description"
-      nekoTextfield
-      placeholder="Description"
-      type="text"
+      formControlName="isPublic"
+      nekoCheckbox
+      type="checkbox"
     />
-  </neko-textfield>
+    <label>Public</label>
+  </form>
+</neko-dialog-content>
 
-  <input
-    formControlName="isPublic"
-    nekoCheckbox
-    type="checkbox"
-  />
-  <label>Public</label>
-</form>
-
-<div class="actions">
+<neko-dialog-actions>
   <button
     aria-label="Cancel"
     dialogClose
@@ -58,7 +49,8 @@
     aria-label="Create playlist"
     nekoButton
     variant="filled"
+    (click)="handleSubmit()"
   >
     Create
   </button>
-</div>
+</neko-dialog-actions>

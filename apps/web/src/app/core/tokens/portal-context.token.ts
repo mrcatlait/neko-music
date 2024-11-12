@@ -1,8 +1,10 @@
-import { InjectionToken } from '@angular/core'
+import { inject, InjectionToken } from '@angular/core'
 
-export interface PortalContext {
+export interface PortalContext<T> {
   id: string
-  data?: Record<string, unknown>
+  data?: T
 }
 
-export const PORTAL_CONTEXT = new InjectionToken<PortalContext>('PORTAL_CONTEXT')
+export const PORTAL_CONTEXT = new InjectionToken<PortalContext<any>>('PORTAL_CONTEXT')
+
+export const injectPortalContext = <T = void>(): PortalContext<T> => inject(PORTAL_CONTEXT)

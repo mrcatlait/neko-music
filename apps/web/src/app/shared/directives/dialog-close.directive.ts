@@ -1,18 +1,16 @@
-import { Directive, HostListener, Input, Optional, Inject } from '@angular/core'
+import { Directive, HostListener, Input, inject } from '@angular/core'
 
 import { DialogService } from '@core/services'
-import { PORTAL_CONTEXT, PortalContext } from '@core/tokens'
+import { injectPortalContext } from '@core/tokens'
 
 @Directive({
   selector: '[dialogClose]',
 })
 export class DialogCloseDirective {
-  @Input('dialogClose') result?: unknown
+  private readonly context = injectPortalContext()
+  private readonly dialogService = inject(DialogService)
 
-  constructor(
-    @Optional() @Inject(PORTAL_CONTEXT) private context: PortalContext,
-    private dialogService: DialogService,
-  ) {}
+  @Input('dialogClose') result?: unknown
 
   @HostListener('click')
   onClick(): void {

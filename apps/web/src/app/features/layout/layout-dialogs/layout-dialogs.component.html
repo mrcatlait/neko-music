@@ -4,7 +4,7 @@
   @for (dialog of dialogs(); track dialog.id) {
     <section
       aria-modal="true"
-      class="dialog"
+      class="dialog-container"
       role="dialog"
     >
       <ng-container *portalOutlet="dialog.component; context: dialog.context"></ng-container>

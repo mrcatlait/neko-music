@@ -8,13 +8,13 @@ export class PortalComponent<T> {
     private readonly i?: Injector,
   ) {}
 
-  createInjector<C>(injector: Injector, context?: C): Injector {
+  createInjector<C>(injector: Injector, useValue?: C): Injector {
     return Injector.create({
       parent: this.i || injector,
       providers: [
         {
           provide: PORTAL_CONTEXT,
-          useValue: context,
+          useValue,
         },
       ],
     })

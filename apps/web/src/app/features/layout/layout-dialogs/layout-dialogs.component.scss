@@ -28,7 +28,7 @@
 }
 
 .overlay,
-.dialog {
+.dialog-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -49,13 +49,13 @@
   // background-color: rgba(var(--color-surface-rgb), .69);
 }
 
-.dialog {
+.dialog-container {
   position: sticky;
   overscroll-behavior: none;
   filter: brightness(0.25);
 }
 
-.dialog:last-child {
+.dialog-container:last-child {
   pointer-events: auto;
   filter: none;
 }

@@ -42,9 +42,8 @@
   </div>
 
   <button
-    [nekoDropdownTrigger]="menu"
+    [nekoMenuTrigger]="menu"
     [selector]="selectors.menuButton"
-    [(nekoDropdownOpen)]="menuOpen"
     nekoIconButton
     variant="text"
   >
@@ -57,8 +56,8 @@
     <ul class="track-list-item-menu">
       <li
         [attr.tabindex]="false"
-        (click)="togglePlay.emit(); handleMenuClick()"
-        (keyup)="togglePlay.emit(); handleMenuClick()"
+        (click)="togglePlay.emit()"
+        (keyup)="togglePlay.emit()"
       >
         <i class="secondary-text">play_arrow</i>
         <span class="label-l">Play</span>
@@ -66,20 +65,15 @@
 
       <hr *hasPermissions="[permissions.LibraryUpdate, permissions.PlaylistUpdate]" />
 
-      <li
-        *hasPermissions="permissions.LibraryUpdate"
-        [attr.tabindex]="false"
-        (click)="handleMenuClick()"
-        (keyup)="handleMenuClick()"
-      >
+      <li *hasPermissions="permissions.LibraryUpdate">
         <i class="secondary-text">add</i>
         <span class="label-l">Add to library</span>
       </li>
       <li
         *hasPermissions="permissions.PlaylistUpdate"
         [attr.tabindex]="false"
-        (click)="handleAddToPlaylist(); handleMenuClick()"
-        (keyup)="handleAddToPlaylist(); handleMenuClick()"
+        (click)="handleAddToPlaylist()"
+        (keyup)="handleAddToPlaylist()"
       >
         <i class="secondary-text">playlist_add</i>
         <span class="label-l">Add to playlist</span>
@@ -87,19 +81,11 @@
 
       <hr />
 
-      <li
-        [attr.tabindex]="false"
-        (click)="handleMenuClick()"
-        (keyup)="handleMenuClick()"
-      >
+      <li>
         <i class="outlined secondary-text">queue_play_next</i>
         <span class="label-l">Play next</span>
       </li>
-      <li
-        [attr.tabindex]="false"
-        (click)="handleMenuClick()"
-        (keyup)="handleMenuClick()"
-      >
+      <li>
         <i class="outlined secondary-text">add_to_queue</i>
         <span class="label-l">Play last</span>
       </li>

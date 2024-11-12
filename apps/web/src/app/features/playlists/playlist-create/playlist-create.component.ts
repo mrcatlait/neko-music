@@ -12,6 +12,9 @@ import { SharedModule } from '@shared/shared.module'
   styleUrl: 'playlist-create.component.scss',
   imports: [SharedModule],
   providers: [PlaylistCreateState],
+  host: {
+    class: 'dialog',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlaylistCreateComponent {
