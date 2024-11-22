@@ -7,6 +7,7 @@ import { AudioState } from '@core/state'
   selector: 'neko-play-icon',
   templateUrl: './play-icon.component.html',
   styleUrl: './play-icon.component.scss',
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayIconComponent {

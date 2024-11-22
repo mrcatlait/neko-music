@@ -1,6 +1,7 @@
 export * from './app-bar/app-bar.component'
 export * from './dialog'
 export * from './error/error.component'
+export * from './list-item/list-item.component'
 export * from './logo/logo.component'
 export * from './media-card/media-card.component'
 export * from './menu/menu.component'

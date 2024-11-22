@@ -1,29 +1,29 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { t } from 'elysia'
 
 import { PageOptionsDto } from './page-options.dto'
 
+export const pageMetaDto = t.Object({
+  offset: t.Numeric(),
+  take: t.Numeric(),
+  hasNext: t.Boolean(),
+  hasPrevious: t.Boolean(),
+})
+
 interface PageMetaDtoParameters {
   pageOptionsDto: PageOptionsDto
-  itemCount: number
+  hasMore: boolean
 }
 
 export class PageMetaDto {
-  @ApiProperty()
   readonly offset: number
-
-  @ApiProperty()
   readonly take: number
+  readonly hasNext: boolean
+  readonly hasPrevious: boolean
 
-  @ApiProperty()
-  readonly itemCount: number
-
-  @ApiProperty()
-  readonly pageCount: number
-
-  constructor({ pageOptionsDto, itemCount }: PageMetaDtoParameters) {
+  constructor({ pageOptionsDto, hasMore }: PageMetaDtoParameters) {
     this.offset = pageOptionsDto.offset
     this.take = pageOptionsDto.take
-    this.itemCount = itemCount
-    this.pageCount = itemCount ? Math.ceil(itemCount / this.take) : 0
+    this.hasNext = hasMore
+    this.hasPrevious = this.offset > 0
   }
 }

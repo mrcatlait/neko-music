@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router'
 
 import {
   ButtonDirective,
+  ChipDirective,
   DialogCloseDirective,
   DropdownTriggerDirective,
   MenuTriggerDirective,
@@ -21,6 +22,7 @@ import {
   DialogContentComponent,
   DialogTitleComponent,
   ErrorComponent,
+  ListItemComponent,
   LogoComponent,
   MediaCardComponent,
   MediaCardSubtitleDirective,
@@ -36,6 +38,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
   declarations: [
     AppBarComponent,
     ButtonDirective,
+    ChipDirective,
     DialogActionsComponent,
     DialogCloseDirective,
     DialogContentComponent,
@@ -43,6 +46,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     DropdownTriggerDirective,
     ErrorComponent,
     ImageUrlPipe,
+    ListItemComponent,
     LogoComponent,
     MediaCardComponent,
     MediaCardSubtitleDirective,
@@ -62,6 +66,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
   exports: [
     AppBarComponent,
     ButtonDirective,
+    ChipDirective,
     CommonModule,
     DialogActionsComponent,
     DialogCloseDirective,
@@ -70,6 +75,7 @@ import { ImageUrlPipe, NumberSequencePipe } from './pipes'
     DropdownTriggerDirective,
     ErrorComponent,
     ImageUrlPipe,
+    ListItemComponent,
     LogoComponent,
     MediaCardComponent,
     MediaCardSubtitleDirective,

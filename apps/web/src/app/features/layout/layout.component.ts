@@ -7,6 +7,7 @@ import { Layout } from '@core/enum'
 @Component({
   selector: 'neko-layout',
   templateUrl: 'layout.component.html',
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent {

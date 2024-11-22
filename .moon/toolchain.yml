@@ -1,10 +1,4 @@
 $schema: 'https://moonrepo.dev/schemas/toolchain.json'
 
-node:
-  version: '20'
-  dependencyVersionFormat: 'star'
-  syncProjectWorkspaceDependencies: true
-  dedupeOnLockfileChange: false # Currently there is an issue with postcss
-  packageManager: 'npm'
-  npm:
-    version: '10'
+bun:
+  version: '1.1.34'

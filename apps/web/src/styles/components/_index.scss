@@ -1,6 +1,6 @@
-@import
-  'button',
-  'dialog',
-  'icon',
-  'input',
-  'slider';
+@forward 'button';
+@forward 'chip';
+@forward 'dialog';
+@forward 'icon';
+@forward 'input';
+@forward 'slider';

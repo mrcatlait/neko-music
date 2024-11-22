@@ -7,6 +7,7 @@ import { AuthState } from '@core/state'
 @Directive({
   selector: '[hasPermissions]',
   hostDirectives: [NgIf],
+  standalone: false,
 })
 export class PermissionDirective implements OnInit {
   private readonly ngIfDirective = inject(NgIf)

@@ -1,0 +1,58 @@
+<neko-app-bar
+  [anchor]="header"
+  [showBackArrow]="false"
+>
+  Library
+</neko-app-bar>
+
+<h2 #header>Library</h2>
+
+<form [formGroup]="filters">
+  <label
+    nekoChip
+    variant="filter"
+  >
+    Playlists
+    <input
+      formControlName="playlists"
+      nekoChip
+      type="checkbox"
+    />
+  </label>
+
+  <label
+    nekoChip
+    variant="filter"
+  >
+    Albums
+    <input
+      formControlName="albums"
+      nekoChip
+      type="checkbox"
+    />
+  </label>
+
+  <label
+    nekoChip
+    variant="filter"
+  >
+    Artists
+    <input
+      formControlName="artists"
+      nekoChip
+      type="checkbox"
+    />
+  </label>
+
+  <label
+    nekoChip
+    variant="filter"
+  >
+    Songs
+    <input
+      formControlName="songs"
+      nekoChip
+      type="checkbox"
+    />
+  </label>
+</form>

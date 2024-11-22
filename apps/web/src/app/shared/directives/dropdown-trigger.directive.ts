@@ -24,6 +24,7 @@ interface Position {
 // projects\core\directives\dropdown\dropdown-position-sided.directive.ts
 @Directive({
   selector: '[nekoDropdownTrigger]',
+  standalone: false,
 })
 export class DropdownTriggerDirective implements OnChanges, OnDestroy {
   private readonly document = inject(DOCUMENT)

@@ -7,6 +7,7 @@ import { PlaybackState } from '@core/state'
   selector: 'neko-player-track',
   templateUrl: 'player-track.component.html',
   styleUrl: 'player-track.component.scss',
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerTrackComponent {

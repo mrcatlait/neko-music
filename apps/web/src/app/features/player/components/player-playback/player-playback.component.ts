@@ -7,6 +7,7 @@ import { AudioState } from '@core/state'
   selector: 'neko-player-playback',
   templateUrl: 'player-playback.component.html',
   styleUrls: ['player-playback.component.scss'],
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerPlaybackComponent {

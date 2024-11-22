@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, 
   selector: 'neko-media-card',
   templateUrl: './media-card.component.html',
   styleUrl: './media-card.component.scss',
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MediaCardComponent {

@@ -1,9 +1,9 @@
-import { TrackDto } from './track.dto'
+import { ImageDto } from './image.dto'
 
 export type PlaylistDto = {
   id: string
   name: string
   description: string
-  isPublic: boolean
-  tracks: TrackDto[]
+  type: string
+  images: ImageDto[]
 }

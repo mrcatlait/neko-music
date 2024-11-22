@@ -1,7 +1,5 @@
-import { CreateGenres1000000000010 } from './1000000000010-CreateGenres'
-import { CreateArtists1000000000020 } from './1000000000020-CreateArtists'
-import { CreateTracks1000000000030 } from './1000000000030-CreateTracks'
+import { v10_CreateGenres } from './v10_CreateGenres'
+import { v20_CreateArtists } from './v20_CreateArtists'
+import { v30_CreateTracks } from './v30_CreateTracks'
 
-import { SeedClass } from '@modules/database-seed/types'
-
-export const seeds: SeedClass[] = [CreateGenres1000000000010, CreateArtists1000000000020, CreateTracks1000000000030]
+export const seeds = [v10_CreateGenres, v20_CreateArtists, v30_CreateTracks]

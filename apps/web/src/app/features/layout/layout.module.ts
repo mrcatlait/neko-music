@@ -10,9 +10,9 @@ import { SharedModule } from '@shared/shared.module'
 import { PlayerModule } from '@features/player'
 
 @NgModule({
-  imports: [LayoutDialogsComponent, LayoutMinimalModule, LayoutSidebarModule, PlayerModule, SharedModule],
+  imports: [LayoutMinimalModule, LayoutSidebarModule, PlayerModule, SharedModule],
+  declarations: [LayoutComponent, LayoutDialogsComponent],
   providers: [LayoutService],
-  declarations: [LayoutComponent],
   exports: [LayoutComponent],
 })
 export class LayoutModule {}

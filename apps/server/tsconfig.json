@@ -1,29 +1,19 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "module": "ES2022",
     "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
+    "moduleResolution": "node",
+    "types": ["bun-types", "vitest/globals"],
     "esModuleInterop": true,
-    "types": ["vitest/globals"],
+    "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "5.0",
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
     "paths": {
       "@common/*": ["src/common/*"],
-      "@shared/*": ["src/modules/shared/*"],
-      "@tables": ["src/tables"],
-      "@modules/*": ["src/modules/*"],
+      "@core/*": ["src/core/*"],
+      "@features/*": ["src/features/*"]
     }
   }
 }

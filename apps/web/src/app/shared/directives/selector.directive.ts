@@ -3,6 +3,7 @@ import { SelectorWithSuffix } from '@selectors'
 
 @Directive({
   selector: '[selector]',
+  standalone: false,
 })
 export class SelectorDirective {
   @HostBinding('attr.data-test')

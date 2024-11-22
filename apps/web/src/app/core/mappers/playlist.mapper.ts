@@ -5,5 +5,6 @@ export const mapPlaylistDtoToModel = (dto: PlaylistDto): Playlist => ({
   id: dto.id,
   name: dto.name,
   description: dto.description,
-  isPublic: dto.isPublic,
+  type: dto.type,
+  images: dto.images,
 })

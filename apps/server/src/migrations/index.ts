@@ -1,47 +1,43 @@
-import { MigrationInterface } from 'typeorm'
+import { v10_CreateArtistTable } from './v10_CreateArtistTable'
+import { v20_CreateArtistImageTable } from './v20_CreateArtistImageTable'
+import { v30_CreateAlbumTable } from './v30_CreateAlbumTable'
+import { v40_CreateAlbumImageTable } from './v40_CreateAlbumImageTable'
+import { v50_CreateTrackTable } from './v50_CreateTrackTable'
+import { v60_CreateTrackImageTable } from './v60_CreateTrackImageTable'
+import { v70_CreateGenreTable } from './v70_CreateGenreTable'
+import { v80_CreateTrackGenreTable } from './v80_CreateTrackGenreTable'
+import { v90_CreateTrackArtistTable } from './v90_CreateTrackArtistTable'
+import { v100_CreatePermissionTable } from './v100_CreatePermissionTable'
+import { v110_CreateUserRoleTable } from './v110_CreateUserRoleTable'
+import { v120_CreateGrantedPermissionTable } from './v120_CreateGrantedPermissionTable'
+import { v130_CreateUserAccountTable } from './v130_CreateUserAccountTable'
+import { v140_CreateUserLoginDataTable } from './v140_CreateUserLoginDataTable'
+import { v150_CreatePlaylistTable } from './v150_CreatePlaylistTable'
+import { v160_CreatePlaylistTrackTable } from './v160_CreatePlaylistTrackTable'
+import { v170_CreatePlaylistImageTable } from './v170_CreatePlaylistImageTable'
+import { v180_AddPermissions } from './v180_AddPermissions'
+import { v190_CreateRoles } from './v190_CreateRoles'
+import { v200_GrantPermissions } from './v200_GrantPermissions'
 
-import { CreateExtensions1000000000010 } from './1000000000010-CreateExtensions'
-import { CreateArtistTable1000000000020 } from './1000000000020-CreateArtistTable'
-import { CreateArtistImageTable1000000000030 } from './1000000000030-CreateArtistImageTable'
-import { CreateAlbumTable1000000000040 } from './1000000000040-CreateAlbumTable'
-import { CreateAlbumImageTable1000000000050 } from './1000000000050-CreateAlbumImageTable'
-import { CreateTrackTable1000000000060 } from './1000000000060-CreateTrackTable'
-import { CreateTrackImageTable1000000000070 } from './1000000000070-CreateTrackImageTable'
-import { CreateGenreTable1000000000080 } from './1000000000080-CreateGenreTable'
-import { CreateTrackGenreTable1000000000090 } from './1000000000090-CreateTrackGenreTable'
-import { CreateTrackArtistTable1000000000100 } from './1000000000100-CreateTrackArtistTable'
-import { CreatePermissionTable1000000000110 } from './1000000000110-CreatePermissionTable'
-import { CreateUserRoleTable1000000000120 } from './1000000000120-CreateUserRoleTable'
-import { CreateGrantedPermissionTable1000000000130 } from './1000000000130-CreateGrantedPermissionTable'
-import { CreateUserAccountTable1000000000140 } from './1000000000140-CreateUserAccountTable'
-import { CreateUserLoginDataTable1000000000150 } from './1000000000150-CreateUserLoginDataTable'
-import { CreatePlaylistTable1000000000160 } from './1000000000160-CreatePlaylistTable'
-import { CreatePlaylistTrackTable1000000000170 } from './1000000000170-CreatePlaylistTrackTable'
-import { CreatePermissions1000000000180 } from './1000000000180-CreatePermissions'
-import { CreateRoles1000000000190 } from './1000000000190-CreateRoles'
-import { GrantPermissions1000000000200 } from './1000000000200-GrantPermissions'
-
-export type MigrationClass = new () => MigrationInterface
-
-export const migrations: MigrationClass[] = [
-  CreateExtensions1000000000010,
-  CreateArtistTable1000000000020,
-  CreateArtistImageTable1000000000030,
-  CreateAlbumTable1000000000040,
-  CreateAlbumImageTable1000000000050,
-  CreateTrackTable1000000000060,
-  CreateTrackImageTable1000000000070,
-  CreateGenreTable1000000000080,
-  CreateTrackGenreTable1000000000090,
-  CreateTrackArtistTable1000000000100,
-  CreatePermissionTable1000000000110,
-  CreateUserRoleTable1000000000120,
-  CreateGrantedPermissionTable1000000000130,
-  CreateUserAccountTable1000000000140,
-  CreateUserLoginDataTable1000000000150,
-  CreatePlaylistTable1000000000160,
-  CreatePlaylistTrackTable1000000000170,
-  CreatePermissions1000000000180,
-  CreateRoles1000000000190,
-  GrantPermissions1000000000200,
+export const migrations = [
+  v10_CreateArtistTable,
+  v20_CreateArtistImageTable,
+  v30_CreateAlbumTable,
+  v40_CreateAlbumImageTable,
+  v50_CreateTrackTable,
+  v60_CreateTrackImageTable,
+  v70_CreateGenreTable,
+  v80_CreateTrackGenreTable,
+  v90_CreateTrackArtistTable,
+  v100_CreatePermissionTable,
+  v110_CreateUserRoleTable,
+  v120_CreateGrantedPermissionTable,
+  v130_CreateUserAccountTable,
+  v140_CreateUserLoginDataTable,
+  v150_CreatePlaylistTable,
+  v160_CreatePlaylistTrackTable,
+  v170_CreatePlaylistImageTable,
+  v180_AddPermissions,
+  v190_CreateRoles,
+  v200_GrantPermissions,
 ]

@@ -1,4 +1,5 @@
 export * from './button.directive'
+export * from './chip.directive'
 export * from './dialog-close.directive'
 export * from './dropdown-trigger.directive'
 export * from './menu-trigger.directive'

@@ -7,6 +7,7 @@ import { LinkedTrack } from '../../models'
   selector: 'neko-track-list',
   templateUrl: './track-list.component.html',
   styleUrl: './track-list.component.scss',
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackListComponent {

@@ -8,6 +8,7 @@ import { AudioState, PlaybackState } from '@core/state'
   selector: 'neko-player-controls',
   templateUrl: 'player-controls.component.html',
   styleUrls: ['player-controls.component.scss'],
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerControlsComponent {

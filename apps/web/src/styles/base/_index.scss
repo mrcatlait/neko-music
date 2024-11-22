@@ -1,8 +1,7 @@
-@import
-'elevations',
-'motions',
-'reset',
-'shapes',
-'spacing',
-'states',
-'typography';
+@forward 'elevations';
+@forward 'motions';
+@forward 'reset';
+@forward 'shapes';
+@forward 'spacing';
+@forward 'states';
+@forward 'typography';

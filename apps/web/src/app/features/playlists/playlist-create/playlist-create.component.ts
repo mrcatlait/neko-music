@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { PlaylistCreateState } from './playlist-create.state'
+import { PlaylistType } from '../playlist-shared/enums'
 
 import { SharedModule } from '@shared/shared.module'
 
@@ -38,7 +39,8 @@ export class PlaylistCreateComponent {
     const name = this.form.controls.name.value ?? ''
     const description = this.form.controls.description.value ?? ''
     const isPublic = this.form.controls.isPublic.value ?? false
+    const type = isPublic ? PlaylistType.PUBLIC : PlaylistType.PRIVATE
 
-    this.state.create({ name, description, isPublic })
+    this.state.create({ name, description, type })
   }
 }

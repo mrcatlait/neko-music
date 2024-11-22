@@ -65,7 +65,7 @@ export class AudioService implements OnDestroy {
   }
 
   load(trackId: string) {
-    this.player.attachSource(`${this.apiUrl}/tracks/${trackId}/stream/manifest.mpd`)
+    this.player.attachSource(`${this.apiUrl}/tracks/${trackId}/stream/manifest`)
   }
 
   private registerEvents() {

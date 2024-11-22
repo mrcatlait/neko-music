@@ -5,6 +5,7 @@ import { Permission } from '@neko/permissions'
   selector: 'neko-navigation-rail',
   templateUrl: './navigation-rail.component.html',
   styleUrl: './navigation-rail.component.scss',
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationRailComponent {

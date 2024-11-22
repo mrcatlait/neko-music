@@ -4,9 +4,9 @@ import { PortalComponent } from '@core/classes'
 import { PortalContext } from '@core/tokens'
 import { DIALOGS } from '@core/tokens/dialogs.token'
 
-export interface DialogRef<T = any> {
+export interface DialogRef<T, Context> {
   id: string
-  context?: PortalContext<unknown>
+  context?: PortalContext<Context>
   component: PortalComponent<T>
   close: () => void
 }
@@ -15,10 +15,10 @@ export interface DialogRef<T = any> {
 export class DialogService {
   private readonly items = inject(DIALOGS)
 
-  open<T>(component: Type<T>, context?: Record<string, unknown>): DialogRef<T> {
+  open<T, Context>(component: Type<T>, context?: Context): DialogRef<T, Context> {
     const id = crypto.randomUUID()
 
-    const dialogRef: DialogRef<T> = {
+    const dialogRef: DialogRef<T, Context> = {
       id,
       context: {
         id,
@@ -34,7 +34,7 @@ export class DialogService {
     return dialogRef
   }
 
-  findDialogById(id: string): DialogRef | undefined {
+  findDialogById<T, Context>(id: string): DialogRef<T, Context> | undefined {
     return this.items().find((dialog) => dialog.id === id)
   }
 

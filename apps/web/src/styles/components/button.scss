@@ -8,10 +8,9 @@
     --n-button-shape-corner: var(--shape-corner-full);
 
     font-family: var(--typography-font-family);
-    font-size: var(--typography-label-large-size);
-    line-height: var(--typography-label-large-line-height);
-    letter-spacing: var(--typography-label-large-tracking);
-    font-weight: var(--typography-label-large-weight);
+
+    @include abstracts.typography(label-large);
+
     display: flex;
     align-items: center;
     justify-content: center;

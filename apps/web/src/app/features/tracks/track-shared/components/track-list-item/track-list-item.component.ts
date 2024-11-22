@@ -7,11 +7,14 @@ import { LinkedTrack } from '../../models'
 import { PlaybackState } from '@core/state'
 import { PlaylistAddComponent } from '@features/playlists/playlist-add'
 import { DialogService } from '@core/services'
+import { PlaylistAddDialogData } from '@features/playlists/playlist-add/models'
+import { CollectionType } from '@features/playlists/playlist-add/enum'
 
 @Component({
   selector: 'neko-track-list-item',
   templateUrl: 'track-list-item.component.html',
   styleUrl: 'track-list-item.component.scss',
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackListItemComponent {
@@ -30,7 +33,8 @@ export class TrackListItemComponent {
 
   handleAddToPlaylist() {
     this.dialogService.open(PlaylistAddComponent, {
-      trackId: this.track.id,
-    })
+      collectionId: this.track.id,
+      collectionType: CollectionType.Track,
+    } as PlaylistAddDialogData)
   }
 }

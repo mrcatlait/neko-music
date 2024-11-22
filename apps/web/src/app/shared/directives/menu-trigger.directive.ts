@@ -4,6 +4,7 @@ import { MenuService } from '@core/services/menu.service'
 
 @Directive({
   selector: '[nekoMenuTrigger]',
+  standalone: false,
 })
 export class MenuTriggerDirective {
   private readonly menuService = inject(MenuService)

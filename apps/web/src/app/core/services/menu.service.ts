@@ -76,13 +76,9 @@ export class MenuService {
   }
 
   private getPosition(): Readonly<[number, number]> {
-    if (!this.host) {
-      throw new Error('Host not initialized')
-    }
-
     const { width, height } = this.safeDropdownContent.getBoundingClientRect()
 
-    const hostRect = this.host.getBoundingClientRect()
+    const hostRect = this.safeHost.getBoundingClientRect()
 
     const viewportRect = this.getViewportRect()
 
@@ -153,5 +149,13 @@ export class MenuService {
     }
 
     return this.menuRef.rootNodes[0]
+  }
+
+  private get safeHost(): HTMLElement {
+    if (!this.host) {
+      throw new Error('Host not initialized')
+    }
+
+    return this.host
   }
 }

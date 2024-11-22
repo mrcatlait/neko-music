@@ -1,0 +1,37 @@
+export var Permission;
+(function (Permission) {
+    // Track permissions
+    Permission["TrackRead"] = "track:read";
+    Permission["TrackCreate"] = "track:create";
+    Permission["TrackUpdate"] = "track:update";
+    Permission["TrackDelete"] = "track:delete";
+    Permission["TrackDownload"] = "track:download";
+    // Library permissions
+    Permission["LibraryRead"] = "library:read";
+    Permission["LibraryCreate"] = "library:create";
+    Permission["LibraryUpdate"] = "library:update";
+    Permission["LibraryDelete"] = "library:delete";
+    // Playlist permissions
+    Permission["PlaylistRead"] = "playlist:read";
+    Permission["PlaylistCreate"] = "playlist:create";
+    Permission["PlaylistUpdate"] = "playlist:update";
+    Permission["PlaylistDelete"] = "playlist:delete";
+    Permission["PlaylistFollow"] = "playlist:follow";
+    // Album permissions
+    Permission["AlbumRead"] = "album:read";
+    Permission["AlbumCreate"] = "album:create";
+    Permission["AlbumUpdate"] = "album:update";
+    Permission["AlbumDelete"] = "album:delete";
+    Permission["AlbumDownload"] = "album:download";
+    // Artist permissions
+    Permission["ArtistRead"] = "artist:read";
+    Permission["ArtistCreate"] = "artist:create";
+    Permission["ArtistUpdate"] = "artist:update";
+    Permission["ArtistDelete"] = "artist:delete";
+    Permission["ArtistFollow"] = "artist:follow";
+    // User permissions
+    Permission["UserRead"] = "user:read";
+    Permission["UserCreate"] = "user:create";
+    Permission["UserUpdate"] = "user:update";
+    Permission["UserDelete"] = "user:delete";
+})(Permission || (Permission = {}));

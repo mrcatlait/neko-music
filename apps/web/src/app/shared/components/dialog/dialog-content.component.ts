@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   selector: 'neko-dialog-content',
   template: '<ng-content />',
   styleUrl: 'dialog-content.component.scss',
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogContentComponent {}

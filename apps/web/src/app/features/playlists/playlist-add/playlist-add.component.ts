@@ -5,8 +5,13 @@ import { debounceTime, distinctUntilChanged } from 'rxjs'
 
 import { PlaylistAddState } from './playlist-add.state'
 import { PlaylistCreateComponent } from '../playlist-create'
+import { PlaylistSharedModule } from '../playlist-shared'
+import { PlaylistAddDialogData } from './models'
+import { PlaylistAddRepository } from './playlist-add.repository'
+import { CollectionMembershipDto } from './dto'
+import { CollectionType } from './enum'
 
-import { PORTAL_CONTEXT } from '@core/tokens'
+import { injectPortalContext } from '@core/tokens'
 import { SharedModule } from '@shared/shared.module'
 import { DialogService } from '@core/services'
 
@@ -15,8 +20,8 @@ import { DialogService } from '@core/services'
   selector: 'neko-playlist-add',
   templateUrl: 'playlist-add.component.html',
   styleUrl: 'playlist-add.component.scss',
-  imports: [SharedModule],
-  providers: [PlaylistAddState],
+  imports: [SharedModule, PlaylistSharedModule],
+  providers: [PlaylistAddState, PlaylistAddRepository],
   host: {
     class: 'dialog',
   },
@@ -26,7 +31,7 @@ export class PlaylistAddComponent implements OnInit {
   private readonly dialog = inject(DialogService)
   private readonly state = inject(PlaylistAddState)
 
-  readonly context = inject(PORTAL_CONTEXT)
+  readonly context = injectPortalContext<PlaylistAddDialogData>()
 
   readonly playlists = this.state.playlists
   readonly loading = this.state.loading
@@ -49,7 +54,10 @@ export class PlaylistAddComponent implements OnInit {
   })
 
   ngOnInit() {
-    this.state.fetch()
+    this.state.fetch({
+      collectionId: this.context.data!.collectionId,
+      collectionType: this.context.data!.collectionType,
+    })
   }
 
   handleCreatePlaylist() {
@@ -62,6 +70,22 @@ export class PlaylistAddComponent implements OnInit {
   // }
 
   handleAddToPlaylist(playlistId: string) {
-    this.state.addToPlaylist(playlistId, [this.context.data?.trackId])
+    // this.state.addToPlaylist(playlistId, [this.context.data?.collectionId])
+  }
+
+  getSupportingText({ membership }: CollectionMembershipDto): string | undefined {
+    if (!membership.existing) {
+      return
+    }
+
+    if (membership.existing === membership.total) {
+      if (this.context.data!.collectionType === CollectionType.Track) {
+        return 'Track already in playlist'
+      }
+
+      return 'Tracks already in playlist'
+    }
+
+    return `${membership.existing} tracks already in playlist`
   }
 }

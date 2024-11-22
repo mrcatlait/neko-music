@@ -1,18 +1,50 @@
+@use '../abstracts' as abstracts;
+
 @mixin typography() {
   :root {
     --typography-font-family: 'Noto Sans', 'Roboto', 'Helvetica', 'Arial', sans-serif;
 
-    // Body large
-    --typography-body-large-size: 1rem;
-    --typography-body-large-line-height: 1.5rem;
-    --typography-body-large-tracking: 0.0313rem;
-    --typography-body-large-weight: 400;
+    // Display extra large
+    --typography-display-extra-large-size: 5.5rem; // 88px
+    --typography-display-extra-large-line-height: 6rem; // 96px
+    --typography-display-extra-large-tracking: 0rem;
+    --typography-display-extra-large-weight: 400;
 
-    // Body small
-    --typography-body-small-size: 0.875rem;
-    --typography-body-small-line-height: 1.25rem;
-    --typography-body-small-tracking: 0.0063rem;
-    --typography-body-small-weight: 400;
+    // Display large
+    --typography-display-large-size: 3.5rem; // 57px
+    --typography-display-large-line-height: 4rem; // 64px
+    --typography-display-large-tracking: 0rem;
+    --typography-display-large-weight: 400;
+
+    // Display medium
+    --typography-display-medium-size: 2.5rem; // 45px
+    --typography-display-medium-line-height: 3rem; // 48px
+    --typography-display-medium-tracking: 0rem;
+    --typography-display-medium-weight: 500;
+
+    // Display small
+    --typography-display-small-size: 1.75rem; // 36px
+    --typography-display-small-line-height: 2rem; // 32px
+    --typography-display-small-tracking: 0rem;
+    --typography-display-small-weight: 400;
+
+    // Headline large
+    --typography-headline-large-size: 1.5rem; // 32px
+    --typography-headline-large-line-height: 2rem; // 32px
+    --typography-headline-large-tracking: 0rem;
+    --typography-headline-large-weight: 400;
+
+    // Headline medium
+    --typography-headline-medium-size: 1.25rem; // 28px
+    --typography-headline-medium-line-height: 1.75rem; // 28px
+    --typography-headline-medium-tracking: 0rem;
+    --typography-headline-medium-weight: 400;
+
+    // Headline small
+    --typography-headline-small-size: 1rem; // 24px
+    --typography-headline-small-line-height: 1.5rem; // 32px
+    --typography-headline-small-tracking: 0rem;
+    --typography-headline-small-weight: 500;
 
     // Title large
     --typography-title-large-size: 1.375rem; // 22px
@@ -20,17 +52,53 @@
     --typography-title-large-tracking: 0rem;
     --typography-title-large-weight: 400;
 
+    // Title medium
+    --typography-title-medium-size: 1rem; // 16px
+    --typography-title-medium-line-height: 1.5rem; // 24px
+    --typography-title-medium-tracking: 0rem;
+    --typography-title-medium-weight: 500;
+
+    // Title small
+    --typography-title-small-size: 0.875rem; // 14px
+    --typography-title-small-line-height: 1.25rem; // 20px
+    --typography-title-small-tracking: 0rem;
+    --typography-title-small-weight: 500;
+
     // Label large
-    --typography-label-large-size: 0.875rem;
-    --typography-label-large-line-height: 1.25rem;
-    --typography-label-large-tracking: 0.0063rem;
+    --typography-label-large-size: 0.875rem; // 14px
+    --typography-label-large-line-height: 1.25rem; // 20px
+    --typography-label-large-tracking: 0.0063rem; // 0.1px
     --typography-label-large-weight: 500;
 
     // Label medium
-    --typography-label-medium-size: 0.75rem;
-    --typography-label-medium-line-height: 1rem;
-    --typography-label-medium-tracking: 0.0313rem;
+    --typography-label-medium-size: 0.75rem; // 12px
+    --typography-label-medium-line-height: 1rem; // 16px
+    --typography-label-medium-tracking: 0.0313rem; // 0.5px
     --typography-label-medium-weight: 500;
+
+    // Label small
+    --typography-label-small-size: 0.625rem; // 10px
+    --typography-label-small-line-height: 1rem; // 16px
+    --typography-label-small-tracking: 0.0313rem; // 0.5px
+    --typography-label-small-weight: 500;
+
+    // Body large
+    --typography-body-large-size: 1rem; // 16px
+    --typography-body-large-line-height: 1.5rem; // 24px
+    --typography-body-large-tracking: 0.0313rem; // 0.5px
+    --typography-body-large-weight: 400;
+
+    // Body medium
+    --typography-body-medium-size: 0.875rem; // 14px
+    --typography-body-medium-line-height: 1.25rem; // 20px
+    --typography-body-medium-tracking: 0.0063rem; // 0.1px
+    --typography-body-medium-weight: 400;
+
+    // Body small
+    --typography-body-small-size: 0.875rem; // 14px
+    --typography-body-small-line-height: 1.25rem; // 20px
+    --typography-body-small-tracking: 0.0063rem; // 0.1px
+    --typography-body-small-weight: 400;
   }
 
   body {
@@ -53,118 +121,70 @@
   }
 
   .display-xl {
-    font-size: 88px;
-    line-height: 96px;
-    font-weight: 400;
-    letter-spacing: 0;
+    @include abstracts.typography('display-extra-large');
   }
   
   h1,
-  .display-l {
-    font-size: 57px;
-    line-height: 64px;
-    font-weight: 400;
-    letter-spacing: 0;
+  .display-large {
+    @include abstracts.typography('display-large');
   }
   
   h2,
-  .display-m {
-    font-size: 45px;
-    line-height: 60px;
-    font-weight: 500;
-    letter-spacing: 0;
+  .display-medium {
+    @include abstracts.typography('display-medium');
   }
   
   .display-s {
-    font-size: 36px;
-    line-height: 44px;
-    font-weight: 400;
-    letter-spacing: 0;
+    @include abstracts.typography('display-small');
   }
   
-  .headline-l {
-    font-size: 32px;
-    line-height: 40px;
-    font-weight: 400;
-    letter-spacing: 0;
+  .headline-large {
+    @include abstracts.typography('headline-large');
   }
   
-  .headline-m {
-    font-size: 28px;
-    line-height: 36px;
-    font-weight: 400;
-    letter-spacing: 0;
+  .headline-medium {
+    @include abstracts.typography('headline-medium');
   }
   
-  .headline-s {
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 400;
-    letter-spacing: 0;
+  .headline-small {
+    @include abstracts.typography('headline-small');
   }
   
-  .title-l {
-    font-size: var(--typography-title-large-size);
-    line-height: var(--typography-title-large-line-height);
-    letter-spacing: var(--typography-title-large-tracking);
-    font-weight: var(--typography-title-large-weight);
+  .title-large {
+    @include abstracts.typography('title-large');
   }
   
-  .title-m {
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 500;
-    letter-spacing: 0;
+  .title-medium {
+    @include abstracts.typography('title-medium');
   }
   
-  .title-s {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 500;
-    letter-spacing: 0;
+  .title-small {
+    @include abstracts.typography('title-small');
   }
   
-  .label-l {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+  .label-large {
+    @include abstracts.typography('label-large');
   }
   
-  .label-m {
-    font-size: var(--typography-label-medium-size);
-    line-height: var(--typography-label-medium-line-height);
-    letter-spacing: var(--typography-label-medium-tracking);
-    font-weight: var(--typography-label-medium-weight);
+  .label-medium {
+    @include abstracts.typography('label-medium');
   }
   
-  .label-s {
-    font-size: 11px;
-    line-height: 16px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+  .label-small {
+    @include abstracts.typography('label-small');
   }
   
   p,
-  .body-l {
-    font-size: var(--typography-body-large-size);
-    line-height: var(--typography-body-large-line-height);
-    letter-spacing: var(--typography-body-large-tracking);
-    font-weight: var(--typography-body-large-weight);
+  .body-large {
+    @include abstracts.typography('body-large');
   }
   
-  .body-m {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 400;
-    letter-spacing: 0;
+  .body-medium {
+    @include abstracts.typography('body-medium');
   }
   
-  .body-s {
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 400;
-    letter-spacing: 0.1px;
+  .body-small {
+    @include abstracts.typography('body-small');
   }
 
   a {

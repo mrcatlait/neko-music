@@ -1,15 +1,12 @@
 import { Directive, HostBinding, HostListener, Input } from '@angular/core'
 
-type VariantFilled = 'filled'
-type VariantOutlined = 'outlined'
-type VariantText = 'text'
-
-type Variants = VariantFilled | VariantOutlined | VariantText
+type Variants = 'outlined' | 'filled' | 'text'
 
 type Colors = 'primary' | 'secondary'
 
 @Directive({
   selector: 'a[nekoButton],button[nekoButton],a[nekoIconButton],button[nekoIconButton]',
+  standalone: false,
 })
 export class ButtonDirective {
   @Input()

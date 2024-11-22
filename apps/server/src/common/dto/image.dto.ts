@@ -1,9 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { t } from 'elysia'
 
-export class ImageDto {
-  @ApiProperty()
-  readonly resolution: string
+export const imageDto = t.Object({
+  resolution: t.String(),
+  url: t.String(),
+})
 
-  @ApiProperty()
-  readonly url: string
-}
+export type ImageDto = typeof imageDto.static

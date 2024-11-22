@@ -2,6 +2,7 @@ $schema: 'https://moonrepo.dev/schemas/project.json'
 
 stack: 'backend'
 type: 'application'
+platform: 'bun'
 language: 'typescript'
 
 dependsOn:
@@ -12,19 +13,14 @@ dependsOn:
   - id: 'vitest'
     scope: 'development'
 
-fileGroups:
-  app:
-    - 'nest-cli.*'
-
 tasks:
   start:
-    command: 'nest start -w'
+    command: 'bun run --watch src/app.ts'
     local: true
 
   build:
     command: 'nest build'
     inputs:
-      - '@group(app)'
       - '@group(sources)'
 
   test-integration:

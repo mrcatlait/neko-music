@@ -1,6 +1,6 @@
 <neko-dialog-title>Add to Playlist</neko-dialog-title>
 
-<neko-textfield>
+<neko-textfield class="search-field">
   <i nekoSlot="left">search</i>
 
   <input
@@ -12,33 +12,31 @@
   />
 </neko-textfield>
 
-<neko-dialog-content>
-  <button
-    aria-label="Create new playlist"
-    nekoButton
-    variant="outlined"
-    (click)="handleCreatePlaylist()"
-  >
-    <i>add</i>
-    Create New Playlist
-  </button>
+<button
+  aria-label="Create new playlist"
+  class="create-playlist-button"
+  nekoButton
+  variant="outlined"
+  (click)="handleCreatePlaylist()"
+>
+  <i>add</i>
+  Create New Playlist
+</button>
 
+<neko-dialog-content>
   @if (loading()) {
   } @else {
     @if (hasPlaylists()) {
-      <h2 class="title-m">All Playlists</h2>
+      <h2 class="title-medium">All Playlists</h2>
 
       @for (playlist of filteredPlaylists(); track playlist.id) {
-        <button
+        <neko-list-item
           [attr.aria-label]="'Add to ' + playlist.name"
-          class="playlist-item"
-          nekoButton
-          variant="text"
+          [headline]="playlist.name"
+          [media]="playlist.images | imageUrl: 'small'"
+          [supportingText]="getSupportingText(playlist)"
           (click)="handleAddToPlaylist(playlist.id)"
-        >
-          <i>playlist_play</i>
-          <span>{{ playlist.name }}</span>
-        </button>
+        />
       }
     } @else {
       <div class="empty-state-container">
@@ -46,8 +44,8 @@
           <i class="outlined">queue_music</i>
         </div>
 
-        <span class="title-m">You don’t have any playlists yet.</span>
-        <span class="subtitle-m secondary-text">Create one to get started.</span>
+        <span class="title-medium">You don’t have any playlists yet.</span>
+        <span class="subtitle-medium secondary-text">Create one to get started.</span>
       </div>
     }
   }

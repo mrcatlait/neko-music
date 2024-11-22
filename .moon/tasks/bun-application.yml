@@ -1,0 +1,62 @@
+$schema: 'https://moonrepo.dev/schemas/tasks.json'
+
+implicitDeps:
+  - '^:build'
+
+implicitInputs:
+  - 'package.json'
+
+fileGroups:
+  app: []
+  configs:
+    - '*.{js,json,yml,yaml}'
+  sources:
+    - 'src/**/*'
+  unit-tests:
+    - 'src/**/*.spec.*'
+  contract-tests:
+    - 'contract-tests/**/*'
+    - '$workspaceRoot/contracts/*'
+  integration-tests:
+    - 'integration-tests/**/*'
+
+tasks:
+  test-unit:
+    command: 'vitest --config vitest.config.mts'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(unit-tests)'
+      - 'vitest.config.*'
+    outputs:
+      - 'coverage'
+      - 'reports/unit'
+    
+  test-contract:
+    command: 'vitest --config vitest-contract.config.mts'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(contract-tests)'
+      - 'vitest-contract.config.*'
+    outputs:
+      - 'reports/contract'
+
+  lint:
+    command:
+      - 'eslint'
+      - '--fix'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(configs)'
+      - '.prettierignore'
+      - '.prettierrc'
+
+  sonar:
+    command: 'sonar-scanner'
+    args:
+      - 'Dsonar.token=${SONAR_TOKEN}'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(unit-tests)'
+      - 'sonar-project.properties'
+    deps:
+      - 'test-unit'

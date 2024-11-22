@@ -25,6 +25,10 @@ const routes: RouteWithLayout[] = [
         path: 'artists/:id',
         loadComponent: () => import('./pages/artist-details').then((c) => c.ArtistDetailsPage),
       },
+      {
+        path: 'library',
+        loadComponent: () => import('./pages/library').then((c) => c.LibraryPage),
+      },
     ],
   },
   {

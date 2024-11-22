@@ -5,7 +5,6 @@
 >
   <div class="track-list-item-image-container">
     <img
-      [alt]="track.title"
       [ngSrc]="track.images | imageUrl: 'small'"
       [selector]="selectors.trackImage"
       alt=""
@@ -27,7 +26,7 @@
       [attr.tabindex]="false"
       [selector]="selectors.trackLabel"
       [title]="track.title"
-      class="title-m truncate primary-text"
+      class="title-medium truncate primary-text"
       (click)="togglePlay.emit()"
       (keyup)="togglePlay.emit()"
     >
@@ -37,7 +36,7 @@
     <neko-track-artist-list
       [artists]="track.artists"
       [selector]="selectors.artistLabel"
-      class="title-s"
+      class="title-small"
     />
   </div>
 
@@ -60,14 +59,14 @@
         (keyup)="togglePlay.emit()"
       >
         <i class="secondary-text">play_arrow</i>
-        <span class="label-l">Play</span>
+        <span class="label-large">Play</span>
       </li>
 
       <hr *hasPermissions="[permissions.LibraryUpdate, permissions.PlaylistUpdate]" />
 
       <li *hasPermissions="permissions.LibraryUpdate">
         <i class="secondary-text">add</i>
-        <span class="label-l">Add to library</span>
+        <span class="label-large">Add to library</span>
       </li>
       <li
         *hasPermissions="permissions.PlaylistUpdate"
@@ -76,18 +75,18 @@
         (keyup)="handleAddToPlaylist()"
       >
         <i class="secondary-text">playlist_add</i>
-        <span class="label-l">Add to playlist</span>
+        <span class="label-large">Add to playlist</span>
       </li>
 
       <hr />
 
       <li>
         <i class="outlined secondary-text">queue_play_next</i>
-        <span class="label-l">Play next</span>
+        <span class="label-large">Play next</span>
       </li>
       <li>
         <i class="outlined secondary-text">add_to_queue</i>
-        <span class="label-l">Play last</span>
+        <span class="label-large">Play last</span>
       </li>
 
       <!-- @if (track.album) {
@@ -99,7 +98,7 @@
           (keyup)="handleMenuClick()"
         >
           <i class="outlined secondary-text">library_music</i>
-          <span class="label-l">Go to album</span>
+          <span class="label-large">Go to album</span>
         </li>
       } -->
     </ul>
