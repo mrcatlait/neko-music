@@ -5,8 +5,6 @@
 
 Neko Music is a full-featured music streaming platform designed to offer a smooth experience for discovering, playing, and curating music. This monorepo hosts two main applications: a sleek Angular web interface and a powerful NestJS backend, both managed with Moonrepo for streamlined development and orchestration.
 
-
-
 ## Technologies
 
 ### Web Application (Frontend)
@@ -16,8 +14,8 @@ Neko Music is a full-featured music streaming platform designed to offer a smoot
 - **Code Quality**: ESLint, Prettier, Stylelint
 
 ### Server Application (Backend)
-- **Framework**: NestJS (modular monolith architecture)
-- **Database**: TypeORM with PostgreSQL
+- **Framework**: Elysia (Bun runtime)
+- **Database**: PostgreSQL with raw SQL
 - **Testing**: Vitest (unit & integration), PactJS (contract)
 - **Code Quality**: ESLint, Prettier
 
@@ -30,9 +28,14 @@ Neko Music is a full-featured music streaming platform designed to offer a smoot
 /neko-music
 ├── /apps
 │   ├── /web                  # Angular-based web application
-│   └── /server               # NestJS-based backend application
+│   └── /server               # Elysia-based backend application
 ├── /contracts                # Pact contracts for API communication testing
 └── /packages                 # Shared libraries and configurations
+    ├── /eslint-config       # Shared ESLint configuration
+    ├── /stylelint-config    # Shared Stylelint configuration
+    ├── /vitest              # Shared Vitest configuration
+    ├── /permissions         # Shared permissions library
+    └── /web-test-utils      # Shared testing utilities
 ```
 
 For more detailed information about specific components:
@@ -45,17 +48,35 @@ To get started, you'll need **Moonrepo** installed globally. Moonrepo will autom
 
 ### Prerequisites
 
-Before setting up the project, ensure that you have the following installed:
+Before setting up the project, you'll need **Moonrepo** installed. You have several options to install it:
 
-1. **Node.js** (>= 14.x) and **npm** (>= 6.x) or **yarn**.
-   - You can download Node.js from [here](https://nodejs.org/).
+Using proto (recommended):
+```bash
+proto plugin add moon "https://raw.githubusercontent.com/moonrepo/moon/master/proto-plugin.toml" --to global
+proto install moon
+```
 
-2. **Moonrepo** for monorepo task orchestration and management. Follow these steps to install Moonrepo globally:
-   ```
-   npm install -g moonrepo
-   ```
+Using npm:
+```bash
+npm install --save-dev @moonrepo/cli
+```
 
-   For more information on Moonrepo installation and usage, refer to the official [Moonrepo Documentation](https://moonrepo.dev/docs).
+On Linux, macOS, or WSL:
+```bash
+curl -fsSL https://moonrepo.dev/install/moon.sh | bash
+```
+
+Then add to your PATH:
+```bash
+export PATH="$HOME/.moon/bin:$PATH"
+```
+
+On Windows (PowerShell):
+```powershell
+irm https://moonrepo.dev/install/moon.ps1 | iex
+```
+
+For more detailed information about Moonrepo installation and usage, refer to the official [Moonrepo Documentation](https://moonrepo.dev/docs/install).
 
 
 ### Running the Applications
@@ -82,89 +103,54 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Roadmap
 
-### Phase 1: Foundation and Core Functionality
-- [x] Set up project structure (Angular frontend, NestJS backend)
-- [x] Implement basic user authentication (local auth)
-- [x] Develop music file upload and storage system
+### Phase 1: Foundation and Core Functionality ✓
+- [x] Set up project structure (Angular frontend, Elysia backend)
+- [x] Implement basic user authentication
 - [x] Create basic music player with standard controls
-- [ ] Implement basic playlist management
-- [x] Set up CI/CD pipeline for automated testing and deployment
+- [x] Implement basic playlist management
+- [x] Set up CI/CD pipeline
 
-### Phase 2: Advanced Streaming and Audio Features
+### Phase 2: Core Music Features
 - [x] Implement MPEG DASH streaming
-- [ ] Develop adaptive bitrate streaming
-- [x] Add support for various audio formats (FLAC, AAC, OGG, etc.)
-- [ ] Implement gapless playback
-- [ ] Develop audio normalization feature
-- [ ] Create visualizer for audio playback
+- [ ] Add support for various audio formats
+- [ ] Implement basic audio controls (equalizer, volume normalization)
+- [ ] Add queue management and shuffle play
+- [ ] Implement continuous playback
 
-### Phase 3: Library Management and Discovery
-- [ ] Implement advanced search and filtering options
-- [ ] Develop automatic metadata fetching and management
-- [ ] Create smart playlists based on listening habits
-- [ ] Implement music recommendation system
-- [ ] Add support for lyrics display and synchronization
-- [ ] Develop a "Discover" section for new music exploration
+### Phase 3: Library Management
+- [ ] Enhanced search functionality
+- [ ] Advanced playlist management
+- [ ] Basic metadata management
+- [ ] Recently played tracks
+- [ ] Favorite tracks system
 
-### Phase 4: Social Features and Sharing
-- [ ] Implement user profiles
-- [ ] Develop friend system and social connections
-- [ ] Create shared playlists functionality
-- [ ] Implement activity feed for friends' listening habits
-- [ ] Add option to share songs/playlists via unique links
-- [ ] Develop collaborative playlists feature
+### Phase 4: User Experience
+- [x] Responsive web design
+- [ ] Create Progressive Web App (PWA)
+- [ ] Implement offline mode for saved tracks
+- [ ] Add keyboard shortcuts
+- [ ] Implement drag-and-drop playlist management
 
-### Phase 5: Customization and Extensibility
-- [ ] Create plugin system for easy feature extensions
-- [ ] Implement theming engine for UI customization
-- [ ] Develop API for third-party integrations
-- [ ] Add support for custom audio sources (local files, cloud storage)
-- [ ] Implement user-defined smart radio stations
-- [ ] Create a marketplace for community-created plugins and themes
+### Phase 5: Social Features
+- [ ] Basic user profiles
+- [ ] Playlist sharing
+- [ ] Follow/unfollow users
+- [ ] Activity feed for followed users
+- [ ] Social playlist collaboration
 
 ### Phase 6: Cross-Platform Support
 - [x] Develop responsive web design for mobile browsers
 - [ ] Create Progressive Web App (PWA) version
-- [ ] Develop native mobile apps (iOS and Android)
-- [ ] Implement desktop apps using Electron
-- [ ] Add support for smart speakers and home assistants
-- [ ] Develop TV apps for popular platforms (Apple TV, Android TV, etc.)
 
-### Phase 7: Advanced Features and Optimizations
-- [ ] Implement offline mode with smart caching
-- [ ] Develop advanced audio processing features (equalizer, effects)
-- [ ] Create DJ mode with mixing capabilities
-- [ ] Implement multi-room audio synchronization
-- [ ] Develop voice control for hands-free operation
-- [ ] Optimize for low-latency live streaming
+### Phase 6: Advanced Features
+- [ ] Smart playlists based on listening history
+- [ ] Basic recommendation system
+- [ ] Last.fm integration
+- [ ] Lyrics display
+- [ ] Basic audio visualization
 
-### Phase 8: Integration and Ecosystem
-- [ ] Develop import/export tools for other music services
-- [ ] Implement scrobbling to Last.fm and similar services
-- [ ] Create integrations with popular music production tools
-- [ ] Develop podcast support and management
-- [ ] Implement integration with smart home systems
-- [ ] Create a companion app for wearables (smartwatches)
-
-### Phase 9: Scalability and Enterprise Features
-- [ ] Implement multi-tenancy for hosting multiple libraries
-- [ ] Develop advanced analytics and reporting tools
-- [ ] Create admin dashboard for system management
-- [ ] Implement role-based access control (RBAC)
-- [ ] Develop white-label solution for businesses
-- [ ] Create documentation for enterprise deployment
-
-### Phase 10: Community and Monetization (Optional)
-- [ ] Develop a community forum for user discussions
-- [ ] Implement a donation system for supporting the project
-- [ ] Create a premium tier with advanced features
-- [ ] Develop marketplace for artists to sell music directly
-- [ ] Implement ad integration for free tier (optional)
-- [ ] Create developer program for third-party contributions
-
-### Ongoing: Security, Performance, and Compliance
-- [x] Regularly update dependencies and address security vulnerabilities
-- [x] Conduct periodic security audits and penetration testing
-- [ ] Optimize database queries and caching strategies
-- [ ] Conduct accessibility audits and improvements (WCAG compliance)
-- [ ] Regularly review and optimize cloud resource usage
+### Ongoing
+- [ ] Security improvements
+- [ ] Performance optimizations
+- [ ] Accessibility enhancements
+- [ ] Documentation updates

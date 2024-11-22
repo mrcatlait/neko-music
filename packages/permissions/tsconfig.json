@@ -8,7 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "ignoreDeprecations": "5.0",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "outDir": "lib"
   },
   "include": [
     "src/**/*"

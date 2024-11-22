@@ -31,10 +31,7 @@ The project is structured using Angular's modular architecture to ensure scalabi
 3. **Feature Modules**:
    - Feature modules are dedicated to specific features or sections of the application. Each feature module encapsulates its own components, services, and state.
 
-4. **Layout**
-   - This folder contains components and templates that define the global layout of the application. It typically includes headers, footers, side navigation, and other structural elements that provide a consistent look and feel across all pages.
-
-5. **Pages**
+4. **Pages**
    - This folder contains page components that act as wrappers for routing. These components combine multiple features and display them in a structured way, allowing for seamless navigation and organization of the application's content.
 
 ### General Project Structure
@@ -44,10 +41,9 @@ web/
 ├── src/
 │   ├── app/
 │   │   ├── core/                # Core module with singleton services and components
-│   │   ├── shared/              # Shared module with reusable components, directives, and pipes
 │   │   ├── features/            # Folder containing feature modules
-│   │   ├── layout/              # Global layout components applied to the application
 │   │   ├── pages/               # Page components used for routing and combining features
+│   │   ├── shared/              # Shared module with reusable components, directives, and pipes
 │   │   └── app.module.ts        # Root module
 │   ├── assets/                  # Static assets (images, fonts)
 │   └── environments/            # Environment-specific configuration

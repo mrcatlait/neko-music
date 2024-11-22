@@ -8,9 +8,6 @@
     "packages/*",
     "e2e"
   ],
-  "engines": {
-    "node": "~20"
-  },
   "devDependencies": {
     "sonarqube-scanner": "^4.2.3"
   }
