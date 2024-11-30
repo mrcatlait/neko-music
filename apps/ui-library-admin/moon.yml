@@ -1,0 +1,20 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'frontend'
+type: 'application'
+language: 'typescript'
+
+dependsOn:
+  - id: 'ui-shared'
+    scope: 'production'
+  - id: 'eslint-config'
+    scope: 'development'
+
+fileGroups:
+  app:
+    - 'angular.*'
+
+tasks:
+  start:
+    command: 'ng serve'
+    local: true

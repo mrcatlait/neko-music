@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core'
-import { PreloadAllModules, Route, RouterModule, Routes, TitleStrategy } from '@angular/router'
+import { PreloadAllModules, Route, RouterModule, TitleStrategy } from '@angular/router'
 
 import { Layout } from '@core/enum'
 import { canActivateAuthorized, canActivateGuest } from '@core/guards'

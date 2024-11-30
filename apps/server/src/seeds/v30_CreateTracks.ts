@@ -38,23 +38,19 @@ export class v30_CreateTracks implements ScriptInterface {
   async up(): Promise<void> {
     // for (const track of this.tracks) {
     //   const artist = await ArtistRepository.findOneByName(track.artist)
-
     //   if (!artist) {
     //     throw new Error(`Artist ${track.artist} does not exist`)
     //   }
-
     //   const createdTrack = await TrackRepository.create({
     //     title: track.title,
     //     duration: track.duration,
     //     release_data: track.releaseData,
     //   })
-
     //   await TrackArtistRepository.create({
     //     track_id: createdTrack.id,
     //     artist_id: artist.id,
     //     role: 'primary',
     //   })
-
     //   for (const image of this.images) {
     //     await TrackImageRepository.create({
     //       resolution: image.resolution,

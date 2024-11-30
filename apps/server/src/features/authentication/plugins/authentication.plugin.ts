@@ -1,10 +1,8 @@
-import { Elysia, t } from 'elysia'
+import { Elysia } from 'elysia'
 
 import { Session } from '../models'
 
 import { UnauthorizedException } from '@common/exceptions'
-
-export type AuthenticationPlugin = typeof authenticationPlugin
 
 export const SESSION_COOKIE = 'neko.session'
 

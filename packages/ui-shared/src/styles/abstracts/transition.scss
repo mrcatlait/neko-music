@@ -1,0 +1,12 @@
+// animate({
+//   properties: ['transform'],
+//   keyframeOptions: {
+//     duration: drawerSlideAnimationDuration,
+//     easing: drawerSlideAnimationEasing,
+//   },
+// })
+
+// enter and exit
+@mixin transition() {
+  transition: width var(--motion-duration-short3) var(--motion-easing-emphasized-accelerate);
+}

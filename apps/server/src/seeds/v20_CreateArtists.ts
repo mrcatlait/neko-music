@@ -22,7 +22,6 @@ export class v20_CreateArtists implements ScriptInterface {
   async up(): Promise<void> {
     // for (const name of this.artists) {
     //   const artist = await ArtistRepository.create({ name })
-
     //   for (const image of this.images) {
     //     await ArtistImageRepository.create({ ...image, artist_id: artist.id })
     //   }

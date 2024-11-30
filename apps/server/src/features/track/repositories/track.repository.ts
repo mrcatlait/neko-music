@@ -1,11 +1,18 @@
 import { TrackEntity } from '../entities'
 import { QueueTrack } from '../models'
 
-import { ArtistRole } from '@features/artist/enums'
 import { PageOptionsDto } from '@common/dto'
 import { sql } from 'src/db'
 
 export class TrackRepository {
+  exists(trackId: string): Promise<boolean> {
+    return sql`
+      SELECT 1
+      FROM "Track"
+      WHERE id = ${trackId}
+    `.then((result) => result.length > 0)
+  }
+
   getItems(trackIds: string[]): Promise<TrackEntity[]> {
     return sql<TrackEntity[]>`
       ${TrackRepository.selectFragment}

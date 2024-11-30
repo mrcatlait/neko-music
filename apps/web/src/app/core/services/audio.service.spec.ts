@@ -190,7 +190,7 @@ describe('AudioService', () => {
 
       // Assert
       expect(mediaPlayerMock.attachSource).toHaveBeenCalledWith(
-        `${environment.apiUrl}/tracks/${trackId}/stream/manifest.mpd`,
+        `${environment.apiUrl}/tracks/${trackId}/stream/manifest`,
       )
     })
   })

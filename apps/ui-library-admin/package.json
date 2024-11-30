@@ -1,0 +1,14 @@
+{
+  "name": "ui-library-admin",
+  "private": true,
+  "dependencies": {
+    "@neko/ui-shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.0.2",
+    "@angular/cli": "^19.0.2",
+    "@angular/compiler-cli": "^19.0.0",
+    "@neko/eslint-config": "workspace:*",
+    "typescript": "~5.6.2"
+  }
+}

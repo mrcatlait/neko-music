@@ -1,5 +1,6 @@
-import { authenticationPlugin } from '@features/authentication/plugins'
 import { Elysia } from 'elysia'
+
+import { authenticationPlugin } from '@features/authentication/plugins'
 
 export const loggingPlugin = new Elysia({ name: 'logging/plugin' })
   .use(authenticationPlugin)
