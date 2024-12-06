@@ -9,6 +9,10 @@ dependsOn:
     scope: 'production'
   - id: 'eslint-config'
     scope: 'development'
+  - id: 'stylelint-config'
+    scope: 'development'
+  - id: 'vitest'
+    scope: 'development'
 
 fileGroups:
   app:

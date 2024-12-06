@@ -1,0 +1,122 @@
+<section class="registration-media-sidebar">
+  <!-- <logo /> -->
+
+  <video
+    [autoplay]="true"
+    [loop]="true"
+    [muted]="true"
+  >
+    <source
+      src="/assets/vid/videoplayback.mp4"
+      type="video/mp4"
+    />
+  </video>
+</section>
+
+<section class="registration-form-sidebar">
+  <div class="registration-form-content">
+    <h1
+      [selector]="selectors.titleLabel"
+      class="headline-large"
+    >
+      Sign up to {{ applicationName }}
+    </h1>
+
+    <div class="registration-content-error-banner">
+      @if (usernameTaken()) {
+        <span [selector]="selectors.usernameTakenLabel">Username has already been taken. </span>
+      }
+      @if (emailTaken()) {
+        <span [selector]="selectors.emailTakenLabel">Email has already been taken. </span>
+      }
+    </div>
+
+    <form
+      [formGroup]="form"
+      autocomplete="off"
+    >
+      <neko-textfield>
+        <label [selector]="selectors.emailLabel">Email</label>
+
+        <input
+          [selector]="selectors.emailTextField"
+          formControlName="email"
+          nekoTextfield
+          type="email"
+        />
+
+        <neko-error
+          [control]="form.controls.email"
+          [selector]="selectors.emailErrorLabel"
+        />
+      </neko-textfield>
+
+      <neko-textfield>
+        <label [selector]="selectors.passwordLabel">Password</label>
+        <input
+          [selector]="selectors.passwordTextField"
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          nekoTextfield
+        />
+
+        <button
+          [attr.aria-pressed]="hidePassword"
+          [selector]="selectors.passwordVisibilityButton"
+          aria-label="Show password"
+          nekoIconButton
+          nekoSlot="right"
+          variant="text"
+          (click)="hidePassword = !hidePassword"
+        >
+          <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
+        </button>
+
+        <neko-error
+          [control]="form.controls.password"
+          [selector]="selectors.passwordErrorLabel"
+        />
+      </neko-textfield>
+
+      <neko-textfield>
+        <label [selector]="selectors.usernameLabel">Username</label>
+
+        <input
+          [selector]="selectors.usernameTextField"
+          formControlName="username"
+          nekoTextfield
+          type="email"
+        />
+
+        <neko-error
+          [control]="form.controls.username"
+          [selector]="selectors.usernameErrorLabel"
+        />
+      </neko-textfield>
+
+      <button
+        [disabled]="loading()"
+        [selector]="selectors.submitButton"
+        nekoButton
+        type="submit"
+        (click)="handleSubmit()"
+      >
+        Create Account
+      </button>
+    </form>
+
+    <p
+      [selector]="selectors.hasAccountLabel"
+      class="body-medium"
+    >
+      Already have an account?
+      <a
+        [selector]="selectors.loginLink"
+        class="link"
+        routerLink="/login"
+      >
+        Sign In
+      </a>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,3 @@
+{
+  "extends": ["@neko/stylelint-config"]
+}

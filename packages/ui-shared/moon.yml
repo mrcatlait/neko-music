@@ -4,8 +4,19 @@ stack: 'frontend'
 type: 'library'
 language: 'typescript'
 
+dependsOn:
+  - id: 'eslint-config'
+    scope: 'development'
+  - id: 'stylelint-config'
+    scope: 'development'
+  - id: 'vitest'
+    scope: 'development'
+
 tasks:
   build:
     command:
       - 'ng-packagr'
       - '-p ng-package.json'
+    deps:
+    - 'test'
+    - 'lint'
