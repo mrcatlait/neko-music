@@ -1,0 +1,11 @@
+services:
+  database:
+    container_name: postgres
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}

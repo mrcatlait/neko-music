@@ -17,6 +17,8 @@ tasks:
     command:
       - 'ng-packagr'
       - '-p ng-package.json'
+    outputs:
+      - 'dist'
     deps:
-    - 'test'
-    - 'lint'
+      - 'test'
+      - 'lint'

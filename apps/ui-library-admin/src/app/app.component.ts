@@ -1,16 +1,11 @@
-import { Component } from '@angular/core'
+import { Component, ChangeDetectionStrategy } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 
 @Component({
   selector: 'neko-root',
   imports: [RouterOutlet],
-  template: `
-    <h1>Welcome to {{ title }}!</h1>
-
-    <router-outlet />
-  `,
-  styles: [],
+  template: `<router-outlet />`,
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  title = 'ui-library-admin'
-}
+export class AppComponent {}

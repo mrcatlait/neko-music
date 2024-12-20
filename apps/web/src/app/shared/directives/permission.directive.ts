@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common'
-import { Directive, Input, OnInit, inject } from '@angular/core'
+import { Directive, effect, inject, input } from '@angular/core'
 import { Permission } from '@neko/permissions'
 
 import { AuthState } from '@core/state'
@@ -9,31 +9,26 @@ import { AuthState } from '@core/state'
   hostDirectives: [NgIf],
   standalone: false,
 })
-export class PermissionDirective implements OnInit {
+export class PermissionDirective {
   private readonly ngIfDirective = inject(NgIf)
   private readonly authState = inject(AuthState)
 
-  @Input('hasPermissions') permission: Permission | Permission[]
-  @Input('hasPermissionsStrategy') strategy: 'any' | 'all' = 'any'
+  permission = input<Permission | Permission[]>([], { alias: 'hasPermissions' })
+  strategy = input<'any' | 'all'>('any', { alias: 'hasPermissionsStrategy' })
 
-  ngOnInit() {
-    this.updateView()
+  constructor() {
+    effect(() => this.ngIfDirective.ngIf = this.hasPermissions())
   }
 
-  private updateView() {
-    let hasPermission = false
+  private hasPermissions() {
+    const permission = this.permission()
 
-    if (this.permission) {
-      if (Array.isArray(this.permission)) {
-        hasPermission =
-          this.strategy === 'any'
-            ? this.authState.hasAnyPermission(this.permission)
-            : this.authState.hasAllPermissions(this.permission)
-      } else {
-        hasPermission = this.authState.hasPermission(this.permission)
-      }
-
-      this.ngIfDirective.ngIf = hasPermission
+    if (Array.isArray(permission)) {
+      return this.strategy() === 'any'
+          ? this.authState.hasAnyPermission(permission)
+          : this.authState.hasAllPermissions(permission)
+    } else {
+      return this.authState.hasPermission(permission)
     }
   }
 }

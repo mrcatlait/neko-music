@@ -1,11 +1,9 @@
 import { Routes } from '@angular/router'
 
-import { canActivateAuthorized, canActivateGuest } from '@core/guards'
-
 export const routes: Routes = [
   {
     path: '',
-    canActivateChild: [canActivateAuthorized],
+    canActivateChild: [],
     children: [
       {
         path: '',
@@ -14,17 +12,17 @@ export const routes: Routes = [
       },
     ],
   },
-  {
-    path: '',
-    canActivateChild: [canActivateGuest],
-    children: [
-      {
-        path: 'login',
-        pathMatch: 'full',
-        loadComponent: () => import('./pages/login').then((c) => c.LoginPage),
-      },
-    ],
-  },
+  // {
+  //   path: '',
+  //   canActivateChild: [],
+  //   children: [
+  //     {
+  //       path: 'login',
+  //       pathMatch: 'full',
+  //       loadComponent: () => import('./pages/login').then((c) => c.LoginPage),
+  //     },
+  //   ],
+  // },
   {
     path: '**',
     pathMatch: 'full',

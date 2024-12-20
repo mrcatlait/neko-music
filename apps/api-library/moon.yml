@@ -1,0 +1,45 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'backend'
+type: 'application'
+language: 'typescript'
+
+fileGroups:
+  app:
+    - 'nest-cli.*'
+
+dependsOn:
+  - id: 'permissions'
+    scope: 'production'
+  - id: 'eslint-config'
+    scope: 'development'
+  - id: 'vitest'
+    scope: 'development'
+
+tasks:
+  start:
+    command: 'nest start --watch'
+    local: true
+
+  build:
+    command: 'nest build'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
+
+  test-integration:
+    command: 'vitest --config vitest-integration.config.mts'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(integration-tests)'
+      - 'vitest-integration.config.*'
+    env: 
+      # DEBUG: 'testcontainers,testcontainers:exec'
+    outputs:
+      - 'reports/integration'
+
+  test:
+    local: true
+    deps:
+      - 'test-unit'
+      - 'test-integration'

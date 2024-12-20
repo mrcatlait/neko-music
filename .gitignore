@@ -2,6 +2,9 @@
 .moon/cache
 .moon/docker
 
+# Temporary files
+/server
+
 # Compiled output
 /dist
 /tmp
