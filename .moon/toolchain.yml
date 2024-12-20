@@ -1,4 +1,9 @@
 $schema: 'https://moonrepo.dev/schemas/toolchain.json'
 
-bun:
-  version: '1.1.34'
+node:
+  version: '20'
+  dependencyVersionFormat: 'star'
+  syncProjectWorkspaceDependencies: true
+  packageManager: 'npm'
+  npm:
+    version: '10'

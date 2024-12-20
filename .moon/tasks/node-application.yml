@@ -19,6 +19,8 @@ fileGroups:
     - '$workspaceRoot/contracts/*'
   integration-tests:
     - 'integration-tests/**/*'
+  performance-tests:
+    - 'performance-tests/**/*'
 
 tasks:
   test-unit:

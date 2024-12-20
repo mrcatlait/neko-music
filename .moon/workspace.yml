@@ -5,6 +5,7 @@ telemetry: false
 projects:
   - 'apps/*'
   - 'packages/*'
+  - 'infra/*'
   - 'e2e'
 vcs:
   manager: 'git'
