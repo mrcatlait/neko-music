@@ -13,4 +13,11 @@ export interface EnvironmentVariables {
   // Telemetry
   TELEMETRY_SERVICE_NAME: string
   TELEMETRY_EXPORTER_URL: string
+  // Crypto
+  SALT_ROUNDS: number
+  // JWT
+  JWT_SECRET: string
+  JWT_TOKEN_EXPIRATION_TIME: string
+  JWT_REFRESH_SECRET: string
+  JWT_REFRESH_TOKEN_EXPIRATION_TIME: string
 }

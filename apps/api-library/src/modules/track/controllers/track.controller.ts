@@ -39,7 +39,7 @@ export class TrackController {
     type: String,
   })
   @ApiProduces('application/dash+xml')
-  streamManifest(@Param('trackId') trackId: string) {
+  streamManifest(@Param('trackId') trackId: string): StreamableFile {
     return this.trackStreamingService.streamManifest(trackId)
   }
 
@@ -51,7 +51,7 @@ export class TrackController {
     type: String,
   })
   @ApiProduces('video/iso.segment')
-  streamSegment(@Param('trackId') trackId: string, @Param('segmentId') segmentId: string) {
+  streamSegment(@Param('trackId') trackId: string, @Param('segmentId') segmentId: string): StreamableFile {
     return this.trackStreamingService.streamSegment(trackId, segmentId)
   }
 }

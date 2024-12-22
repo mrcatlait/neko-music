@@ -1,4 +1,4 @@
-import '@modules/telemetry/telemetry'
+// import '@modules/telemetry/telemetry'
 import { NestFactory, Reflector } from '@nestjs/core'
 import { ValidationPipe, ClassSerializerInterceptor, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'

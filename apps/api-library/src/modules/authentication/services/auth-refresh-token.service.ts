@@ -1,66 +1,54 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { InjectRepository } from '@nestjs/typeorm'
-import { LessThanOrEqual, Repository } from 'typeorm'
-import { Cron, CronExpression } from '@nestjs/schedule'
 import { ConfigService } from '@nestjs/config'
 
-import { AuthRefreshToken } from './entities/auth-refresh-token.entity'
-import { User } from '../user/entities/user.entity'
-import { EnvironmentVariables } from '../../config/env/configuration'
+import { RefreshTokenRepository } from '../repositories'
+
+import { EnvironmentVariables } from '@modules/shared/models'
 
 @Injectable()
 export class AuthRefreshTokenService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService<EnvironmentVariables>,
-    @InjectRepository(AuthRefreshToken)
-    private readonly authRefreshTokenRepository: Repository<AuthRefreshToken>,
+    private readonly configService: ConfigService<EnvironmentVariables, true>,
+    private readonly refreshTokenRepository: RefreshTokenRepository,
   ) {}
 
-  async generateRefreshToken(authUserId: number, currentRefreshToken?: string, currentRefreshTokenExpiresAt?: Date) {
+  async generateRefreshToken(authUserId: string, currentRefreshToken?: string, currentRefreshTokenExpiresAt?: Date) {
     const newRefreshToken = this.jwtService.sign(
       { sub: authUserId },
       {
-        secret: this.configService.get('jwtRefreshSecret'),
-        expiresIn: '30d',
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+        expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
       },
     )
 
     if (currentRefreshToken && currentRefreshTokenExpiresAt) {
-      if (await this.isRefreshTokenBlackListed(currentRefreshToken, authUserId)) {
-        throw new UnauthorizedException('Invalid refresh token.')
+      if (await this.isValidRefreshToken(currentRefreshToken, authUserId)) {
+        throw new UnauthorizedException('Invalid refresh token')
       }
 
-      await this.authRefreshTokenRepository.insert({
-        refreshToken: currentRefreshToken,
-        expiresAt: currentRefreshTokenExpiresAt,
-        userId: authUserId,
+      await this.refreshTokenRepository.insert({
+        refresh_token: currentRefreshToken,
+        expires_at: currentRefreshTokenExpiresAt,
+        user_id: authUserId,
       })
     }
 
     return newRefreshToken
   }
 
-  async validateRefreshToken(refreshToken: string, userId: number) {
-    const token = await this.authRefreshTokenRepository.findOne({
-      where: {
-        refreshToken,
-        userId,
-        isRevoked: false,
-        expiresAt: MoreThanOrEqual(new Date()),
-      },
-    })
+  async isValidRefreshToken(refreshToken: string, userId: string): Promise<boolean> {
+    const token = await this.refreshTokenRepository.findOne(refreshToken, userId)
 
     if (!token) {
-      throw new UnauthorizedException('Invalid refresh token')
+      return false
     }
 
-    // Revoke the used token (implement token rotation)
-    await this.authRefreshTokenRepository.delete({ id: token.id })
-
+    await this.refreshTokenRepository.delete(token.id)
     return true
   }
+
   async generateTokenPair(user: User, currentRefreshToken?: string, currentRefreshTokenExpiresAt?: Date) {
     const payload = { email: user.email, sub: user.id }
 
@@ -70,10 +58,10 @@ export class AuthRefreshTokenService {
     }
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_6AM)
-  async clearExpiredRefreshTokens() {
-    await this.authRefreshTokenRepository.delete({
-      expiresAt: LessThanOrEqual(new Date()),
-    })
-  }
+  // @Cron(CronExpression.EVERY_DAY_AT_6AM)
+  // async clearExpiredRefreshTokens() {
+  //   await this.authRefreshTokenRepository.delete({
+  //     expiresAt: LessThanOrEqual(new Date()),
+  //   })
+  // }
 }

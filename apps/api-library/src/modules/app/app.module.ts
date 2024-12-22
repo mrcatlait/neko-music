@@ -10,6 +10,7 @@ import { EnvironmentVariables } from '@modules/shared/models'
 import { ArtistModule } from '@modules/artist/artist.module'
 import { TrackModule } from '@modules/track/track.module'
 import { PlaylistModule } from '@modules/playlist/playlist.module'
+import { SharedModule } from '@modules/shared/shared.module'
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PlaylistModule } from '@modules/playlist/playlist.module'
       // cache: true,
       validationSchema: Joi.object({
         PORT: Joi.number().required(),
+        NODE_ENV: Joi.string().required(),
         DATABASE_HOST: Joi.string().required(),
         DATABASE_PORT: Joi.number().required(),
         DATABASE_USERNAME: Joi.string().required(),
@@ -25,7 +27,12 @@ import { PlaylistModule } from '@modules/playlist/playlist.module'
         DATABASE_NAME: Joi.string().required(),
         TELEMETRY_SERVICE_NAME: Joi.string().required(),
         TELEMETRY_EXPORTER_URL: Joi.string().required(),
-      }),
+        SALT_ROUNDS: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        JWT_REFRESH_SECRET: Joi.string().required(),
+        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+      } as Record<keyof EnvironmentVariables, Joi.AnySchema>),
     }),
     DatabaseModule.forRootAsync({
       inject: [ConfigService],
@@ -43,6 +50,7 @@ import { PlaylistModule } from '@modules/playlist/playlist.module'
     ArtistModule,
     TrackModule,
     PlaylistModule,
+    SharedModule,
   ],
 })
 export class AppModule implements NestModule {
