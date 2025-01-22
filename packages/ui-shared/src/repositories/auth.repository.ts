@@ -18,7 +18,7 @@ export class AuthRepository {
     return this.httpClient.post<void>(`${this.apiUrl}/auth/logout`, {})
   }
 
-  whoAmI(): Observable<LoginResponseDto> {
-    return this.httpClient.get<LoginResponseDto>(`${this.apiUrl}/auth/whoami`)
+  refreshToken(): Observable<LoginResponseDto> {
+    return this.httpClient.get<LoginResponseDto>(`${this.apiUrl}/auth/refresh`)
   }
 }

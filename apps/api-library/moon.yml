@@ -4,39 +4,59 @@ stack: 'backend'
 type: 'application'
 language: 'typescript'
 
-fileGroups:
-  app:
-    - 'nest-cli.*'
-
 dependsOn:
   - id: 'permissions'
     scope: 'production'
   - id: 'eslint-config'
     scope: 'development'
-  - id: 'vitest'
-    scope: 'development'
 
 tasks:
   start:
-    command: 'nest start --watch'
+    command: 'bun run'
+    args:
+      - '--watch'
+      - 'src/app.ts'
     local: true
 
   build:
-    command: 'nest build'
+    command: 'bun build'
+    args:
+      - '--compile'
+      - '--minify-whitespace'
+      - '--minify-syntax'
+      - '--target bun'
+      - '--outfile server'
+      - 'src/app.ts'
     inputs:
-      - '@group(app)'
       - '@group(sources)'
 
+  test-unit:
+    command: 'bun test'
+    args:
+      - 'src/**/*.spec.ts'
+      - '--reporter=junit'
+      - '--reporter-outfile=reports/unit/junit-report.xml'
+
   test-integration:
-    command: 'vitest --config vitest-integration.config.mts'
+    command: 'bun test'
+    args:
+      - 'integration-tests/**/*.spec.ts'
+      - '--preload integration-tests/test-setup.ts'
+      - '--reporter=junit'
+      - '--reporter-outfile=reports/integration/junit-report.xml'
     inputs:
       - '@globs(sources)'
       - '@globs(integration-tests)'
-      - 'vitest-integration.config.*'
     env: 
       # DEBUG: 'testcontainers,testcontainers:exec'
     outputs:
       - 'reports/integration'
+
+  test-performance:
+    command: 'k6 run performance-tests/test.js'
+    local: true
+    inputs:
+      - '@globs(performance-tests)'
 
   test:
     local: true

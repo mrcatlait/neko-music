@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { catchError, map, Observable, of } from 'rxjs'
+import { BehaviorSubject, catchError, finalize, map, Observable, of, shareReplay } from 'rxjs'
 
 import { SessionStorageService } from './session-storage.service'
 import { SessionCookieService } from './session-cookie.service'
@@ -11,6 +11,10 @@ export class AuthService {
   private readonly authRepository = inject(AuthRepository)
   private readonly sessionCookieService = inject(SessionCookieService)
   private readonly sessionStorage = inject(SessionStorageService)
+
+  private refreshInProgress: boolean = false
+  private readonly refreshSessionSubject = new BehaviorSubject<Session | null>(null)
+  private readonly refreshSession$ = this.refreshSessionSubject.asObservable()
 
   login(session: Session) {
     this.sessionStorage.set(session)
@@ -32,17 +36,31 @@ export class AuthService {
       return of(session)
     }
 
-    return this.getSessionUsingWhoAmI()
+    return this.refreshSession()
   }
 
-  getSessionUsingWhoAmI(): Observable<Session | null> {
-    return this.authRepository.whoAmI().pipe(
+  refreshSession(): Observable<Session | null> {
+    if (this.refreshInProgress) {
+      return this.refreshSession$
+    }
+
+    this.refreshInProgress = true
+    this.refreshSessionSubject.next(null)
+
+    this.authRepository.refreshToken().pipe(
       map((session) => {
         this.sessionStorage.set(session)
         this.sessionCookieService.setCookie()
+
         return session
       }),
+      finalize(() => {
+        this.refreshInProgress = false
+      }),
       catchError(() => of(null)),
+      shareReplay(1),
     )
+
+    return this.refreshSession$
   }
 }

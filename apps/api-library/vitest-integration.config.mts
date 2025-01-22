@@ -1,13 +1,8 @@
-/// <reference types="vitest" />
 import { defineConfig } from 'vitest/config'
-import swc from 'unplugin-swc'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   plugins: [
-    swc.vite({
-      module: { type: 'es6' },
-    }),
     viteTsConfigPaths({
       root: './',
     }),
@@ -22,8 +17,11 @@ export default defineConfig(({ mode }) => ({
     outputFile: {
       junit: './reports/integration/junit-report.xml',
     },
+    poolOptions: {
+      typescript: true,
+    }
   },
   define: {
-    'import.meta.vitest': mode !== 'production',
-  },
-}))
+    'import.meta.vitest': true,
+  }
+})

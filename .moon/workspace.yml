@@ -6,7 +6,7 @@ projects:
   - 'apps/*'
   - 'packages/*'
   - 'infra/*'
-  - 'e2e'
+  - 'acceptance-tests'
 vcs:
   manager: 'git'
   defaultBranch: 'master'

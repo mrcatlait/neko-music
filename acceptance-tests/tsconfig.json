@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "ES2021",
+    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "types": ["bun-types", "cypress"]
+  },
+  "include": ["**/*.ts"]
+}

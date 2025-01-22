@@ -1,14 +1,9 @@
-/// <reference types="vitest" />
 import { defineConfig } from 'vitest/config'
-import swc from 'unplugin-swc'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import path from 'path'
 
 export default defineConfig({
   plugins: [
-    swc.vite({
-      module: { type: 'es6' },
-    }),
     viteTsConfigPaths({
       root: './',
     }),
@@ -29,14 +24,15 @@ export default defineConfig({
       provider: 'v8',
       include: ['src/**/*.ts'],
       exclude: [
-        '**/main.ts',
-        'src/util/*',
+        '**/app.ts',
+        'src/migrations/*',
+        'src/seeds/*',
         '**/*.d.ts',
         '**/index.ts',
         '**/*.model.ts',
         '**/*.enum.ts',
         '**/*.dto.ts',
-        '**/*.module.ts',
+        '**/*.entity.ts',
         '**/*.spec.ts',
       ],
       reporter: ['text', 'lcov'],
@@ -48,7 +44,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@modules': path.resolve(__dirname, './src/modules'),
+      '@common': path.resolve(__dirname, './src/common'),
+      '@core': path.resolve(__dirname, './src/core'),
+      '@features': path.resolve(__dirname, './src/features'),
     },
   },
 })

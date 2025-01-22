@@ -1,0 +1,22 @@
+$schema: 'https://moonrepo.dev/schemas/tasks.json'
+
+fileGroups:
+  configs:
+    - '*.{js,json,yml,yaml}'
+  sources:
+    - 'src/**/*'
+
+tasks:
+  validate:
+    command: 'tsc --noEmit'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(configs)'
+
+  lint:
+    command:
+      - 'eslint'
+      - '--fix'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(configs)'

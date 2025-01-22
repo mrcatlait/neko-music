@@ -1,0 +1,26 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+type: 'automation'
+language: 'typescript'
+
+dependsOn:
+  - id: 'ui-test'
+    scope: 'production'
+  - id: 'eslint-config'
+    scope: 'development'
+
+fileGroups:
+  configs:
+    - '*.{js,json,yml,yaml}'
+  sources:
+    - 'src/**/*'
+
+tasks:
+ test:
+    command: 'vitest --config vitest.config.mts'
+    inputs:
+      - '@globs(sources)'
+      - 'vitest.config.*'
+    outputs:
+      - 'coverage'
+      - 'reports/unit'

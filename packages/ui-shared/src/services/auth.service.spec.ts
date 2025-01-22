@@ -32,7 +32,7 @@ describe('AuthService', () => {
     }
 
     authRepositoryMock = {
-      whoAmI: vi.fn(),
+      refreshToken: vi.fn(),
     }
 
     TestBed.configureTestingModule({

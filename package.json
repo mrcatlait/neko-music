@@ -6,9 +6,10 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "e2e"
+    "acceptance-tests"
   ],
   "devDependencies": {
+    "@elysiajs/eden": "^1.2.0",
     "sonarqube-scanner": "^4.2.3"
   },
   "engines": {
