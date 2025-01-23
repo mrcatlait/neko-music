@@ -4,7 +4,7 @@
     "target": "ES2021",
     "moduleResolution": "node",
     "strictNullChecks": true,
-    "types": ["bun-types", "cypress"],
+    "types": ["cypress"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
