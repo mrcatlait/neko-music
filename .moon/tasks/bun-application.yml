@@ -38,8 +38,8 @@ tasks:
       - 'eslint'
       - '--fix'
     inputs:
-      - '@globs(sources)'
-      - '@globs(configs)'
+      - '@group(sources)'
+      - '@group(configs)'
       - '.prettierignore'
       - '.prettierrc'
 
@@ -49,8 +49,8 @@ tasks:
     args:
       - 'Dsonar.token=${SONAR_TOKEN}'
     inputs:
-      - '@globs(sources)'
-      - '@globs(unit-tests)'
+      - '@group(sources)'
+      - '@group(unit-tests)'
       - 'sonar-project.properties'
     deps:
       - 'test-unit'
