@@ -38,19 +38,19 @@ tasks:
       - 'eslint'
       - '--fix'
     inputs:
-      - '@group(sources)'
-      - '@group(configs)'
+      - '@globs(sources)'
+      - '@globs(sources)'
       - '.prettierignore'
       - '.prettierrc'
 
-  sonar:
-    command: 'sonar-scanner'
-    local: true
-    args:
-      - 'Dsonar.token=${SONAR_TOKEN}'
-    inputs:
-      - '@group(sources)'
-      - '@group(unit-tests)'
-      - 'sonar-project.properties'
-    deps:
-      - 'test-unit'
+  # sonar:
+  #   command: 'sonar-scanner'
+  #   local: true
+  #   args:
+  #     - 'Dsonar.token=${SONAR_TOKEN}'
+  #   inputs:
+  #     - '@globs(sources)'
+  #     - '@globs(unit-tests)'
+  #     - 'sonar-project.properties'
+  #   deps:
+  #     - 'test-unit'

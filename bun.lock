@@ -37,10 +37,16 @@
     },
     "apps/ui-library-admin": {
       "name": "ui-library-admin",
+      "dependencies": {
+        "@neko/ui-shared": "workspace:*",
+      },
       "devDependencies": {
         "@angular-devkit/build-angular": "^19.0.2",
         "@angular/cli": "^19.0.2",
         "@angular/compiler-cli": "^19.0.0",
+        "@neko/eslint-config": "workspace:*",
+        "@neko/stylelint-config": "workspace:*",
+        "@neko/vitest": "workspace:*",
         "angular-eslint": "^18.3.1",
         "typescript": "~5.6.2",
       },
@@ -135,6 +141,8 @@
         "@angular/compiler-cli": "^19.0.0",
         "@angular/platform-browser": "^19.0.0",
         "@angular/platform-browser-dynamic": "^19.0.0",
+        "@neko/eslint-config": "workspace:*",
+        "@neko/stylelint-config": "workspace:*",
         "jsdom": "^25.0.1",
         "ng-packagr": "^19.0.0",
         "typescript": "~5.6.2",

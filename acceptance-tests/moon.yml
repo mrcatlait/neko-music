@@ -19,7 +19,7 @@ tasks:
  test:
     command: 'vitest --config vitest.config.mts'
     inputs:
-      - '@globs(sources)'
+      - '@group(sources)'
       - 'vitest.config.*'
     outputs:
       - 'coverage'

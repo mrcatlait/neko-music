@@ -7,6 +7,6 @@ tasks:
   build:
     command: 'tsc'
     inputs:
-      - 'src/**/*'
+      - '@globs(sources)'
     outputs:
       - 'lib'
