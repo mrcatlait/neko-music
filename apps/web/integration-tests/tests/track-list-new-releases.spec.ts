@@ -1,4 +1,4 @@
-import { navigation, trackListNewReleases, player } from '@neko/web-test-utils/dsl'
+import { navigation, trackListNewReleases, player } from '@neko/ui-test/components'
 
 import { interceptors } from '../interceptors'
 

@@ -45,6 +45,8 @@ export class GenericContainer {
     } catch {
       await container.stop()
       await container.remove()
+
+      process.exit(1)
     }
 
     return new StartedContainer('localhost', container)

@@ -5,7 +5,7 @@ import { Permission } from '@neko/permissions'
   selector: 'neko-navigation-bar',
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationBarComponent {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms'
-import { registrationSelectors } from '@selectors'
+import { registrationSelectors } from '@neko/ui-test/selectors'
 
 import { RegistrationState } from './registration.state'
 

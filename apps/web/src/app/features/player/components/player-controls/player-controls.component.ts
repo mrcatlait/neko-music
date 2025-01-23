@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { playerSelectors } from '@selectors'
+import { playerSelectors } from '@neko/ui-test/selectors'
 
 import { PlayerStatus, RepeatOption } from '@core/enum'
 import { AudioState, PlaybackState } from '@core/state'
@@ -8,7 +8,7 @@ import { AudioState, PlaybackState } from '@core/state'
   selector: 'neko-player-controls',
   templateUrl: 'player-controls.component.html',
   styleUrls: ['player-controls.component.scss'],
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerControlsComponent {

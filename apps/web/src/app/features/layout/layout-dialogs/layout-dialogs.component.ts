@@ -7,7 +7,7 @@ import { DIALOGS } from '@core/tokens'
   selector: 'neko-layout-dialogs',
   templateUrl: 'layout-dialogs.component.html',
   styleUrl: 'layout-dialogs.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutDialogsComponent {

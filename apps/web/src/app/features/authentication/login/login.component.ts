@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { loginSelectors } from '@selectors'
+import { loginSelectors } from '@neko/ui-test/selectors'
 
 import { LoginState } from './login.state'
 

@@ -1,4 +1,4 @@
-import '@neko/web-test-utils/commands'
+import '@neko/ui-test/commands'
 
 Cypress.Keyboard.defaults({
   keystrokeDelay: 0,

@@ -2,7 +2,6 @@ import { Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({
   name: 'numberSequence',
-  standalone: false,
 })
 export class NumberSequencePipe implements PipeTransform {
   transform(value: number): number[] {

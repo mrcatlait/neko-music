@@ -6,7 +6,6 @@ type Colors = 'primary' | 'secondary'
 
 @Directive({
   selector: 'a[nekoButton],button[nekoButton],a[nekoIconButton],button[nekoIconButton]',
-  standalone: false,
 })
 export class ButtonDirective {
   @Input()

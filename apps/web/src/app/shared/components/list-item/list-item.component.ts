@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core'
   selector: 'neko-list-item',
   templateUrl: 'list-item.component.html',
   styleUrl: 'list-item.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListItemComponent {

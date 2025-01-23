@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core'
-import { trackListNewReleasesSelectors } from '@selectors'
+import { trackListNewReleasesSelectors } from '@neko/ui-test/selectors'
 
 import { TrackSharedModule } from '../track-shared'
 import { TrackListNewReleasesState } from './track-list-new-releases.state'

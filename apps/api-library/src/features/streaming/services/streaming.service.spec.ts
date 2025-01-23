@@ -1,78 +1,70 @@
-import { NotFoundException, StreamableFile } from '@nestjs/common'
-import { createReadStream, existsSync } from 'fs'
-import { join } from 'path'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Test } from '@nestjs/testing'
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import { NotFoundError } from 'elysia'
+import { beforeEach, describe, expect, it, mock } from 'bun:test'
 
 import { StreamingService } from './streaming.service'
 import { STREAM_PATH } from '../constants'
 
-vi.mock('fs', () => ({
-  createReadStream: vi.fn(),
-  existsSync: vi.fn(),
-}))
-
-vi.mock('path', () => ({
-  join: vi.fn(),
-}))
+import { Container } from '@common/di'
 
 describe('StreamingService', () => {
   let service: StreamingService
+  const existsSync = mock()
+  const join = mock()
+  const file = mock()
 
-  beforeEach(async () => {
-    const module = await Test.createTestingModule({
-      providers: [StreamingService],
-    }).compile()
+  mock.module('bun', () => ({ file }))
+  mock.module('fs', () => ({ existsSync }))
+  mock.module('path', () => ({ join }))
 
-    service = module.get(StreamingService)
-  })
-
-  afterEach(() => {
-    vi.clearAllMocks()
+  beforeEach(() => {
+    service = Container.get(StreamingService)
   })
 
   describe('streamManifest', () => {
-    it('should return a StreamableFile when manifest exists', () => {
+    it('should return a ReadableStream when manifest exists', () => {
       // Arrange
       const trackId = '123'
       const filePath = '/path/to/manifest.mpd'
-      const mockStream = {} as ReturnType<typeof createReadStream>
+      const mockStream = {} as ReadableStream<Uint8Array>
 
-      vi.mocked(join).mockReturnValue(filePath)
-      vi.mocked(existsSync).mockReturnValue(true)
-      vi.mocked(createReadStream).mockReturnValue(mockStream)
+      join.mockReturnValue(filePath)
+      existsSync.mockReturnValue(true)
+      file.mockReturnValue(mockStream)
 
       // Act
       const result = service.streamManifest(trackId)
 
       // Assert
-      expect(result).toBeInstanceOf(StreamableFile)
       expect(join).toHaveBeenCalledWith(STREAM_PATH, 'tracks', trackId, 'manifest.mpd')
-      expect(createReadStream).toHaveBeenCalledWith(filePath)
+      expect(existsSync).toHaveBeenCalledWith(filePath)
+      expect(result).toBeInstanceOf(ReadableStream)
     })
 
-    it('should throw NotFoundException when manifest does not exist', () => {
+    it('should throw NotFoundError when manifest does not exist', () => {
       // Arrange
       const trackId = '123'
 
-      vi.mocked(existsSync).mockReturnValue(false)
+      existsSync.mockReturnValue(false)
 
       // Act & Assert
-      expect(() => service.streamManifest(trackId)).toThrow(NotFoundException)
+      expect(() => service.streamManifest(trackId)).toThrow(NotFoundError)
+      expect(join).toHaveBeenCalledWith(STREAM_PATH, 'tracks', trackId, 'manifest.mpd')
+      expect(file).not.toHaveBeenCalled()
     })
   })
 
   describe('streamSegment', () => {
-    it('should return StreamableFile when segment exists', () => {
+    it('should return ReadableStream when segment exists', () => {
       // Arrange
       const trackId = 'track-123'
       const segmentId = 'segment-456'
       const mockPath = '/mock/path'
-      const mockStream = {} as ReturnType<typeof createReadStream>
+      const mockStream = {} as ReadableStream<Uint8Array>
 
-      vi.mocked(join).mockReturnValue(mockPath)
-      vi.mocked(existsSync).mockReturnValue(true)
-      vi.mocked(createReadStream).mockReturnValue(mockStream)
+      join.mockReturnValue(mockPath)
+      existsSync.mockReturnValue(true)
+      file.mockReturnValue(mockStream)
 
       // Act
       const result = service.streamSegment(trackId, segmentId)
@@ -80,24 +72,23 @@ describe('StreamingService', () => {
       // Assert
       expect(join).toHaveBeenCalledWith(STREAM_PATH, 'tracks', trackId, segmentId)
       expect(existsSync).toHaveBeenCalledWith(mockPath)
-      expect(createReadStream).toHaveBeenCalledWith(mockPath)
-      expect(result).toBeInstanceOf(StreamableFile)
+      expect(result).toBeInstanceOf(ReadableStream)
     })
 
-    it('should throw NotFoundException when segment does not exist', () => {
+    it('should throw NotFoundError when segment does not exist', () => {
       // Arrange
       const trackId = 'track-123'
       const segmentId = 'segment-456'
       const mockPath = '/mock/path'
 
-      vi.mocked(join).mockReturnValue(mockPath)
-      vi.mocked(existsSync).mockReturnValue(false)
+      join.mockReturnValue(mockPath)
+      existsSync.mockReturnValue(false)
 
       // Act & Assert
-      expect(() => service.streamSegment(trackId, segmentId)).toThrow(NotFoundException)
+      expect(() => service.streamSegment(trackId, segmentId)).toThrow(NotFoundError)
       expect(join).toHaveBeenCalledWith(STREAM_PATH, 'tracks', trackId, segmentId)
       expect(existsSync).toHaveBeenCalledWith(mockPath)
-      expect(createReadStream).not.toHaveBeenCalled()
+      expect(file).not.toHaveBeenCalled()
     })
   })
 })

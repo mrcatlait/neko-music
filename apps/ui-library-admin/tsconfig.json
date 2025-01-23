@@ -24,7 +24,7 @@
       "@shared/*": ["src/app/shared/*"],
       "@features/*": ["src/app/features/*"],
       "@features": ["src/app/features"],
-      "@selectors": ["../../packages/web-test-utils/selectors"],
+      "@selectors": ["../../packages/ui-test/selectors"],
       "@environment": ["src/environments/environment"]
     }
   },

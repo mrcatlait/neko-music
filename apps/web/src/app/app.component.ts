@@ -6,7 +6,7 @@ import { AuthState } from '@core/state'
 @Component({
   selector: 'neko-root',
   templateUrl: './app.component.html',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements AfterViewInit {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core'
-import { artistDetailsSelectors } from '@selectors'
+import { artistDetailsSelectors } from '@neko/ui-test/selectors'
 
 import { TrackSharedModule } from '../track-shared'
 import { TrackListByArtistState } from './track-list-by-artist.state'

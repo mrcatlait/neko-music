@@ -39,7 +39,8 @@ export default tseslint.config(
         "error"
       ],
       // Ensures ASC alphabetical order for NgModule metadata arrays for easy visual scanning
-      "@angular-eslint/sort-ngmodule-metadata-arrays": "error",
+      // DEPRECATED
+      // "@angular-eslint/sort-ngmodule-metadata-arrays": "error",
       // Ensures that classes implement lifecycle interfaces corresponding to the declared lifecycle methods
       // https://angular.io/guide/styleguide#style-09-01
       "@angular-eslint/use-lifecycle-interface": [
@@ -74,12 +75,13 @@ export default tseslint.config(
           "style": "kebab-case"
         }
       ],
-      "@angular-eslint/no-host-metadata-property": [
-        "error",
-        {
-          "allowStatic": true
-        }
-      ]
+      // DEPRECATED
+      // "@angular-eslint/no-host-metadata-property": [
+      //   "error",
+      //   {
+      //   "allowStatic": true
+      // }
+      // ]
     }
   },
   {

@@ -33,22 +33,25 @@ tasks:
   test-unit:
     command: 'bun test'
     args:
-      - 'src/**/*.spec.ts'
+      - '--root src'
+      - '--preload src/test-setup.ts'
       - '--reporter=junit'
       - '--reporter-outfile=reports/unit/junit-report.xml'
+    inputs:
+      - '@globs(sources)'
+    outputs:
+      - 'reports/unit'
 
   test-integration:
     command: 'bun test'
     args:
-      - 'integration-tests/**/*.spec.ts'
+      - '--root integration-tests'
       - '--preload integration-tests/test-setup.ts'
       - '--reporter=junit'
       - '--reporter-outfile=reports/integration/junit-report.xml'
     inputs:
       - '@globs(sources)'
       - '@globs(integration-tests)'
-    env: 
-      # DEBUG: 'testcontainers,testcontainers:exec'
     outputs:
       - 'reports/integration'
 

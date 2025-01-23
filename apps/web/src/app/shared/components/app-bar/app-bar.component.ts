@@ -9,7 +9,7 @@ import { NavigationService } from '@core/services'
   selector: 'neko-app-bar',
   templateUrl: './app-bar.component.html',
   styleUrl: './app-bar.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppBarComponent implements AfterViewInit {

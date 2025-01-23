@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core'
-import { trackListSelectors } from '@selectors'
+import { trackListSelectors } from '@neko/ui-test/selectors'
 
 import { LinkedTrack } from '../../models'
 
@@ -7,7 +7,7 @@ import { LinkedTrack } from '../../models'
   selector: 'neko-track-list',
   templateUrl: './track-list.component.html',
   styleUrl: './track-list.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackListComponent {

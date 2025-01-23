@@ -5,7 +5,6 @@ import { injectPortalContext } from '@core/tokens'
 
 @Directive({
   selector: '[dialogClose]',
-  standalone: false,
 })
 export class DialogCloseDirective {
   private readonly context = injectPortalContext()

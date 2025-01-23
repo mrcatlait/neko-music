@@ -7,7 +7,7 @@ import { VALIDATION_ERRORS } from '@core/tokens'
 @Component({
   selector: 'neko-error',
   template: `{{ message() }}`,
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorComponent implements OnInit, OnDestroy {

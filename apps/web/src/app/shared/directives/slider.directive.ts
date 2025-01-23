@@ -16,7 +16,6 @@ type Colors = 'primary' | 'secondary'
   host: {
     type: 'range',
   },
-  standalone: false,
 })
 export class SliderDirective implements OnChanges {
   private readonly elRef = inject(ElementRef)

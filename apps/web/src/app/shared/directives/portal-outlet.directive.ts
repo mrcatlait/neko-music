@@ -13,7 +13,6 @@ import { PortalComponent } from '@core/classes'
 
 @Directive({
   selector: '[portalOutlet]',
-  standalone: false,
 })
 export class PortalOutletDirective<C> implements OnInit {
   private readonly vcr = inject(ViewContainerRef)

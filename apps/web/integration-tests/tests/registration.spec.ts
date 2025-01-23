@@ -1,4 +1,4 @@
-import { navigation, registration } from '@neko/web-test-utils/dsl'
+import { navigation, registration } from '@neko/ui-test/components'
 
 import { interceptors } from 'integration-tests/interceptors'
 

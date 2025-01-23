@@ -6,7 +6,7 @@ import { TrackArtist } from '@core/models'
   selector: 'neko-track-artist-list',
   templateUrl: './track-artist-list.component.html',
   styleUrl: './track-artist-list.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackArtistListComponent {

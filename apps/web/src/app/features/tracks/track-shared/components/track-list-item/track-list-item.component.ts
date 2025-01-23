@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, EventEmitter, inject, Input, Output } from '@angular/core'
-import { trackListItemSelectors } from '@selectors'
+import { trackListItemSelectors } from '@neko/ui-test/selectors'
 import { Permission } from '@neko/permissions'
 
 import { LinkedTrack } from '../../models'
@@ -14,7 +14,7 @@ import { CollectionType } from '@features/playlists/playlist-add/enum'
   selector: 'neko-track-list-item',
   templateUrl: 'track-list-item.component.html',
   styleUrl: 'track-list-item.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackListItemComponent {

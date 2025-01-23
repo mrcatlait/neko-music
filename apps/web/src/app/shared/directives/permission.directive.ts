@@ -7,7 +7,6 @@ import { AuthState } from '@core/state'
 @Directive({
   selector: '[hasPermissions]',
   hostDirectives: [NgIf],
-  standalone: false,
 })
 export class PermissionDirective {
   private readonly ngIfDirective = inject(NgIf)
@@ -17,7 +16,7 @@ export class PermissionDirective {
   strategy = input<'any' | 'all'>('any', { alias: 'hasPermissionsStrategy' })
 
   constructor() {
-    effect(() => this.ngIfDirective.ngIf = this.hasPermissions())
+    effect(() => (this.ngIfDirective.ngIf = this.hasPermissions()))
   }
 
   private hasPermissions() {
@@ -25,8 +24,8 @@ export class PermissionDirective {
 
     if (Array.isArray(permission)) {
       return this.strategy() === 'any'
-          ? this.authState.hasAnyPermission(permission)
-          : this.authState.hasAllPermissions(permission)
+        ? this.authState.hasAnyPermission(permission)
+        : this.authState.hasAllPermissions(permission)
     } else {
       return this.authState.hasPermission(permission)
     }

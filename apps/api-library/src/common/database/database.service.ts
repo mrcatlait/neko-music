@@ -1,6 +1,6 @@
-import postgres, { Sql } from 'postgres'
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import postgres, { Sql } from 'postgres'
 
 import { DatabaseOptions } from './types'
 

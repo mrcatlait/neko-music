@@ -13,7 +13,6 @@ export const resolutionMap = {
 
 @Pipe({
   name: 'imageUrl',
-  standalone: false,
 })
 export class ImageUrlPipe implements PipeTransform {
   transform(images?: Image[], size: ImageSizeValues = ImageSize.Small): string {

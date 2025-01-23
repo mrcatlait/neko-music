@@ -13,7 +13,7 @@ dependsOn:
     scope: 'development'
   - id: 'vitest'
     scope: 'development'
-  - id: 'web-test-utils'
+  - id: 'ui-test'
     scope: 'development'
 
 fileGroups:
@@ -39,8 +39,21 @@ tasks:
     deps:
       - 'build'
 
+  test-unit:
+    command: 'vitest'
+    args:
+      - '--config vitest.config.mts'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(unit-tests)'
+      - 'vitest.config.*'
+    outputs:
+      - 'coverage'
+      - 'reports/unit'
+
   test-integration:
     command: 'npm run test-integration'
+    local: true
     inputs:
       - '@group(app)'
       - '@group(sources)'
@@ -57,5 +70,4 @@ tasks:
     local: true
     deps:
       - 'test-unit'
-      - 'test-contract'
       - 'test-integration'

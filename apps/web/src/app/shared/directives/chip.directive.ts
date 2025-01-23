@@ -4,7 +4,6 @@ type Variants = 'assist' | 'filter' | 'input' | 'suggestion'
 
 @Directive({
   selector: '[nekoChip]',
-  standalone: false,
 })
 export class ChipDirective {
   @Input()

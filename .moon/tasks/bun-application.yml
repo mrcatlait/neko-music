@@ -22,19 +22,10 @@ fileGroups:
   performance-tests:
     - 'performance-tests/**/*'
 
-tasks:
-  test-unit:
-    command: 'vitest --config vitest.config.mts'
-    inputs:
-      - '@globs(sources)'
-      - '@globs(unit-tests)'
-      - 'vitest.config.*'
-    outputs:
-      - 'coverage'
-      - 'reports/unit'
-    
+tasks:   
   test-contract:
     command: 'vitest --config vitest-contract.config.mts'
+    local: true
     inputs:
       - '@globs(sources)'
       - '@globs(contract-tests)'
@@ -54,6 +45,7 @@ tasks:
 
   sonar:
     command: 'sonar-scanner'
+    local: true
     args:
       - 'Dsonar.token=${SONAR_TOKEN}'
     inputs:

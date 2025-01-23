@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { playerSelectors } from '@selectors'
+import { playerSelectors } from '@neko/ui-test/selectors'
 
 import { PlaybackState } from '@core/state'
 
@@ -7,7 +7,7 @@ import { PlaybackState } from '@core/state'
   selector: 'neko-player-track',
   templateUrl: 'player-track.component.html',
   styleUrl: 'player-track.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerTrackComponent {

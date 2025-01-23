@@ -6,7 +6,7 @@ import { MediaQueryService } from '@core/services'
   selector: 'neko-layout-sidebar',
   templateUrl: 'layout-sidebar.component.html',
   styleUrl: 'layout-sidebar.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutSidebarComponent {

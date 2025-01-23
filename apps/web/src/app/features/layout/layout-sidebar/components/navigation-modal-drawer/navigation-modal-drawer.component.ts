@@ -7,7 +7,7 @@ import { ScrollService } from '@core/services'
   selector: 'neko-navigation-modal-drawer',
   templateUrl: './navigation-modal-drawer.component.html',
   styleUrl: './navigation-modal-drawer.component.scss',
-  standalone: false,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationModalDrawerComponent implements OnInit, OnDestroy {
