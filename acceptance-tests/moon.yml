@@ -18,9 +18,9 @@ fileGroups:
 tasks:
  test:
     command: 'vitest --config vitest.config.mts'
-    inputs:
-      - '@group(sources)'
-      - 'vitest.config.*'
+    # inputs:
+    #   - '@group(sources)'
+    #   - 'vitest.config.*'
     outputs:
       - 'coverage'
       - 'reports/unit'

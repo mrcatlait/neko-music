@@ -9,14 +9,14 @@ fileGroups:
 tasks:
   validate:
     command: 'tsc --noEmit'
-    inputs:
-      - '@group(sources)'
-      - '@group(configs)'
+    # inputs:
+    #   - '@group(sources)'
+    #   - '@group(configs)'
 
   lint:
     command:
       - 'eslint'
       - '--fix'
-    inputs:
-      - '@group(sources)'
-      - '@group(configs)'
+    # inputs:
+    #   - '@group(sources)'
+    #   - '@group(configs)'

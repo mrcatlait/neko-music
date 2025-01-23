@@ -27,8 +27,8 @@ tasks:
       - '--target bun'
       - '--outfile server'
       - 'src/app.ts'
-    inputs:
-      - '@group(sources)'
+    # inputs:
+    #   - '@group(sources)'
 
   test-unit:
     command: 'bun test'

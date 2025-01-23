@@ -26,10 +26,10 @@ tasks:
   test-contract:
     command: 'vitest --config vitest-contract.config.mts'
     local: true
-    inputs:
-      - '@group(sources)'
-      - '@group(contract-tests)'
-      - 'vitest-contract.config.*'
+    # inputs:
+    #   - '@group(sources)'
+    #   - '@group(contract-tests)'
+    #   - 'vitest-contract.config.*'
     outputs:
       - 'reports/contract'
 
@@ -37,10 +37,10 @@ tasks:
     command:
       - 'eslint'
       - '--fix'
-    inputs:
-      - '@group(sources)'
-      - '.prettierignore'
-      - '.prettierrc'
+    # inputs:
+    #   - '@group(sources)'
+    #   - '.prettierignore'
+    #   - '.prettierrc'
 
   # sonar:
   #   command: 'sonar-scanner'

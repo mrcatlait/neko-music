@@ -27,9 +27,9 @@ tasks:
 
   build:
     command: 'ng build'
-    inputs:
-      - '@group(app)'
-      - '@group(sources)'
+    # inputs:
+    #   - '@group(app)'
+    #   - '@group(sources)'
     outputs:
       - 'dist'
 
@@ -54,11 +54,11 @@ tasks:
   test-integration:
     command: 'npm run test-integration'
     local: true
-    inputs:
-      - '@group(app)'
-      - '@group(sources)'
-      - '@group(integration-tests)'
-      - 'cypress.config.ts'
+    # inputs:
+    #   - '@group(app)'
+    #   - '@group(sources)'
+    #   - '@group(integration-tests)'
+    #   - 'cypress.config.ts'
     outputs:
       - 'reports/integration'
 
