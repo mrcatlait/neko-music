@@ -58,8 +58,8 @@ tasks:
   test-performance:
     command: 'k6 run performance-tests/test.js'
     local: true
-    inputs:
-      - '@globs(performance-tests)'
+    # inputs:
+    #   - '@globs(performance-tests)'
 
   test:
     local: true
