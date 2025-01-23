@@ -10,13 +10,13 @@ tasks:
   validate:
     command: 'tsc --noEmit'
     inputs:
-      - '@globs(sources)'
-      - '@globs(configs)'
+      - '@group(sources)'
+      - '@group(configs)'
 
   lint:
     command:
       - 'eslint'
       - '--fix'
     inputs:
-      - '@globs(sources)'
-      - '@globs(configs)'
+      - '@group(sources)'
+      - '@group(configs)'

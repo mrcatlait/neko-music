@@ -27,8 +27,8 @@ tasks:
     command: 'vitest --config vitest-contract.config.mts'
     local: true
     inputs:
-      - '@globs(sources)'
-      - '@globs(contract-tests)'
+      - '@group(sources)'
+      - '@group(contract-tests)'
       - 'vitest-contract.config.*'
     outputs:
       - 'reports/contract'
@@ -38,8 +38,7 @@ tasks:
       - 'eslint'
       - '--fix'
     inputs:
-      - '@globs(sources)'
-      - '@globs(sources)'
+      - '@group(sources)'
       - '.prettierignore'
       - '.prettierrc'
 
@@ -49,8 +48,8 @@ tasks:
   #   args:
   #     - 'Dsonar.token=${SONAR_TOKEN}'
   #   inputs:
-  #     - '@globs(sources)'
-  #     - '@globs(unit-tests)'
+  #     - '@group(sources)'
+  #     - '@group(unit-tests)'
   #     - 'sonar-project.properties'
   #   deps:
   #     - 'test-unit'
