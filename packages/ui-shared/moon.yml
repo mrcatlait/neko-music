@@ -9,8 +9,6 @@ dependsOn:
     scope: 'development'
   - id: 'stylelint-config'
     scope: 'development'
-  - id: 'vitest'
-    scope: 'development'
 
 tasks:
   build:
@@ -20,5 +18,4 @@ tasks:
     outputs:
       - 'dist'
     deps:
-      - 'test'
       - 'lint'
