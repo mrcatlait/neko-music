@@ -6,7 +6,7 @@ language: 'typescript'
 tasks:
   build:
     command: 'tsc'
-    inputs:
-      - '@globs(sources)'
+    # inputs:
+    #   - '@globs(sources)'
     outputs:
       - 'lib'

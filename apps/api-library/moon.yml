@@ -37,8 +37,8 @@ tasks:
       - '--preload src/test-setup.ts'
       - '--reporter=junit'
       - '--reporter-outfile=reports/unit/junit-report.xml'
-    inputs:
-      - '@globs(sources)'
+    # inputs:
+    #   - '@globs(sources)'
     outputs:
       - 'reports/unit'
 
@@ -49,9 +49,9 @@ tasks:
       - '--preload integration-tests/test-setup.ts'
       - '--reporter=junit'
       - '--reporter-outfile=reports/integration/junit-report.xml'
-    inputs:
-      - '@globs(sources)'
-      - '@globs(integration-tests)'
+    # inputs:
+    #   - '@globs(sources)'
+    #   - '@globs(integration-tests)'
     outputs:
       - 'reports/integration'
 

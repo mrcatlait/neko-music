@@ -43,10 +43,10 @@ tasks:
     command: 'vitest'
     args:
       - '--config vitest.config.mts'
-    inputs:
-      - '@globs(sources)'
-      - '@globs(unit-tests)'
-      - 'vitest.config.*'
+    # inputs:
+    #   - '@globs(sources)'
+    #   - '@globs(unit-tests)'
+    #   - 'vitest.config.*'
     outputs:
       - 'coverage'
       - 'reports/unit'
