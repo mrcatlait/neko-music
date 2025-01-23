@@ -1,7 +1,12 @@
 $schema: 'https://moonrepo.dev/schemas/project.json'
 
+platform: 'bun'
 type: 'library'
 language: 'typescript'
+
+dependsOn:
+  - id: 'eslint-config'
+    scope: 'development'
 
 tasks:
   build:

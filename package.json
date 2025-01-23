@@ -9,10 +9,10 @@
     "acceptance-tests"
   ],
   "devDependencies": {
-    "@elysiajs/eden": "^1.2.0",
-    "sonarqube-scanner": "^4.2.3"
+    "sonarqube-scanner": "^4.2.3",
+    "bun": "1.2.0"
   },
   "engines": {
-    "node": "~20"
+    "node": "~22"
   }
 }
