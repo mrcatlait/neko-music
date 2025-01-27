@@ -9,8 +9,7 @@
     "acceptance-tests"
   ],
   "devDependencies": {
-    "sonarqube-scanner": "^4.2.3",
-    "bun": "1.2.0"
+    "sonarqube-scanner": "^4.2.3"
   },
   "engines": {
     "node": "~22"

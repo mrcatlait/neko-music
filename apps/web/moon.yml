@@ -1,6 +1,5 @@
 $schema: 'https://moonrepo.dev/schemas/project.json'
 
-platform: 'bun'
 stack: 'frontend'
 type: 'application'
 language: 'typescript'
@@ -39,18 +38,6 @@ tasks:
     local: true
     deps:
       - 'build'
-
-  test-unit:
-    command: 'vitest'
-    args:
-      - '--config vitest.config.mts'
-    # inputs:
-    #   - '@globs(sources)'
-    #   - '@globs(unit-tests)'
-    #   - 'vitest.config.*'
-    outputs:
-      - 'coverage'
-      - 'reports/unit'
 
   test-integration:
     command: 'npm run test-integration'

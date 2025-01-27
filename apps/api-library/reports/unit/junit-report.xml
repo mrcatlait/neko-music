@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="5" failures="0" errors="0" time="1.954">
+    <testsuite name="src/modules/authentication/login/commands/login/login.validator.spec.ts" timestamp="2025-01-27T17:11:54.015Z" hostname="MrCat" tests="3" failures="0" errors="0" skipped="0" time="0.4680031">
+        <testcase classname="src/modules/authentication/login/commands/login/login.validator.spec.ts" name="LoginValidator &gt; validate &gt; should return true if password is correct" time="0.1914667">
+        </testcase>
+        <testcase classname="src/modules/authentication/login/commands/login/login.validator.spec.ts" name="LoginValidator &gt; validate &gt; should return false if password is incorrect" time="0.1675713">
+        </testcase>
+        <testcase classname="src/modules/authentication/login/commands/login/login.validator.spec.ts" name="LoginValidator &gt; validate &gt; should run dummy hash if password is not provided" time="0.1073337">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/modules/authentication/registration/commands/register/register.validator.spec.ts" timestamp="2025-01-27T17:11:54.016Z" hostname="MrCat" tests="2" failures="0" errors="0" skipped="0" time="0.0184552">
+        <testcase classname="src/modules/authentication/registration/commands/register/register.validator.spec.ts" name="RegisterValidator &gt; validate &gt; should return true if email is not taken" time="0.0148438">
+        </testcase>
+        <testcase classname="src/modules/authentication/registration/commands/register/register.validator.spec.ts" name="RegisterValidator &gt; validate &gt; should return false if email is taken" time="0.0020261">
+        </testcase>
+    </testsuite>
+</testsuites>

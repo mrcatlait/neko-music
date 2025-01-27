@@ -1,5 +1,9 @@
 $schema: 'https://moonrepo.dev/schemas/toolchain.json'
 
-bun:
-  version: '1.2.0'
-  # installArgs: ['--frozen-lockfile']
+node:
+  version: '22'
+  dependencyVersionFormat: 'star'
+  syncProjectWorkspaceDependencies: true
+  packageManager: 'npm'
+  npm:
+    version: '10'

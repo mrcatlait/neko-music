@@ -1,6 +1,5 @@
 $schema: 'https://moonrepo.dev/schemas/project.json'
 
-platform: 'bun'
 stack: 'backend'
 type: 'application'
 language: 'typescript'
@@ -11,48 +10,30 @@ dependsOn:
   - id: 'eslint-config'
     scope: 'development'
 
+fileGroups:
+  app:
+    - 'nest-cli.*'
+
 tasks:
   start:
-    command: 'bun run'
-    args:
-      - '--watch'
-      - 'src/app.ts'
+    command: 'nest start -w'
     local: true
 
   build:
-    command: 'bun build'
-    args:
-      - '--compile'
-      - '--minify-whitespace'
-      - '--minify-syntax'
-      - '--target bun'
-      - '--outfile server'
-      - 'src/app.ts'
-    # inputs:
-    #   - '@group(sources)'
-
-  test-unit:
-    command: 'bun test'
-    args:
-      - '--root src'
-      - '--preload src/test-setup.ts'
-      - '--reporter=junit'
-      - '--reporter-outfile=reports/unit/junit-report.xml'
-    # inputs:
-    #   - '@globs(sources)'
+    command: 'nest build'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
     outputs:
+      - 'dist'
       - 'reports/unit'
 
   test-integration:
-    command: 'bun test'
-    args:
-      - '--root integration-tests'
-      - '--preload integration-tests/test-setup.ts'
-      - '--reporter=junit'
-      - '--reporter-outfile=reports/integration/junit-report.xml'
-    # inputs:
-    #   - '@globs(sources)'
-    #   - '@globs(integration-tests)'
+    command: 'vitest --config vitest-integration.config.mts'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(integration-tests)'
+      - 'vitest-integration.config.*'
     outputs:
       - 'reports/integration'
 

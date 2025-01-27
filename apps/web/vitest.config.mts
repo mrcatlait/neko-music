@@ -35,8 +35,5 @@ export default defineConfig(({ mode }) => ({
       ],
       reporter: ['text', 'lcov'],
     },
-  },
-  define: {
-    'import.meta.vitest': mode !== 'production',
-  },
+  }
 }))

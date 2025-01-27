@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="6.987">
+    <testsuite name="integration-tests/tests/authentication.spec.ts" timestamp="2025-01-27T16:51:57.022Z" hostname="MrCat" tests="15" failures="0" errors="0" skipped="0" time="3.7596241">
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /register &gt; should return 400 status code if the body is missing" time="0.0208688">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /register &gt; should return 400 status code if the body is invalid" time="0.0028238">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /register &gt; should return 400 status code if password does not meet minimum requirements" time="0.0033807">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /register &gt; should return 400 status code if email format is invalid" time="0.0016051">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /register &gt; should return 201 status code if the user is registered" time="0.0654182">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /register &gt; should return 400 status code if the user is already registered" time="0.0588739">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /login &gt; should return 401 status code if the user is not found" time="0.055786">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /login &gt; should return 401 status code if password is incorrect" time="0.1123091">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /login &gt; should return 400 status code if the body is missing" time="0.002424">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /login &gt; should return 400 status code if the body is invalid" time="0.0014149">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; POST /login &gt; should return 201 status code if the user is found" time="0.113628">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; GET /refresh &gt; should return 403 status code if cookie is missing" time="0.0011279">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; GET /refresh &gt; should return 403 status code if cookie is invalid" time="0.0009194">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; GET /refresh &gt; should return 200 status code if cookie is valid" time="0.1317634">
+        </testcase>
+        <testcase classname="integration-tests/tests/authentication.spec.ts" name="Authentication &gt; GET /refresh &gt; should return 403 status code if refresh token was already used" time="0.1236902">
+        </testcase>
+    </testsuite>
+</testsuites>

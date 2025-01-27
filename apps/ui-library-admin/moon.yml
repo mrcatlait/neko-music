@@ -1,6 +1,5 @@
 $schema: 'https://moonrepo.dev/schemas/project.json'
 
-platform: 'bun'
 stack: 'frontend'
 type: 'application'
 language: 'typescript'
