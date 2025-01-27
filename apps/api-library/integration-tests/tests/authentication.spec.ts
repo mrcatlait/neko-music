@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing'
 import { faker } from '@faker-js/faker'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql'
-import { ConfigService } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 

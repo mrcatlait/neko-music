@@ -3,6 +3,7 @@ import { FastifyRequest } from 'fastify'
 
 import { RefreshTokenJwtStrategy } from '@modules/authentication/shared/jwt'
 import { REFRESH_TOKEN_COOKIE_NAME } from '@modules/authentication/shared/constants'
+import { JwtPayload } from '@modules/authentication/shared/models'
 
 @Injectable()
 export class JwtRefreshAuthGuard implements CanActivate {
@@ -13,7 +14,7 @@ export class JwtRefreshAuthGuard implements CanActivate {
     const token = request.cookies[REFRESH_TOKEN_COOKIE_NAME]
 
     const payload = await this.refreshTokenJwtStrategy.verify(token)
-    request.payload = payload ?? {}
+    request.payload = payload ?? ({} as JwtPayload)
     return Boolean(payload)
   }
 }

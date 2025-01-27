@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnApplicationBootstrap, Logger, forwardRef } from '@nestjs/common'
+import { Inject, Injectable, Logger, forwardRef } from '@nestjs/common'
 import { readdirSync, readFileSync } from 'fs'
 import { join } from 'path'
 
@@ -7,7 +7,7 @@ import { DatabaseService } from './database.service'
 import { DATABASE_MODULE_OPTIONS } from '../database.tokens'
 
 @Injectable()
-export class DatabaseMigrationService implements OnApplicationBootstrap {
+export class DatabaseMigrationService {
   private readonly logger = new Logger(DatabaseMigrationService.name)
 
   private readonly migrationsTableName: string = 'migrations'
@@ -21,17 +21,6 @@ export class DatabaseMigrationService implements OnApplicationBootstrap {
       this.migrationsTableName = options.migrationsTableName
     }
   }
-
-  // onApplicationBootstrap() {
-  //   if (this.options.migrationsRun) {
-  //     this.databaseService.initialized$.pipe(filter(Boolean), take(1)).subscribe({
-  //       next: () => {
-  //         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  //         this.executePendingMigrations()
-  //       },
-  //     })
-  //   }
-  // }
 
   async executePendingMigrations() {
     this.logger.log('Executing pending migrations')
