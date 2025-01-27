@@ -31,6 +31,7 @@
     "class-validator": "^0.14.1",
     "joi": "^17.13.3",
     "jose": "^5.9.6",
+    "postgres": "^3.4.5",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
