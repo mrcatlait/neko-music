@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.options.json",
+  "files": [],
+  "references": [
+    {
+      "path": "apps/web"
+    },
+    {
+      "path": "packages/eslint-config"
+    },
+    {
+      "path": "packages/stylelint-config"
+    },
+    {
+      "path": "packages/ui-auth"
+    },
+    {
+      "path": "packages/ui-core"
+    },
+    {
+      "path": "packages/ui-selectors"
+    },
+    {
+      "path": "packages/ui-shared"
+    },
+    {
+      "path": "packages/ui-shared-dev"
+    },
+    {
+      "path": "packages/ui-test"
+    },
+    {
+      "path": "packages/vitest"
+    }
+  ]
+}

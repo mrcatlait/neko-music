@@ -3,8 +3,8 @@ import { PartiallyMocked } from 'vitest'
 import { BehaviorSubject, fromEvent } from 'rxjs'
 
 import { MediaQueryService } from './media-query.service'
-import { WINDOW } from '../tokens'
 import { Screens } from '../constants'
+import { WINDOW } from '../providers'
 
 const rxjsMock = vi.hoisted(() => {
   return {

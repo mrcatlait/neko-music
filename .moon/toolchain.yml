@@ -7,3 +7,11 @@ node:
   packageManager: 'npm'
   npm:
     version: '10'
+
+typescript:
+  projectConfigFileName: 'tsconfig.json'
+  rootConfigFileName: 'tsconfig.json'
+  routeOutDirToCache: true
+  # includeProjectReferenceSources: true
+  syncProjectReferencesToPaths: true
+  syncProjectReferences: true

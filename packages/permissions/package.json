@@ -2,8 +2,8 @@
   "name": "@neko/permissions",
   "version": "1.0.0",
   "private": true,
-  "types": "./lib/index.d.ts",
-  "main": "./lib/index.js",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
   "devDependencies": {
     "@neko/eslint-config": "*",
     "typescript": "^5.1.3"

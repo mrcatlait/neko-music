@@ -1,16 +1,16 @@
-import { inject, Injectable, Signal } from '@angular/core'
+import { Injectable, Signal } from '@angular/core'
 import { fromEvent, map, startWith } from 'rxjs'
 import { toSignal } from '@angular/core/rxjs-interop'
 
 import { Screens } from '../constants'
-import { WINDOW } from '../tokens'
 import { ValueOf } from '../types'
+import { injectWindow } from '../providers'
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaQueryService {
-  private readonly window = inject(WINDOW)
+  private readonly window = injectWindow()
   private readonly activeMediaQueries = new Map<ValueOf<typeof Screens>, Signal<boolean>>()
 
   readonly isCompactScreen = this.screen(Screens.Compact)

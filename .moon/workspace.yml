@@ -3,9 +3,9 @@ $schema: 'https://moonrepo.dev/schemas/workspace.json'
 telemetry: false
 
 projects:
-  - 'apps/*'
+  - 'apps/server'
+  - 'apps/web'
   - 'packages/*'
-  - 'infra/*'
   - 'acceptance-tests'
 vcs:
   manager: 'git'

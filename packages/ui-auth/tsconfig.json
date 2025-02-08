@@ -1,0 +1,72 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "../../.moon/cache/types/packages/ui-auth",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "types": [
+      "vitest/globals"
+    ],
+    "paths": {
+      "@neko/eslint-config/*": [
+        "../eslint-config/*"
+      ],
+      "@neko/stylelint-config/*": [
+        "../stylelint-config/*"
+      ],
+      "@neko/ui-core/*": [
+        "../ui-core/*"
+      ],
+      "@neko/ui-shared/*": [
+        "../ui-shared/src/*"
+      ],
+      "@neko/ui-shared-dev/*": [
+        "../ui-shared-dev/*"
+      ],
+      "@neko/vitest/*": [
+        "../vitest/*"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "references": [
+    {
+      "path": "../eslint-config"
+    },
+    {
+      "path": "../stylelint-config"
+    },
+    {
+      "path": "../ui-core"
+    },
+    {
+      "path": "../ui-shared"
+    },
+    {
+      "path": "../ui-shared-dev"
+    },
+    {
+      "path": "../vitest"
+    }
+  ],
+  "include": [
+    "src/**/*"
+  ]
+}

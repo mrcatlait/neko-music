@@ -1,0 +1,8 @@
+{
+  "name": "@neko/ui-selectors",
+  "private": true,
+  "devDependencies": {
+    "@neko/eslint-config": "*"
+  },
+  "prettier": "@neko/eslint-config/prettier"
+}

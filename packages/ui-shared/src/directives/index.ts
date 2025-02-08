@@ -1,5 +1,6 @@
 export * from './button.directive'
 export * from './chip.directive'
+export * from './selector.directive'
 export * from './slider.directive'
 export * from './slot.directive'
 export * from './textfield.directive'

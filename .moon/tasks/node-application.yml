@@ -27,11 +27,11 @@ fileGroups:
 
 tasks:
   test-unit:
-    command: 'vitest --config vitest.config.mts'
+    command: 'vitest --config vite.config.ts'
     inputs:
       - '@globs(sources)'
       - '@globs(unit-tests)'
-      - 'vitest.config.*'
+      - 'vite.config.*'
     outputs:
       - 'coverage'
       - 'reports/unit'

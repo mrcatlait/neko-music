@@ -1,0 +1,40 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "../../.moon/cache/types/apps/server",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true,
+    "types": [
+      "vitest/globals"
+    ],
+    "paths": {
+      "@modules/*": [
+        "src/modules/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../../packages/eslint-config"
+    },
+    {
+      "path": "../../packages/permissions"
+    }
+  ]
+}

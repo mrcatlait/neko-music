@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../eslint-config"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../../.moon/cache/types/packages/ui-selectors",
+    "paths": {
+      "@neko/eslint-config/*": [
+        "../eslint-config/*"
+      ]
+    }
+  }
+}

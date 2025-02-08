@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core'
 import { Meta, Title } from '@angular/platform-browser'
 
-import { injectEnvironment } from '../tokens'
+import { injectEnvironment } from '../providers'
 
 @Injectable({
   providedIn: 'root',

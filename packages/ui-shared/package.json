@@ -1,42 +1,14 @@
 {
   "name": "@neko/ui-shared",
-  "version": "1.0.0",
   "private": true,
-  "main": "./dist/fesm2022/neko-ui-shared.mjs",
-  "module": "./dist/fesm2022/neko-ui-shared.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "module": "./dist/fesm2022/neko-ui-shared.mjs",
-      "default": "./dist/fesm2022/neko-ui-shared.mjs"
-    },
-    "./styles": {
-      "sass": "./dist/styles/main.scss"
-    }
-  },
-  "sideEffects": false,
-  "dependencies": {
-    "@angular/common": "^19.0.0",
-    "@angular/compiler": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "@angular/forms": "^19.0.0",
-    "@angular/platform-browser": "^19.0.0",
-    "@angular/platform-browser-dynamic": "^19.0.0",
-    "@angular/router": "^19.0.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
-  },
+  "type": "module",
   "devDependencies": {
-    "@analogjs/vite-plugin-angular": "^1.8.1",
-    "@angular-devkit/build-angular": "^19.0.0",
-    "@angular/cli": "^19.0.0",
-    "@angular/compiler-cli": "^19.0.0",
-    "@angular/platform-browser": "^19.0.0",
-    "@angular/platform-browser-dynamic": "^19.0.0",
-    "jsdom": "^25.0.1",
-    "ng-packagr": "^19.0.0",
-    "typescript": "~5.6.2"
+    "@neko/eslint-config": "*",
+    "@neko/stylelint-config": "*",
+    "@neko/ui-core": "*",
+    "@neko/ui-selectors": "*",
+    "@neko/ui-shared-dev": "*",
+    "@neko/vitest": "*"
   },
   "prettier": "@neko/eslint-config/prettier"
 }

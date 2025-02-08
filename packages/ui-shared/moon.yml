@@ -5,17 +5,25 @@ type: 'library'
 language: 'typescript'
 
 dependsOn:
+  - id: 'ui-selectors'
+    scope: 'development'
+  - id: 'ui-core'
+    scope: 'development'
+  - id: 'ui-shared-dev'
+    scope: 'development'
   - id: 'eslint-config'
     scope: 'development'
   - id: 'stylelint-config'
     scope: 'development'
+  - id: 'vitest'
+    scope: 'development'
 
 tasks:
-  build:
-    command:
-      - 'ng-packagr'
-      - '-p ng-package.json'
+  test:
+    command: 'vitest --config vitest.config.mts'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(configs)'
     outputs:
-      - 'dist'
-    deps:
-      - 'lint'
+      - 'coverage'
+      - 'reports/unit'

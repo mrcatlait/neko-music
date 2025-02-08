@@ -1,0 +1,9 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'frontend'
+type: 'library'
+language: 'javascript'
+
+dependsOn:
+  - id: 'eslint-config'
+    scope: 'production'

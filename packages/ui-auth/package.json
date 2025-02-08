@@ -1,0 +1,13 @@
+{
+  "name": "@neko/ui-auth",
+  "private": true,
+  "devDependencies": {
+    "@neko/eslint-config": "*",
+    "@neko/stylelint-config": "*",
+    "@neko/ui-core": "*",
+    "@neko/ui-shared": "*",
+    "@neko/ui-shared-dev": "*",
+    "@neko/vitest": "*"
+  },
+  "prettier": "@neko/eslint-config/prettier"
+}

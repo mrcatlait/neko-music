@@ -1,20 +1,38 @@
 {
+  "extends": "../../tsconfig.options.json",
   "compilerOptions": {
     "module": "ES2022",
     "target": "ES2021",
     "moduleResolution": "node",
     "strictNullChecks": true,
-    "types": ["cypress"],
+    "types": [
+      "cypress"
+    ],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "@components": ["components"],
-      "@routes": ["routes"],
-      "@selectors": ["selectors"]
-    }
+      "@components": [
+        "components"
+      ],
+      "@routes": [
+        "routes"
+      ],
+      "@neko/eslint-config/*": [
+        "../eslint-config/*"
+      ]
+    },
+    "outDir": "../../.moon/cache/types/packages/ui-test"
   },
-  "include": ["**/*.ts"]
+  "include": [
+    "../eslint-config/**/*",
+    "**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../eslint-config"
+    }
+  ]
 }
