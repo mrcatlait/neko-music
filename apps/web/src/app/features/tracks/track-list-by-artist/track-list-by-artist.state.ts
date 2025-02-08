@@ -1,9 +1,9 @@
 import { Injectable, computed, inject } from '@angular/core'
 import { map } from 'rxjs'
-
-import { Queue } from '@core/models'
 import { ArtistRepository } from '@core/repositories'
-import { EntityState } from '@core/state'
+
+import { Queue } from '@core/interfaces'
+import { EntityState } from '@core/states'
 import { mapTrackToLinkedTrack } from '@features/tracks/track-shared/mappers'
 import { LinkedTrack } from '@features/tracks/track-shared/models'
 

@@ -5,15 +5,17 @@ type: 'application'
 language: 'typescript'
 
 dependsOn:
-  - id: 'permissions'
+  - id: 'ui-core'
     scope: 'production'
+  - id: 'ui-shared'
+    scope: 'production'
+  - id: 'ui-auth'
+    scope: 'production'
+  - id: 'ui-selectors'
+    scope: 'production'
+  - id: 'ui-shared-dev'
+    scope: 'development'
   - id: 'eslint-config'
-    scope: 'development'
-  - id: 'stylelint-config'
-    scope: 'development'
-  - id: 'vitest'
-    scope: 'development'
-  - id: 'ui-test'
     scope: 'development'
 
 fileGroups:
@@ -27,9 +29,9 @@ tasks:
 
   build:
     command: 'ng build'
-    # inputs:
-    #   - '@group(app)'
-    #   - '@group(sources)'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
     outputs:
       - 'dist'
 
@@ -42,11 +44,11 @@ tasks:
   test-integration:
     command: 'npm run test-integration'
     local: true
-    # inputs:
-    #   - '@group(app)'
-    #   - '@group(sources)'
-    #   - '@group(integration-tests)'
-    #   - 'cypress.config.ts'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
+      - '@group(integration-tests)'
+      - 'cypress.config.ts'
     outputs:
       - 'reports/integration'
 

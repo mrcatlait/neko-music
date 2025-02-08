@@ -1,11 +1,11 @@
 import { Injectable, computed, inject } from '@angular/core'
 import { map } from 'rxjs'
-
-import { Queue } from '@core/models'
 import { TrackRepository } from '@core/repositories'
-import { EntityState } from '@core/state'
+
+import { EntityState } from '@core/states'
+import { Queue } from '@core/interfaces'
+import { LinkedTrack } from '@features/tracks/track-shared/interfaces'
 import { mapTrackToLinkedTrack } from '@features/tracks/track-shared/mappers'
-import { LinkedTrack } from '@features/tracks/track-shared/models'
 
 @Injectable()
 export class TrackListNewReleasesState extends EntityState<LinkedTrack[], void> {

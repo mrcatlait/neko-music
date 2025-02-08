@@ -1,0 +1,32 @@
+@if (currentTrack(); as track) {
+  <img
+    [selector]="selectors.trackImage"
+    [src]="track.images | imageUrl: 'small'"
+    alt=""
+    height="56"
+    width="56"
+  />
+
+  <div class="title truncate">
+    <p
+      [selector]="selectors.trackLabel"
+      [title]="track.title"
+      class="title-medium truncate"
+    >
+      {{ track.title }}
+    </p>
+
+    <div class="truncate">
+      @for (artist of track.artists; track artist.id) {
+        <a
+          [routerLink]="['/artists', artist.id]"
+          [selector]="selectors.artistLabel"
+          [title]="artist.name"
+          class="body-medium secondary-text truncate"
+        >
+          {{ artist.name }}
+        </a>
+      }
+    </div>
+  </div>
+}

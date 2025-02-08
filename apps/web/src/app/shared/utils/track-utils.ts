@@ -1,4 +1,4 @@
-import { Queue, Track } from '@core/models'
+import { Queue, Track } from '@core/interfaces'
 
 export function generateCompositeTrackId(queue: Queue, track: Track | null): string {
   if (track && queue.source.entityId) {

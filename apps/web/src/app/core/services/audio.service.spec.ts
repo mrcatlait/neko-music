@@ -2,12 +2,11 @@ import { TestBed } from '@angular/core/testing'
 import { Injector } from '@angular/core'
 import { PartiallyMocked } from 'vitest'
 import { MediaPlayerClass, PlaybackTimeUpdatedEvent } from 'dashjs'
+import { ENVIRONMENT } from '@neko/ui-shared/providers'
 
 import { AudioEvents, AudioService } from './audio.service'
 
-import { AudioState, PlaybackState } from '@core/state'
-import { environment } from '@environment'
-import { API_URL } from '@core/tokens'
+import { AudioState, PlaybackState } from '@core/states'
 
 const mediaPlayerMock: PartiallyMocked<MediaPlayerClass> = {
   initialize: vi.fn(),
@@ -49,7 +48,7 @@ describe('AudioService', () => {
     )
 
     TestBed.configureTestingModule({
-      providers: [AudioService, Injector, { provide: API_URL, useValue: environment.apiUrl }],
+      providers: [AudioService, Injector, { provide: ENVIRONMENT, useValue: { apiUrl: 'http://localhost:3000' } }],
     })
 
     audioService = TestBed.inject(AudioService)

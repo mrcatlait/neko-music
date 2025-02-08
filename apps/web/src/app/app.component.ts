@@ -1,26 +1,26 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, ViewChild, ViewContainerRef } from '@angular/core'
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, viewChild, ViewContainerRef } from '@angular/core'
 
 import { PortalService } from '@core/services'
-import { AuthState } from '@core/state'
+import { LayoutComponent } from '@features/layout'
 
 @Component({
   selector: 'neko-root',
-  templateUrl: './app.component.html',
-
+  imports: [LayoutComponent],
+  template: `<neko-layout /><ng-container #viewContainer></ng-container>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements AfterViewInit {
   private readonly portalService = inject(PortalService)
-  private readonly authState = inject(AuthState)
 
-  @ViewChild('viewContainer', { read: ViewContainerRef })
-  private readonly vcr!: ViewContainerRef
-
-  constructor() {
-    this.authState.checkSession()
-  }
+  private readonly vcr = viewChild('viewContainer', { read: ViewContainerRef })
 
   ngAfterViewInit(): void {
-    this.portalService.attach(this.vcr)
+    const component = this.vcr()
+
+    if (!component) {
+      throw new Error('ViewContainerRef is not found')
+    }
+
+    this.portalService.attach(component)
   }
 }

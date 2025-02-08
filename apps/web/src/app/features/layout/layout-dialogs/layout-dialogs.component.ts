@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, HostListener, inject } from '@angular/core'
 
-import { DialogService } from '@core/services/dialog.service'
-import { DIALOGS } from '@core/tokens'
+import { DIALOGS } from '@core/providers'
+import { DialogService } from '@core/services'
 
 @Component({
   selector: 'neko-layout-dialogs',

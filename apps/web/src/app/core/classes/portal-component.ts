@@ -1,6 +1,6 @@
 import { Injector, Type } from '@angular/core'
 
-import { PORTAL_CONTEXT } from '@core/tokens'
+import { PORTAL_CONTEXT } from '@core/providers'
 
 export class PortalComponent<T> {
   constructor(

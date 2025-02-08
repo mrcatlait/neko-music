@@ -1,0 +1,61 @@
+@use 'abstracts' as abstracts;
+
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  inline-size: 100%;
+  block-size: 100%;
+
+  pointer-events: none;
+  overflow: hidden;
+  overscroll-behavior: none;
+
+  @include abstracts.scrollbar-hidden();
+  @include abstracts.elevation(3);
+
+  &:has(section) {
+    pointer-events: auto;
+    overflow: auto;
+  }
+
+  &::before {
+    content: '';
+    display: block;
+    block-size: 1000%;
+  }
+}
+
+.overlay,
+.dialog-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  @include abstracts.scrollbar-hidden();
+
+  display: flex;
+  block-size: 100%;
+  align-items: flex-start;
+  outline: none;
+  overflow: auto;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.75);
+  // background-color: rgba(var(--color-surface-rgb), .69);
+}
+
+.dialog-container {
+  position: sticky;
+  overscroll-behavior: none;
+  filter: brightness(0.25);
+}
+
+.dialog-container:last-child {
+  pointer-events: auto;
+  filter: none;
+}

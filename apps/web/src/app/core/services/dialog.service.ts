@@ -1,8 +1,7 @@
 import { inject, Injectable, Type } from '@angular/core'
 
+import { DIALOGS, PortalContext } from '@core/providers'
 import { PortalComponent } from '@core/classes'
-import { PortalContext } from '@core/tokens'
-import { DIALOGS } from '@core/tokens/dialogs.token'
 
 export interface DialogRef<T, Context> {
   id: string

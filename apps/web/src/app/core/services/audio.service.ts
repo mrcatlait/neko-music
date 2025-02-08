@@ -1,8 +1,8 @@
 import { Injectable, Injector, OnDestroy, inject } from '@angular/core'
 import { MediaPlayer, PlaybackTimeUpdatedEvent } from 'dashjs'
+import { injectEnvironment } from '@neko/ui-shared/providers'
 
-import { AudioState, PlaybackState } from '@core/state'
-import { API_URL } from '@core/tokens'
+import { AudioState, PlaybackState } from '@core/states'
 
 export enum AudioEvents {
   PLAYBACK_TIME_UPDATED = 'playbackTimeUpdated',
@@ -15,7 +15,7 @@ export enum AudioEvents {
   providedIn: 'root',
 })
 export class AudioService implements OnDestroy {
-  private readonly apiUrl = inject(API_URL)
+  private readonly environment = injectEnvironment()
   private readonly audio = new Audio()
   private readonly injector = inject(Injector)
   private readonly player = MediaPlayer().create()
@@ -65,7 +65,7 @@ export class AudioService implements OnDestroy {
   }
 
   load(trackId: string) {
-    this.player.attachSource(`${this.apiUrl}/tracks/${trackId}/stream/manifest`)
+    this.player.attachSource(`${this.environment.apiUrl}/tracks/${trackId}/stream/manifest`)
   }
 
   private registerEvents() {

@@ -1,0 +1,85 @@
+@use 'abstracts' as abstracts;
+
+.track-list-item {
+  display: grid;
+  padding: 8px;
+  align-items: center;
+  gap: 16px;
+  grid-template-columns: auto 1fr auto;
+  border-radius: var(--shape-corner-medium);
+}
+
+h3:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.track-list-item-image-container {
+  position: relative;
+  height: 56px;
+  width: 56px;
+
+  img {
+    border-radius: var(--shape-corner-medium);
+  }
+
+  button {
+    position: absolute;
+    visibility: hidden;
+    top: 50%;
+    left: 50%;
+    align-items: center;
+    justify-self: center;
+    transform: translate(-50%, -50%);
+    color: var(--color-on-surface);
+    background-color: rgba( var(--color-surface-rgb), .69);
+    transition: background-color .3s ease-in-out;
+  }
+}
+
+.track-list-item-active {
+  button {
+    visibility: visible;
+    background-color: rgba( var(--color-surface-rgb), .9);
+  }
+}
+
+.track-list-item-image-container button:hover {
+  background-color: rgba( var(--color-surface-rgb), .9);
+}
+
+:host(:hover) {
+  button {
+    visibility: visible;
+  }
+}
+
+.track-list-item-menu {
+  padding: 8px 0;
+  list-style: none;
+  margin: 0;
+  width: 200px;
+
+  & > li {
+    padding: 0 12px;
+    display: flex;
+    height: 48px;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+
+    @include abstracts.state(var(--color-text-high-emphasis));
+  }
+
+  hr {
+    margin: 8px 0;
+  }
+
+  i {
+    height: 24px;
+    min-height: 24px;
+    width: 24px;
+    min-width: 24px;
+    font-size: 24px;
+  }
+}

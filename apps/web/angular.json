@@ -7,13 +7,12 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss",
-          "changeDetection": "OnPush"
+          "style": "scss"
         }
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "neko",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
@@ -30,9 +29,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles/main.scss"
-            ],
+            "styles": ["src/styles/main.scss"],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/styles"
@@ -50,31 +47,12 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
               ],
               "outputHashing": "all",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/devtools/devtools.ts",
-                  "with": "src/devtools/devtools.prod.ts"
-                }
-              ],
               "statsJson": true
-            },
-            "test": {
-              "outputHashing": "all",
-              "fileReplacements": [
-                {
-                  "replace": "src/devtools/devtools.ts",
-                  "with": "src/devtools/devtools.prod.ts"
-                }
-              ]
             },
             "development": {
               "optimization": false,
@@ -92,9 +70,6 @@
             },
             "development": {
               "buildTarget": "web:build:development"
-            },
-            "test": {
-              "buildTarget": "web:build:test"
             }
           },
           "defaultConfiguration": "development"
@@ -104,8 +79,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }

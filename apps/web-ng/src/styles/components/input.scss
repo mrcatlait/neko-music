@@ -1,0 +1,53 @@
+@use '../abstracts' as abstracts;
+
+@mixin input() {
+  [nekoTextfield] {
+    --n-input-color: var(--color-text-high-emphasis);
+    --n-input-caret-color: var(--color-text-high-emphasis);
+    --n-input-caret-focus-color: var(--color-primary);
+    --n-input-font-family: var(--typography-font-family);
+    --n-input-placeholder-color: var(--color-text-medium-emphasis);
+
+    background-color: transparent;
+    border: none;
+    height: 56px;
+    caret-color: var(--n-input-caret-color);
+    color: var(--n-input-color);
+    font-family: var(--n-input-font-family);
+    box-sizing: border-box;
+    flex-grow: 1;
+    padding: 0 16px;
+    @include abstracts.typography('body-large');
+
+    &:focus,
+    &:focus-visible {
+      caret-color: var(--n-input-caret-focus-color);
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--n-input-placeholder-color);
+      @include abstracts.typography('body-large');
+    }
+  }
+
+  neko-textfield [nekoSlot='right'] {
+    margin-right: 12px;
+  }
+
+  neko-textfield label {
+    padding-left: 4px;
+    padding-bottom: 8px;
+  }
+
+  neko-textfield [nekoSlot='left'] {
+    margin-left: 12px;
+  }
+
+  neko-textfield neko-error {
+    margin-top: 4px;
+    padding: 0 16px;
+    color: var(--color-error);
+    @include abstracts.typography('body-small');
+  }
+}

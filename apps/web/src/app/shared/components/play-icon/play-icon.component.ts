@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core'
 
-import { PlayerStatus } from '@core/enum'
-import { AudioState } from '@core/state'
+import { PlayerStatus } from '@core/enums'
+import { AudioState } from '@core/states'
 
 @Component({
   selector: 'neko-play-icon',
   templateUrl: './play-icon.component.html',
   styleUrl: './play-icon.component.scss',
-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayIconComponent {

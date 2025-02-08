@@ -1,18 +1,17 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core'
-import { artistDetailsSelectors } from '@neko/ui-test/selectors'
+import { artistDetailsSelectors } from '@neko/ui-selectors'
+import { SelectorDirective } from '@neko/ui-shared/directives'
 
-import { TrackSharedModule } from '../track-shared'
 import { TrackListByArtistState } from './track-list-by-artist.state'
+import { TrackListComponent } from '../track-shared/components'
 
-import { PlaybackState } from '@core/state'
-import { SharedModule } from '@shared/shared.module'
-import { SelectorDirective } from '@shared/directives'
+import { PlaybackState } from '@core/states'
 
 @Component({
   standalone: true,
   selector: 'neko-track-list-by-artist',
   templateUrl: './track-list-by-artist.component.html',
-  imports: [SharedModule, TrackSharedModule],
+  imports: [TrackListComponent],
   providers: [TrackListByArtistState],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

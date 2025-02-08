@@ -1,0 +1,64 @@
+<button
+  [class]="{ inactive: !shuffle() }"
+  [selector]="selectors.shuffleButton"
+  aria-label="Shuffle"
+  class="player-controls-shuffle-button"
+  nekoIconButton
+  variant="text"
+  (click)="handleToggleShuffle()"
+>
+  <i>shuffle</i>
+</button>
+
+<button
+  [disabled]="!hasPrevious()"
+  [selector]="selectors.skipPreviousButton"
+  aria-label="Previous"
+  class="player-controls-previous-button"
+  nekoIconButton
+  variant="text"
+  (click)="handleSkipPrevious()"
+>
+  <i>skip_previous</i>
+</button>
+
+<button
+  [selector]="selectors.playButton"
+  aria-label="Play"
+  color="secondary"
+  nekoIconButton
+  (click)="handleTogglePlay()"
+>
+  <neko-play-icon [isPlaying]="true" />
+</button>
+
+<button
+  [disabled]="!hasNext()"
+  [selector]="selectors.skipNextButton"
+  aria-label="Next"
+  nekoIconButton
+  variant="text"
+  (click)="handleSkipNext()"
+>
+  <i>skip_next</i>
+</button>
+
+<button
+  [selector]="selectors.repeatButton"
+  aria-label="Repeat"
+  nekoIconButton
+  variant="text"
+  (click)="handleToggleRepeat()"
+>
+  @switch (repeat()) {
+    @case (repeatOption.None) {
+      <i class="inactive">repeat</i>
+    }
+    @case (repeatOption.All) {
+      <i>repeat</i>
+    }
+    @case (repeatOption.Single) {
+      <i>repeat_one</i>
+    }
+  }
+</button>

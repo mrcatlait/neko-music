@@ -1,6 +1,6 @@
 import { generateCompositeTrackId } from './track-utils'
 
-import { Queue, Track } from '@core/models'
+import { Queue, Track } from '@core/interfaces'
 
 describe('generateCompositeTrackId', () => {
   it('should generate a composite track ID when queue and track are valid', () => {

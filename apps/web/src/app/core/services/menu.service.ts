@@ -1,16 +1,15 @@
 import { EmbeddedViewRef, inject, Injectable, TemplateRef } from '@angular/core'
 import { DOCUMENT } from '@angular/common'
+import { injectWindow } from '@neko/ui-shared/providers'
 
 import { PortalService } from './portal.service'
-
-import { WINDOW } from '@core/tokens/window.token'
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
   private readonly document = inject(DOCUMENT)
-  private readonly window = inject(WINDOW)
+  private readonly window = injectWindow()
   private readonly portalService = inject(PortalService)
 
   private menuRef: EmbeddedViewRef<HTMLElement> | null = null

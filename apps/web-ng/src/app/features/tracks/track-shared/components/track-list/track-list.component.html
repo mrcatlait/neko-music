@@ -1,0 +1,18 @@
+<h2
+  [selector]="selectors.trackListLabel"
+  class="headline-large"
+>
+  {{ label }}
+</h2>
+
+<div
+  [selector]="selectors.trackListContainer"
+  class="track-list-container"
+>
+  @for (track of tracks; track track.id) {
+    <neko-track-list-item
+      [track]="track"
+      (togglePlay)="togglePlay.emit(track.id)"
+    />
+  }
+</div>

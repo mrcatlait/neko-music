@@ -1,4 +1,3 @@
-export * from './player/player.component'
 export * from './player-controls/player-controls.component'
 export * from './player-playback/player-playback.component'
 export * from './player-track/player-track.component'

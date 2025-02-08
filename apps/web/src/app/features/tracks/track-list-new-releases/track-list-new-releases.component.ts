@@ -1,18 +1,17 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core'
-import { trackListNewReleasesSelectors } from '@neko/ui-test/selectors'
+import { SelectorDirective } from '@neko/ui-shared/directives'
+import { trackListNewReleasesSelectors } from '@neko/ui-selectors'
 
-import { TrackSharedModule } from '../track-shared'
 import { TrackListNewReleasesState } from './track-list-new-releases.state'
+import { TrackListComponent } from '../track-shared/components'
 
-import { PlaybackState } from '@core/state'
-import { SharedModule } from '@shared/shared.module'
-import { SelectorDirective } from '@shared/directives'
+import { PlaybackState } from '@core/states'
 
 @Component({
   standalone: true,
   selector: 'neko-track-list-new-releases',
   templateUrl: './track-list-new-releases.component.html',
-  imports: [SharedModule, TrackSharedModule],
+  imports: [TrackListComponent],
   providers: [TrackListNewReleasesState],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

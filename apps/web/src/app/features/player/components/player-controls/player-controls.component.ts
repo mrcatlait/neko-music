@@ -1,14 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { playerSelectors } from '@neko/ui-test/selectors'
+import { playerSelectors } from '@neko/ui-selectors'
+import { ButtonDirective, SelectorDirective } from '@neko/ui-shared/directives'
 
-import { PlayerStatus, RepeatOption } from '@core/enum'
-import { AudioState, PlaybackState } from '@core/state'
+import { AudioState, PlaybackState } from '@core/states'
+import { PlayerStatus, RepeatOption } from '@core/enums'
+import { PlayIconComponent } from '@shared/components'
 
 @Component({
   selector: 'neko-player-controls',
+  imports: [ButtonDirective, SelectorDirective, PlayIconComponent],
   templateUrl: 'player-controls.component.html',
   styleUrls: ['player-controls.component.scss'],
-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerControlsComponent {

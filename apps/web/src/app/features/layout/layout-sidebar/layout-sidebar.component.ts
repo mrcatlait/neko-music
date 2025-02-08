@@ -1,12 +1,28 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core'
+import { RouterOutlet } from '@angular/router'
+import { MediaQueryService } from '@neko/ui-shared/services'
 
-import { MediaQueryService } from '@core/services'
+import {
+  NavigationBarComponent,
+  NavigationDrawerComponent,
+  NavigationModalDrawerComponent,
+  NavigationRailComponent,
+} from './components'
+
+import { PlayerComponent } from '@features/player'
 
 @Component({
   selector: 'neko-layout-sidebar',
+  imports: [
+    NavigationBarComponent,
+    NavigationDrawerComponent,
+    NavigationModalDrawerComponent,
+    NavigationRailComponent,
+    RouterOutlet,
+    PlayerComponent,
+  ],
   templateUrl: 'layout-sidebar.component.html',
   styleUrl: 'layout-sidebar.component.scss',
-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutSidebarComponent {

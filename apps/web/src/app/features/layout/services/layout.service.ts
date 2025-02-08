@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router'
 import { concat, defer, filter, map, mergeMap, of } from 'rxjs'
 import { toSignal } from '@angular/core/rxjs-interop'
 
-import { Layout } from '@core/enum'
+import { Layout } from '@core/enums'
 
 @Injectable()
 export class LayoutService {
