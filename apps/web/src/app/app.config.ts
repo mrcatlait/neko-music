@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core'
-import { provideRouter } from '@angular/router'
+import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router'
 import { provideHttpClient, withFetch } from '@angular/common/http'
 import { DOCUMENT } from '@angular/common'
 import { provideAuth } from '@neko/ui-auth'
@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideHttpClient(withFetch()),
-    provideRouter(routes),
+    provideRouter(routes, withPreloading(PreloadAllModules)),
     provideAuth({ apiUrl: 'http://localhost:3000' }),
     provideEnvironment({
       apiUrl: 'http://localhost:3000',

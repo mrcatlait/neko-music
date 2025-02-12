@@ -1,39 +1,45 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Header, Post, Req } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
 
-import { JwtRefreshAuthGuard } from '../guards'
+import { User } from '../decorators'
 
 import { LoginHandler } from '@modules/authentication/login/commands'
 import { RegisterHandler } from '@modules/authentication/registration/commands'
-import { RefreshTokenHandler } from '@modules/authentication/token/commands'
 import { RegisterDto, LoginDto, AuthResponseDto } from '@modules/authentication/shared/dtos'
-import { REFRESH_TOKEN_COOKIE_NAME } from '@modules/authentication/shared/constants'
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly loginHandler: LoginHandler,
     private readonly registerHandler: RegisterHandler,
-    private readonly refreshTokenHandler: RefreshTokenHandler,
   ) {}
 
   @Post('login')
-  login(@Body() body: LoginDto): Promise<AuthResponseDto> {
-    return this.loginHandler.handle(body)
+  async login(@Body() body: LoginDto, @Req() req: FastifyRequest): Promise<AuthResponseDto> {
+    const userLoginData = await this.loginHandler.handle(body)
+
+    req.session.set('data', userLoginData)
+    await req.session.save()
+
+    console.log(req.session.data)
+
+    return userLoginData
   }
 
   @Post('register')
-  register(@Body() body: RegisterDto): Promise<AuthResponseDto> {
-    return this.registerHandler.handle(body).then(({ accessToken }) => ({ accessToken }))
+  register(@Body() body: RegisterDto): Promise<void> {
+    return this.registerHandler.handle(body)
   }
 
   @Post('logout')
-  logout() {}
+  logout(@Req() req: FastifyRequest): Promise<void> {
+    return req.session.destroy()
+  }
 
-  @UseGuards(JwtRefreshAuthGuard)
-  @Get('refresh')
-  refresh(@Req() request: FastifyRequest) {
-    const token = request.cookies[REFRESH_TOKEN_COOKIE_NAME]!
-    return this.refreshTokenHandler.handle({ token, jwtPayload: request.payload })
+  @Get('whoami')
+  @Header('Cache-Control', 'no-store')
+  whoami(@User() user: any): any {
+    console.log(user)
+    return { accessToken: '123' }
   }
 }

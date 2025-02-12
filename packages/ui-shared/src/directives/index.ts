@@ -1,5 +1,7 @@
+export * from './autofocus.directive'
 export * from './button.directive'
 export * from './chip.directive'
+export * from './menu-trigger.directive'
 export * from './selector.directive'
 export * from './slider.directive'
 export * from './slot.directive'

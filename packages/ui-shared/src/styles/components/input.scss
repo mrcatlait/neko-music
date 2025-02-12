@@ -6,7 +6,7 @@
     --n-input-caret-color: var(--color-text-high-emphasis);
     --n-input-caret-focus-color: var(--color-primary);
     --n-input-font-family: var(--typography-font-family);
-    --n-input-placeholder-color: var(--color-text-medium-emphasis);
+    --n-input-placeholder-color: var(--color-text-disabled);
 
     background-color: transparent;
     border: none;
@@ -26,7 +26,8 @@
     }
 
     &::placeholder {
-      color: var(--n-input-placeholder-color);
+      color: red; //var(--n-input-placeholder-color);
+      font-family: var(--n-input-font-family);
       @include abstracts.typography('body-large');
     }
   }

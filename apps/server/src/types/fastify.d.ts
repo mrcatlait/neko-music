@@ -1,12 +1,12 @@
 import 'fastify'
-import { JwtPayload } from '@modules/authentication/shared/models'
 
 declare module 'fastify' {
-  interface FastifyRequest extends SignerMethods {
-    /**
-     * Request cookies
-     */
+  interface Session extends fastifySession.FastifySessionObject {
+    data?: UserModel
+  }
+  export interface FastifyRequest {
+    session?: Session
     cookies: { [cookieName: string]: string | undefined }
-    payload: JwtPayload
+    res: FastifyReply
   }
 }

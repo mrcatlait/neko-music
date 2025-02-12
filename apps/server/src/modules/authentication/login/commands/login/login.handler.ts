@@ -3,7 +3,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { LoginValidator } from './login.validator'
 import { LoginCommand, LoginCommandResult } from './login.command'
 import { UserLoginDataRepository } from '../../../shared/repositories'
-import { TokenService } from '../../../shared/services'
 
 import { Handler } from '@modules/shared/models'
 
@@ -12,7 +11,6 @@ export class LoginHandler implements Handler<LoginCommand, LoginCommandResult> {
   constructor(
     private readonly userLoginDataRepository: UserLoginDataRepository,
     private readonly loginValidator: LoginValidator,
-    private readonly tokenService: TokenService,
   ) {}
 
   async handle(command: LoginCommand): Promise<LoginCommandResult> {
@@ -27,6 +25,6 @@ export class LoginHandler implements Handler<LoginCommand, LoginCommandResult> {
       throw new UnauthorizedException()
     }
 
-    return this.tokenService.createTokenPair(userLoginData.user_id)
+    return userLoginData
   }
 }

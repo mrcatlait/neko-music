@@ -27,7 +27,7 @@
         [selector]="selectors.invalidCredentialsLabel"
         class="error-text"
       >
-        Sorry, couldn’t find an account matching the username and password you entered. Please try again.
+        Sorry, couldn’t find an account matching the email and password you entered. Please try again.
       </div>
     }
 
@@ -41,6 +41,7 @@
         <input
           [selector]="selectors.emailTextField"
           formControlName="email"
+          nekoAutofocus="true"
           nekoTextfield
           type="email"
         />
@@ -67,6 +68,8 @@
           aria-label="Show password"
           nekoIconButton
           nekoSlot="right"
+          tabindex="-1"
+          type="button"
           variant="text"
           (click)="hidePassword = !hidePassword"
         >
@@ -99,7 +102,7 @@
         class="link"
         routerLink="/registration"
       >
-        Sign up
+        Register
       </a>
     </p>
   </div>

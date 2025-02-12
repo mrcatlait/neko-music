@@ -3,6 +3,7 @@ import { Environment } from '../enums'
 export interface EnvironmentVariables {
   // Application
   PORT: number
+  UI_URL: string
   NODE_ENV: Environment
 
   // Database
@@ -19,11 +20,6 @@ export interface EnvironmentVariables {
   // Crypto
   SALT_ROUNDS: number
 
-  // JWT
-  JWT_SECRET: string
-  JWT_TOKEN_EXPIRATION_TIME: string
-  JWT_REFRESH_SECRET: string
-  JWT_REFRESH_TOKEN_EXPIRATION_TIME: string
-  JWT_ISSUER: string
-  JWT_AUDIENCE: string
+  // Authentication
+  COOKIE_SECRET: string
 }

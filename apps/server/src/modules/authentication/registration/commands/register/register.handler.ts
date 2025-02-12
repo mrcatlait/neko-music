@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { hashSync } from 'bcrypt'
 import { ConfigService } from '@nestjs/config'
 
-import { TokenService } from '../../../shared/services'
 import { RegisterValidator } from './register.validator'
 import { RegisterCommand, RegisterCommandResult } from './register.command'
 import { UserLoginDataRepository } from '../../../shared/repositories'
@@ -19,7 +18,6 @@ export class RegisterHandler implements Handler<RegisterCommand, RegisterCommand
     private readonly userLoginDataRepository: UserLoginDataRepository,
     private readonly getDefaultRoleHandler: GetDefaultRoleHandler,
     private readonly registerValidator: RegisterValidator,
-    private readonly tokenService: TokenService,
   ) {
     this.saltRounds = configService.get('SALT_ROUNDS')
   }
@@ -35,12 +33,12 @@ export class RegisterHandler implements Handler<RegisterCommand, RegisterCommand
 
     const passwordHash = hashSync(command.password, this.saltRounds)
 
-    const user = await this.userLoginDataRepository.create({
+    await this.userLoginDataRepository.create({
       email: command.email,
       password_hash: passwordHash,
       role_id: role.id,
     })
 
-    return this.tokenService.createTokenPair(user.user_id)
+    return
   }
 }

@@ -2,7 +2,7 @@ import { InjectionToken } from '@angular/core'
 
 type errorMessageFn = (options: { fieldName: string; value: unknown; requiredLength?: number; min?: number }) => string
 
-const validationErrors: Record<string, errorMessageFn> = {
+const defaultValidationErrors: Record<string, errorMessageFn> = {
   required: () => `Field is required`,
   email: () => `Field must be in the format name@example.com`,
   pattern: () => `Field has invalid format`,
@@ -12,5 +12,15 @@ const validationErrors: Record<string, errorMessageFn> = {
 
 export const VALIDATION_ERRORS = new InjectionToken('VALIDATION_ERRORS', {
   providedIn: 'root',
-  factory: () => validationErrors,
+  factory: () => defaultValidationErrors,
 })
+
+export const provideValidationErrors = (validationErrors: Record<string, errorMessageFn>) => {
+  return {
+    provide: VALIDATION_ERRORS,
+    useValue: {
+      ...defaultValidationErrors,
+      ...validationErrors,
+    },
+  }
+}

@@ -1,8 +1,12 @@
-@if (loading()) {
+@if (newReleasesResource.error()) {
 } @else {
-  <neko-track-list
-    [label]="queue().source.name"
-    [tracks]="tracks()"
-    (togglePlay)="handleTogglePlay($event)"
-  />
+  @if (newReleasesResource.isLoading()) {}
+
+  @if (newReleasesResource.hasValue()) {
+    <neko-track-list
+      [label]="queue().source.name"
+      [tracks]="tracks()"
+      (togglePlay)="handleTogglePlay($event)"
+    />
+  }
 }

@@ -6,6 +6,7 @@ projects:
   - 'apps/server'
   - 'apps/web'
   - 'packages/*'
+  - 'infra/*'
   - 'acceptance-tests'
 vcs:
   manager: 'git'

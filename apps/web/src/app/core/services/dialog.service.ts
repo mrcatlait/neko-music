@@ -1,7 +1,7 @@
 import { inject, Injectable, Type } from '@angular/core'
+import { PortalComponent } from '@neko/ui-shared/classes'
 
 import { DIALOGS, PortalContext } from '@core/providers'
-import { PortalComponent } from '@core/classes'
 
 export interface DialogRef<T, Context> {
   id: string

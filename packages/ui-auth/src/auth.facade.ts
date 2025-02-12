@@ -26,12 +26,7 @@ export class AuthFacade {
           this.statusState.setSuccess()
         } else {
           this.sessionState.clearSession()
-          this.statusState.setError('Authentication failed')
         }
-
-        // Mocked session
-        this.sessionState.updateSession('mocked-session')
-        this.statusState.setSuccess()
       }),
       map(() => true),
       catchError(() => {

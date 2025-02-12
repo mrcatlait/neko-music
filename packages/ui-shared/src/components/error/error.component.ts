@@ -6,7 +6,6 @@ import { VALIDATION_ERRORS } from '../../providers'
 @Component({
   selector: 'neko-error',
   template: `{{ message() }}`,
-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorComponent implements OnInit, OnDestroy {
@@ -18,7 +17,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
   private readonly destroyed$ = new Subject<void>()
 
   private readonly errors = signal<ValidationErrors | null>(null)
-  private readonly dirty = signal(false)
+
   private readonly touched = signal(false)
 
   readonly message = computed(() => this.getErrorMessage())
@@ -30,11 +29,10 @@ export class ErrorComponent implements OnInit, OnDestroy {
 
     const control = this.control()
 
-    merge(control.valueChanges, this.formGroupDirective.ngSubmit)
+    merge(control.events, this.formGroupDirective.ngSubmit)
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         this.errors.set(control.errors)
-        this.dirty.set(control.dirty)
         this.touched.set(control.touched)
       })
   }
@@ -46,14 +44,12 @@ export class ErrorComponent implements OnInit, OnDestroy {
 
   private getErrorMessage(): string {
     const errors = this.errors()
-    const dirty = this.dirty()
-    const touched = this.touched()
 
     if (!errors) {
       return ''
     }
 
-    if (!dirty && !touched) {
+    if (!this.touched()) {
       return ''
     }
 

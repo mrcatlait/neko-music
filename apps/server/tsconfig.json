@@ -1,7 +1,7 @@
 {
-  "extends": "../../tsconfig.options.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "composite": true,
+    "module": "CommonJS",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -26,6 +26,15 @@
     "paths": {
       "@modules/*": [
         "src/modules/*"
+      ],
+      "@neko/eslint-config/*": [
+        "../../packages/eslint-config/*"
+      ],
+      "@neko/permissions": [
+        "../../packages/permissions/src/index.ts"
+      ],
+      "@neko/permissions/*": [
+        "../../packages/permissions/src/*"
       ]
     }
   },

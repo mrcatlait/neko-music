@@ -1,29 +1,14 @@
-import { Module } from '@nestjs/common'
+import { Global, Module } from '@nestjs/common'
 
 import { AuthController } from './infrastructure/controllers'
 import { LoginHandler, LoginValidator } from './login/commands'
-import { RefreshTokenHandler, RefreshTokenValidator } from './token/commands'
 import { RegisterHandler, RegisterValidator } from './registration/commands'
-import { RefreshTokenRepository, UserLoginDataRepository } from './shared/repositories'
-import { TokenService } from './shared/services'
-import { AuthTokenJwtStrategy, RefreshTokenJwtStrategy } from './shared/jwt'
-import { JwtRefreshAuthGuard } from './infrastructure/guards'
+import { UserLoginDataRepository } from './shared/repositories'
+import { AuthGuard } from './infrastructure/guards'
 
+@Global()
 @Module({
   controllers: [AuthController],
-  providers: [
-    LoginHandler,
-    LoginValidator,
-    RegisterHandler,
-    RegisterValidator,
-    RefreshTokenHandler,
-    RefreshTokenValidator,
-    UserLoginDataRepository,
-    RefreshTokenRepository,
-    TokenService,
-    AuthTokenJwtStrategy,
-    RefreshTokenJwtStrategy,
-    JwtRefreshAuthGuard,
-  ],
+  providers: [AuthGuard, LoginHandler, LoginValidator, RegisterHandler, RegisterValidator, UserLoginDataRepository],
 })
 export class AuthenticationModule {}

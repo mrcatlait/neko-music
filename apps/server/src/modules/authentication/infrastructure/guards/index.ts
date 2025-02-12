@@ -1,1 +1,1 @@
-export * from './jwt-refresh-auth.guard'
+export * from './auth.guard'

@@ -2,9 +2,9 @@ import { Inject, Injectable, OnApplicationBootstrap, Logger } from '@nestjs/comm
 import postgres from 'postgres'
 import { BehaviorSubject } from 'rxjs'
 
-import { DatabaseModuleOptions } from '../types'
 import { DATABASE_MODULE_OPTIONS } from '../database.tokens'
 import { DatabaseMigrationService } from './database-migration.service'
+import type { DatabaseModuleOptions } from '../types'
 
 @Injectable()
 export class DatabaseService implements OnApplicationBootstrap {

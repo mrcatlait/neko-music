@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, viewChild, ViewContainerRef } from '@angular/core'
+import { PortalService } from '@neko/ui-shared/services'
 
-import { PortalService } from '@core/services'
 import { LayoutComponent } from '@features/layout'
 
 @Component({

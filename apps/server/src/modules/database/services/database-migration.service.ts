@@ -1,9 +1,9 @@
-import { Inject, Injectable, Logger, forwardRef } from '@nestjs/common'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import { readdirSync, readFileSync } from 'fs'
 import { join } from 'path'
+import postgres from 'postgres'
 
-import { DatabaseModuleOptions } from '../types'
-import { DatabaseService } from './database.service'
+import type { DatabaseModuleOptions } from '../types'
 import { DATABASE_MODULE_OPTIONS } from '../database.tokens'
 
 @Injectable()
@@ -12,10 +12,17 @@ export class DatabaseMigrationService {
 
   private readonly migrationsTableName: string = 'migrations'
 
+  readonly sql = postgres({
+    host: this.options.host,
+    port: this.options.port,
+    username: this.options.username,
+    password: this.options.password,
+    database: this.options.database,
+  })
+
   constructor(
-    @Inject(forwardRef(() => DatabaseService))
-    private readonly databaseService: DatabaseService,
-    @Inject(DATABASE_MODULE_OPTIONS) private readonly options: DatabaseModuleOptions,
+    @Inject(DATABASE_MODULE_OPTIONS)
+    private readonly options: DatabaseModuleOptions,
   ) {
     if (options.migrationsTableName) {
       this.migrationsTableName = options.migrationsTableName
@@ -31,6 +38,8 @@ export class DatabaseMigrationService {
       const sql = readFileSync(join(this.options.migrations, migration), 'utf-8')
       await this.executeScript(migration, sql, this.migrationsTableName)
     }
+
+    await this.sql.end()
 
     this.logger.log(`Pending migrations executed: ${pendingMigrations.length}`)
   }
@@ -48,14 +57,14 @@ export class DatabaseMigrationService {
   }
 
   private async executeScript(name: string, sql: string, tableName: string) {
-    await this.databaseService.sql.unsafe(sql)
+    await this.sql.unsafe(sql)
     await this.insertExecutedScript(name, tableName)
   }
 
   private async loadExecutedScripts(tableName: string): Promise<string[]> {
-    const scriptsRaw = await this.databaseService.sql<{ name: string }[]>`
+    const scriptsRaw = await this.sql<{ name: string }[]>`
       SELECT name
-      FROM ${this.databaseService.sql(tableName)}
+      FROM ${this.sql(tableName)}
       ORDER BY name DESC
     `
 
@@ -63,8 +72,8 @@ export class DatabaseMigrationService {
   }
 
   private insertExecutedScript(name: string, tableName: string): Promise<unknown> {
-    return this.databaseService.sql`
-      INSERT INTO ${this.databaseService.sql(tableName)} (name)
+    return this.sql`
+      INSERT INTO ${this.sql(tableName)} (name)
       VALUES (${name})
     `
   }
@@ -73,8 +82,8 @@ export class DatabaseMigrationService {
     const tableExist = await this.hasTable(tableName)
 
     if (!tableExist) {
-      await this.databaseService.sql`
-        CREATE TABLE IF NOT EXISTS ${this.databaseService.sql(tableName)} (
+      await this.sql`
+        CREATE TABLE IF NOT EXISTS ${this.sql(tableName)} (
           "id" SERIAL PRIMARY KEY,
           "name" varchar NOT NULL
         )
@@ -83,7 +92,7 @@ export class DatabaseMigrationService {
   }
 
   private async getCurrentSchema(): Promise<string> {
-    const query = await this.databaseService.sql`
+    const query = await this.sql`
       SELECT * FROM current_schema()
     `
 
@@ -93,7 +102,7 @@ export class DatabaseMigrationService {
   private async hasTable(tableName: string): Promise<boolean> {
     const schema = await this.getCurrentSchema()
 
-    const result = await this.databaseService.sql`
+    const result = await this.sql`
       SELECT *
       FROM "information_schema"."tables"
       WHERE "table_schema" = ${schema} AND "table_name" = ${tableName}

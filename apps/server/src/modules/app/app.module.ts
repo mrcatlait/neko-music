@@ -16,12 +16,13 @@ import { AuthorizationModule } from '@modules/authorization/authorization.module
       isGlobal: true,
       cache: true,
       validationSchema:
-        process.env.NODE_ENV === 'test'
+        process.env['NODE_ENV'] === 'test'
           ? Joi.object({})
           : Joi.object({
               // Application
               PORT: Joi.number().required(),
               NODE_ENV: Joi.string().optional(),
+              UI_URL: Joi.string().uri().required(),
 
               // Database
               DATABASE_HOST: Joi.string().required(),
@@ -37,13 +38,8 @@ import { AuthorizationModule } from '@modules/authorization/authorization.module
               // Crypto
               SALT_ROUNDS: Joi.number().required(),
 
-              // JWT
-              JWT_SECRET: Joi.string().required(),
-              JWT_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-              JWT_REFRESH_SECRET: Joi.string().required(),
-              JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-              JWT_ISSUER: Joi.string().required(),
-              JWT_AUDIENCE: Joi.string().required(),
+              // Authentication
+              COOKIE_SECRET: Joi.string().required(),
             } as Record<keyof EnvironmentVariables, Joi.AnySchema>),
     }),
     DatabaseModule.forRootAsync({

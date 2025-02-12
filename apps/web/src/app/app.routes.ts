@@ -1,7 +1,7 @@
 import { Route, Routes } from '@angular/router'
+import { canActivateGuest, canActivateAuthorized } from '@neko/ui-auth/guards'
+
 import { Layout } from '@core/enums'
-import { canActivateGuest } from '@neko/ui-auth/guards'
-import { canActivateAuthorized } from '@neko/ui-auth/guards'
 
 interface RouteWithLayout extends Route {
   data?: {
@@ -41,11 +41,11 @@ export const routes: RouteWithLayout[] = [
         pathMatch: 'full',
         loadComponent: () => import('./pages/login').then((c) => c.LoginPage),
       },
-      // {
-      //   path: 'registration',
-      //   pathMatch: 'full',
-      //   loadComponent: () => import('./pages/registration').then((c) => c.RegistrationPage),
-      // },
+      {
+        path: 'registration',
+        pathMatch: 'full',
+        loadComponent: () => import('./pages/registration').then((c) => c.RegistrationPage),
+      },
     ],
   },
   {
