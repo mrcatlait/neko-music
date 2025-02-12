@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "stylelint": "^16.9.0",
-    "stylelint-config-recommended": "^14.0.1",
+    "stylelint-config-recommended": "^15.0.0",
     "stylelint-config-recommended-scss": "^14.1.0"
   }
 }
