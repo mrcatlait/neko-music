@@ -1,22 +1,67 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 
-import { LayoutService } from './services'
-import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.component'
-import { LayoutMinimalComponent } from './layout-minimal/layout-minimal.component'
-import { LayoutDialogsComponent } from './layout-dialogs/layout-dialogs.component'
-
-import { Layout } from '@core/enums'
+import { WindowClassDetector } from './layout-shared/services'
+import { WindowClass } from './layout-shared/enums'
+import { LayoutExtraLargeComponent } from './layout-extra-large'
+import { LayoutCompactComponent } from './layout-compact'
+import { LayoutMediumComponent } from './layout-medium'
 
 @Component({
   selector: 'neko-layout',
-  imports: [LayoutSidebarComponent, LayoutMinimalComponent, LayoutDialogsComponent],
-  providers: [LayoutService],
-  templateUrl: 'layout.component.html',
+  imports: [LayoutCompactComponent, LayoutExtraLargeComponent, LayoutMediumComponent],
+  providers: [],
+  template: `
+    @switch (currentWindowClass()) {
+      @case (WindowClass.Compact) {
+        @defer {
+          <neko-layout-compact />
+        } @loading {
+          <!-- <app-layout-skeleton /> -->
+        }
+      }
+      @case (WindowClass.Medium) {
+        @defer {
+          <neko-layout-medium />
+        } @loading {
+          <!-- <app-layout-skeleton /> -->
+        }
+      }
+      <!--  @case (WindowClass.Medium) {
+      @case (WindowClass.Expanded) {
+        @defer {
+          <app-desktop-layout />
+        } @loading {
+          <app-layout-skeleton />
+        }
+      }
+      @case (WindowClass.Large) {
+        @defer {
+          <app-desktop-layout />
+        } @loading {
+          <app-layout-skeleton />
+        }
+      } -->
+      @case (WindowClass.ExtraLarge) {
+        @defer {
+          <neko-layout-extra-large />
+        } @loading {
+          <!-- <app-layout-skeleton /> -->
+        }
+      }
+      @default {
+        @defer {
+          <neko-layout-extra-large />
+        } @loading {
+          <!-- <app-layout-skeleton /> -->
+        }
+      }
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent {
-  private readonly layoutService = inject(LayoutService)
+  private readonly windowClassDetector = inject(WindowClassDetector)
 
-  readonly layout = this.layoutService.layout
-  Layout = Layout
+  readonly WindowClass = WindowClass
+  readonly currentWindowClass = this.windowClassDetector.windowClass
 }

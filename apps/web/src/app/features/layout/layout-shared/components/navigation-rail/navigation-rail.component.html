@@ -1,0 +1,46 @@
+<nav>
+  <button
+    aria-label="Toggle navigation"
+    nekoIconButton
+    variant="text"
+    (click)="expand.emit()"
+  >
+    <i>menu</i>
+  </button>
+
+  <ul class="label-medium">
+    <li
+      #home="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: true }"
+      routerLink=""
+      routerLinkActive="active"
+    >
+      <div class="navigation-icon-container">
+        <i [class.outlined]="!home.isActive">home</i>
+      </div>
+      Home
+    </li>
+
+    <li
+      #browse="routerLinkActive"
+      routerLink="/browse"
+      routerLinkActive="active"
+    >
+      <div class="navigation-icon-container">
+        <i [class.outlined]="!browse.isActive">explore</i>
+      </div>
+      Browse
+    </li>
+
+    <li
+      #library="routerLinkActive"
+      routerLink="/library"
+      routerLinkActive="active"
+    >
+      <div class="navigation-icon-container">
+        <i [class.outlined]="!library.isActive">library_music</i>
+      </div>
+      Library
+    </li>
+  </ul>
+</nav>

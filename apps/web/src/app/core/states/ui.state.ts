@@ -3,16 +3,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { NavigationSkipped, NavigationStart, Router } from '@angular/router'
 import { filter } from 'rxjs'
 
-import { StateModel } from '@core/interfaces'
-
-interface UIStateModel {
-  isVisualizerOpen: boolean
-}
-
 @Injectable({
   providedIn: 'root',
 })
-export class UIState implements StateModel<UIStateModel> {
+export class UIState {
   private readonly router = inject(Router)
 
   readonly isVisualizerOpen = signal(false)

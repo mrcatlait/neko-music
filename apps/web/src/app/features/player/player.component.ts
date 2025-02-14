@@ -12,7 +12,19 @@ import { AudioState } from '@core/states'
 @Component({
   selector: 'neko-player',
   imports: [PlayerControlsComponent, PlayerPlaybackComponent, PlayerTrackComponent, PlayerVolumeComponent],
-  templateUrl: 'player.component.html',
+  template: `
+    @if (!active()) {
+      <div class="player-container">
+        <neko-player-track />
+
+        <neko-player-controls />
+
+        <neko-player-volume />
+      </div>
+
+      <neko-player-playback />
+    }
+  `,
   styleUrls: ['player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

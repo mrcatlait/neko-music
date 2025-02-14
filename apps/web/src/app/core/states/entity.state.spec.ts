@@ -2,7 +2,7 @@ import { EMPTY, Observable, of, throwError } from 'rxjs'
 
 import { EntityState } from './entity.state'
 
-import { FetchStatus } from '@core/enum'
+import { FetchStatus } from '@core/enums'
 
 class TestState extends EntityState<unknown, string> {
   fetchFn = vi.fn((_payload: string): Observable<unknown> => EMPTY)

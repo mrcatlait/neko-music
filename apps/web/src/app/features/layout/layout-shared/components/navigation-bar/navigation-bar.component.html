@@ -1,0 +1,40 @@
+<nav>
+  <ul class="label-medium">
+    <li
+      #home="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: true }"
+      routerLink=""
+      routerLinkActive="active"
+    >
+      <i [class.outlined]="!home.isActive">home</i>
+      Home
+    </li>
+
+    <li
+      #browse="routerLinkActive"
+      routerLink="/browse"
+      routerLinkActive="active"
+    >
+      <i [class.outlined]="!browse.isActive">explore</i>
+      Browse
+    </li>
+
+    <li
+      #library="routerLinkActive"
+      routerLink="/library"
+      routerLinkActive="active"
+    >
+      <i [class.outlined]="!library.isActive">library_music</i>
+      Library
+    </li>
+
+    <li
+      #search="routerLinkActive"
+      routerLink="/search"
+      routerLinkActive="active"
+    >
+      <i [class.outlined]="!search.isActive">search</i>
+      Search
+    </li>
+  </ul>
+</nav>
