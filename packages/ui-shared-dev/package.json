@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "exports": {
+    ".": {
+      "default": "./eslint.config.js"
+    },
     "./eslint-config": {
       "default": "./eslint.config.js"
     }

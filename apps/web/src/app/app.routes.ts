@@ -1,18 +1,11 @@
-import { Route, Routes } from '@angular/router'
+import { Routes } from '@angular/router'
 import { canActivateGuest, canActivateAuthorized } from '@neko/ui-auth/guards'
 
-import { Layout } from '@core/enums'
-
-interface RouteWithLayout extends Route {
-  data?: {
-    layout: Layout
-  }
-}
-
-export const routes: RouteWithLayout[] = [
+export const routes: Routes = [
   {
     path: '',
     canActivateChild: [canActivateAuthorized],
+    loadComponent: () => import('./features/layout').then((c) => c.LayoutComponent),
     children: [
       {
         path: '',
@@ -32,9 +25,6 @@ export const routes: RouteWithLayout[] = [
   {
     path: '',
     canActivateChild: [canActivateGuest],
-    data: {
-      layout: Layout.MINIMAL,
-    },
     children: [
       {
         path: 'login',

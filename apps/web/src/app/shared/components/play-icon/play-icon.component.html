@@ -1,1 +1,5 @@
-<i>{{ icon() }}</i>
+@if (isPlaying()) {
+  <i>pause</i>
+} @else {
+  <i>play_arrow</i>
+}

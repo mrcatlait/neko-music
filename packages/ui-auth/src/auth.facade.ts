@@ -27,6 +27,9 @@ export class AuthFacade {
         } else {
           this.sessionState.clearSession()
         }
+
+        this.sessionState.updateSession('1231')
+        this.statusState.setSuccess()
       }),
       map(() => true),
       catchError(() => {

@@ -6,7 +6,9 @@ import { PlaybackState } from './playback-state'
 
 import { Queue, Track } from '@core/interfaces'
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class QueueManager implements OnDestroy {
   private readonly playbackEventHandler = inject(PlaybackEventHandler)
   private readonly playbackState = inject(PlaybackState)
@@ -66,6 +68,24 @@ export class QueueManager implements OnDestroy {
 
   toggleShuffle(): void {
     this.shuffle.update((shuffle) => !shuffle)
+  }
+
+  toggleRepeat(): void {
+    const oldRepeat = this.repeat()
+
+    switch (oldRepeat) {
+      case RepeatOption.None:
+        this.repeat.set(RepeatOption.All)
+        break
+      case RepeatOption.All:
+        this.repeat.set(RepeatOption.Single)
+        break
+      case RepeatOption.Single:
+        this.repeat.set(RepeatOption.None)
+        break
+      default:
+        return
+    }
   }
 
   private getNextTrack(currentTrack: Track | null, tracks: Track[]): Track | null {

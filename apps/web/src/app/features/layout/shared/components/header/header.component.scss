@@ -1,0 +1,78 @@
+@use 'abstracts' as abstracts;
+
+$header-height: 88px;
+$drawer-width: 280px;
+
+:host {
+  --n-header-bg: var(--color-surface);
+
+  height: $header-height;
+}
+
+header {
+  position: fixed;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--spacing-layout);
+  height: $header-height;
+  width: min(calc(100% - $drawer-width - var(--spacing-layout) * 2), 1440px);
+  align-items: center;
+  background-color: var(--n-header-bg);
+
+  @include abstracts.elevation(0);
+}
+
+$search-bar-height: 56px;
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--shape-corner-full);
+  background-color: var(--color-primary);
+}
+
+.search-bar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: $search-bar-height;
+  gap: 16px;
+  min-width: 360px;
+  max-width: 720px;
+  padding: 0 20px;
+  border-radius: var(--shape-corner-full);
+  background-color: var(--color-surface-container-high);
+
+  input {
+    background-color: transparent;
+    border: none;
+    height: $search-bar-height;
+    width: 100%;
+    caret-color: var(--color-text-high-emphasis);
+    color: var(--color-text-high-emphasis);
+    font-family: var(-typography-font-family);
+    box-sizing: border-box;
+    @include abstracts.typography('body-large');
+
+    &:focus,
+    &:focus-visible {
+      caret-color: var(--color-primary);
+      outline: none;
+
+      &::placeholder {
+        color: transparent
+      }
+    }
+
+    &::placeholder {
+      color: var(--color-text-medium-emphasis);
+      font-family: var(--typography-font-family);
+      @include abstracts.typography('body-large');
+    }
+  }
+}

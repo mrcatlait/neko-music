@@ -2,19 +2,16 @@ import { ChangeDetectionStrategy, Component, computed, EventEmitter, inject, Inp
 import { Permission } from '@neko/permissions'
 import { NgOptimizedImage } from '@angular/common'
 import { trackListItemSelectors } from '@neko/ui-selectors'
-// import { PlaylistAddComponent } from '@features/playlists/playlist-add'
-// import { PlaylistAddDialogData } from '@features/playlists/playlist-add/models'
-// import { CollectionType } from '@features/playlists/playlist-add/enum'
 import { ButtonDirective, MenuTriggerDirective, SelectorDirective } from '@neko/ui-shared/directives'
 import { ImageUrlPipe } from '@neko/ui-shared/pipes'
 import { MenuComponent } from '@neko/ui-shared/components'
+import { DialogService } from '@neko/ui-shared/services'
 
 import { TrackArtistListComponent } from '../track-artist-list/track-artist-list.component'
-import { LinkedTrack } from '../../interfaces'
 
-import { PlaybackState } from '@core/states'
 import { PlayIconComponent } from '@shared/components'
-import { DialogService } from '@core/services'
+import { Track } from '@core/interfaces'
+import { PlaybackState } from '@features/playback/playback-shared/services'
 
 @Component({
   selector: 'neko-track-list-item',
@@ -36,10 +33,10 @@ export class TrackListItemComponent {
   private readonly dialogService = inject(DialogService)
   private readonly playbackState = inject(PlaybackState)
 
-  @Input({ required: true }) track: LinkedTrack
+  @Input({ required: true }) track: Track
 
-  private readonly currentTrackId = this.playbackState.currentTrackId
-  readonly isPlaying = computed(() => this.track.linkedTrackId === this.currentTrackId())
+  private readonly currentTrack = this.playbackState.currentTrack
+  readonly isPlaying = computed(() => this.track.id === this.currentTrack()?.id)
 
   readonly selectors = trackListItemSelectors
   readonly permissions = Permission

@@ -1,3 +1,4 @@
+export * from './dialogs'
 export * from './environment'
 export * from './portal-context'
 export * from './validation-error'

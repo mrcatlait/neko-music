@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { SelectorDirective } from '@neko/ui-shared/directives'
 import { trackListSelectors } from '@neko/ui-selectors'
 
-import { LinkedTrack } from '../../interfaces'
 import { TrackListItemComponent } from '../track-list-item/track-list-item.component'
+
+import { Track } from '@core/interfaces'
 
 @Component({
   selector: 'neko-track-list',
@@ -14,7 +15,7 @@ import { TrackListItemComponent } from '../track-list-item/track-list-item.compo
 })
 export class TrackListComponent {
   @Input({ required: true }) label: string
-  @Input({ required: true }) tracks: LinkedTrack[]
+  @Input({ required: true }) tracks: Track[]
 
   @Output() togglePlay = new EventEmitter<string>()
 

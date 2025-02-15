@@ -4,11 +4,10 @@ import { trackListNewReleasesSelectors } from '@neko/ui-selectors'
 import { rxResource } from '@angular/core/rxjs-interop'
 
 import { TrackListComponent } from '../track-shared/components'
-import { mapTrackToLinkedTrack } from '../track-shared/mappers'
 
-import { PlaybackState } from '@core/states'
 import { TrackRepository } from '@core/repositories'
-import { Queue } from '@core/interfaces'
+import { Queue, Track } from '@core/interfaces'
+import { PlaybackState } from '@features/playback/playback-shared/services'
 
 @Component({
   standalone: true,
@@ -25,11 +24,9 @@ export class TrackListNewReleasesComponent extends SelectorDirective {
     loader: () => this.repository.getNew(),
   })
 
-  readonly currentTrackId = this.playbackState.currentTrackId
+  readonly currentTrack = this.playbackState.currentTrack
 
-  readonly tracks = computed(
-    () => this.newReleasesResource.value()?.map((track) => mapTrackToLinkedTrack(track, this.basicQueue)) ?? [],
-  )
+  readonly tracks = computed(() => this.newReleasesResource.value() ?? [])
 
   private readonly basicQueue: Queue = {
     tracks: [],
@@ -49,7 +46,7 @@ export class TrackListNewReleasesComponent extends SelectorDirective {
 
   override selector = this.selectors.trackContainer
 
-  handleTogglePlay(trackId: string) {
-    this.playbackState.togglePlay({ queue: this.queue(), trackId })
+  handleTogglePlay(track: Track) {
+    this.playbackState.togglePlay(track)
   }
 }

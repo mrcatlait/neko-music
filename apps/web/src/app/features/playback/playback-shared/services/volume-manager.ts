@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core'
 
 import { CookieVolumeStorage } from './cookie-volume-storage'
-import { PlaybackEventHandler } from '../playback-shared/services'
+import { PlaybackEventHandler } from './playback-event-handler'
 
 const DEFAULT_VOLUME = 30
 

@@ -1,0 +1,78 @@
+@use 'abstracts' as abstracts;
+
+$drawer-width: 280px;
+
+:host {
+  --n-navigation-active-bg: rgba(var(--color-on-surface-rgb), .16);
+  --n-navigation-hover-color: var(--color-on-surface);
+}
+
+.navigation-header {
+  display: flex;
+  align-items: center;
+  height: 88px;
+}
+
+.navigation-header-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background-color: var(--color-surface-container-high);
+  width: $drawer-width;
+  height: 100vh;
+  border-radius: var(--shape-corner-large-end);
+
+  @include abstracts.elevation(5);
+}
+
+neko-logo {
+  margin-top: -10px;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  flex-direction: row;
+  height: 48px;
+  gap: 12px;
+  padding: 0 16px;
+  margin: 0 12px;
+  border-radius: var(--shape-corner-full);
+
+  &.active {
+    background-color: var(--n-navigation-active-bg);
+  }
+
+  &:not(.active) {
+    @include abstracts.state(var(--n-navigation-hover-color));
+  }
+}
+
+.navigation-scrim {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(var(--color-surface-rgb), .86);
+
+  @include abstracts.elevation(4);
+
+  visibility: visible;
+  opacity: 1;
+}
+

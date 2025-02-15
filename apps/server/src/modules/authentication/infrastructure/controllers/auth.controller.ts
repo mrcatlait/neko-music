@@ -1,7 +1,5 @@
-import { Body, Controller, Get, Header, Post, Req } from '@nestjs/common'
+import { Body, Controller, Post, Req } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
-
-import { User } from '../decorators'
 
 import { LoginHandler } from '@modules/authentication/login/commands'
 import { RegisterHandler } from '@modules/authentication/registration/commands'
@@ -34,12 +32,5 @@ export class AuthController {
   @Post('logout')
   logout(@Req() req: FastifyRequest): Promise<void> {
     return req.session.destroy()
-  }
-
-  @Get('whoami')
-  @Header('Cache-Control', 'no-store')
-  whoami(@User() user: any): any {
-    console.log(user)
-    return { accessToken: '123' }
   }
 }

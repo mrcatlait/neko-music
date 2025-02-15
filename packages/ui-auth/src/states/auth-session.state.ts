@@ -4,7 +4,7 @@ import { Permission } from '@neko/permissions'
 
 @Injectable({ providedIn: 'root' })
 export class AuthSessionState {
-  readonly accessToken = signal<string | null>(null)
+  readonly accessToken = signal<string | null>('1231')
   readonly permissions = signal<string[]>([])
 
   readonly isAuthenticated = computed(() => Boolean(this.accessToken()))

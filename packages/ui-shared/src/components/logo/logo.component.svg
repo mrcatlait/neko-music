@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="114" height="47" viewBox="0 0 114 47">
+  <g transform="translate(-40 -424)">
+    <text transform="translate(40 463)" [attr.fill]="textColor" font-size="28" font-weight="700">
+      <tspan x="0" y="0">gachify</tspan>
+    </text>
+    <g transform="translate(80 -9)">
+      <path d="M116.89,101.861h-3.226l-2.972,2.972h4.1l-3.007,3.007a6.5,6.5,0,1,0,2.1,2.1l3.007-3.007v4.1h0l2.972-2.972v-6.2Zm-8.531,15.152a3.65,3.65,0,1,1,3.65-3.65A3.65,3.65,0,0,1,108.36,117.013Z" transform="translate(-45.862 331.139)" [attr.fill]="logoColor" />
+    </g>
+  </g>
+</svg>

@@ -13,7 +13,9 @@ import { PlaybackEventType } from '../enums'
 
 type Listener<Type extends PlaybackEventType> = (payload: PlaybackEventPayloadMap[Type]) => void
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PlaybackEventHandler {
   private readonly listeners = new Map<PlaybackEventType, Set<Listener<any>>>()
 

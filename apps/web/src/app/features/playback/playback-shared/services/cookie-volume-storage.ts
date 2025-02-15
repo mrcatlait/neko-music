@@ -3,7 +3,9 @@ import { CookieService } from '@neko/ui-shared/services'
 
 const VOLUME_COOKIE = 'volume'
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class CookieVolumeStorage {
   private readonly cookieService = inject(CookieService)
 

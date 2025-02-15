@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 
-import { WindowClassDetector } from './layout-shared/services'
-import { WindowClass } from './layout-shared/enums'
-import { LayoutExtraLargeComponent } from './layout-extra-large'
-import { LayoutCompactComponent } from './layout-compact'
-import { LayoutMediumComponent } from './layout-medium'
+import { WindowClassDetector } from './shared/services'
+import { WindowClass } from './shared/enums'
+import { LayoutExtraLargeComponent } from './extra-large'
+import { LayoutCompactComponent } from './compact'
+import { LayoutMediumComponent } from './medium'
 
 @Component({
   selector: 'neko-layout',
@@ -26,21 +26,20 @@ import { LayoutMediumComponent } from './layout-medium'
           <!-- <app-layout-skeleton /> -->
         }
       }
-      <!--  @case (WindowClass.Medium) {
       @case (WindowClass.Expanded) {
         @defer {
-          <app-desktop-layout />
+          <neko-layout-medium />
         } @loading {
-          <app-layout-skeleton />
+          <!-- <app-layout-skeleton /> -->
         }
       }
       @case (WindowClass.Large) {
         @defer {
-          <app-desktop-layout />
+          <neko-layout-extra-large />
         } @loading {
-          <app-layout-skeleton />
+          <!-- <app-layout-skeleton /> -->
         }
-      } -->
+      }
       @case (WindowClass.ExtraLarge) {
         @defer {
           <neko-layout-extra-large />
@@ -50,7 +49,7 @@ import { LayoutMediumComponent } from './layout-medium'
       }
       @default {
         @defer {
-          <neko-layout-extra-large />
+          <neko-layout-medium />
         } @loading {
           <!-- <app-layout-skeleton /> -->
         }

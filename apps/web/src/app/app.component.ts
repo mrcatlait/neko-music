@@ -1,12 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, viewChild, ViewContainerRef } from '@angular/core'
+import { RouterOutlet } from '@angular/router'
 import { PortalService } from '@neko/ui-shared/services'
-
-import { LayoutComponent } from '@features/layout'
 
 @Component({
   selector: 'neko-root',
-  imports: [LayoutComponent],
-  template: `<neko-layout /><ng-container #viewContainer></ng-container>`,
+  imports: [RouterOutlet],
+  template: `<router-outlet /><ng-container #viewContainer></ng-container>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements AfterViewInit {

@@ -1,0 +1,158 @@
+---
+description: 
+globs: apps/web/**/*.{ts,scss,html}
+---
+You are an expert software architect tasked with creating comprehensive rules for Cursor AI to follow when working with Neko Music. 
+
+# Cursor AI Rules for Neko Music
+
+## Project Overview
+Neko Music is a full-featured music streaming platform designed to offer a smooth experience for discovering, playing, and curating music. The platform combines sophisticated audio technology with an intuitive user interface to deliver high-quality music streaming across multiple devices.
+
+## Project Context
+This document defines the rules and guidelines for Cursor AI when working with Neko Music.
+
+### Technical Stack
+- Platform: web
+- Framework: Angular v19
+- Key Dependencies:
+
+## Code Generation Rules
+
+### 1. Project Structure
+- Follow feature-based directory structure:
+  ```
+  src/
+    ├── app/
+    │   ├── features/           # Feature modules
+    │   ├── shared/            # Shared components/services
+    │   ├── core/             # Core services, guards
+    │   └── layout/           # Layout components
+  ```
+- Use standalone components
+- Keep feature-related files together
+- Follow barrel pattern for exports
+- Respect module boundaries
+- Keep related files together
+
+### 2. Code Style
+Adhere to these formatting rules:
+- Use consistent indentation
+- Follow line length limits
+- Apply proper spacing
+- Use appropriate brackets
+- Maintain consistent naming
+- Follow SOLID principles
+- Follow TypeScript best practices
+
+### 3. Component Guidelines
+When generating components:
+- Use standalone components with imports
+- Implement change detection strategy OnPush
+- Follow component composition patterns
+- Use computed() for derived state
+- Use effect() for side effects
+- Follow composition over inheritance
+- Implement proper prop typing
+- Use appropriate state management
+- Handle errors correctly
+- Implement proper event handling
+- Follow lifecycle best practices
+- Optimize rendering performance
+
+### 4. Type System
+For TypeScript implementation:
+- Use strict type checking
+- Create proper interfaces
+- Implement generics correctly
+- Handle null/undefined properly
+- Use type guards when needed
+- Document complex types
+- Avoid any type
+
+### 5. API Integration
+When working with APIs:
+- Follow RESTful conventions
+- Implement proper error handling
+- Use type-safe requests
+- Handle authentication correctly
+- Validate API responses
+- Document API usage
+- Implement proper caching
+
+### 6. State Management
+For managing application state:
+- Use signal-based services for state
+- Keep state immutable
+- Use computed signals for derived data
+- Use appropriate state solutions
+- Follow immutability principles
+- Implement proper actions/reducers
+- Handle side effects correctly
+- Optimize state updates
+- Document state structure
+- Implement proper selectors
+
+### 7. Testing Requirements
+Generate tests following these rules:
+- Write comprehensive unit tests
+- Implement integration tests
+- Follow testing best practices
+- Use proper mocking
+- Test error scenarios
+- Maintain test coverage
+- Document test cases
+
+### 8. Security Guidelines
+Enforce security practices:
+- Validate all inputs
+- Sanitize data output
+- Handle authentication properly
+- Protect sensitive data
+- Follow OWASP guidelines
+- Implement proper CORS
+- Use secure dependencies
+
+### 9. Performance Rules
+Optimize for performance:
+- Implement code splitting
+- Use lazy loading
+- Optimize bundle size
+- Minimize re-renders
+- Use proper caching
+- Optimize assets
+- Follow performance best practices
+
+### 10. Documentation
+Generate documentation that:
+- Is clear and concise
+- Includes JSDoc comments
+- Provides usage examples
+- Documents edge cases
+- Explains complex logic
+- Includes type information
+- Follows documentation standards
+
+## Best Practices
+
+### 1. Code Quality
+- Write self-documenting code
+- Keep functions small and focused
+- Follow DRY principles
+- Use meaningful names
+- Implement proper error handling
+- Write maintainable code
+
+### 2. Performance
+- Optimize bundle size
+- Implement code splitting
+- Use proper caching
+- Optimize rendering
+- Follow lazy loading patterns
+
+### 3. Security
+- Validate user input
+- Sanitize data output
+- Use proper authentication
+- Protect sensitive data
+- Follow security best practices

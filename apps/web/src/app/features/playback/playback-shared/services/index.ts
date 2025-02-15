@@ -1,4 +1,6 @@
 export * from './audio-engine'
 export * from './playback-event-handler'
 export * from './playback-state'
+export * from './playback-timer'
 export * from './queue-manager'
+export * from './volume-manager'

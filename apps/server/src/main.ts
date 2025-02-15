@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { fastifySession } from '@fastify/session'
 import { fastifyCookie } from '@fastify/cookie'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 import { AppModule } from '@modules/app/app.module'
 import { EnvironmentVariables } from '@modules/shared/models'
@@ -37,6 +38,15 @@ async function bootstrap() {
     origin: UI_URL,
     credentials: true,
   })
+
+  // const config = new DocumentBuilder()
+  //   .setTitle('Neko Music API')
+  //   .setDescription('The Neko Music API description')
+  //   .setVersion('1.0')
+  //   .addBearerAuth()
+  //   .build()
+  // const document = SwaggerModule.createDocument(app, config)
+  // SwaggerModule.setup('api', app, document)
 
   await app.listen({
     port: PORT,
