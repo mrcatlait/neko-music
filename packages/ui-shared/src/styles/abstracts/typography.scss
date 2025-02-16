@@ -1,6 +1,0 @@
-@mixin typography($size) {
-  font-size: var(--typography-#{$size}-size);
-  line-height: var(--typography-#{$size}-line-height);
-  letter-spacing: var(--typography-#{$size}-tracking);
-  font-weight: var(--typography-#{$size}-weight);
-}

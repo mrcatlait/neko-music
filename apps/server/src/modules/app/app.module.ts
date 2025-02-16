@@ -10,6 +10,7 @@ import { EnvironmentVariables } from '@modules/shared/models'
 import { AuthenticationModule } from '@modules/authentication/authentication.module'
 import { AuthorizationModule } from '@modules/authorization/authorization.module'
 import { MusicMetadataModule } from '@modules/music-metadata/music-metadata.module'
+import { UserModule } from '@modules/user/user.module'
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { MusicMetadataModule } from '@modules/music-metadata/music-metadata.modu
     AuthenticationModule,
     AuthorizationModule,
     MusicMetadataModule,
+    UserModule,
     // ArtistModule,
     // TrackModule,
     // PlaylistModule,

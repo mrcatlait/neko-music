@@ -8,6 +8,8 @@ import { UserLoginDataRepository } from '../../../shared/repositories'
 
 import { EnvironmentVariables, Handler } from '@modules/shared/models'
 import { GetDefaultRoleHandler } from '@modules/authorization/roles/queries'
+import { CreateAccountHandler } from '@modules/user/account/commands'
+import { AssignRoleHandler } from '@modules/authorization/roles/commands'
 
 @Injectable()
 export class RegisterHandler implements Handler<RegisterCommand, RegisterCommandResult> {
@@ -18,6 +20,8 @@ export class RegisterHandler implements Handler<RegisterCommand, RegisterCommand
     private readonly userLoginDataRepository: UserLoginDataRepository,
     private readonly getDefaultRoleHandler: GetDefaultRoleHandler,
     private readonly registerValidator: RegisterValidator,
+    private readonly createAccountHandler: CreateAccountHandler,
+    private readonly assignRoleHandler: AssignRoleHandler,
   ) {
     this.saltRounds = configService.get('SALT_ROUNDS')
   }
@@ -29,15 +33,22 @@ export class RegisterHandler implements Handler<RegisterCommand, RegisterCommand
       throw new BadRequestException(validationResult.errors)
     }
 
-    const role = await this.getDefaultRoleHandler.handle()
-
     const passwordHash = hashSync(command.password, this.saltRounds)
 
-    await this.userLoginDataRepository.create({
+    const userLoginData = await this.userLoginDataRepository.create({
       email: command.email,
       password_hash: passwordHash,
-      role_id: role.id,
     })
+
+    const role = await this.getDefaultRoleHandler.handle()
+
+    await Promise.all([
+      this.createAccountHandler.handle({
+        userId: userLoginData.user_id,
+        displayName: command.displayName,
+      }),
+      this.assignRoleHandler.handle({ userId: userLoginData.user_id, roleId: role.id }),
+    ])
 
     return
   }

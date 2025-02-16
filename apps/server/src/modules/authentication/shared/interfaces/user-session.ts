@@ -1,5 +1,5 @@
 export interface UserSession {
-  user_id: string
-  email: string
-  role_id: string
+  userId: string
+  displayName: string
+  permissions: string[]
 }

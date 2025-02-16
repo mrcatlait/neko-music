@@ -1,11 +1,19 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core'
-import { LogoComponent } from '@neko/ui-shared/components'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
+import { AuthFacade } from '@neko/ui-auth/auth.facade'
+import { AvatarComponent, LogoComponent, MenuComponent, MenuItemComponent } from '@neko/ui-shared/components'
+import { MenuTriggerDirective } from '@neko/ui-shared/directives'
 
 @Component({
   selector: 'neko-header',
-  imports: [LogoComponent],
+  imports: [AvatarComponent, LogoComponent, MenuComponent, MenuItemComponent, MenuTriggerDirective],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  readonly authFacade = inject(AuthFacade)
+
+  handleLogout(): void {
+    this.authFacade.logout()
+  }
+}

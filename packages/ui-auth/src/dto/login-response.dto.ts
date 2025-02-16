@@ -1,3 +1,3 @@
-export interface LoginResponseDto {
-  accessToken: string
-}
+import { Session } from '../interfaces'
+
+export type LoginResponseDto = Session

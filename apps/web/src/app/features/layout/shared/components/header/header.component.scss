@@ -1,6 +1,6 @@
 @use 'abstracts' as abstracts;
 
-$header-height: 88px;
+$header-height: 64px;
 $drawer-width: 280px;
 
 :host {
@@ -12,26 +12,27 @@ $drawer-width: 280px;
 header {
   position: fixed;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-layout);
   height: $header-height;
   width: min(calc(100% - $drawer-width - var(--spacing-layout) * 2), 1440px);
+  width: 100%;
   align-items: center;
   background-color: var(--n-header-bg);
+  padding: 0 var(--spacing-layout);
 
   @include abstracts.elevation(0);
 }
 
-$search-bar-height: 56px;
+$search-bar-height: 48px;
 
-.avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--shape-corner-full);
-  background-color: var(--color-primary);
+neko-avatar {
+  justify-self: flex-end;
+  cursor: pointer;
+}
+
+neko-menu {
+  width: 200px;
 }
 
 .search-bar {

@@ -1,23 +1,27 @@
 import { inject, Injectable } from '@angular/core'
 import { Observable, of, catchError, shareReplay, tap } from 'rxjs'
 
-import { Session } from '../models'
+import { Session } from '../interfaces'
 import { AuthRepository } from '../repositories'
-import { SessionStorageService, SessionCookieService } from '../services'
+import { SessionCookieService } from '../services'
 import { BaseAuthStrategy } from './base-auth.strategy'
+import { AuthSessionState, AuthStatusState } from '../states'
 
 @Injectable({ providedIn: 'root' })
 export class SilentAuthStrategy extends BaseAuthStrategy {
   private readonly authRepository = inject(AuthRepository)
   private readonly sessionCookieService = inject(SessionCookieService)
-  private readonly sessionStorage = inject(SessionStorageService)
+  private readonly sessionState = inject(AuthSessionState)
+  private readonly statusState = inject(AuthStatusState)
 
   authenticate(): Observable<Session | null> {
     if (!this.sessionCookieService.getCookie()) {
+      this.sessionState.clearSession()
+      this.statusState.setSuccess()
       return of(null)
     }
 
-    const session = this.sessionStorage.get()
+    const session = this.sessionState.session()
 
     if (session) {
       return of(session)
@@ -25,12 +29,14 @@ export class SilentAuthStrategy extends BaseAuthStrategy {
 
     return this.authRepository.whoami().pipe(
       tap((response) => {
-        this.sessionStorage.set(response)
+        this.sessionState.updateSession(response)
         this.sessionCookieService.setCookie()
+        this.statusState.setSuccess()
       }),
       catchError(() => {
-        this.sessionStorage.remove()
+        this.sessionState.clearSession()
         this.sessionCookieService.deleteCookie()
+        this.statusState.setError('Authentication failed')
 
         return of(null)
       }),

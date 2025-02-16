@@ -1,6 +1,6 @@
 import { EnvironmentProviders, inject, provideAppInitializer, Provider } from '@angular/core'
 
-import { SessionStorageService, SessionCookieService } from '../services'
+import { SessionCookieService } from '../services'
 import { AuthSessionState, AuthStatusState } from '../states'
 import { CredentialsAuthStrategy, SilentAuthStrategy } from '../strategies'
 import { AUTH_API_URL } from '../tokens'
@@ -13,7 +13,6 @@ interface AuthConfig {
 export const provideAuth = (config: AuthConfig): (Provider | EnvironmentProviders)[] => {
   return [
     provideAppInitializer(() => inject(AuthFacade).silentLogin()),
-    SessionStorageService,
     SessionCookieService,
     AuthSessionState,
     AuthStatusState,

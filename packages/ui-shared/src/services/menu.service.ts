@@ -15,6 +15,8 @@ export class MenuService {
   private menuRef: EmbeddedViewRef<HTMLElement> | null = null
   private host: HTMLElement | null = null
 
+  private observer: MutationObserver | null = null
+
   open(host: HTMLElement, template: TemplateRef<HTMLElement>): void {
     this.close()
 
@@ -23,7 +25,12 @@ export class MenuService {
 
     this.addEventListener()
 
-    const observer = new MutationObserver((_mutations, obs) => {
+    const [initialY, initialX] = this.getPosition()
+
+    this.safeDropdownContent.style.left = `${initialX}px`
+    this.safeDropdownContent.style.top = `${initialY}px`
+
+    this.observer = new MutationObserver((_mutations, obs) => {
       const [y, x] = this.getPosition()
 
       this.safeDropdownContent.style.left = `${x}px`
@@ -32,7 +39,7 @@ export class MenuService {
       obs.disconnect()
     })
 
-    observer.observe(this.safeDropdownContent, { childList: true, subtree: true })
+    this.observer.observe(this.safeDropdownContent, { childList: true, subtree: true })
   }
 
   close(): void {
@@ -40,6 +47,8 @@ export class MenuService {
       this.portalService.removeTemplate(this.menuRef)
       this.menuRef = null
       this.host = null
+      this.observer?.disconnect()
+      this.observer = null
     }
 
     this.removeEventListener()

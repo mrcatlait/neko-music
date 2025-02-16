@@ -53,7 +53,7 @@ export class RegistrationComponent {
   readonly selectors = registrationSelectors
 
   form = new FormGroup({
-    username: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, emailValidator]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   })
@@ -67,11 +67,11 @@ export class RegistrationComponent {
 
   handleSubmit(): void {
     if (this.form.valid) {
-      const username = this.form.controls.username.value ?? ''
+      const displayName = this.form.controls.name.value ?? ''
       const email = this.form.controls.email.value ?? ''
       const password = this.form.controls.password.value ?? ''
 
-      this.state.register({ username, email, password })
+      this.state.register({ displayName, email, password })
     } else {
       this.form.markAllAsTouched()
     }

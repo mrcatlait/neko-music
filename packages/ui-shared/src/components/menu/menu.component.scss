@@ -11,3 +11,14 @@
 
   @include abstracts.elevation(4);
 }
+
+ul {
+  padding: 8px 0;
+  list-style: none;
+  margin: 0;
+  width: 100%;
+}
+
+hr {
+  margin: 8px 0;
+}

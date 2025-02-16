@@ -57,6 +57,7 @@ export class DatabaseMigrationService {
   }
 
   private async executeScript(name: string, sql: string, tableName: string) {
+    this.logger.log(`Executing migration: ${name}`)
     await this.sql.unsafe(sql)
     await this.insertExecutedScript(name, tableName)
   }

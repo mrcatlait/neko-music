@@ -21,6 +21,6 @@ export class AuthRepository {
   }
 
   whoami(): Observable<LoginResponseDto> {
-    return this.httpClient.get<LoginResponseDto>(`${this.apiUrl}/auth/whoami`)
+    return this.httpClient.get<LoginResponseDto>(`${this.apiUrl}/auth/whoami`, { withCredentials: true })
   }
 }

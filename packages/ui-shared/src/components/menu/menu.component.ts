@@ -2,7 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
 
 @Component({
   selector: 'neko-menu',
-  templateUrl: './menu.component.html',
+  template: `
+    <ul>
+      <ng-content />
+    </ul>
+  `,
   styleUrl: './menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

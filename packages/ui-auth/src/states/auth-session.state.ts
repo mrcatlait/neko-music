@@ -1,21 +1,22 @@
 import { computed, Injectable, signal } from '@angular/core'
 import { Permission } from '@neko/permissions'
 
+import { Session } from '../interfaces'
 
 @Injectable({ providedIn: 'root' })
 export class AuthSessionState {
-  readonly accessToken = signal<string | null>('1231')
-  readonly permissions = signal<string[]>([])
+  readonly session = signal<Session | null>(null)
+  readonly permissions = signal<Permission[]>([])
 
-  readonly isAuthenticated = computed(() => Boolean(this.accessToken()))
+  readonly isAuthenticated = computed(() => Boolean(this.session()))
 
-  updateSession(accessToken: string): void {
-    this.accessToken.set(accessToken)
-    this.updatePermissionsFromToken(accessToken)
+  updateSession(session: Session): void {
+    this.session.set(session)
+    this.updatePermissionsFromToken(session.permissions)
   }
 
   clearSession(): void {
-    this.accessToken.set(null)
+    this.session.set(null)
     this.permissions.set([])
   }
 
@@ -31,7 +32,7 @@ export class AuthSessionState {
     return permissions.every((permission) => this.permissions().includes(permission))
   }
 
-  private updatePermissionsFromToken(token: string): void {
-    this.permissions.set(token.split(',') || [])
+  private updatePermissionsFromToken(permissions: Permission[]): void {
+    this.permissions.set(permissions)
   }
 }

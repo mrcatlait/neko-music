@@ -27,8 +27,8 @@ export class UserLoginDataRepository {
     return this.databaseService.sql<{ user_id: string }[]>`
       WITH
         user_login_data AS (
-          INSERT INTO "UserLoginData" (email, password_hash, role_id)
-          VALUES (${user.email}, ${user.password_hash}, ${user.role_id})
+          INSERT INTO "UserLoginData" (email, password_hash)
+          VALUES (${user.email}, ${user.password_hash})
           RETURNING *
         )
       SELECT ul.user_id

@@ -1,27 +1,32 @@
-import { Body, Controller, Post, Req } from '@nestjs/common'
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
+
+import { Session } from '../decorators'
+import { AuthGuard } from '../guards'
 
 import { LoginHandler } from '@modules/authentication/login/commands'
 import { RegisterHandler } from '@modules/authentication/registration/commands'
-import { RegisterDto, LoginDto, AuthResponseDto } from '@modules/authentication/shared/dtos'
+import { RegisterDto, LoginDto } from '@modules/authentication/shared/dtos'
+import { WhoamiHandler } from '@modules/authentication/whoami/queries'
+import { UserSession } from '@modules/authentication/shared/interfaces'
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly loginHandler: LoginHandler,
     private readonly registerHandler: RegisterHandler,
+    private readonly whoamiHandler: WhoamiHandler,
   ) {}
 
   @Post('login')
-  async login(@Body() body: LoginDto, @Req() req: FastifyRequest): Promise<AuthResponseDto> {
+  async login(@Body() body: LoginDto, @Req() req: FastifyRequest): Promise<UserSession> {
     const userLoginData = await this.loginHandler.handle(body)
+    const session = await this.whoamiHandler.handle({ userId: userLoginData.user_id })
 
-    req.session.set('data', userLoginData)
+    req.session.set('data', session)
     await req.session.save()
 
-    console.log(req.session.data)
-
-    return userLoginData
+    return session
   }
 
   @Post('register')
@@ -32,5 +37,11 @@ export class AuthController {
   @Post('logout')
   logout(@Req() req: FastifyRequest): Promise<void> {
     return req.session.destroy()
+  }
+
+  @Get('whoami')
+  @UseGuards(AuthGuard)
+  whoami(@Session() session: UserSession): UserSession {
+    return session
   }
 }

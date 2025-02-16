@@ -74,17 +74,17 @@
       </neko-textfield>
 
       <neko-textfield>
-        <label [selector]="selectors.usernameLabel">Username</label>
+        <label [selector]="selectors.usernameLabel">Name</label>
 
         <input
           [selector]="selectors.usernameTextField"
-          formControlName="username"
+          formControlName="name"
           nekoTextfield
-          type="email"
+          type="text"
         />
 
         <neko-error
-          [control]="form.controls.username"
+          [control]="form.controls.name"
           [selector]="selectors.usernameErrorLabel"
         />
       </neko-textfield>

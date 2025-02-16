@@ -31,7 +31,7 @@ async function bootstrap() {
   await app.register(fastifyCookie)
   await app.register(fastifySession, {
     secret: COOKIE_SECRET,
-    cookie: { sameSite: 'strict', httpOnly: true, maxAge: DAY * 3 },
+    cookie: { sameSite: 'strict', httpOnly: true, maxAge: DAY * 3, secure: true, path: '/' },
   })
 
   app.enableCors({
