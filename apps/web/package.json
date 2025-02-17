@@ -7,7 +7,7 @@
     "@neko/ui-core": "*",
     "@neko/ui-selectors": "*",
     "@neko/ui-shared": "*",
-    "dashjs": "^4.7.4",
+    "dashjs": "^5.0.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
