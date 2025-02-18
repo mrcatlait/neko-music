@@ -6,6 +6,13 @@ import { RegisterHandler, RegisterValidator } from './registration/commands'
 import { UserLoginDataRepository } from './shared/repositories'
 import { AuthGuard } from './infrastructure/guards'
 import { WhoamiHandler } from './whoami/queries'
+import {
+  CreateAccountStep,
+  AssignRoleStep,
+  CreateUserLoginDataStep,
+  RegisterSaga,
+  GetDefaultRoleStep,
+} from './registration/sagas'
 
 @Global()
 @Module({
@@ -18,6 +25,11 @@ import { WhoamiHandler } from './whoami/queries'
     RegisterValidator,
     UserLoginDataRepository,
     WhoamiHandler,
+    CreateAccountStep,
+    AssignRoleStep,
+    CreateUserLoginDataStep,
+    RegisterSaga,
+    GetDefaultRoleStep,
   ],
 })
 export class AuthenticationModule {}

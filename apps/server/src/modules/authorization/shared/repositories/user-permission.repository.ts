@@ -13,9 +13,9 @@ export class UserPermissionRepository {
       SELECT 
         ur."user_id",
         array_agg(p."action") as permissions
-      FROM "UserRole" as ur
-        INNER JOIN "GrantedPermission" as gp ON ur."role_id" = gp."role_id"
-        INNER JOIN "Permission" as p ON gp."permission_id" = p."id"
+      FROM auth."UserRole" as ur
+        INNER JOIN auth."GrantedPermission" as gp ON ur."role_id" = gp."role_id"
+        INNER JOIN auth."Permission" as p ON gp."permission_id" = p."id"
       WHERE ur."user_id" = ${userId}
       GROUP BY ur."user_id"
     `.then((result) => result[0])

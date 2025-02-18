@@ -37,6 +37,13 @@ export class UserLoginDataRepository {
     `.then((result) => result[0])
   }
 
+  deleteByEmail(email: string): Promise<void> {
+    return this.databaseService.sql`
+      DELETE FROM auth."UserLoginData"
+      WHERE email = ${email}
+    `.then(() => undefined)
+  }
+
   private get selectFragment() {
     return this.databaseService.sql`
       SELECT u.*

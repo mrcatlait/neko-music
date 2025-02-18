@@ -11,7 +11,7 @@ export class RoleRepository {
   getDefault(): Promise<RoleEntity | undefined> {
     return this.databaseService.sql<RoleEntity[]>`
       SELECT *
-      FROM "Role"
+      FROM auth."Role"
       WHERE "default" = TRUE
       LIMIT 1
     `.then((result) => result.at(0))
@@ -20,7 +20,7 @@ export class RoleRepository {
   getById(id: string): Promise<RoleEntity | undefined> {
     return this.databaseService.sql<RoleEntity[]>`
       SELECT *
-      FROM "Role"
+      FROM auth."Role"
       WHERE "id" = ${id}
       LIMIT 1
     `.then((result) => result.at(0))
@@ -29,7 +29,7 @@ export class RoleRepository {
   existsById(id: string): Promise<boolean> {
     return this.databaseService.sql`
       SELECT 1
-      FROM "Role"
+      FROM auth."Role"
       WHERE "id" = ${id}
     `.then((result) => result.length > 0)
   }

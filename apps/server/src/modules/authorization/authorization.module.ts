@@ -7,7 +7,7 @@ import {
   UserPermissionRepository,
   UserRoleRepository,
 } from './shared/repositories'
-import { AssignRoleHandler, AssignRoleValidator } from './roles/commands'
+import { AssignRoleHandler, AssignRoleValidator, RevokeRoleHandler } from './roles/commands'
 import { GetPermissionsHandler } from './permissions/queries'
 
 @Global()
@@ -21,7 +21,8 @@ import { GetPermissionsHandler } from './permissions/queries'
     RoleRepository,
     UserRoleRepository,
     UserPermissionRepository,
+    RevokeRoleHandler,
   ],
-  exports: [AssignRoleHandler, GetDefaultRoleHandler, GetPermissionsHandler],
+  exports: [AssignRoleHandler, GetDefaultRoleHandler, GetPermissionsHandler, RevokeRoleHandler],
 })
 export class AuthorizationModule {}

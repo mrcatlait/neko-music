@@ -11,7 +11,7 @@ export class PermissionRepository {
   getById(id: string): Promise<PermissionEntity | undefined> {
     return this.databaseService.sql<PermissionEntity[]>`
       SELECT *
-      FROM "Permission"
+      FROM auth."Permission"
       WHERE "id" = ${id}
       LIMIT 1
     `.then((result) => result.at(0))
@@ -20,7 +20,7 @@ export class PermissionRepository {
   existsById(id: string): Promise<boolean> {
     return this.databaseService.sql`
       SELECT 1
-      FROM "Permission" WHERE "id" = ${id}
+      FROM auth."Permission" WHERE "id" = ${id}
     `.then((result) => result.length > 0)
   }
 }

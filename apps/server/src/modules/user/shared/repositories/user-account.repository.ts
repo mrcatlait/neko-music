@@ -22,4 +22,10 @@ export class UserAccountRepository {
       RETURNING *
     `.then((result) => result[0])
   }
+
+  delete(id: string): Promise<void> {
+    return this.databaseService.sql`
+      DELETE FROM "user"."UserAccount" WHERE "user_id" = ${id}
+    `.then(() => undefined)
+  }
 }
