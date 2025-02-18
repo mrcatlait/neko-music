@@ -68,7 +68,7 @@ export default tseslint.config(
         "error",
         {
           "type": "element",
-          "prefix": "neko",
+          "prefix": "n",
           "style": "kebab-case"
         }
       ],

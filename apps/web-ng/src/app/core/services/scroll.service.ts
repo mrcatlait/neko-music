@@ -7,16 +7,22 @@ import { Injectable, inject } from '@angular/core'
 export class ScrollService {
   private readonly document = inject(DOCUMENT)
 
+  private readonly eventController = new AbortController()
+
   disable(): void {
-    this.document.addEventListener('wheel', this.handleWheel, { passive: false })
-    this.document.addEventListener('touchmove', this.handleWheel, { passive: false })
-    this.document.addEventListener('keydown', this.handleKeydown, { passive: false })
+    this.document.addEventListener('wheel', this.handleWheel, { passive: false, signal: this.eventController.signal })
+    this.document.addEventListener('touchmove', this.handleWheel, {
+      passive: false,
+      signal: this.eventController.signal,
+    })
+    this.document.addEventListener('keydown', this.handleKeydown, {
+      passive: false,
+      signal: this.eventController.signal,
+    })
   }
 
   enable(): void {
-    this.document.removeEventListener('wheel', this.handleWheel)
-    this.document.removeEventListener('touchmove', this.handleWheel)
-    this.document.removeEventListener('keydown', this.handleKeydown)
+    this.eventController.abort()
   }
 
   private handleWheel(e: WheelEvent | TouchEvent): void {

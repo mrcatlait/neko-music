@@ -5,6 +5,7 @@ telemetry: false
 projects:
   - 'apps/server'
   - 'apps/web'
+  - 'apps/ui-library-admin'
   - 'packages/*'
   - 'infra/*'
   - 'acceptance-tests'

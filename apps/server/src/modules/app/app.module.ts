@@ -3,14 +3,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import Joi from 'joi'
 import { join } from 'path'
 
-import { SecurityHeadersMiddleware } from './middlewares'
-import { DatabaseModule } from '../database/database.module'
-
 import { EnvironmentVariables } from '@modules/shared/models'
 import { AuthenticationModule } from '@modules/authentication/authentication.module'
 import { AuthorizationModule } from '@modules/authorization/authorization.module'
 import { MusicMetadataModule } from '@modules/music-metadata/music-metadata.module'
 import { UserModule } from '@modules/user/user.module'
+
+import { DatabaseModule } from '../database/database.module'
+import { SecurityHeadersMiddleware } from './middlewares'
 
 @Module({
   imports: [

@@ -1,0 +1,1 @@
+CREATE TYPE "playlist"."PlaylistType" AS ENUM ('private', 'public');

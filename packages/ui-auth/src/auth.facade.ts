@@ -14,6 +14,7 @@ export class AuthFacade {
   private readonly logoutStrategy = inject(LogoutStrategy)
   private readonly silentAuthStrategy = inject(SilentAuthStrategy)
 
+  readonly session = this.sessionState.session
   readonly isAuthenticated = this.sessionState.isAuthenticated
   readonly status = this.statusState.status
   readonly error = this.statusState.error

@@ -6,6 +6,7 @@
   "workspaces": [
     "apps/server",
     "apps/web",
+    "apps/ui-library-admin",
     "packages/*",
     "acceptance-tests"
   ],

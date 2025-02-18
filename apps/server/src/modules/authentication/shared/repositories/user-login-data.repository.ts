@@ -11,7 +11,7 @@ export class UserLoginDataRepository {
   existsByEmail(email: string): Promise<boolean> {
     return this.databaseService.sql`
       SELECT 1
-      FROM "UserLoginData"
+      FROM auth."UserLoginData"
       WHERE email = ${email}
     `.then((result) => result.length > 0)
   }
@@ -27,7 +27,7 @@ export class UserLoginDataRepository {
     return this.databaseService.sql<{ user_id: string }[]>`
       WITH
         user_login_data AS (
-          INSERT INTO "UserLoginData" (email, password_hash)
+          INSERT INTO auth."UserLoginData" (email, password_hash)
           VALUES (${user.email}, ${user.password_hash})
           RETURNING *
         )
@@ -40,7 +40,7 @@ export class UserLoginDataRepository {
   private get selectFragment() {
     return this.databaseService.sql`
       SELECT u.*
-      FROM "UserLoginData" u
+      FROM auth."UserLoginData" u
     `
   }
 }

@@ -10,7 +10,7 @@
     />
   </div>
 
-  <neko-avatar [nekoMenuTrigger]="menu">VS</neko-avatar>
+  <neko-avatar [nekoMenuTrigger]="menu">{{ displayName() | initials }}</neko-avatar>
 </header>
 
 <ng-template #menu>

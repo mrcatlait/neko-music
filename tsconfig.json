@@ -6,6 +6,9 @@
       "path": "apps/server"
     },
     {
+      "path": "apps/ui-library-admin"
+    },
+    {
       "path": "apps/web"
     },
     {

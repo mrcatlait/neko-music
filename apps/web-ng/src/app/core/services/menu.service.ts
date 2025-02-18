@@ -16,13 +16,16 @@ export class MenuService {
   private menuRef: EmbeddedViewRef<HTMLElement> | null = null
   private host: HTMLElement | null = null
 
+  private readonly eventController = new AbortController()
+
   open(host: HTMLElement, template: TemplateRef<HTMLElement>): void {
     this.close()
 
     this.host = host
     this.menuRef = this.portalService.addTemplate(template)
 
-    this.addEventListener()
+    this.document.addEventListener('keydown', this.escapePressedListener, { signal: this.eventController.signal })
+    this.document.addEventListener('click', this.clickOutsideListener, { signal: this.eventController.signal })
 
     const observer = new MutationObserver((_mutations, obs) => {
       const [y, x] = this.getPosition()
@@ -43,17 +46,7 @@ export class MenuService {
       this.host = null
     }
 
-    this.removeEventListener()
-  }
-
-  private addEventListener(): void {
-    this.document.addEventListener('keydown', this.escapePressedListener)
-    this.document.addEventListener('click', this.clickOutsideListener)
-  }
-
-  private removeEventListener(): void {
-    this.document.removeEventListener('keydown', this.escapePressedListener)
-    this.document.removeEventListener('click', this.clickOutsideListener)
+    this.eventController.abort()
   }
 
   private readonly escapePressedListener = (event: KeyboardEvent): void => {

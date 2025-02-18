@@ -6,15 +6,15 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
-  importPlugin.flatConfigs.recommended,
+  // importPlugin.flatConfigs.recommended,
   eslintPluginPrettierRecommended,
   {
-    settings: {
-      'import/resolver': {
-        typescript: true,
-        node: true,
-      },
-    },
+    // settings: {
+    //   'import/resolver': {
+    //     typescript: true,
+    //     node: true,
+    //   },
+    // },
     languageOptions: {
       parserOptions: {
         ecmaVersion: 'latest',
@@ -51,16 +51,16 @@ export default tseslint.config(
       '@typescript-eslint/prefer-readonly': 'warn',
       '@typescript-eslint/no-namespace': 'off',
       // Enforce a convention in the order of import statements
-      'import/order': [
-        'error',
-        {
-          'newlines-between': 'always',
-          groups: [
-            ['builtin', 'external'],
-            ['parent', 'sibling', 'index'],
-          ],
-        },
-      ],
+      // 'import/order': [
+      //   'error',
+      //   {
+      //     'newlines-between': 'always',
+      //     groups: [
+      //       ['builtin', 'external'],
+      //       ['parent', 'sibling', 'index'],
+      //     ],
+      //   },
+      // ],
     },
   },
   {
