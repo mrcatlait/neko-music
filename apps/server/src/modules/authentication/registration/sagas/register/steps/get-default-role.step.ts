@@ -5,8 +5,6 @@ import { RegisterSagaContext } from '../register.saga'
 
 @Injectable()
 export class GetDefaultRoleStep extends SagaStep<RegisterSagaContext> {
-  name = 'getDefaultRole'
-
   constructor(private readonly getDefaultRoleHandler: GetDefaultRoleHandler) {
     super()
   }

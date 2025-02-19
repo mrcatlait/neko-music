@@ -5,8 +5,6 @@ import { RegisterSagaContext } from '../register.saga'
 
 @Injectable()
 export class CreateAccountStep extends SagaStep<RegisterSagaContext> {
-  name = 'createAccount'
-
   constructor(
     private readonly createAccountHandler: CreateAccountHandler,
     private readonly deleteAccountHandler: DeleteAccountHandler,

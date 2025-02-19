@@ -10,7 +10,7 @@ export class RegisterValidator implements Validator<RegisterCommand> {
   constructor(private readonly userLoginDataRepository: UserLoginDataRepository) {}
 
   async validate(command: RegisterCommand): Promise<ValidationResult> {
-    const [emailExists] = await Promise.all([this.userLoginDataRepository.existsByEmail(command.email)])
+    const emailExists = await this.userLoginDataRepository.existsByEmail(command.email)
 
     const isValid = !emailExists
     const errors: string[] = []

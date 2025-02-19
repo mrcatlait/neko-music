@@ -1,6 +1,0 @@
-export * from './artist.dto'
-export * from './create-artist.dto'
-export * from './get-artist.dto'
-export * from './track.dto'
-export * from './track-artist.dto'
-export * from './tracks-page.dto'

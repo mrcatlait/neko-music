@@ -39,14 +39,9 @@ async function bootstrap() {
     credentials: true,
   })
 
-  // const config = new DocumentBuilder()
-  //   .setTitle('Neko Music API')
-  //   .setDescription('The Neko Music API description')
-  //   .setVersion('1.0')
-  //   .addBearerAuth()
-  //   .build()
-  // const document = SwaggerModule.createDocument(app, config)
-  // SwaggerModule.setup('api', app, document)
+  const config = new DocumentBuilder().setTitle('Neko Music API').setVersion('1.0').addCookieAuth().build()
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api', app, document)
 
   await app.listen({
     port: PORT,

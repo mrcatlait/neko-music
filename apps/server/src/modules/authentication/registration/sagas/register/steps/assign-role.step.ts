@@ -5,8 +5,6 @@ import { RegisterSagaContext } from '../register.saga'
 
 @Injectable()
 export class AssignRoleStep extends SagaStep<RegisterSagaContext> {
-  name = 'assignRole'
-
   constructor(
     private readonly assignRoleHandler: AssignRoleHandler,
     private readonly revokeRoleHandler: RevokeRoleHandler,

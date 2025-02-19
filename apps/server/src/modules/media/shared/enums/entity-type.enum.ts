@@ -1,0 +1,7 @@
+export enum EntityType {
+  ARTIST = 'ARTIST',
+  ALBUM = 'ALBUM',
+  TRACK = 'TRACK',
+  PLAYLIST_COVER = 'PLAYLIST_COVER',
+  USER_AVATAR = 'USER_AVATAR',
+}

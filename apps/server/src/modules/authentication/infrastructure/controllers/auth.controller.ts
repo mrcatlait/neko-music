@@ -9,6 +9,7 @@ import { RegisterHandler } from '@modules/authentication/registration/commands'
 import { RegisterDto, LoginDto } from '@modules/authentication/shared/dtos'
 import { WhoamiHandler } from '@modules/authentication/whoami/queries'
 import { UserSession } from '@modules/authentication/shared/interfaces'
+import { ApiCookieAuth } from '@nestjs/swagger'
 
 @Controller('auth')
 export class AuthController {
@@ -35,12 +36,15 @@ export class AuthController {
   }
 
   @Post('logout')
+  @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   logout(@Req() req: FastifyRequest): Promise<void> {
     return req.session.destroy()
   }
 
   @Get('whoami')
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   whoami(@Session() session: UserSession): UserSession {
     return session
   }

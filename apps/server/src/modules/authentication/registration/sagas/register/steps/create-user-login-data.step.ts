@@ -8,8 +8,6 @@ import { RegisterSagaContext } from '../register.saga'
 
 @Injectable()
 export class CreateUserLoginDataStep extends SagaStep<RegisterSagaContext> {
-  name = 'createUserLoginData'
-
   private readonly saltRounds: number
 
   constructor(

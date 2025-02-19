@@ -11,6 +11,7 @@ import { UserModule } from '@modules/user/user.module'
 
 import { DatabaseModule } from '../database/database.module'
 import { SecurityHeadersMiddleware } from './middlewares'
+import { ScheduleModule } from '@nestjs/schedule'
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { SecurityHeadersMiddleware } from './middlewares'
       }),
       imports: [ConfigModule],
     }),
+    ScheduleModule.forRoot(),
     AuthenticationModule,
     AuthorizationModule,
     MusicMetadataModule,

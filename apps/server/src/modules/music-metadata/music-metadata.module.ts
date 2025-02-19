@@ -1,24 +1,40 @@
 import { Global, Module } from '@nestjs/common'
 
-import { ArtistRepository, TrackArtistRepository, TrackRepository } from './repositories'
-import { GetArtistHandler, GetArtistTracksHandler, GetNewTracksHandler, GetPopularTracksHandler } from './queries'
-import { ArtistController, TrackController } from './controllers'
-import { CreateArtistHandler } from './commands'
+import { CreateArtistHandler, CreateArtistValidator } from './artist/commands'
+import { ArtistController } from './infrastructure/controllers'
+import { GetArtistHandler } from './artist/queries'
+import {
+  CreateArtistSaga,
+  CreateArtistGenreStep,
+  CreateArtistNoteStep,
+  CreateArtistStep,
+} from './artist/sagas/create-artist'
+import {
+  ArtistImageRepository,
+  ArtistGenreRepository,
+  ArtistNoteRepository,
+  ArtistRepository,
+} from './artist/repositories'
 
 @Global()
 @Module({
-  controllers: [ArtistController, TrackController],
+  controllers: [ArtistController],
   providers: [
     // Handlers
     GetArtistHandler,
-    GetArtistTracksHandler,
-    GetNewTracksHandler,
-    GetPopularTracksHandler,
     CreateArtistHandler,
+    CreateArtistValidator,
+    // Sagas
+    CreateArtistSaga,
+    // Steps
+    CreateArtistStep,
+    CreateArtistNoteStep,
+    CreateArtistGenreStep,
     // Repositories
     ArtistRepository,
-    TrackRepository,
-    TrackArtistRepository,
+    ArtistNoteRepository,
+    ArtistGenreRepository,
+    ArtistImageRepository,
   ],
 })
 export class MusicMetadataModule {}
