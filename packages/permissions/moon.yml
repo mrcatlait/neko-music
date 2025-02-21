@@ -12,5 +12,3 @@ tasks:
     command: 'tsc'
     inputs:
       - '@globs(sources)'
-    outputs:
-      - 'dist'

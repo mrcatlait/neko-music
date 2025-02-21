@@ -10,18 +10,9 @@
     "skipLibCheck": true,
     "outDir": "../../.moon/cache/types/packages/permissions",
     "declaration": true,
-    "paths": {
-      "@neko/eslint-config/*": [
-        "../eslint-config/*"
-      ]
-    }
+    "composite": true
   },
   "include": [
     "src/**/*"
-  ],
-  "references": [
-    {
-      "path": "../eslint-config"
-    }
   ]
 }

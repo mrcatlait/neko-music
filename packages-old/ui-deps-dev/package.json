@@ -1,0 +1,15 @@
+{
+  "name": "@neko/ui-deps-dev",
+  "description": "Shared Angular development dependencies",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@analogjs/vite-plugin-angular": "^1.13.0",
+    "@angular-devkit/build-angular": "^19.1.6",
+    "@angular/cli": "^19.1.6",
+    "@angular/compiler-cli": "^19.1.0",
+    "esbuild-visualizer": "^0.7.0",
+    "jsdom": "^26.0.0",
+    "typescript": "~5.7.2"
+  }
+}

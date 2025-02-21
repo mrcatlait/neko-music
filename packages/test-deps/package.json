@@ -1,0 +1,11 @@
+{
+  "name": "@neko/test-deps",
+  "description": "Shared test dependencies",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@vitest/coverage-v8": "^3.0.5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.5"
+  }
+}

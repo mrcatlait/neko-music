@@ -1,0 +1,14 @@
+{
+  "name": "@neko/eslint-config-angular",
+  "description": "Shared ESLint configuration for Angular applications",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./eslint.config.js"
+    }
+  },
+  "dependencies": {
+    "angular-eslint": "^19.0.2"
+  }
+}

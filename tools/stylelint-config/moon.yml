@@ -1,0 +1,9 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'frontend'
+type: 'library'
+language: 'javascript'
+
+toolchain:
+  typescript:
+    disabled: true

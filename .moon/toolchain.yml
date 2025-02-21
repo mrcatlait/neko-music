@@ -3,7 +3,6 @@ $schema: 'https://moonrepo.dev/schemas/toolchain.json'
 node:
   version: '22'
   dependencyVersionFormat: 'star'
-  syncProjectWorkspaceDependencies: true
   packageManager: 'npm'
   npm:
     version: '10'

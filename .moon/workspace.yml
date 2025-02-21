@@ -3,12 +3,10 @@ $schema: 'https://moonrepo.dev/schemas/workspace.json'
 telemetry: false
 
 projects:
-  - 'apps/server'
-  - 'apps/web'
-  - 'apps/ui-library-admin'
+  - 'apps/api-library'
   - 'packages/*'
   - 'infra/*'
-  - 'acceptance-tests'
+  - 'tools/*'
 vcs:
   manager: 'git'
   defaultBranch: 'master'

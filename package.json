@@ -4,11 +4,9 @@
   "private": true,
   "license": "MIT",
   "workspaces": [
-    "apps/server",
-    "apps/web",
-    "apps/ui-library-admin",
+    "apps/api-library",
     "packages/*",
-    "acceptance-tests"
+    "tools/*"
   ],
   "devDependencies": {
     "sonarqube-scanner": "^4.2.3"

@@ -1,0 +1,16 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+type: 'library'
+language: 'typescript'
+
+dependsOn:
+  - id: 'eslint-config'
+    scope: 'development'
+
+tasks:
+  build:
+    command: 'tsc'
+    inputs:
+      - '@globs(sources)'
+    outputs:
+      - 'dist'
