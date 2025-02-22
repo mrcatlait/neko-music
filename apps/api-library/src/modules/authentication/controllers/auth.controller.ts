@@ -5,7 +5,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs'
 
 import { Session } from '../decorators'
 import { AuthGuard } from '../guards'
-import { RegisterDto, LoginDto } from '../dtos'
+import { RegisterDto, LoginDto, UserSessionDto } from '../dtos'
 import { UserSession } from '../interfaces'
 import { LoginCommand, RegisterUserCommand } from '../commands'
 import { WhoamiQuery } from '../queries'
@@ -22,7 +22,7 @@ export class AuthController {
     summary: 'Login a user',
   })
   @ApiOkResponse({
-    // type: UserSession,
+    type: UserSessionDto,
   })
   async login(@Body() body: LoginDto, @Req() req: FastifyRequest): Promise<UserSession> {
     const userLoginData = await this.commandBus.execute(new LoginCommand(body.email, body.password))
@@ -53,7 +53,7 @@ export class AuthController {
     summary: 'Get the current user',
   })
   @ApiOkResponse({
-    // type: UserSession,
+    type: UserSessionDto,
   })
   whoami(@Session() session: UserSession): UserSession {
     return session

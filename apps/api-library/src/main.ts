@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { fastifySession } from '@fastify/session'
 import { fastifyCookie } from '@fastify/cookie'
+import { fastifyMultipart } from '@fastify/multipart'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 import { AppModule } from '@modules/app/app.module'
@@ -33,6 +34,7 @@ async function bootstrap() {
     secret: COOKIE_SECRET,
     cookie: { sameSite: 'strict', httpOnly: true, maxAge: DAY * 3, secure: true, path: '/' },
   })
+  await app.register(fastifyMultipart)
 
   app.enableCors({
     origin: UI_URL,

@@ -2,6 +2,7 @@ import { ForbiddenException } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { randomUUID } from 'crypto'
 import { join } from 'path'
+import { mkdirSync, existsSync } from 'fs'
 
 import { UploadMediaCommand } from './upload-media.command'
 import { UploadMediaValidator } from './upload-media.validator'
@@ -21,7 +22,7 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
   ) {}
 
   async execute(command: UploadMediaCommand): Promise<void> {
-    const validationResult = await this.uploadMediaValidator.validate(command)
+    const validationResult = this.uploadMediaValidator.validate(command)
 
     if (!validationResult.isValid) {
       throw new ForbiddenException(validationResult.errors)
@@ -37,6 +38,10 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
     const uniqueFilename = `${randomUUID()}.${fileExtension}`
     const filePath = join(UPLOAD_PATH, uniqueFilename)
 
+    if (!existsSync(UPLOAD_PATH)) {
+      mkdirSync(UPLOAD_PATH, { recursive: true })
+    }
+
     this.fileUploadService.uploadFile(filePath, command.file.buffer!)
 
     try {
@@ -51,6 +56,8 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
     } catch (error) {
       this.fileUploadService.deleteFile(filePath)
       throw error
+    } finally {
+      await this.uploadTokenRepository.delete(command.token)
     }
   }
 }

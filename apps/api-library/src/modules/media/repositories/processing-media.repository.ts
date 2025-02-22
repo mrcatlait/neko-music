@@ -10,7 +10,7 @@ export class ProcessingMediaRepository {
 
   findOne(id: string): Promise<ProcessingMediaEntity | undefined> {
     return this.databaseService.sql<ProcessingMediaEntity[]>`
-      SELECT * FROM "media"."ProcessingMediaEntity" WHERE id = ${id}
+      SELECT * FROM "media"."ProcessingMedia" WHERE id = ${id}
       LIMIT 1
     `.then((result) => result.at(0))
   }
@@ -19,7 +19,7 @@ export class ProcessingMediaRepository {
     entity: Pick<ProcessingMediaEntity, 'entity_type' | 'entity_id'>,
   ): Promise<ProcessingMediaEntity | undefined> {
     return this.databaseService.sql<ProcessingMediaEntity[]>`
-      SELECT * FROM "media"."ProcessingMediaEntity" WHERE entity_type = ${entity.entity_type} AND entity_id = ${entity.entity_id}
+      SELECT * FROM "media"."ProcessingMedia" WHERE entity_type = ${entity.entity_type} AND entity_id = ${entity.entity_id}
       LIMIT 1
     `.then((result) => result.at(0))
   }
@@ -28,7 +28,7 @@ export class ProcessingMediaRepository {
     processingMediaEntity: Omit<ProcessingMediaEntity, 'id' | 'created_at' | 'updated_at'>,
   ): Promise<ProcessingMediaEntity> {
     return this.databaseService.sql<ProcessingMediaEntity[]>`
-      INSERT INTO "media"."ProcessingMediaEntity" ${this.databaseService.sql(processingMediaEntity)}
+      INSERT INTO "media"."ProcessingMedia" ${this.databaseService.sql(processingMediaEntity)}
       RETURNING *
     `.then((result) => result.at(0)!)
   }
@@ -37,7 +37,7 @@ export class ProcessingMediaRepository {
     processingMediaEntity: Partial<Omit<ProcessingMediaEntity, 'created_at' | 'updated_at'>> & { id: string },
   ): Promise<ProcessingMediaEntity> {
     return this.databaseService.sql<ProcessingMediaEntity[]>`
-      UPDATE "media"."ProcessingMediaEntity" SET ${this.databaseService.sql(processingMediaEntity)}, updated_at = CURRENT_TIMESTAMP
+      UPDATE "media"."ProcessingMedia" SET ${this.databaseService.sql(processingMediaEntity)}, updated_at = CURRENT_TIMESTAMP
       WHERE id = ${processingMediaEntity.id}
       RETURNING *
     `.then((result) => result.at(0)!)
@@ -45,7 +45,7 @@ export class ProcessingMediaRepository {
 
   delete(id: string): Promise<void> {
     return this.databaseService.sql`
-      DELETE FROM "media"."ProcessingMediaEntity" WHERE id = ${id}
+      DELETE FROM "media"."ProcessingMedia" WHERE id = ${id}
     `.then(() => undefined)
   }
 }
