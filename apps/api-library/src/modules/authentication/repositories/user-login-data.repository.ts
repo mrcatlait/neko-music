@@ -18,7 +18,8 @@ export class UserLoginDataRepository {
 
   findOneByEmail(email: string): Promise<UserLoginDataEntity | undefined> {
     return this.databaseService.sql<UserLoginDataEntity[]>`
-      ${this.selectFragment}
+      SELECT u.*
+      FROM auth."UserLoginData" u
       WHERE email = ${email} LIMIT 1
     `.then((result) => result[0])
   }
@@ -49,12 +50,5 @@ export class UserLoginDataRepository {
       DELETE FROM auth."UserLoginData"
       WHERE email = ${email}
     `.then(() => undefined)
-  }
-
-  private get selectFragment() {
-    return this.databaseService.sql`
-      SELECT u.*
-      FROM auth."UserLoginData" u
-    `
   }
 }

@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common'
 
-import { DatabaseService } from '@modules/database'
-
 import { ProcessingMediaEntity } from '../entities'
+
+import { DatabaseService } from '@modules/database'
 
 @Injectable()
 export class ProcessingMediaRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  getById(id: string): Promise<ProcessingMediaEntity | undefined> {
+  findOne(id: string): Promise<ProcessingMediaEntity | undefined> {
     return this.databaseService.sql<ProcessingMediaEntity[]>`
       SELECT * FROM "media"."ProcessingMediaEntity" WHERE id = ${id}
       LIMIT 1
     `.then((result) => result.at(0))
   }
 
-  getByEntity(
+  findOneByEntity(
     entity: Pick<ProcessingMediaEntity, 'entity_type' | 'entity_id'>,
   ): Promise<ProcessingMediaEntity | undefined> {
     return this.databaseService.sql<ProcessingMediaEntity[]>`

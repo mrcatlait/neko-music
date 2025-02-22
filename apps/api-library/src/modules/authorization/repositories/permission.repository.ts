@@ -8,7 +8,7 @@ import { DatabaseService } from '@modules/database'
 export class PermissionRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  getById(id: string): Promise<PermissionEntity | undefined> {
+  findOne(id: string): Promise<PermissionEntity | undefined> {
     return this.databaseService.sql<PermissionEntity[]>`
       SELECT *
       FROM auth."Permission"

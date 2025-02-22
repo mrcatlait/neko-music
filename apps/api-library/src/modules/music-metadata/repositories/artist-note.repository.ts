@@ -9,7 +9,7 @@ import { DatabaseService } from '@modules/database/services'
 export class ArtistNoteRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  getByArtistId(artistId: string): Promise<ArtistNoteEntity | undefined> {
+  findOne(artistId: string): Promise<ArtistNoteEntity | undefined> {
     return this.databaseService.sql<ArtistNoteEntity[]>`
       SELECT * FROM "music"."ArtistNote"
       WHERE "artist_id" = ${artistId}

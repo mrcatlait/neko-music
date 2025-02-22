@@ -10,7 +10,7 @@ export class UploadMediaValidator implements Validator<UploadMediaCommand> {
   constructor(private readonly uploadTokenRepository: UploadTokenRepository) {}
 
   async validate(command: UploadMediaCommand): Promise<ValidationResult> {
-    const uploadToken = await this.uploadTokenRepository.getById(command.token)
+    const uploadToken = await this.uploadTokenRepository.findOne(command.token)
 
     if (!uploadToken) {
       return {

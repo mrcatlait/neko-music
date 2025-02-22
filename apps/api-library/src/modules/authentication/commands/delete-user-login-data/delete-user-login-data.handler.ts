@@ -1,7 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
-import { UserLoginDataRepository } from '@modules/authentication/repositories'
 
 import { DeleteUserLoginDataCommand } from './delete-user-login-data.command'
+
+import { UserLoginDataRepository } from '@modules/authentication/repositories'
 
 @CommandHandler(DeleteUserLoginDataCommand)
 export class DeleteUserLoginDataHandler implements ICommandHandler<DeleteUserLoginDataCommand> {

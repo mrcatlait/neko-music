@@ -9,8 +9,6 @@ export class GetPermissionsHandler implements IQueryHandler<GetPermissionsQuery>
   constructor(private readonly userPermissionRepository: UserPermissionRepository) {}
 
   async execute(query: GetPermissionsQuery): Promise<string[]> {
-    return this.userPermissionRepository
-      .getByUserId(query.userId)
-      .then((userPermissions) => userPermissions.permissions)
+    return this.userPermissionRepository.findOne(query.userId).then((userPermissions) => userPermissions.permissions)
   }
 }

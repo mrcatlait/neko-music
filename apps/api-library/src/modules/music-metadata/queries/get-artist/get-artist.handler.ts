@@ -11,7 +11,7 @@ export class GetArtistHandler implements IQueryHandler<GetArtistQuery, ArtistEnt
   constructor(private readonly artistRepository: ArtistRepository) {}
 
   async execute(query: GetArtistQuery): Promise<ArtistEntity> {
-    const artist = await this.artistRepository.getById(query.id)
+    const artist = await this.artistRepository.findOne(query.id)
 
     if (!artist) {
       throw new NotFoundException('Artist not found')

@@ -11,11 +11,12 @@ import {
 } from '@nestjs/common'
 import { ApiConsumes, ApiCookieAuth, ApiTags } from '@nestjs/swagger'
 import { File, FileInterceptor } from '@nest-lab/fastify-multer'
+import { CommandBus } from '@nestjs/cqrs'
 
 import { UserSession } from '@modules/authentication/interfaces'
 import { AuthGuard } from '@modules/authentication/guards'
 import { Session } from '@modules/authentication/decorators'
-import { UploadMediaHandler } from '@modules/media/upload/commands/upload-media'
+import { UploadMediaCommand } from '@modules/media/commands'
 
 const MAX_FILE_SIZE = 1024 * 1024 * 5 // 5MB
 
@@ -24,7 +25,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 5 // 5MB
 @ApiCookieAuth()
 @UseGuards(AuthGuard)
 export class MediaController {
-  constructor(private readonly uploadMediaHandler: UploadMediaHandler) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
   @Post('/upload/:token')
   @ApiConsumes('multipart/form-data')
@@ -42,10 +43,6 @@ export class MediaController {
     )
     file: File,
   ): Promise<void> {
-    return this.uploadMediaHandler.handle({
-      token,
-      file,
-      userId: session.userId,
-    })
+    return this.commandBus.execute(new UploadMediaCommand(file, session.userId, token))
   }
 }

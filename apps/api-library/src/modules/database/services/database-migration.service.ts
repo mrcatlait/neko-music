@@ -30,9 +30,10 @@ export class DatabaseMigrationService {
   }
 
   async executePendingMigrations() {
-    this.logger.log('Executing pending migrations')
     await this.createTableIfNotExist(this.migrationsTableName)
     const pendingMigrations = await this.getPendingScripts(this.options.migrations, this.migrationsTableName)
+
+    this.logger.log(`Detected pending migrations: ${pendingMigrations.length}`)
 
     for (const migration of pendingMigrations) {
       const sql = readFileSync(join(this.options.migrations, migration), 'utf-8')
@@ -41,7 +42,7 @@ export class DatabaseMigrationService {
 
     await this.sql.end()
 
-    this.logger.log(`Pending migrations executed: ${pendingMigrations.length}`)
+    this.logger.log(`Executed migrations: ${pendingMigrations.length}`)
   }
 
   private async getPendingScripts(scriptsFolder: string, tableName: string): Promise<string[]> {

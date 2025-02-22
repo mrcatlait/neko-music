@@ -9,14 +9,14 @@ import { DatabaseService } from '@modules/database'
 export class ArtistRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  getById(id: string): Promise<ArtistEntity | undefined> {
+  findOne(id: string): Promise<ArtistEntity | undefined> {
     return this.databaseService.sql<ArtistEntity[]>`
       SELECT * FROM "music"."Artist" WHERE id = ${id}
       LIMIT 1
     `.then((result) => result.at(0))
   }
 
-  getByName(name: string): Promise<ArtistEntity | undefined> {
+  findOneByName(name: string): Promise<ArtistEntity | undefined> {
     return this.databaseService.sql<ArtistEntity[]>`
       SELECT * FROM "music"."Artist" WHERE name = ${name}
       LIMIT 1

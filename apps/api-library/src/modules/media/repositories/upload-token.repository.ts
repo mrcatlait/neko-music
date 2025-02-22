@@ -8,7 +8,7 @@ import { DatabaseService } from '@modules/database'
 export class UploadTokenRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  getById(id: string): Promise<UploadTokenEntity | undefined> {
+  findOne(id: string): Promise<UploadTokenEntity | undefined> {
     return this.databaseService.sql<UploadTokenEntity[]>`
       SELECT * FROM "media"."UploadToken" WHERE id = ${id}
       LIMIT 1
@@ -28,7 +28,7 @@ export class UploadTokenRepository {
     `.then((result) => result)
   }
 
-  findByUserIdAndEntityId(userId: string, entityId: string): Promise<UploadTokenEntity | undefined> {
+  findOneByUserIdAndEntityId(userId: string, entityId: string): Promise<UploadTokenEntity | undefined> {
     return this.databaseService.sql<UploadTokenEntity[]>`
       SELECT * FROM "media"."UploadToken" WHERE user_id = ${userId} AND entity_id = ${entityId}
       LIMIT 1

@@ -11,7 +11,7 @@ export class GetDefaultRoleHandler implements IQueryHandler<GetDefaultRoleQuery>
   constructor(private readonly roleRepository: RoleRepository) {}
 
   async execute(): Promise<RoleEntity> {
-    const defaultRole = await this.roleRepository.getDefault()
+    const defaultRole = await this.roleRepository.findDefault()
 
     if (!defaultRole) {
       throw new NotFoundException('Default role not found')

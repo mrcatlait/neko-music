@@ -27,7 +27,7 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
       throw new ForbiddenException(validationResult.errors)
     }
 
-    const uploadToken = await this.uploadTokenRepository.getById(command.token)
+    const uploadToken = await this.uploadTokenRepository.findOne(command.token)
 
     if (!uploadToken) {
       throw new ForbiddenException(['Upload token not found'])

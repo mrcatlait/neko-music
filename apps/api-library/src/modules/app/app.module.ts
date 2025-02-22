@@ -13,6 +13,7 @@ import { AuthenticationModule } from '@modules/authentication/authentication.mod
 import { AuthorizationModule } from '@modules/authorization/authorization.module'
 import { MusicMetadataModule } from '@modules/music-metadata/music-metadata.module'
 import { UserModule } from '@modules/user/user.module'
+import { MediaModule } from '@modules/media/media.module'
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { UserModule } from '@modules/user/user.module'
     AuthorizationModule,
     MusicMetadataModule,
     UserModule,
+    MediaModule,
     // ArtistModule,
     // TrackModule,
     // PlaylistModule,

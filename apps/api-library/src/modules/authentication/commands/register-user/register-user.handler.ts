@@ -5,7 +5,7 @@ import { RegisterUserCommand } from './register-user.command'
 import { RegisterUserValidator } from './register-user.validator'
 import { CreateUserLoginDataCommand } from '../create-user-login-data'
 
-import { UserRegistrationLoginDataCreatedEvent } from '@modules/authentication/events'
+import { UserRegistrationAssignRoleEvent } from '@modules/authentication/events'
 
 @CommandHandler(RegisterUserCommand)
 export class RegisterUserHandler implements ICommandHandler<RegisterUserCommand> {
@@ -24,6 +24,6 @@ export class RegisterUserHandler implements ICommandHandler<RegisterUserCommand>
 
     const userLoginData = await this.commandBus.execute(new CreateUserLoginDataCommand(command.email, command.password))
 
-    this.eventBus.publish(new UserRegistrationLoginDataCreatedEvent(command.displayName, userLoginData.user_id))
+    this.eventBus.publish(new UserRegistrationAssignRoleEvent(userLoginData.user_id, command.displayName))
   }
 }

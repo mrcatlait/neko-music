@@ -5,12 +5,14 @@ import {
   CreateUserLoginDataHandler,
   DeleteUserLoginDataHandler,
   LoginHandler,
+  LoginValidator,
   RegisterUserHandler,
   RegisterUserValidator,
 } from './commands'
 import { WhoamiHandler } from './queries'
 import { UserLoginDataRepository } from './repositories'
 import { AuthGuard } from './guards'
+import { UserRegistrationAssignRoleEventHandler, UserRegistrationCreateAccountEventHandler } from './events'
 import { UserRegistrationSaga } from './sagas'
 
 @Global()
@@ -21,10 +23,14 @@ import { UserRegistrationSaga } from './sagas'
     CreateUserLoginDataHandler,
     DeleteUserLoginDataHandler,
     LoginHandler,
+    LoginValidator,
     RegisterUserHandler,
     RegisterUserValidator,
     // Queries
     WhoamiHandler,
+    // Events
+    UserRegistrationAssignRoleEventHandler,
+    UserRegistrationCreateAccountEventHandler,
     // Repositories
     UserLoginDataRepository,
     // Sagas

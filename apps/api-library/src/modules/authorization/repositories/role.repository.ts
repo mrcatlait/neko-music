@@ -8,7 +8,7 @@ import { DatabaseService } from '@modules/database'
 export class RoleRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  getDefault(): Promise<RoleEntity | undefined> {
+  findDefault(): Promise<RoleEntity | undefined> {
     return this.databaseService.sql<RoleEntity[]>`
       SELECT *
       FROM auth."Role"
@@ -17,7 +17,7 @@ export class RoleRepository {
     `.then((result) => result.at(0))
   }
 
-  getById(id: string): Promise<RoleEntity | undefined> {
+  findOne(id: string): Promise<RoleEntity | undefined> {
     return this.databaseService.sql<RoleEntity[]>`
       SELECT *
       FROM auth."Role"
