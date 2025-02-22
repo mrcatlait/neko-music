@@ -1,4 +1,4 @@
-import { ForbiddenException } from '@nestjs/common'
+import { BadRequestException, ForbiddenException } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { randomUUID } from 'crypto'
 import { join } from 'path'
@@ -22,10 +22,10 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
   ) {}
 
   async execute(command: UploadMediaCommand): Promise<void> {
-    const validationResult = this.uploadMediaValidator.validate(command)
+    const validationResult = await this.uploadMediaValidator.validate(command)
 
     if (!validationResult.isValid) {
-      throw new ForbiddenException(validationResult.errors)
+      throw new BadRequestException(validationResult.errors)
     }
 
     const uploadToken = await this.uploadTokenRepository.findOne(command.token)
