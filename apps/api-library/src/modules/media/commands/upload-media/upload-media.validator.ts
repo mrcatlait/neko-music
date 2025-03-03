@@ -8,6 +8,8 @@ import { UploadTokenRepository } from '@modules/media/repositories'
 import { MediaType } from '@modules/media/enums'
 
 const ALLOWED_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const ALLOWED_VIDEO_MIME_TYPES = ['video/mp4', 'video/webm']
+const ALLOWED_AUDIO_MIME_TYPES = ['audio/mpeg', 'audio/wav']
 
 @Injectable()
 export class UploadMediaValidator implements Validator<UploadMediaCommand> {

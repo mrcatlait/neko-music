@@ -12,7 +12,7 @@ import { GenerateUploadTokenCommand } from '@modules/media/commands'
 import { EntityType, MediaType } from '@modules/media/enums'
 import { UploadTokenDto } from '@modules/media/dtos'
 
-@Controller('artist')
+@Controller('artists')
 @ApiTags('Artists')
 @ApiCookieAuth()
 @UseGuards(AuthGuard)

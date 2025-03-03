@@ -1,12 +1,10 @@
 import { Command } from '@nestjs/cqrs'
 
-import { MediaType, EntityType } from '@modules/media/enums'
+import { MediaType } from '@modules/media/enums'
 
 export class GenerateUploadTokenCommand extends Command<{ uploadToken: string }> {
   constructor(
     readonly userId: string,
-    readonly entityId: string,
-    readonly entityType: EntityType,
     readonly mediaType: MediaType,
   ) {
     super()

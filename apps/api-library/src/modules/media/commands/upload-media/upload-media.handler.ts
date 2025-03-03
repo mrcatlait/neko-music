@@ -7,10 +7,9 @@ import { mkdirSync, existsSync } from 'fs'
 import { UploadMediaCommand } from './upload-media.command'
 import { UploadMediaValidator } from './upload-media.validator'
 
-import { ProcessingMediaRepository, UploadTokenRepository } from '@modules/media/repositories'
+import { UploadTokenRepository } from '@modules/media/repositories'
 import { FileUploadService } from '@modules/media/services'
 import { UPLOAD_PATH } from '@modules/media/constants'
-import { ProcessingStatus } from '@modules/media/enums'
 
 @CommandHandler(UploadMediaCommand)
 export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
@@ -18,7 +17,6 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
     private readonly uploadMediaValidator: UploadMediaValidator,
     private readonly uploadTokenRepository: UploadTokenRepository,
     private readonly fileUploadService: FileUploadService,
-    private readonly processingMediaRepository: ProcessingMediaRepository,
   ) {}
 
   async execute(command: UploadMediaCommand): Promise<void> {
@@ -27,6 +25,8 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
     if (!validationResult.isValid) {
       throw new BadRequestException(validationResult.errors)
     }
+
+    // const fileHash = createHash('sha256').update(command.file.buffer).digest('hex')
 
     const uploadToken = await this.uploadTokenRepository.findOne(command.token)
 
@@ -44,20 +44,6 @@ export class UploadMediaHandler implements ICommandHandler<UploadMediaCommand> {
 
     this.fileUploadService.uploadFile(filePath, command.file.buffer!)
 
-    try {
-      await this.processingMediaRepository.create({
-        entity_type: uploadToken.entity_type,
-        entity_id: uploadToken.entity_id,
-        user_id: command.userId,
-        media_type: uploadToken.media_type,
-        file_path: filePath,
-        status: ProcessingStatus.PENDING,
-      })
-    } catch (error) {
-      this.fileUploadService.deleteFile(filePath)
-      throw error
-    } finally {
-      await this.uploadTokenRepository.delete(command.token)
-    }
+    await this.uploadTokenRepository.delete(command.token)
   }
 }

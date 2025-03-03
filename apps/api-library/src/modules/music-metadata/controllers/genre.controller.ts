@@ -9,7 +9,7 @@ import { CreateGenreDto, GenreDto } from '../dtos'
 
 import { AuthGuard } from '@modules/authentication/guards'
 
-@Controller('genre')
+@Controller('genres')
 @ApiTags('Genres')
 @ApiCookieAuth()
 @UseGuards(AuthGuard)

@@ -1,9 +1,11 @@
-CREATE TYPE "music"."artist_role" AS ENUM (
+CREATE TYPE "music"."ArtistRole" AS ENUM (
   'PRIMARY_ARTIST',
   'FEATURED_ARTIST',
   'PRODUCER',
   'REMIXER',
   'COMPOSER',
   'CONDUCTOR',
-  'SONGWRITER'
+  'SONGWRITER',
+  'ARRANGER',
+  'ENGINEER'
 );

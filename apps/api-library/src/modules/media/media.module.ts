@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 
-import { ProcessingMediaRepository, UploadTokenRepository } from './repositories'
+import { UploadTokenRepository } from './repositories'
 import { UploadTokenCleanupCron } from './crons'
 import { FileUploadService, ImageProcessingService } from './services'
 import { GenerateUploadTokenHandler, UploadMediaHandler, UploadMediaValidator } from './commands'
@@ -16,7 +16,6 @@ import { MediaController } from './controllers'
     // Validators
     UploadMediaValidator,
     // Repositories
-    ProcessingMediaRepository,
     UploadTokenRepository,
     // Services
     FileUploadService,

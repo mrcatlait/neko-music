@@ -11,7 +11,7 @@ export class GenerateUploadTokenHandler implements ICommandHandler<GenerateUploa
   constructor(private readonly uploadTokenRepository: UploadTokenRepository) {}
 
   async execute(command: GenerateUploadTokenCommand): Promise<{ uploadToken: string }> {
-    const token = await this.uploadTokenRepository.findOneByUserIdAndEntityId(command.userId, command.entityId)
+    const token = await this.uploadTokenRepository.findOneByUserIdAndType(command.userId, command.mediaType)
 
     if (token) {
       await this.uploadTokenRepository.delete(token.id)
@@ -19,8 +19,6 @@ export class GenerateUploadTokenHandler implements ICommandHandler<GenerateUploa
 
     const newToken = await this.uploadTokenRepository.create({
       user_id: command.userId,
-      entity_id: command.entityId,
-      entity_type: command.entityType,
       media_type: command.mediaType,
       expires_at: new Date(Date.now() + this.TOKEN_EXPIRATION_TIME),
     })

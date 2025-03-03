@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 
 import { UploadTokenEntity } from '../entities'
+import { MediaType } from '../enums'
 
 import { DatabaseService } from '@modules/database'
 
@@ -28,9 +29,9 @@ export class UploadTokenRepository {
     `.then((result) => result)
   }
 
-  findOneByUserIdAndEntityId(userId: string, entityId: string): Promise<UploadTokenEntity | undefined> {
+  findOneByUserIdAndType(userId: string, mediaType: MediaType): Promise<UploadTokenEntity | undefined> {
     return this.databaseService.sql<UploadTokenEntity[]>`
-      SELECT * FROM "media"."UploadToken" WHERE user_id = ${userId} AND entity_id = ${entityId}
+      SELECT * FROM "media"."UploadToken" WHERE user_id = ${userId} AND media_type = ${mediaType}
       LIMIT 1
     `.then((result) => result.at(0))
   }
