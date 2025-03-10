@@ -21,7 +21,7 @@
     "joi": "^17.13.3",
     "postgres": "^3.4.5",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1",
+    "rxjs": "^7.8.2",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
