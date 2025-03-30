@@ -3,6 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { GenerateUploadTokenCommand } from './generate-upload-token.command'
 
 import { UploadTokenRepository } from '@modules/media/repositories'
+import { EntityType } from '@modules/media/enums'
 
 @CommandHandler(GenerateUploadTokenCommand)
 export class GenerateUploadTokenHandler implements ICommandHandler<GenerateUploadTokenCommand> {
@@ -21,6 +22,8 @@ export class GenerateUploadTokenHandler implements ICommandHandler<GenerateUploa
       user_id: command.userId,
       media_type: command.mediaType,
       expires_at: new Date(Date.now() + this.TOKEN_EXPIRATION_TIME),
+      entity_type: EntityType.ALBUM,
+      entity_id: '',
     })
 
     return { uploadToken: newToken.id }

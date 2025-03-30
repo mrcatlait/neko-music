@@ -6,6 +6,7 @@ CREATE TABLE "music"."Track" (
   "disk_number" SMALLINT NOT NULL,
   "release_date" DATE NOT NULL,
   "duration" SMALLINT NOT NULL,
+  -- "primary_artist_id" UUID NOT NULL,
   "artwork" JSONB NOT NULL DEFAULT '{
     "url": null,
     "background_color": null,
