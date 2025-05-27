@@ -1,0 +1,63 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'frontend'
+type: 'application'
+language: 'typescript'
+
+dependsOn:
+  - id: 'ui-core'
+    scope: 'production'
+  - id: 'ui-shared'
+    scope: 'production'
+  - id: 'ui-auth'
+    scope: 'production'
+  - id: 'ui-selectors'
+    scope: 'production'
+  - id: 'ui-shared-dev'
+    scope: 'development'
+  - id: 'eslint-config'
+    scope: 'development'
+
+fileGroups:
+  app:
+    - 'angular.*'
+
+tasks:
+  start:
+    command: 'ng serve'
+    local: true
+
+  build:
+    command: 'ng build'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
+    outputs:
+      - 'dist'
+
+  bundle:
+    command: 'esbuild-visualizer --metadata dist/stats.json --filename dist/stats.html'
+    local: true
+    deps:
+      - 'build'
+
+  test-integration:
+    command: 'npm run test-integration'
+    local: true
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
+      - '@group(integration-tests)'
+      - 'cypress.config.ts'
+    outputs:
+      - 'reports/integration'
+
+  test-integration-ui:
+    command: 'cypress open'
+    local: true
+
+  test:
+    local: true
+    deps:
+      - 'test-unit'
+      - 'test-integration'

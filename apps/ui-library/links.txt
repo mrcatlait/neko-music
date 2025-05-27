@@ -1,0 +1,3 @@
+https://joyofcode.xyz/sveltekit-view-transitions
+
+https://mainmatter.com/blog/2025/03/11/global-state-in-svelte-5/

@@ -1,7 +1,7 @@
 CREATE TABLE "media"."Audio" (
   "id" UUID PRIMARY KEY,
   "duration" SMALLINT NOT NULL,
-  "bitrate" SMALLINT,
+  "quality" "media"."AudioQuality" NOT NULL,
   "format" VARCHAR(20),
   "file_size" BIGINT NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
