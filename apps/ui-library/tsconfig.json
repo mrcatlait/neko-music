@@ -5,15 +5,26 @@
 		"checkJs": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"moduleResolution": "bundler"
-	}
-	// Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
-	// except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
-	//
-	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
-	// from the referenced tsconfig.json - TypeScript does not merge them in
+		"moduleResolution": "bundler",
+		"outDir": "../../.moon/cache/types/apps/ui-library",
+		"paths": {
+			"@neko/design-system/*": [
+				"../../packages/design-system/src/*"
+			],
+			"@neko/design-system": [
+				"../../packages/design-system/src/lib"
+			]
+		}
+	},
+	"references": [
+		{
+			"path": "../../packages/design-system"
+		}
+	]
 }

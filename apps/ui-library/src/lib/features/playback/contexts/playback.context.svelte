@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { createContext } from '$lib/utils/context';
+  import { createContext } from '$lib/shared/hooks/create-context.hook';
 	import { PlaybackState } from '../states/playback.state.svelte';
 
   const { get, set } = createContext<PlaybackState>();

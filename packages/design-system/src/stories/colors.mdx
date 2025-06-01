@@ -1,0 +1,37 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+
+<Meta title="Colors" />
+
+<ColorPalette>
+  <ColorItem title="Primary" colors={{
+    container: 'var(--color-primary)',
+    text: 'var(--color-on-primary)',
+  }} />
+
+  <ColorItem title="Secondary" colors={{
+    container: 'var(--color-secondary)',
+    text: 'var(--color-on-secondary)',
+  }} />
+
+  <ColorItem title="Typography" colors={{
+    high: 'var(--color-text-high-emphasis)',
+    medium: 'var(--color-text-medium-emphasis)',
+    disabled: 'var(--color-text-disabled)',
+  }} />
+
+  <ColorItem title="Outline" colors={['var(--color-outline)']} />
+
+  <ColorItem title="Surface" colors={{
+    container: 'var(--color-surface)',
+    text: 'var(--color-on-surface)',
+  }} />
+
+  <ColorItem title="Container" colors={{
+    lowest: 'var(--color-surface-container-lowest)',
+    default: 'var(--color-surface-container)',
+    high: 'var(--color-surface-container-high)',
+    highest: 'var(--color-surface-container-highest)',
+  }} />
+
+  <ColorItem title="Error" colors={['var(--color-error)']} />
+</ColorPalette>

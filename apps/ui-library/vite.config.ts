@@ -1,9 +1,15 @@
 import { svelteTesting } from '@testing-library/svelte/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
+import viteTsConfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [
+		sveltekit(),
+		viteTsConfigPaths({
+      root: './',
+    }),
+	],
 	test: {
 		workspace: [
 			{

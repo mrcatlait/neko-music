@@ -1,0 +1,26 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'frontend'
+type: 'application'
+language: 'typescript'
+
+dependsOn:
+  - id: 'design-system'
+    scope: 'production'
+
+fileGroups:
+  app:
+    - 'svelte.*'
+
+tasks:
+  start:
+    command: 'vite dev'
+    local: true
+
+  build:
+    command: 'vite build'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
+    outputs:
+      - 'build'

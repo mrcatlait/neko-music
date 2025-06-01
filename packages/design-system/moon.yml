@@ -1,0 +1,10 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'frontend'
+type: 'library'
+language: 'typescript'
+
+tasks:
+  storybook:
+    command: 'storybook dev -p 6006'
+    local: true

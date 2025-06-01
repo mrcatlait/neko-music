@@ -4,6 +4,7 @@ telemetry: false
 
 projects:
   - 'apps/api-library'
+  - 'apps/ui-library'
   - 'packages/*'
   - 'infra/*'
   - 'tools/*'
