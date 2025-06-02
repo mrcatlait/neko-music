@@ -1,0 +1,200 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Typography" />
+
+# Typography
+
+Our typography system is built on a consistent scale and provides a comprehensive set of text styles for various use cases. The system uses Noto Sans as the primary font family, with fallbacks to Roboto, Helvetica, and Arial.
+
+## Font Family
+
+```css
+font-family: 'Noto Sans', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+```
+
+## Display Styles
+
+### Display Extra Large
+- Size: 88px (5.5rem)
+- Line Height: 96px (6rem)
+- Weight: 400 (Regular)
+- Use: For hero sections and large headlines
+```html
+<div class="display-xl">Display Extra Large</div>
+```
+
+### Display Large
+- Size: 57px (3.5rem)
+- Line Height: 64px (4rem)
+- Weight: 400 (Regular)
+- Use: For main page headlines
+```html
+<h1 class="display-large">Display Large</h1>
+```
+
+### Display Medium
+- Size: 45px (2.5rem)
+- Line Height: 48px (3rem)
+- Weight: 500 (Medium)
+- Use: For section headlines
+```html
+<div class="display-medium">Display Medium</div>
+```
+
+### Display Small
+- Size: 36px (1.75rem)
+- Line Height: 32px (2rem)
+- Weight: 400 (Regular)
+- Use: For subsection headlines
+```html
+<div class="display-s">Display Small</div>
+```
+
+## Headline Styles
+
+### Headline Large
+- Size: 32px (1.5rem)
+- Line Height: 32px (2rem)
+- Weight: 400 (Regular)
+- Use: For major section titles
+```html
+<div class="headline-large">Headline Large</div>
+```
+
+### Headline Medium
+- Size: 28px (1.25rem)
+- Line Height: 28px (1.75rem)
+- Weight: 400 (Regular)
+- Use: For section titles
+```html
+<div class="headline-medium">Headline Medium</div>
+```
+
+### Headline Small
+- Size: 24px (1rem)
+- Line Height: 32px (1.5rem)
+- Weight: 500 (Medium)
+- Use: For subsection titles
+```html
+<div class="headline-small">Headline Small</div>
+```
+
+## Title Styles
+
+### Title Large
+- Size: 22px (1.375rem)
+- Line Height: 28px (1.75rem)
+- Weight: 400 (Regular)
+- Use: For card titles and important labels
+```html
+<div class="title-large">Title Large</div>
+```
+
+### Title Medium
+- Size: 16px (1rem)
+- Line Height: 24px (1.5rem)
+- Weight: 500 (Medium)
+- Use: For form labels and navigation items
+```html
+<div class="title-medium">Title Medium</div>
+```
+
+### Title Small
+- Size: 14px (0.875rem)
+- Line Height: 20px (1.25rem)
+- Weight: 500 (Medium)
+- Use: For secondary labels and small headings
+```html
+<div class="title-small">Title Small</div>
+```
+
+## Label Styles
+
+### Label Large
+- Size: 14px (0.875rem)
+- Line Height: 20px (1.25rem)
+- Weight: 500 (Medium)
+- Tracking: 0.1px
+- Use: For form labels and buttons
+```html
+<div class="label-large">Label Large</div>
+```
+
+### Label Medium
+- Size: 12px (0.75rem)
+- Line Height: 16px (1rem)
+- Weight: 500 (Medium)
+- Tracking: 0.5px
+- Use: For small labels and badges
+```html
+<div class="label-medium">Label Medium</div>
+```
+
+### Label Small
+- Size: 10px (0.625rem)
+- Line Height: 16px (1rem)
+- Weight: 500 (Medium)
+- Tracking: 0.5px
+- Use: For tiny labels and tags
+```html
+<div class="label-small">Label Small</div>
+```
+
+## Body Styles
+
+### Body Large
+- Size: 16px (1rem)
+- Line Height: 24px (1.5rem)
+- Weight: 400 (Regular)
+- Tracking: 0.5px
+- Use: For main content text
+```html
+<p class="body-large">Body Large</p>
+```
+
+### Body Medium
+- Size: 14px (0.875rem)
+- Line Height: 20px (1.25rem)
+- Weight: 400 (Regular)
+- Tracking: 0.1px
+- Use: For secondary content
+```html
+<div class="body-medium">Body Medium</div>
+```
+
+### Body Small
+- Size: 14px (0.875rem)
+- Line Height: 20px (1.25rem)
+- Weight: 400 (Regular)
+- Tracking: 0.1px
+- Use: For small text and captions
+```html
+<div class="body-small">Body Small</div>
+```
+
+## Utility Classes
+
+### Link
+```html
+<a class="link">Link Text</a>
+```
+
+### Truncate
+```html
+<div class="truncate">This text will be truncated with an ellipsis if it's too long to fit in its container</div>
+```
+
+### Ellipsis
+```html
+<div class="ellipsis">This text will show an ellipsis if it overflows its container</div>
+```
+
+## Best Practices
+
+1. Use display styles sparingly and only for the most important headlines
+2. Maintain hierarchy by using appropriate styles for different levels of content
+3. Use body styles for main content to ensure readability
+4. Apply label styles for form elements and interactive components
+5. Use utility classes like `truncate` and `ellipsis` for handling text overflow
+6. Keep line lengths comfortable for reading (ideally 45-75 characters)
+7. Ensure sufficient contrast between text and background colors

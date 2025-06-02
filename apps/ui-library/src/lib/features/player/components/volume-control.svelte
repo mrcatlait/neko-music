@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getPlayerState } from '$lib/features/player/contexts/player.context.svelte';
+	import { Slider } from '@neko/design-system';
 
   const state = getPlayerState();
 
@@ -41,15 +42,8 @@
       </svg>
     {/if}
   </button>
-  <input
-    type="range"
-    min="0"
-    max="1"
-    step="0.01"
-    value={state.volume}
-    on:input={handleVolumeChange}
-    class="volume-slider"
-  />
+
+  <Slider value={state.volume} min={0} max={1} step={0.01} on:change={handleVolumeChange} />
 </div>
 
 <style>
@@ -79,32 +73,5 @@
   .volume-button svg {
     width: 20px;
     height: 20px;
-  }
-
-  .volume-slider {
-    width: 100px;
-    height: 4px;
-    -webkit-appearance: none;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    outline: none;
-  }
-
-  .volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 12px;
-    height: 12px;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  .volume-slider::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
   }
 </style>

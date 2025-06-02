@@ -1,6 +1,7 @@
 <script lang="ts">
   import { navigating } from '$app/state';
 
+  import '@neko/design-system/styles/main.scss';
   const { children } = $props();
 </script>
 

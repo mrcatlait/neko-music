@@ -2,9 +2,7 @@ import type { Preview } from '@storybook/sveltekit'
 
 import { themes } from 'storybook/theming';
 
-import '../src/lib/styles/main.css'
-import '../src/lib/styles/typography.css'
-import '../src/lib/styles/shapes.css'
+import '../src/lib/styles/main.scss'
 
 const preview: Preview = {
   parameters: {

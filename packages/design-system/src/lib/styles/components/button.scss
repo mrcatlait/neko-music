@@ -1,0 +1,84 @@
+@use '../abstracts' as abstracts;
+
+@mixin button() {
+  [data-button-root] {
+    --n-button-size: 40px;
+    --n-button-gap: 8px;
+    --n-button-shape-corner: var(--shape-corner-full);
+
+    font-family: var(--typography-font-family);
+
+    @include abstracts.typography(label-large);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--n-button-gap);
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    block-size: var(--n-button-size);
+    border-radius: var(--n-button-shape-corner);
+
+    &[data-button-variant='filled'] {
+      &[data-button-color='primary'] {
+        --n-button-bg: var(--color-primary);
+        --n-button-color: var(--color-on-primary);
+      }
+
+      &[data-color='secondary'] {
+        --n-button-bg: var(--color-secondary);
+        --n-button-color: var(--color-on-secondary);
+      }
+
+      background: var(--n-button-bg);
+      color: var(--n-button-color);
+
+      @include abstracts.state(var(--n-button-color));
+    }
+
+    &[data-button-variant='outlined'] {
+      --n-button-border: var(--color-outline);
+      --n-button-color: var(--color-on-surface);
+
+      border: 1px solid var(--n-button-border);
+      color: var(--n-button-color);
+
+      @include abstracts.state(var(--n-button-color));
+    }
+
+    &[data-button-variant='text'] {
+      --n-button-color: var(--color-on-surface);
+
+      color: var(--n-button-color);
+
+      @include abstracts.state(var(--n-button-color));
+    }
+
+    &[disabled] {
+      cursor: default;
+
+      --n-button-color: rgba(var(--color-on-surface-rgb), .38);
+      --n-button-border: rgba(var(--color-on-surface-rgb), .12);
+      --n-button-bg: rgba(var(--color-on-surface-rgb), .12);
+    }
+  }
+
+  [data-button-root] {
+    --n-button-padding: 0 16px;
+    --n-button-min-width: 72px;
+
+    min-width: var(--n-button-min-width);
+    padding: var(--n-button-padding);
+  }
+
+  [nekoIconButton] {
+    --n-button-size: 40px;
+
+    height: var(--n-button-size);
+    min-height: var(--n-button-size);
+    width: var(--n-button-size);
+    min-width: var(--n-button-size);
+    border-radius: 50%;
+  }
+}
