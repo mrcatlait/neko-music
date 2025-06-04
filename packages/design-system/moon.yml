@@ -8,3 +8,6 @@ tasks:
   storybook:
     command: 'storybook dev -p 6006'
     local: true
+
+  build:
+    command: 'vite build && npm run prepack'

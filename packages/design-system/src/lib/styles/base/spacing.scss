@@ -20,21 +20,21 @@
     --spacing-fixed-pane-large: 412px;
   }
 
-  body {
-    @include abstracts.screen(compact) {
-      --spacing-layout: var(--spacing-layout-compact);
-    }
+  // body {
+  //   @include abstracts.screen(compact) {
+  //     --spacing-layout: var(--spacing-layout-compact);
+  //   }
 
-    @include abstracts.screen(medium) {
-      --spacing-layout: var(--spacing-layout-medium);
-    }
+  //   @include abstracts.screen(medium) {
+  //     --spacing-layout: var(--spacing-layout-medium);
+  //   }
   
-    @include abstracts.screen(expanded) {
-      --spacing-layout: var(--spacing-layout-expanded);
-    }
+  //   @include abstracts.screen(expanded) {
+  //     --spacing-layout: var(--spacing-layout-expanded);
+  //   }
   
-    @include abstracts.screen(large, extra-large) {
-      --spacing-layout: var(--spacing-layout-large);
-    }
-  }
+  //   @include abstracts.screen(large, extra-large) {
+  //     --spacing-layout: var(--spacing-layout-large);
+  //   }
+  // }
 }

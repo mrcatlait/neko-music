@@ -21,35 +21,16 @@
     </div>
   </PlayerContext>
   
-  <Button>
+  <Button variant="filled" color="primary">
     Hello
   </Button>
 </div>
 
 <style>
   .player {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    padding: 1rem;
-    z-index: 1000;
-  }
+    --n-player-height: 80px;
 
-  .player-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .player-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
+    display: block;
+    height: var(--n-player-height);
   }
 </style>

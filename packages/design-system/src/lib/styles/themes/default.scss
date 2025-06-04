@@ -39,21 +39,4 @@
     // Error
     --color-error: #ffb4ab;
   }
-
-  html {
-    color: var(--color-text-high-emphasis);
-    background-color: var(--color-surface);
-  }
-
-  .primary-text {
-    color: var(--color-text-high-emphasis);
-  }
-
-  .secondary-text {
-    color: var(--color-text-medium-emphasis);
-  }
-
-  .error-text {
-    color: var(--color-error);
-  }
 }

@@ -17,6 +17,12 @@ tasks:
     command: 'vite dev'
     local: true
 
+  preview:
+    command: 'vite preview'
+    local: true
+    deps:
+      - 'build'
+
   build:
     command: 'vite build'
     inputs:
