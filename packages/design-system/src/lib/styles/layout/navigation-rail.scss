@@ -10,7 +10,6 @@
     --n-navigation-rail-item-height: 64px;
     --n-navigation-rail-item-active-bg: rgba(var(--color-on-surface-rgb), .16);
 
-    // position: fixed;
     display: flex;
     flex-direction: column;
     width: var(--n-navigation-rail-width);
@@ -21,11 +20,14 @@
     @include abstracts.typography(label-medium);
 
     ul {
+      position: fixed;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      inset: 0 0 auto;
       margin: 0;
       padding: 0 var(--n-navigation-rail-horizontal-padding);
+      width: var(--n-navigation-rail-width);
       gap: var(--n-navigation-rail-gap);
     }
 
