@@ -1,0 +1,33 @@
+@mixin state($overlay) {
+  position: relative;
+
+  &:not([disabled]) {
+    transition:
+      opacity var(--motion-duration-short3) var(--motion-easing-standard),
+      background-color var(--motion-duration-short3) var(--motion-easing-standard);
+
+    &::before {
+      content: '';
+      background-color: transparent;
+      opacity: 0;
+      border-radius: inherit;
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+  
+    &:hover {
+      &::before {
+        background-color: $overlay;
+        opacity: var(--state-hover-layer-opacity);
+      }
+    }
+
+    &:focus {
+      &::before {
+        background-color: $overlay;
+        opacity: var(--state-focus-layer-opacity);
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import type { ArtistRole } from "../enums"
-import type { Image } from "./image.model"
+import type { Artwork } from "./artwork.model"
 
 export interface TrackArtist {
   id: string
@@ -10,7 +10,7 @@ export interface TrackArtist {
 export interface Track {
   id: string
   title: string
-  images: Image[]
+  artwork: Artwork
   artists: TrackArtist[]
   duration: number
   genres: string[]

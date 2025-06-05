@@ -1,5 +1,5 @@
-import { PlayerStatus } from '../enums/player-status.enum';
-import { AudioService } from '../services/audio.service';
+import { PLAYER_STATUS, type PlayerStatus } from '../enums/player-status.enum';
+import { AudioService } from '../services';
 
 export class PlayerState {
   private readonly audioService = new AudioService();
@@ -7,22 +7,22 @@ export class PlayerState {
   volume = $state<number>(50);
   muted = $state<boolean>(false);
   currentTime = $state<number>(0);
-  status = $state<PlayerStatus>(PlayerStatus.Pending);
+  status = $state<PlayerStatus>(PLAYER_STATUS.Pending);
 
   play(): void {
-    this.status = PlayerStatus.Playing;
+    this.status = PLAYER_STATUS.Playing;
     this.audioService.play();
   }
 
   pause(): void {
-    this.status = PlayerStatus.Paused;
+    this.status = PLAYER_STATUS.Paused;
   }
 
   togglePlay(): void {
     switch (this.status) {
-      case PlayerStatus.Playing:
+      case PLAYER_STATUS.Playing:
         return this.pause()
-      case PlayerStatus.Paused:
+      case PLAYER_STATUS.Paused:
         return this.play()
       default:
         return

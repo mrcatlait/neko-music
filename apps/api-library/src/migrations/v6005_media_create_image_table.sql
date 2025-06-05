@@ -1,6 +1,6 @@
 CREATE TABLE "media"."Image" (
   "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  "quality" "media"."ImageQuality" NOT NULL,
+  "size" "media"."ImageSize" NOT NULL,
   "format" VARCHAR(20) NOT NULL,
   "file_size" BIGINT NOT NULL,
   "dominant_color" VARCHAR(20),

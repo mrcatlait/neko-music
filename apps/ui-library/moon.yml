@@ -4,10 +4,6 @@ stack: 'frontend'
 type: 'application'
 language: 'typescript'
 
-dependsOn:
-  - id: 'design-system'
-    scope: 'production'
-
 fileGroups:
   app:
     - 'svelte.*'

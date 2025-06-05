@@ -1,2 +1,2 @@
-export * from './image.model'
+export * from './artwork.model'
 export * from './track.model'

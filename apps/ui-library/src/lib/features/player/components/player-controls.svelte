@@ -1,39 +1,67 @@
 <script lang="ts">
+  import { getPlaybackState } from '@/features/playback/contexts'
   import { getPlayerState } from '../contexts/player.context.svelte';
+	import { REPEAT_OPTIONS } from '@/features/playback/enums';
 
-  const state = getPlayerState();
+  const playbackState = getPlaybackState();
+  const playerState = getPlayerState();
 
-  function handleKeyDown(event: KeyboardEvent) {
-    if (event.key === ' ') {
-      state.play();
-    } else if (event.key === 'ArrowRight') {
-      state.next();
-    } else if (event.key === 'ArrowLeft') {
-      state.previous();
-    }
-  }
+  // function handleKeyDown(event: KeyboardEvent) {
+  //   if (event.key === ' ') {
+  //     state.play();
+  //   } else if (event.key === 'ArrowRight') {
+  //     state.next();
+  //   } else if (event.key === 'ArrowLeft') {
+  //     state.previous();
+  //   }
+  // }
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<!-- <svelte:window on:keydown={handleKeyDown} /> -->
 
 <div class="player-controls">
-  <button aria-label="Play" on:click={() => state.play()}>
-    <!-- <Icon name="play" /> -->
+  <button
+    class:inactive={!playbackState.shuffle}
+    aria-label="Shuffle"
+  >
+    <i>shuffle</i>
   </button>
-  <button aria-label="Pause" on:click={() => state.pause()}>
-    <!-- <Icon name="pause" /> -->
+
+  <button
+    aria-label="Previous"
+    disabled={!playbackState.hasPrevious}
+  >
+    <i>skip_previous</i>
   </button>
-  <button aria-label="Next" on:click={() => state.next()}>
-    <!-- <Icon name="next" /> -->
+
+  <button
+    aria-label="Next"
+    disabled={!playbackState.hasNext}
+  >
+    <i>skip_next</i>
   </button>
-  <button aria-label="Previous" on:click={() => state.previous()}>
-    <!-- <Icon name="previous" /> -->
+
+  <button
+    aria-label="Repeat"
+  >
+    {#if playbackState.repeat === REPEAT_OPTIONS.None}
+      <i class="inactive">repeat</i>
+    {:else if playbackState.repeat === REPEAT_OPTIONS.All}
+      <i>repeat</i>
+    {:else if playbackState.repeat === REPEAT_OPTIONS.Single}
+      <i>repeat_one</i>
+    {/if}
   </button>
 </div>
 
 <style>
   .player-controls {
     display: flex;
-    gap: 1rem;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .inactive {
+    opacity: var(--state-disabled-layer-opacity);
   }
 </style>

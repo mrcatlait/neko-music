@@ -1,5 +1,5 @@
 <script lang="ts">
-  import '@neko/design-system/styles/main.scss';
+  import '@/styles/main.scss';
 
   const { children } = $props();
 </script>

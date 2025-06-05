@@ -16,9 +16,10 @@ export default defineConfig({
     }),
 	],
 	resolve: {
-		alias: {
-			'@neko/design-system': resolve(__dirname, '../../packages/design-system/src/lib')
-		}
+		// alias: {
+		// 	'@neko/design-system': resolve(__dirname, '../../packages/design-system/src/lib'),
+		// 	'@neko/design-system/styles/*': resolve(__dirname, '../../packages/design-system/src/lib/styles/*')
+		// }
 	},
 	test: {
 		workspace: [

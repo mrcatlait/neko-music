@@ -1,4 +1,4 @@
-CREATE TYPE "media"."ImageQuality" AS ENUM (
+CREATE TYPE "media"."ImageSize" AS ENUM (
   'SMALL',
   'MEDIUM',
   'LARGE',

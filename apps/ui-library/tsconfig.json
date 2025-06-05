@@ -12,19 +12,6 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "bundler",
-		"outDir": "../../.moon/cache/types/apps/ui-library",
-		"paths": {
-			"@neko/design-system/*": [
-				"../../packages/design-system/src/*"
-			],
-			"@neko/design-system": [
-				"../../packages/design-system/src/lib"
-			]
-		}
-	},
-	"references": [
-		{
-			"path": "../../packages/design-system"
-		}
-	]
+		"outDir": "../../.moon/cache/types/apps/ui-library"
+	}
 }

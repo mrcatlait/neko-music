@@ -40,8 +40,7 @@
 		"vitest": "^3.0.0"
 	},
 	"dependencies": {
-		"@neko/design-system": "*",
-		"dashjs": "^5.0.2",
-		"design-system": "*"
+		"bits-ui": "^2.4.1",
+		"dashjs": "^5.0.2"
 	}
 }

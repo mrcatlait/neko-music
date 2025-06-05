@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getPlayerState } from '$lib/features/player/contexts/player.context.svelte';
-	import { Slider } from '@neko/design-system';
+  import { getPlayerState } from '../contexts/player.context.svelte';
+	import { Slider } from '@/shared/components';
 
   const state = getPlayerState();
 
@@ -43,7 +43,7 @@
     {/if}
   </button>
 
-  <Slider value={state.volume} min={0} max={1} step={0.01} on:change={handleVolumeChange} />
+  <Slider tabindex={0} aria-label="Volume" value={state.volume} min={0} max={1} step={0.01} on:change={handleVolumeChange} role="slider" />
 </div>
 
 <style>

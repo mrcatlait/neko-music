@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import { createContext } from '$lib/shared/hooks/create-context.hook';
-	import { PlayerState } from '../states/player.state.svelte';
+  import { createContext } from '../../../shared/hooks';
+	import { PlayerState } from '../states';
 
   const { get, set } = createContext<PlayerState>();
 

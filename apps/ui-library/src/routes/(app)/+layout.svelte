@@ -1,6 +1,6 @@
 <script lang="ts">
-	// import Player from '../../lib/features/player/components/player.svelte';
-	import PlaybackContext from '../../lib/features/playback/contexts/playback.context.svelte';
+	import {Player} from '@/features/player/components';
+	import {PlaybackContext} from '@/features/playback/contexts';
 	import { page } from '$app/state';
 
   const { children } = $props();
@@ -16,6 +16,8 @@
 		<main data-layout-area="content">
 			{@render children()}
 		</main>
+
+		<Player data-layout-area="player" />
 
 		<nav data-layout-area="navigation" aria-label="Main Menu">
 			<ul>
