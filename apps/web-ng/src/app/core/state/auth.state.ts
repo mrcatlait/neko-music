@@ -28,7 +28,14 @@ export class AuthState {
 
   private permissions = new Set<Permission>()
 
-  readonly session = signal<Session | null>(null)
+  // readonly session = signal<Session | null>(null)
+  readonly session = signal<Session | null>({
+    user: {
+      id: '',
+      username: '',
+    },
+    permissions: [],
+  })
   readonly isAuthenticated = computed(() => Boolean(this.session()))
 
   login(session: Session) {

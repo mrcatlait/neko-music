@@ -29,7 +29,6 @@ import { ImageUrlPipe } from '@shared/pipes'
     DialogTitleComponent,
     DialogContentComponent,
     TextfieldComponent,
-    ErrorComponent,
     ListItemComponent,
     ImageUrlPipe,
     ReactiveFormsModule,

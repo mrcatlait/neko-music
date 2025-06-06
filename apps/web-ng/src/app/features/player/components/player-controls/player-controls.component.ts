@@ -1,14 +1,17 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { playerSelectors } from '@neko/ui-test/selectors'
+import { NgSwitch } from '@angular/common'
 
 import { PlayerStatus, RepeatOption } from '@core/enum'
 import { AudioState, PlaybackState } from '@core/state'
+import { ButtonDirective, SelectorDirective } from '@shared/directives'
+import { PlayIconComponent } from '@shared/components'
 
 @Component({
   selector: 'neko-player-controls',
   templateUrl: 'player-controls.component.html',
   styleUrls: ['player-controls.component.scss'],
-
+  imports: [SelectorDirective, NgSwitch, ButtonDirective, PlayIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerControlsComponent {

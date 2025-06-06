@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core'
+import { NgIf } from '@angular/common'
 
 import { ArtistDetailsState } from './artist-details.state'
 
-import { SharedModule } from '@shared/shared.module'
+import { SelectorDirective } from '@shared/directives'
+import { ImageUrlPipe } from '@shared/pipes'
+import { AppBarComponent } from '@shared/components'
 
 @Component({
   standalone: true,
-  imports: [SharedModule],
+  imports: [SelectorDirective, NgIf, ImageUrlPipe, AppBarComponent],
   providers: [ArtistDetailsState],
   selector: 'neko-artist-details',
   templateUrl: './artist-details.component.html',

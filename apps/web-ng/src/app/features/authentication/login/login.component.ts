@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { loginSelectors } from '@neko/ui-test/selectors'
 
 import { LoginState } from './login.state'
 
-import { SharedModule } from '@shared/shared.module'
 import { ENVIRONMENT } from '@core/tokens'
+import { ErrorComponent, TextfieldComponent } from '@shared/components'
+import { SelectorDirective, TextfieldDirective } from '@shared/directives'
 
 @Component({
   standalone: true,
   selector: 'neko-login',
   templateUrl: 'login.component.html',
   styleUrl: 'login.component.scss',
-  imports: [SharedModule],
+  imports: [SelectorDirective, ReactiveFormsModule, TextfieldComponent, TextfieldDirective, ErrorComponent],
   providers: [LoginState],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

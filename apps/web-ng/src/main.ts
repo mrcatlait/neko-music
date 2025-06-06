@@ -1,9 +1,26 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
+import { bootstrapApplication } from '@angular/platform-browser'
+import { provideExperimentalZonelessChangeDetection } from '@angular/core'
+import { provideRouter } from '@angular/router'
+import { provideHttpClient } from '@angular/common/http'
 
-import { AppModule } from './app/app.module'
+import { routes } from './app/app-routing.module'
+import { AppComponent } from './app/app.component'
 
-platformBrowserDynamic()
-  .bootstrapModule(AppModule, {
-    ngZone: 'noop',
-  })
-  .catch((err) => console.error(err))
+import { environment } from '@environment'
+import { API_URL, ENVIRONMENT } from '@core/tokens'
+
+// platformBrowserDynamic()
+//   .bootstrapModule(AppModule, {
+//     ngZone: 'noop',
+//   })
+//   .catch((err) => console.error(err))
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideExperimentalZonelessChangeDetection(),
+    provideRouter(routes),
+    provideHttpClient(),
+    { provide: ENVIRONMENT, useValue: environment },
+    { provide: API_URL, useValue: environment.apiUrl },
+  ],
+})

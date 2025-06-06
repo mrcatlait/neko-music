@@ -11,7 +11,7 @@ interface RouteWithLayout extends Route {
   }
 }
 
-const routes: RouteWithLayout[] = [
+export const routes: RouteWithLayout[] = [
   {
     path: '',
     canActivateChild: [canActivateAuthorized],
@@ -61,15 +61,3 @@ const routes: RouteWithLayout[] = [
     redirectTo: '404',
   },
 ]
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes, { bindToComponentInputs: true, preloadingStrategy: PreloadAllModules })],
-  providers: [
-    {
-      provide: TitleStrategy,
-      useClass: PageTitleStrategy,
-    },
-  ],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}

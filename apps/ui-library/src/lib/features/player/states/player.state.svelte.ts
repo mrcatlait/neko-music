@@ -2,7 +2,17 @@ import { PLAYER_STATUS, type PlayerStatus } from '../enums/player-status.enum';
 import { AudioService } from '../services';
 
 export class PlayerState {
-  private readonly audioService = new AudioService();
+  private readonly audioService = new AudioService({
+    onPlaybackTimeUpdate: (event) => {
+      this.currentTime = event.time ?? 0
+    },
+    onCanPlay: () => {
+      this.status = PLAYER_STATUS.Playing
+    },
+    onPlaybackEnded: () => {
+      this.status = PLAYER_STATUS.Paused
+    }
+  });
 
   volume = $state<number>(50);
   muted = $state<boolean>(false);

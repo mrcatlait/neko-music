@@ -26,3 +26,12 @@ tasks:
       - '@group(sources)'
     outputs:
       - 'build'
+
+  test-unit:
+    command: 'vitest'
+    local: true
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
+    outputs:
+      - 'reports/unit'

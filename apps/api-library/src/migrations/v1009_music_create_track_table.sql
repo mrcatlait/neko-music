@@ -1,6 +1,6 @@
 CREATE TABLE "music"."Track" (
   "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  "title" VARCHAR(255) NOT NULL UNIQUE,
+  "title" VARCHAR(255) NOT NULL,
   "album_id" UUID NOT NULL,
   "track_number" SMALLINT NOT NULL,
   "disk_number" SMALLINT NOT NULL,

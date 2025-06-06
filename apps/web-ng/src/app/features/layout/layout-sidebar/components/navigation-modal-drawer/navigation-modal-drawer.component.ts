@@ -1,13 +1,17 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core'
 import { Permission } from '@neko/permissions'
+import { NgIf } from '@angular/common'
+import { RouterLink, RouterLinkActive } from '@angular/router'
 
 import { ScrollService } from '@core/services'
+import { SelectorDirective } from '@shared/directives'
+import { LogoComponent } from '@shared/components'
 
 @Component({
   selector: 'neko-navigation-modal-drawer',
   templateUrl: './navigation-modal-drawer.component.html',
   styleUrl: './navigation-modal-drawer.component.scss',
-
+  imports: [SelectorDirective, NgIf, LogoComponent, RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationModalDrawerComponent implements OnInit, OnDestroy {

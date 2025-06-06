@@ -12,6 +12,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "bundler",
-		"outDir": "../../.moon/cache/types/apps/ui-library"
+		"outDir": "../../.moon/cache/types/apps/ui-library",
+		"types": ["vitest/globals"]
 	}
 }

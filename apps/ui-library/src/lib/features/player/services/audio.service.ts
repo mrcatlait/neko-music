@@ -3,10 +3,29 @@ import type { MediaPlayerClass, PlaybackTimeUpdatedEvent } from 'dashjs'
 import { onDestroy } from 'svelte'
 
 const DASH_EVENTS = {
-  PLAYBACK_TIME_UPDATED: 'playbackTimeUpdated',
-  MANIFEST_LOADED: 'manifestLoaded',
-  CAN_PLAY: 'canPlay',
-  PLAYBACK_ENDED: 'playbackEnded',
+  PlaybackTimeUpdated: 'playbackTimeUpdated',
+  ManifestLoaded: 'manifestLoaded',
+  CanPlay: 'canPlay',
+  PlaybackEnded: 'playbackEnded',
+} as const
+
+interface AudioServiceOptions {
+  /**
+   * Callback function to handle playback time update events
+   * @param event - The event object containing the playback time update
+   * @returns void
+   */
+  onPlaybackTimeUpdate: (event: PlaybackTimeUpdatedEvent) => void
+  /**
+   * Callback function to handle playback can play events
+   * @returns void
+   */
+  onCanPlay: () => void
+  /**
+   * Callback function to handle playback ended events
+   * @returns void
+   */
+  onPlaybackEnded: () => void
 }
 
 @BrowserOnly
@@ -14,7 +33,7 @@ export class AudioService {
   private readonly audio = new Audio()
   private player: MediaPlayerClass | null = null
 
-  constructor() {
+  constructor(private readonly options: AudioServiceOptions) {
     import('dashjs').then(({ MediaPlayer }) => {
       this.player = MediaPlayer().create()
       this.player.initialize(this.audio, undefined, false)
@@ -57,8 +76,8 @@ export class AudioService {
     this.player?.setVolume(Number((volume / 100).toFixed(2)))
   }
 
-  toggleMute() {
-    this.player?.setMute(!this.player?.isMuted())
+  setMute(muted: boolean) {
+    this.player?.setMute(muted)
   }
 
   seek(time: number): void {
@@ -70,9 +89,9 @@ export class AudioService {
       return
     }
 
-    this.player.on(DASH_EVENTS.CAN_PLAY, this.onCanPlay)
-    this.player.on(DASH_EVENTS.PLAYBACK_TIME_UPDATED, this.onPlaybackTimeUpdate)
-    this.player.on(DASH_EVENTS.PLAYBACK_ENDED, this.onPlaybackEnded)
+    this.player.on(DASH_EVENTS.CanPlay, this.options.onCanPlay)
+    this.player.on(DASH_EVENTS.PlaybackTimeUpdated, this.options.onPlaybackTimeUpdate)
+    this.player.on(DASH_EVENTS.PlaybackEnded, this.options.onPlaybackEnded)
   }
 
   private removeEvents() {
@@ -80,21 +99,8 @@ export class AudioService {
       return
     }
 
-    this.player.off(DASH_EVENTS.CAN_PLAY, this.onCanPlay)
-    this.player.off(DASH_EVENTS.PLAYBACK_TIME_UPDATED, this.onPlaybackTimeUpdate)
-    this.player.off(DASH_EVENTS.PLAYBACK_ENDED, this.onPlaybackEnded) 
-  }
-
-  private readonly onPlaybackTimeUpdate = (event: PlaybackTimeUpdatedEvent) => {
-    const currentTime = event.time ?? 0
-    // this.injector.get(AudioState).setTime({ time: Math.floor(currentTime) })
-  }
-
-  private readonly onCanPlay = () => {
-    // this.injector.get(AudioState).play()
-  }
-
-  private readonly onPlaybackEnded = () => {
-    // this.injector.get(PlaybackState).ended()
+    this.player.off(DASH_EVENTS.CanPlay, this.options.onCanPlay)
+    this.player.off(DASH_EVENTS.PlaybackTimeUpdated, this.options.onPlaybackTimeUpdate)
+    this.player.off(DASH_EVENTS.PlaybackEnded, this.options.onPlaybackEnded) 
   }
 }

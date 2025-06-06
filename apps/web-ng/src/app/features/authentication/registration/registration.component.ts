@@ -6,14 +6,14 @@ import { RegistrationState } from './registration.state'
 
 import { ENVIRONMENT } from '@core/tokens'
 import { SelectorDirective, TextfieldDirective } from '@shared/directives'
-import { TextfieldComponent } from '@shared/components'
+import { ErrorComponent, TextfieldComponent } from '@shared/components'
 
 @Component({
   standalone: true,
   selector: 'neko-registration',
   templateUrl: 'registration.component.html',
   styleUrl: 'registration.component.scss',
-  imports: [SelectorDirective, ReactiveFormsModule, TextfieldComponent, TextfieldDirective],
+  imports: [SelectorDirective, ReactiveFormsModule, TextfieldComponent, TextfieldDirective, ErrorComponent],
   providers: [RegistrationState],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

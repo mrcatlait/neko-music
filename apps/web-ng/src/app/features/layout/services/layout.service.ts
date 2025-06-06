@@ -5,7 +5,9 @@ import { toSignal } from '@angular/core/rxjs-interop'
 
 import { Layout } from '@core/enum'
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class LayoutService {
   private readonly router = inject(Router)
   private readonly activatedRoute = inject(ActivatedRoute)

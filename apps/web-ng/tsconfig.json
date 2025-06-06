@@ -33,6 +33,8 @@
       "@features/*": ["src/app/features/*"],
       "@features": ["src/app/features"],
       "@neko/ui-test": ["../../packages/ui-test/src/public-api"],
+      "@neko/ui-test/selectors": ["../../packages/selectors/src"],
+      "@neko/permissions": ["../../packages/permissions/src"],
       "@environment": ["src/environments/environment"]
     }
   },

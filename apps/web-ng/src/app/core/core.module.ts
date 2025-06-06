@@ -1,5 +1,4 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 import { EnsureModuleLoadedOnceGuard } from './guards'
@@ -10,9 +9,9 @@ import { AuthInterceptor, ErrorInterceptor } from './interceptors'
 import { environment } from '@environment'
 
 @NgModule({
-  imports: [BrowserModule, devtoolsImports],
+  imports: [devtoolsImports],
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
+    // provideHttpClient(withInterceptorsFromDi()),
     { provide: ENVIRONMENT, useValue: environment },
     { provide: API_URL, useValue: environment.apiUrl },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

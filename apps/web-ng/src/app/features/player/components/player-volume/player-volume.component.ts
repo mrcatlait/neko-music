@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { playerSelectors } from '@neko/ui-test/selectors'
 
 import { AudioState } from '@core/state'
+import { SelectorDirective } from '@shared/directives'
 
 @Component({
   selector: 'neko-player-volume',
   templateUrl: 'player-volume.component.html',
   styleUrls: ['player-volume.component.scss'],
-
+  imports: [SelectorDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerVolumeComponent {

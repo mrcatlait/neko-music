@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { playerSelectors } from '@neko/ui-test/selectors'
+import { NgIf } from '@angular/common'
 
 import { AudioState } from '@core/state'
+import { SelectorDirective, SliderDirective } from '@shared/directives'
 
 @Component({
   selector: 'neko-player-playback',
   templateUrl: 'player-playback.component.html',
   styleUrls: ['player-playback.component.scss'],
-
+  imports: [SelectorDirective, SliderDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerPlaybackComponent {
