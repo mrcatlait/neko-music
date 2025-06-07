@@ -2,6 +2,7 @@
   import type { HTMLAttributes } from 'svelte/elements'
 
   import PlayerControls from './player-controls.svelte'
+  import ProgressBar from './progress-bar.svelte'
   import TrackInfo from './track-info.svelte'
   import VolumeControl from './volume-control.svelte'
 
@@ -16,9 +17,16 @@
   role="region"
 >
   <div class="player-content">
-    <TrackInfo />
-    <PlayerControls />
-    <div class="player-actions">
+    <div class="player-section track-section">
+      <TrackInfo />
+    </div>
+
+    <div class="player-section controls-section">
+      <PlayerControls />
+      <ProgressBar />
+    </div>
+
+    <div class="player-section actions-section">
       <VolumeControl />
     </div>
   </div>
@@ -58,21 +66,61 @@
     position: fixed;
     display: grid;
     align-items: center;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: minmax(200px, 1fr) minmax(400px, 2fr) minmax(200px, 1fr);
     inset: auto 0 0;
     padding: 0 var(--spacing-layout);
     height: var(--n-player-height);
     background: var(--n-player-background);
+    gap: 24px;
 
     @include ds.elevation(2);
 
     @include ds.window-class(compact) {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
       bottom: calc(var(--n-navigation-height) + var(--spacing-layout));
       left: var(--spacing-layout);
       right: var(--spacing-layout);
-      gap: 28px;
+      gap: 12px;
       border-radius: var(--shape-corner-large);
+      height: auto;
+      padding: 16px;
+    }
+  }
+
+  .player-section {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .track-section {
+    justify-content: flex-start;
+  }
+
+  .controls-section {
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+
+    @include ds.window-class(compact) {
+      order: 1;
+    }
+  }
+
+  .actions-section {
+    justify-content: flex-end;
+
+    @include ds.window-class(compact) {
+      order: 3;
+      justify-content: center;
+    }
+  }
+
+  @include ds.window-class(compact) {
+    .track-section {
+      order: 2;
+      justify-content: center;
     }
   }
 </style>

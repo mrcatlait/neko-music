@@ -41,11 +41,11 @@ export class AudioService {
       this.registerEvents()
     })
 
-    onDestroy(() => {
-      this.removeEvents()
-      this.player?.destroy()
-      this.audio.remove()
-    })
+    // onDestroy(() => {
+    //   this.removeEvents()
+    //   this.player?.destroy()
+    //   this.audio.remove()
+    // })
   }
 
   play(): void {

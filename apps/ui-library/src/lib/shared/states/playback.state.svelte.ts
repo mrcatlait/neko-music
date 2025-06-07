@@ -3,12 +3,20 @@ import type { Queue, Track } from '../models'
 import { AudioService } from '../services'
 import { shuffleArray } from '../utils'
 
+const mockQueue = {
+  id: '1',
+  tracks: [
+    { id: '1', title: 'Track 1', duration: 100, artists: [{ id: '1', name: 'Artist 1' }] },
+    { id: '2', title: 'Track 2', duration: 200, artists: [{ id: '2', name: 'Artist 2' }] },
+  ],
+} as Queue
+
 export class PlaybackState {
   status = $state<PlaybackStatus>(PLAYBACK_STATUS.Pending)
-  queue = $state<Queue | null>(null)
+  queue = $state<Queue | null>(mockQueue)
 
   tracks = $state<Track[]>([])
-  currentTrack = $state<Track | null>(null)
+  currentTrack = $state<Track | null>(mockQueue.tracks[0])
 
   volume = $state<number>(50)
   muted = $state<boolean>(false)

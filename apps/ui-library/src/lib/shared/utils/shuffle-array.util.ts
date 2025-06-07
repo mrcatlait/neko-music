@@ -2,6 +2,10 @@
  * Fisher-Yates shuffle algorithm
  * @param array - Array to shuffle
  * @returns Shuffled array
+ * @example
+ * ```typescript
+ * shuffleArray([1, 2, 3, 4, 5]) // Returns: [3, 1, 5, 2, 4]
+ * ```
  */
 export const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array]
