@@ -1,4 +1,4 @@
-import type { ArtistRole } from "../enums"
+import type { ArtistRole } from '../enums'
 
 export interface TrackArtist {
   /**

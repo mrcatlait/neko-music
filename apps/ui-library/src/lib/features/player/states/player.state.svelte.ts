@@ -1,5 +1,5 @@
-import { PLAYER_STATUS, type PlayerStatus } from '../enums/player-status.enum';
-import { AudioService } from '../services';
+import { PLAYER_STATUS, type PlayerStatus } from '../enums/player-status.enum'
+import { AudioService } from '../services'
 
 export class PlayerState {
   private readonly audioService = new AudioService({
@@ -11,21 +11,21 @@ export class PlayerState {
     },
     onPlaybackEnded: () => {
       this.status = PLAYER_STATUS.Paused
-    }
-  });
+    },
+  })
 
-  volume = $state<number>(50);
-  muted = $state<boolean>(false);
-  currentTime = $state<number>(0);
-  status = $state<PlayerStatus>(PLAYER_STATUS.Pending);
+  volume = $state<number>(50)
+  muted = $state<boolean>(false)
+  currentTime = $state<number>(0)
+  status = $state<PlayerStatus>(PLAYER_STATUS.Pending)
 
   play(): void {
-    this.status = PLAYER_STATUS.Playing;
-    this.audioService.play();
+    this.status = PLAYER_STATUS.Playing
+    this.audioService.play()
   }
 
   pause(): void {
-    this.status = PLAYER_STATUS.Paused;
+    this.status = PLAYER_STATUS.Paused
   }
 
   togglePlay(): void {
@@ -40,15 +40,15 @@ export class PlayerState {
   }
 
   seek(payload: { time: number }): void {
-    this.currentTime = payload.time;
+    this.currentTime = payload.time
   }
 
   setVolume(payload: { volume: number }): void {
-    this.volume = payload.volume;
-    this.muted = payload.volume === 0;
+    this.volume = payload.volume
+    this.muted = payload.volume === 0
   }
 
   toggleMute(): void {
-    this.muted = !this.muted || this.volume === 0;
+    this.muted = !this.muted || this.volume === 0
   }
 }

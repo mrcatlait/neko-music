@@ -1,1 +1,1 @@
-export { default as PlayerContext, getPlayerState } from './player.context.svelte';
+export { default as PlayerContext, getPlayerState } from './player.context.svelte'

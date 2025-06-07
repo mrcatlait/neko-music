@@ -45,7 +45,7 @@ export class AudioService {
       this.removeEvents()
       this.player?.destroy()
       this.audio.remove()
-    });
+    })
   }
 
   play(): void {
@@ -63,7 +63,7 @@ export class AudioService {
   setSource(url: string): void {
     this.player?.attachSource(url)
   }
-  
+
   setVolume(volume: number) {
     if (this.player?.isMuted()) {
       this.player?.setMute(false)
@@ -101,6 +101,6 @@ export class AudioService {
 
     this.player.off(DASH_EVENTS.CanPlay, this.options.onCanPlay)
     this.player.off(DASH_EVENTS.PlaybackTimeUpdated, this.options.onPlaybackTimeUpdate)
-    this.player.off(DASH_EVENTS.PlaybackEnded, this.options.onPlaybackEnded) 
+    this.player.off(DASH_EVENTS.PlaybackEnded, this.options.onPlaybackEnded)
   }
 }

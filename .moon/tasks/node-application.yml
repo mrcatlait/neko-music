@@ -10,7 +10,7 @@ fileGroups:
   app: []
   configs:
     - '*.{js,json,yml,yaml}'
-    - 'eslint.config.mjs'
+    - 'eslint.config.{js,mjs}'
     - '.prettierignore'
     - '.prettierrc'
   sources:
@@ -49,7 +49,16 @@ tasks:
   lint:
     command:
       - 'eslint'
+      # - '--fix'
+    inputs:
+      - '@group(sources)'
+      - '@group(configs)'
+
+  lint-fix:
+    command:
+      - 'eslint'
       - '--fix'
+    local: true
     inputs:
       - '@group(sources)'
       - '@group(configs)'

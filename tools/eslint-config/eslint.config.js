@@ -1,16 +1,20 @@
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import importPlugin from 'eslint-plugin-import'
+import { includeIgnoreFile } from '@eslint/compat'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import { fileURLToPath } from 'node:url'
+
+const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url))
 
 export default tseslint.config(
+  includeIgnoreFile(gitignorePath),
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
-  importPlugin.flatConfigs.recommended, // disable for now
+  importPlugin.flatConfigs.recommended,
   eslintPluginPrettierRecommended,
   {
     settings: {
-      // disable for now
       'import/resolver': {
         typescript: true,
         node: true,

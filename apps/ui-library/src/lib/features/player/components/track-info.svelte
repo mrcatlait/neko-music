@@ -1,39 +1,49 @@
 <script lang="ts">
-  import { getArtworkUrl } from '@/shared/utils';
-  import { getPlaybackState } from '../../playback/contexts';
+  import { getArtworkUrl } from '@/shared/utils'
 
-  const state = getPlaybackState();
   const track = {
     artwork: {
       url: 'https://via.placeholder.com/{size}',
       backgroundColor: '#000000',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
     },
     title: 'Track Title',
     artists: [
       {
         id: '1',
-        name: 'Artist Name'
+        name: 'Artist Name',
       },
       {
         id: '2',
-        name: 'Artist Name 2'
-      }
-    ]
+        name: 'Artist Name 2',
+      },
+    ],
   }
 </script>
 
 <div class="track-info">
-  <img src={getArtworkUrl(track.artwork.url, 'small')} alt="" height="56" width="56" />
+  <img
+    src={getArtworkUrl(track.artwork.url, 'small')}
+    alt=""
+    height="56"
+    width="56"
+  />
 
   <div class="title truncate">
-    <p class="title-medium" title={track.title}>
+    <p
+      class="title-medium"
+      title={track.title}
+    >
       {track.title}
     </p>
 
     <div class="truncate">
       {#each track.artists as artist (artist.id)}
-        <a href={`/artist/${artist.id}`} class="body-medium truncate secondary-text" title={artist.name}>
+        <a
+          href={`/artist/${artist.id}`}
+          class="body-medium truncate secondary-text"
+          title={artist.name}
+        >
           {artist.name}
         </a>
       {/each}

@@ -1,1 +1,1 @@
-export * from './audio.service';
+export * from './audio.service'

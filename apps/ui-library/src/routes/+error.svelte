@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { page } from '$app/state';
+  import { page } from '$app/state'
 
-	const {error, status} = page;
+  const { error, status } = page
 </script>
 
 <h1>Error</h1>
 <p>
-	{error?.message}
+  {error?.message}
 </p>
 
 <p>
-	{status}
+  {status}
 </p>

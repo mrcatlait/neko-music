@@ -1,1 +1,1 @@
-export * from './get-artwork-url';
+export * from './get-artwork-url'

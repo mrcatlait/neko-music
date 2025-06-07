@@ -4,6 +4,10 @@ stack: 'frontend'
 type: 'application'
 language: 'typescript'
 
+# dependsOn:
+#   - id: 'eslint-config'
+#     scope: 'development'
+
 fileGroups:
   app:
     - 'svelte.*'

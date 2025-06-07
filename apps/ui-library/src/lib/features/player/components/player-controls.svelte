@@ -1,10 +1,8 @@
 <script lang="ts">
   import { getPlaybackState } from '@/features/playback/contexts'
-  import { getPlayerState } from '../contexts/player.context.svelte';
-	import { REPEAT_OPTIONS } from '@/features/playback/enums';
+  import { REPEAT_OPTIONS } from '@/features/playback/enums'
 
-  const playbackState = getPlaybackState();
-  const playerState = getPlayerState();
+  const playbackState = getPlaybackState()
 
   // function handleKeyDown(event: KeyboardEvent) {
   //   if (event.key === ' ') {
@@ -41,9 +39,7 @@
     <i>skip_next</i>
   </button>
 
-  <button
-    aria-label="Repeat"
-  >
+  <button aria-label="Repeat">
     {#if playbackState.repeat === REPEAT_OPTIONS.None}
       <i class="inactive">repeat</i>
     {:else if playbackState.repeat === REPEAT_OPTIONS.All}

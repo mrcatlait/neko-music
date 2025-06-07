@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
-  import { getPlaybackState } from '$lib/features/playback/contexts/playback.context.svelte';
+  import { goto } from '$app/navigation'
+  import { getPlaybackState } from '$lib/features/playback/contexts/playback.context.svelte'
 
-  const state = getPlaybackState();
+  const state = getPlaybackState()
 </script>
 
 <h1>Context</h1>

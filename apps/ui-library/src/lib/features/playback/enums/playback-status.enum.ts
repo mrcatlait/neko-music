@@ -4,6 +4,6 @@ export const PLAYBACK_STATUS = {
   Paused: 'paused',
   Stopped: 'stopped',
   Loading: 'loading',
-} as const;
+} as const
 
-export type PlaybackStatus = (typeof PLAYBACK_STATUS)[keyof typeof PLAYBACK_STATUS];
+export type PlaybackStatus = (typeof PLAYBACK_STATUS)[keyof typeof PLAYBACK_STATUS]

@@ -1,19 +1,22 @@
 <script lang="ts">
-  import { getPlayerState } from '$lib/features/player/contexts/player.context.svelte';
-
-  const state = getPlayerState();
-
-  let showQueue = $state<boolean>(false);
+  let showQueue = $state<boolean>(false)
 </script>
 
 <div class="queue-toggle">
-  <button class="queue-button" on:click={() => showQueue = !showQueue}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+  <button
+    class="queue-button"
+    on:click={() => (showQueue = !showQueue)}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
       <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
     </svg>
-    {#if $queue.length > 0}
+    <!-- {#if $queue.length > 0}
       <span class="queue-count">{$queue.length}</span>
-    {/if}
+    {/if} -->
   </button>
 </div>
 

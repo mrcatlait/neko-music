@@ -1,6 +1,6 @@
-import type { Artwork } from "./artwork.model"
-import type { TrackAlbum } from "./track-album.model"
-import type { TrackArtist } from "./track-artist.model"
+import type { Artwork } from './artwork.model'
+import type { TrackAlbum } from './track-album.model'
+import type { TrackArtist } from './track-artist.model'
 
 export interface Track {
   /**

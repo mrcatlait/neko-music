@@ -3,6 +3,6 @@ export const PLAYER_STATUS = {
   Loading: 'loading',
   Playing: 'playing',
   Paused: 'paused',
-} as const;
+} as const
 
-export type PlayerStatus = (typeof PLAYER_STATUS)[keyof typeof PLAYER_STATUS];
+export type PlayerStatus = (typeof PLAYER_STATUS)[keyof typeof PLAYER_STATUS]

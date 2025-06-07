@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
+  import { goto } from '$app/navigation'
 </script>
 
 <h1>Welcome to SvelteKit</h1>

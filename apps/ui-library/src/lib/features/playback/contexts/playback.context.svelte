@@ -1,16 +1,19 @@
-<script lang="ts" module>
-  import { createContext } from '../../../shared/hooks';
-	import { PlaybackState } from '../states';
+<script
+  lang="ts"
+  module
+>
+  import { createContext } from '../../../shared/hooks'
+  import { PlaybackState } from '../states'
 
-  const { get, set } = createContext<PlaybackState>();
+  const { get, set } = createContext<PlaybackState>()
 
-  export { get as getPlaybackState };
+  export { get as getPlaybackState }
 </script>
 
 <script lang="ts">
-  const { children } = $props();
+  const { children } = $props()
 
-  set(new PlaybackState());
+  set(new PlaybackState())
 </script>
 
 {@render children?.()}
