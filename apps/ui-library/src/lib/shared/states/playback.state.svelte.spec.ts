@@ -117,12 +117,36 @@ describe('PlaybackState', () => {
 
   describe('seek()', () => {
     it('should set currentTime and call audioService.seek()', () => {
+      state.currentTrack = {
+        duration: 100,
+      } as Track
+
       const seekTime = 30
 
       state.seek(seekTime)
 
       expect(state.currentTime).toBe(seekTime)
       expect(audioServiceMock.seek).toHaveBeenCalledWith(seekTime)
+    })
+
+    it('should set currentTime to 0 if time is less than 0', () => {
+      state.currentTrack = {
+        duration: 100,
+      } as Track
+
+      state.seek(-10)
+
+      expect(state.currentTime).toBe(0)
+    })
+
+    it('should set currentTime to duration if time is greater than duration', () => {
+      state.currentTrack = {
+        duration: 100,
+      } as Track
+
+      state.seek(110)
+
+      expect(state.currentTime).toBe(100)
     })
   })
 

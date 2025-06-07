@@ -33,9 +33,13 @@ tasks:
 
   test-unit:
     command: 'vitest'
-    local: true
     inputs:
       - '@group(app)'
       - '@group(sources)'
     outputs:
       - 'reports/unit'
+
+  test:
+    local: true
+    deps:
+      - 'test-unit'

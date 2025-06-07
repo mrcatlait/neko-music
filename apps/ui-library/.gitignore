@@ -9,6 +9,12 @@ node_modules
 /.svelte-kit
 /build
 
+# Coverage directory
+/coverage
+
+# Test reports
+/reports
+
 # OS
 .DS_Store
 Thumbs.db

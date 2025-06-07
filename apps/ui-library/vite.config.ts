@@ -11,12 +11,17 @@ export default defineConfig({
     }),
   ],
   test: {
+    globals: true,
+    watch: false,
+    reporters: ['default', 'junit'],
+    outputFile: {
+      junit: './reports/unit/junit-report.xml',
+    },
     workspace: [
       {
         extends: './vite.config.ts',
         plugins: [svelteTesting()],
         test: {
-          globals: true,
           name: 'client',
           environment: 'jsdom',
           clearMocks: true,
@@ -28,7 +33,6 @@ export default defineConfig({
       {
         extends: './vite.config.ts',
         test: {
-          globals: true,
           name: 'server',
           environment: 'node',
           include: ['src/**/*.{test,spec}.{js,ts}'],
