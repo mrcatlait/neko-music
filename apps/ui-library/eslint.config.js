@@ -47,6 +47,58 @@ export default ts.config(
           varsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/shared/states/*'],
+              message: 'Use context providers instead of importing global states directly.',
+              allowTypeImports: false,
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/lib/features/**/*'],
+    rules: {
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/features/**/*'],
+              message: 'Features cannot import from other feature domains. Use shared utilities or proper interfaces.',
+              allowTypeImports: true,
+            },
+          ],
+          paths: [
+            {
+              name: '@/features',
+              message: 'Import from specific feature domains, not the barrel export.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/lib/shared/**/*'],
+    rules: {
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/features/**/*'],
+              message: 'Shared code cannot import from features. Keep shared code truly independent.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
     },
   },
   {

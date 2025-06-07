@@ -1,3 +1,4 @@
+import {} from '@/features/preferences'
 type Theme = 'light' | 'dark'
 
 export class UserPreferencesState {

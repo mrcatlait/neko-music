@@ -1,4 +1,4 @@
-import { BrowserOnly } from '$lib/shared/decorators/browser-only.decorator'
+import { BrowserOnly } from '@/shared/decorators'
 import type { MediaPlayerClass, PlaybackTimeUpdatedEvent } from 'dashjs'
 import { onDestroy } from 'svelte'
 

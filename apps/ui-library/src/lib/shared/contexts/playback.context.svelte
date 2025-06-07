@@ -2,7 +2,7 @@
   lang="ts"
   module
 >
-  import { createContext } from '../../../shared/hooks'
+  import { createContext } from '../hooks'
   import { PlaybackState } from '../states'
 
   const { get, set } = createContext<PlaybackState>()

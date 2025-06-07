@@ -1,2 +1,5 @@
 export * from './artwork.model'
+export * from './queue.model'
+export * from './track-album.model'
+export * from './track-artist.model'
 export * from './track.model'
