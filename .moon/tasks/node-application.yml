@@ -27,7 +27,7 @@ fileGroups:
 
 tasks:
   test-unit:
-    command: 'vitest --config vite.config.ts'
+    command: 'vitest'
     inputs:
       - '@globs(sources)'
       - '@globs(unit-tests)'

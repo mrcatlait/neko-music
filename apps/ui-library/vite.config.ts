@@ -17,6 +17,14 @@ export default defineConfig({
     outputFile: {
       junit: './reports/unit/junit-report.xml',
     },
+    coverage: {
+      enabled: true,
+      provider: 'v8',
+      include: ['src/**/*.ts', 'src/**/*.svelte'],
+      exclude: ['**/*.d.ts', '**/index.ts', '**/*.model.ts', '**/*.spec.ts'],
+      reporter: ['text', 'lcov'],
+      all: true,
+    },
     workspace: [
       {
         extends: './vite.config.ts',
