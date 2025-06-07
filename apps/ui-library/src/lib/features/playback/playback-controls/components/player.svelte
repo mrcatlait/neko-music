@@ -2,7 +2,6 @@
   import type { HTMLAttributes } from 'svelte/elements'
 
   import PlayerControls from './player-controls.svelte'
-  import { PlayerContext } from '../contexts'
   import TrackInfo from './track-info.svelte'
   import VolumeControl from './volume-control.svelte'
 
@@ -16,19 +15,17 @@
   aria-label="Player"
   role="region"
 >
-  <PlayerContext>
-    <div class="player-content">
-      <TrackInfo />
-      <PlayerControls />
-      <div class="player-actions">
-        <VolumeControl />
-      </div>
+  <div class="player-content">
+    <TrackInfo />
+    <PlayerControls />
+    <div class="player-actions">
+      <VolumeControl />
     </div>
-  </PlayerContext>
+  </div>
 </div>
 
 <style lang="scss">
-  @use '../../../styles/abstracts' as ds;
+  @use '../../../../styles/abstracts' as ds;
 
   .player {
     --n-player-height: 80px;

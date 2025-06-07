@@ -1,35 +1,22 @@
 <script lang="ts">
-  import { getPlayerState } from '../contexts/player.context.svelte'
   import { Slider } from '@/shared/components'
+  import { getPlaybackState } from '@/shared/contexts'
 
-  const state = getPlayerState()
+  const state = getPlaybackState()
 
-  let isMuted = false
-  let previousVolume = state.volume
-
-  function toggleMute() {
-    if (isMuted) {
-      state.setVolume({ volume: previousVolume })
-      isMuted = false
-    } else {
-      previousVolume = state.volume
-      state.setVolume({ volume: 0 })
-      isMuted = true
-    }
+  function getValue() {
+    return state.volume
   }
 
-  function handleVolumeChange(event: Event) {
-    const input = event.target as HTMLInputElement
-    const newVolume = parseFloat(input.value)
-    state.setVolume({ volume: newVolume })
-    isMuted = newVolume === 0
+  function setValue(value: number) {
+    state.setVolume(value)
   }
 </script>
 
 <div class="volume-control">
   <button
     class="volume-button"
-    on:click={toggleMute}
+    on:click={() => state.toggleMute()}
   >
     {#if state.volume === 0}
       <svg
@@ -65,11 +52,11 @@
   <Slider
     tabindex={0}
     aria-label="Volume"
-    value={state.volume}
+    bind:value={getValue, setValue}
     min={0}
     max={1}
     step={0.01}
-    on:change={handleVolumeChange}
+    type="single"
     role="slider"
   />
 </div>

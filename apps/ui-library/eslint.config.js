@@ -52,7 +52,7 @@ export default ts.config(
         {
           patterns: [
             {
-              group: ['@/shared/states/*'],
+              group: ['@/shared/states/*', '@/shared/states'],
               message: 'Use context providers instead of importing global states directly.',
               allowTypeImports: false,
             },
@@ -72,6 +72,11 @@ export default ts.config(
               group: ['@/features/**/*'],
               message: 'Features cannot import from other feature domains. Use shared utilities or proper interfaces.',
               allowTypeImports: true,
+            },
+            {
+              group: ['@/shared/states/*', '@/shared/states'],
+              message: 'Use context providers instead of importing global states directly.',
+              allowTypeImports: false,
             },
           ],
           paths: [

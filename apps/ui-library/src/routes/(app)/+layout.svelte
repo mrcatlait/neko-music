@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Player } from '@/features/player/components'
-  import { PlaybackContext } from '@/features/playback/contexts'
+  import { Player } from '@/features/playback/playback-controls'
+  import { PlaybackContext } from '@/shared/contexts'
   import { page } from '$app/state'
 
   const { children } = $props()

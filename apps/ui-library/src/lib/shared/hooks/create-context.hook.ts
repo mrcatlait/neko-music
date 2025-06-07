@@ -1,3 +1,4 @@
+import { browser } from '$app/environment'
 import { getContext, setContext } from 'svelte'
 
 export const createContext = <Type>() => {
@@ -6,7 +7,7 @@ export const createContext = <Type>() => {
   return {
     get: () => {
       const context = getContext<Type>(CONTEXT_KEY)
-      if (!context) {
+      if (!context && browser) {
         throw new Error('Context must be used within its Provider component')
       }
       return context

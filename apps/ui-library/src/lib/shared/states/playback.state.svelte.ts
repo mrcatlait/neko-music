@@ -89,8 +89,13 @@ export class PlaybackState {
   }
 
   seek(time: number): void {
-    this.currentTime = time
-    this.audioService.seek(time)
+    if (time < 0) {
+      this.currentTime = 0
+    } else {
+      this.currentTime = Math.min(time, this.currentTrack?.duration ?? 0)
+    }
+
+    this.audioService.seek(this.currentTime)
   }
 
   setVolume(volume: number): void {
