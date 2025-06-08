@@ -50,6 +50,7 @@
         min={0}
         max={duration}
         step={0.1}
+        hideThumb
         aria-label="Seek to position in track"
       />
     </div>

@@ -15,7 +15,7 @@ export class PlaybackState {
   status = $state<PlaybackStatus>(PLAYBACK_STATUS.Pending)
   queue = $state<Queue | null>(mockQueue)
 
-  tracks = $state<Track[]>([])
+  tracks = $state<Track[]>(mockQueue.tracks)
   currentTrack = $state<Track | null>(mockQueue.tracks[0])
 
   volume = $state<number>(50)

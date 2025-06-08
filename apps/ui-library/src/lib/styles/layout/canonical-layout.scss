@@ -22,7 +22,7 @@
       grid-area: player;
     }
 
-		@include abstracts.window-class(compact) {
+		@include abstracts.window-class(compact, medium) {
 			--spacing-layout: var(--spacing-layout-compact);
 
       grid-template-columns: 1fr;
@@ -35,7 +35,7 @@
       @include navigation-bar.navigation-bar;
     }
 
-		@include abstracts.window-class(medium, expanded) {
+		@include abstracts.window-class(expanded) {
 			--spacing-layout: var(--spacing-layout-medium);
 
 			grid-template-columns: auto 1fr; 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { PLAYBACK_STATUS, REPEAT_OPTIONS } from '@/shared/enums'
   import { getPlaybackState } from '@/shared/contexts'
+  import { IconButton } from '@/shared/components'
 
   const state = getPlaybackState()
 
@@ -33,21 +34,22 @@
   role="group"
   aria-label="Playback Controls"
 >
-  <button
-    class:inactive={!state.shuffle}
+  <IconButton
+    color="secondary"
     aria-label="Shuffle"
-    onclick={state.toggleShuffle}
+    onclick={() => state.toggleShuffle()}
   >
-    <i>shuffle</i>
-  </button>
+    <i class:inactive={!state.shuffle}>shuffle</i>
+  </IconButton>
 
-  <button
+  <IconButton
     aria-label="Previous"
     disabled={!state.hasPrevious}
-    onclick={state.previous}
+    onclick={() => state.previous()}
+    color="secondary"
   >
     <i>skip_previous</i>
-  </button>
+  </IconButton>
 
   <button
     class="play-pause-button"
@@ -61,26 +63,27 @@
     {/if}
   </button>
 
-  <button
+  <IconButton
     aria-label="Next"
     disabled={!state.hasNext}
-    onclick={state.next}
+    onclick={() => state.next()}
+    color="secondary"
   >
     <i>skip_next</i>
-  </button>
+  </IconButton>
 
-  <button
+  <IconButton
     aria-label="Repeat"
-    onclick={state.toggleRepeat}
+    onclick={() => state.toggleRepeat()}
   >
     {#if state.repeat === REPEAT_OPTIONS.None}
-      <i class="inactive">repeat</i>
+      <i class:inactive={true}>repeat</i>
     {:else if state.repeat === REPEAT_OPTIONS.All}
       <i>repeat</i>
     {:else if state.repeat === REPEAT_OPTIONS.Single}
       <i>repeat_one</i>
     {/if}
-  </button>
+  </IconButton>
 </div>
 
 <style>
@@ -126,12 +129,6 @@
   }
 
   .inactive {
-    opacity: var(--state-disabled-layer-opacity, 0.38);
-  }
-
-  i {
-    font-family: 'Material Symbols Outlined';
-    font-size: 24px;
-    line-height: 1;
+    opacity: var(--state-disabled-layer-opacity);
   }
 </style>

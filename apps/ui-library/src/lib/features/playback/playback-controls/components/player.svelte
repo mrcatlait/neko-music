@@ -44,7 +44,7 @@
     display: block;
     height: var(--n-player-height);
 
-    @include ds.window-class(compact) {
+    @include ds.window-class(compact, medium) {
       &::before {
         content: '';
       }
@@ -75,7 +75,7 @@
 
     @include ds.elevation(2);
 
-    @include ds.window-class(compact) {
+    @include ds.window-class(compact, medium) {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto auto;
       bottom: calc(var(--n-navigation-height) + var(--spacing-layout));

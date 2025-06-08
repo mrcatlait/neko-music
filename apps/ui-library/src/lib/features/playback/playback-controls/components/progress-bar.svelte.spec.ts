@@ -116,34 +116,41 @@ describe('ProgressBar', () => {
   })
 
   describe('accessibility', () => {
-    it('should have proper ARIA attributes for slider', () => {
+    it('should provide meaningful progress information to screen readers', () => {
       // Arrange & Act
       render(ProgressBar)
 
       // Assert
-      const slider = screen.getByRole('slider')
-      expect(slider).toBeInTheDocument()
-      // The Slider component handles its own accessibility attributes
+      const progressBar = screen.getByRole('progressbar')
+      expect(progressBar).toHaveAttribute('aria-valuenow', '60')
+      expect(progressBar).toHaveAttribute('aria-valuemax', '180')
+      expect(progressBar).toHaveAttribute('aria-valuemin', '0')
+      expect(progressBar).toHaveAttribute('aria-label', 'Playback progress')
     })
 
-    it('should have proper semantic structure', () => {
-      // Arrange & Act
-      render(ProgressBar)
+    it('should update ARIA values when playback state changes', async () => {
+      // Arrange
+      const { rerender } = render(ProgressBar)
+
+      // Act
+      mockPlaybackState.currentTime = 120
+      await rerender({})
 
       // Assert
-      const progressSection = screen.getByRole('group', { name: /progress/i })
-      expect(progressSection).toBeInTheDocument()
+      const progressBar = screen.getByRole('progressbar')
+      expect(progressBar).toHaveAttribute('aria-valuenow', '120')
     })
 
-    it('should have time labels for screen readers', () => {
+    it('should provide time context for screen readers', () => {
       // Arrange & Act
       render(ProgressBar)
 
       // Assert
-      const currentTimeLabel = screen.getByLabelText(/current time/i)
-      const durationLabel = screen.getByLabelText(/total duration/i)
-      expect(currentTimeLabel).toBeInTheDocument()
-      expect(durationLabel).toBeInTheDocument()
+      const currentTime = screen.getByLabelText(/current time/i)
+      const duration = screen.getByLabelText(/total duration/i)
+
+      expect(currentTime).toHaveTextContent('1:00')
+      expect(duration).toHaveTextContent('3:00')
     })
   })
 })
