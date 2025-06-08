@@ -37,7 +37,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.10.7",
     "typescript": "~5.7.2",
-    "unplugin-swc": "^1.5.1"
+    "unplugin-swc": "^1.5.4"
   },
   "prettier": "@neko/eslint-config/prettier"
 }
