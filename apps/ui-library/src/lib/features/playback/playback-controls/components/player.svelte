@@ -17,16 +17,19 @@
   role="region"
 >
   <div class="player-content">
-    <div class="player-section track-section">
+    <div class="player-content-track-info">
       <TrackInfo />
     </div>
 
-    <div class="player-section controls-section">
+    <div class="player-content-playback-controls">
       <PlayerControls />
+    </div>
+
+    <div class="player-content-playback-progress">
       <ProgressBar />
     </div>
 
-    <div class="player-section actions-section">
+    <div class="player-content-playback-volume">
       <VolumeControl />
     </div>
   </div>
@@ -65,19 +68,22 @@
   .player-content {
     position: fixed;
     display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'track-info playback-controls playback-progress playback-volume';
     align-items: center;
-    grid-template-columns: minmax(200px, 1fr) minmax(400px, 2fr) minmax(200px, 1fr);
+    column-gap: 48px;
     inset: auto 0 0;
     padding: 0 var(--spacing-layout);
     height: var(--n-player-height);
     background: var(--n-player-background);
-    gap: 24px;
 
     @include ds.elevation(2);
 
     @include ds.window-class(compact, medium) {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto auto auto;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: 1fr;
+      grid-template-areas: 'track-info playback-controls';
       bottom: calc(var(--n-navigation-height) + var(--spacing-layout));
       left: var(--spacing-layout);
       right: var(--spacing-layout);
@@ -88,39 +94,27 @@
     }
   }
 
-  .player-section {
-    display: flex;
-    align-items: center;
-    min-width: 0;
+  .player-content-track-info {
+    grid-area: track-info;
   }
 
-  .track-section {
-    justify-content: flex-start;
+  .player-content-playback-controls {
+    grid-area: playback-controls;
   }
 
-  .controls-section {
-    flex-direction: column;
-    justify-content: center;
-    gap: 8px;
+  .player-content-playback-progress {
+    grid-area: playback-progress;
 
-    @include ds.window-class(compact) {
-      order: 1;
+    @include ds.window-class(compact, medium) {
+      display: none;
     }
   }
 
-  .actions-section {
-    justify-content: flex-end;
+  .player-content-playback-volume {
+    grid-area: playback-volume;
 
-    @include ds.window-class(compact) {
-      order: 3;
-      justify-content: center;
-    }
-  }
-
-  @include ds.window-class(compact) {
-    .track-section {
-      order: 2;
-      justify-content: center;
+    @include ds.window-class(compact, medium) {
+      display: none;
     }
   }
 </style>

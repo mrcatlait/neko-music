@@ -8,6 +8,7 @@ const mockQueue = {
   tracks: [
     { id: '1', title: 'Track 1', duration: 100, artists: [{ id: '1', name: 'Artist 1' }] },
     { id: '2', title: 'Track 2', duration: 200, artists: [{ id: '2', name: 'Artist 2' }] },
+    { id: '3', title: 'Track 3', duration: 300, artists: [{ id: '3', name: 'Artist 3' }] },
   ],
 } as Queue
 
