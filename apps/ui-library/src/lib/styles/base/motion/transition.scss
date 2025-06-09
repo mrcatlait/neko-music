@@ -1,0 +1,292 @@
+@mixin motion-transition() {
+  // Core transition patterns
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  // Fade through pattern
+  @keyframes fade-through-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes fade-through-in {
+    from { opacity: 0; }
+  }
+
+  // Shared axis transitions
+  @keyframes shared-axis-x-forward {
+    from { 
+      opacity: 0; 
+      transform: translateX(30px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+
+  @keyframes shared-axis-x-backward {
+    from { 
+      opacity: 0; 
+      transform: translateX(-30px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+
+  @keyframes shared-axis-x-exit-forward {
+    from { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+    to { 
+      opacity: 0; 
+      transform: translateX(-30px); 
+    }
+  }
+
+  @keyframes shared-axis-x-exit-backward {
+    from { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+    to { 
+      opacity: 0; 
+      transform: translateX(30px); 
+    }
+  }
+
+  @keyframes shared-axis-y-forward {
+    from { 
+      opacity: 0; 
+      transform: translateY(30px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes shared-axis-y-backward {
+    from { 
+      opacity: 0; 
+      transform: translateY(-30px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes shared-axis-z-forward {
+    from { 
+      opacity: 0; 
+      transform: scale(0.8); 
+    }
+    to { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+  }
+
+  @keyframes shared-axis-z-backward {
+    from { 
+      opacity: 0; 
+      transform: scale(1.1); 
+    }
+    to { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+  }
+
+  // Container transform
+  @keyframes container-transform-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+      border-radius: 50%;
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+      border-radius: var(--shape-corner-medium, 8px);
+    }
+  }
+
+  @keyframes container-transform-exit {
+    from {
+      opacity: 1;
+      transform: scale(1);
+      border-radius: var(--shape-corner-medium, 8px);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.8);
+      border-radius: 50%;
+    }
+  }
+
+  // Slide animations
+  @keyframes slide-in-from-bottom {
+    from { 
+      opacity: 0; 
+      transform: translateY(100%); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes slide-in-from-top {
+    from { 
+      opacity: 0; 
+      transform: translateY(-100%); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes slide-in-from-left {
+    from { 
+      opacity: 0; 
+      transform: translateX(-100%); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+
+  @keyframes slide-in-from-right {
+    from { 
+      opacity: 0; 
+      transform: translateX(100%); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+
+  @keyframes slide-out-to-bottom {
+    from { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+    to { 
+      opacity: 0; 
+      transform: translateY(100%); 
+    }
+  }
+
+  @keyframes slide-out-to-top {
+    from { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+    to { 
+      opacity: 0; 
+      transform: translateY(-100%); 
+    }
+  }
+
+  @keyframes slide-out-to-left {
+    from { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+    to { 
+      opacity: 0; 
+      transform: translateX(-100%); 
+    }
+  }
+
+  @keyframes slide-out-to-right {
+    from { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+    to { 
+      opacity: 0; 
+      transform: translateX(100%); 
+    }
+  }
+
+  // Component-specific animations
+  @keyframes menu-enter {
+    from { 
+      opacity: 0; 
+      transform: scale(0.95); 
+    }
+    to { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+  }
+
+  @keyframes fab-enter {
+    from { 
+      opacity: 0; 
+      transform: scale(0); 
+    }
+    to { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+  }
+
+  @keyframes fab-exit {
+    from { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+    to { 
+      opacity: 0; 
+      transform: scale(0); 
+    }
+  }
+
+  @keyframes list-item-enter {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  // Accessibility: Respect user motion preferences
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

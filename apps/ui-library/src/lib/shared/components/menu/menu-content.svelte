@@ -1,12 +1,10 @@
 <script lang="ts">
-  import clsx from 'clsx'
   import { DropdownMenu } from 'bits-ui'
 
   let {
     ref = $bindable(null),
     sideOffset = 4,
     portalProps,
-    class: className,
     ...restProps
   }: DropdownMenu.ContentProps & {
     portalProps?: DropdownMenu.PortalProps
@@ -18,7 +16,6 @@
     bind:ref
     data-slot="dropdown-menu-content"
     {sideOffset}
-    class={clsx('dropdown-menu-content', className)}
     {...restProps}
   />
 </DropdownMenu.Portal>

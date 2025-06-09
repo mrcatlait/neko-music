@@ -4,8 +4,10 @@
 @use 'themes' as themes;
 
 // Base styles
+@include base.motion-duration;
+@include base.motion-easing;
+@include base.motion-transition;
 @include base.elevations;
-@include base.motions;
 @include base.reset;
 @include base.shapes;
 @include base.spacing;
@@ -19,6 +21,7 @@
 // @include components.dialog;
 @include components.icon;
 // @include components.input;
+@include components.menu;
 @include components.slider;
 
 // Include layout

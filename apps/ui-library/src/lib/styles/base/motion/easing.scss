@@ -1,0 +1,15 @@
+@mixin motion-easing() {
+  :root {
+    // Standard
+    // This set is used for simple, small, or utility-focused transitions.
+    --motion-easing-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
+    --motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+    --motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+
+    // Emphasized
+    // This set is the most common because it captures the expressive style.
+    --motion-easing-emphasized: var(--motion-easing-standard);
+    --motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1.0);
+    --motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0.0, 0.8, 0.15);
+  }
+}

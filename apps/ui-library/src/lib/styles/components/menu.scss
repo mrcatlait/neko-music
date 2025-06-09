@@ -1,0 +1,45 @@
+@use '../abstracts' as abstracts;
+
+@mixin menu() {
+  [data-dropdown-menu-content] {
+    --n-dropdown-menu-content-background: var(--color-surface-container-high);
+    --n-dropdown-menu-content-color: var(--color-text-high-emphasis);
+    --n-dropdown-menu-content-border-radius: var(--shape-corner-extra-small);
+    --n-dropdown-menu-content-min-width: 112px;
+    --n-dropdown-menu-content-max-width: 280px;
+
+    background-color: var(--n-dropdown-menu-content-background);
+    color: var(--n-dropdown-menu-content-color);
+    min-width: var(--n-dropdown-menu-content-min-width);
+    max-width: var(--n-dropdown-menu-content-max-width);
+    overflow: hidden;
+    border-radius: var(--n-dropdown-menu-content-border-radius);
+
+    @include abstracts.elevation(4);
+
+    &[data-state='open'] {
+      @include abstracts.menu-enter();
+    }
+
+    &[data-side='top'] {
+      @include abstracts.sheet-enter-from-bottom();
+    }
+
+    &[data-side='bottom'] {
+      @include abstracts.sheet-enter-from-top();
+    }
+
+    &[data-side='left'] {
+      @include abstracts.sheet-enter-from-right();
+    }
+
+    &[data-side='right'] {
+      @include abstracts.sheet-enter-from-left();
+    }
+  }
+
+  [data-dropdown-menu-item] {
+    @include abstracts.list-item-enter();
+    @include abstracts.stagger-children();
+  }
+}
