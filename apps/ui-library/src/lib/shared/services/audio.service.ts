@@ -1,6 +1,5 @@
 import { BrowserOnly } from '@/shared/decorators'
 import type { MediaPlayerClass, PlaybackTimeUpdatedEvent } from 'dashjs'
-import { onDestroy } from 'svelte'
 
 const DASH_EVENTS = {
   PlaybackTimeUpdated: 'playbackTimeUpdated',

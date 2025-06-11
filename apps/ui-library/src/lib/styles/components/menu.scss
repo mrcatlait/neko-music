@@ -18,28 +18,30 @@
     @include abstracts.elevation(4);
 
     &[data-state='open'] {
-      @include abstracts.menu-enter();
+      // @include abstracts.shared-axis-z-enter();
     }
 
     &[data-side='top'] {
-      @include abstracts.sheet-enter-from-bottom();
+      // @include abstracts.slide-enter-from-bottom();
+      animation:
+        shared-axis-z-enter var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards,
+        shared-axis-y-enter var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
     }
 
     &[data-side='bottom'] {
-      @include abstracts.sheet-enter-from-top();
+      @include abstracts.slide-enter-from-top();
     }
 
     &[data-side='left'] {
-      @include abstracts.sheet-enter-from-right();
+      @include abstracts.slide-enter-from-right();
     }
 
     &[data-side='right'] {
-      @include abstracts.sheet-enter-from-left();
+      @include abstracts.slide-enter-from-left();
     }
-  }
-
-  [data-dropdown-menu-item] {
-    @include abstracts.list-item-enter();
-    @include abstracts.stagger-children();
+  // [data-dropdown-menu-item] {
+  //   @include abstracts.list-item-enter();
+  //   @include abstracts.stagger-children();
+  // }
   }
 }

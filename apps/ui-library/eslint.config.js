@@ -47,22 +47,11 @@ export default ts.config(
           varsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            {
-              group: ['@/shared/states/*', '@/shared/states'],
-              message: 'Use context providers instead of importing global states directly.',
-              allowTypeImports: false,
-            },
-          ],
-        },
-      ],
     },
   },
   {
     files: ['src/lib/features/**/*'],
+    ignores: ['**/*.spec.ts'],
     rules: {
       '@typescript-eslint/no-restricted-imports': [
         'error',

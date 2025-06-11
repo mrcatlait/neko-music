@@ -51,7 +51,7 @@ describe('AudioService', () => {
     audioService = new AudioService(mockOptions)
 
     // Wait for the import to resolve
-    await new Promise((resolve) => setTimeout(resolve, 2))
+    await new Promise((resolve) => setTimeout(resolve, 10))
   })
 
   afterEach(() => {

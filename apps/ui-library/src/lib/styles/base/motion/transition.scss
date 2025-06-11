@@ -21,9 +21,9 @@
   }
 
   // Shared axis transitions
-  @keyframes shared-axis-x-forward {
+  @keyframes shared-axis-x-enter {
     from { 
-      opacity: 0; 
+      opacity: 0;
       transform: translateX(30px); 
     }
     to { 
@@ -32,7 +32,7 @@
     }
   }
 
-  @keyframes shared-axis-x-backward {
+  @keyframes shared-axis-x-exit {
     from { 
       opacity: 0; 
       transform: translateX(-30px); 
@@ -43,29 +43,7 @@
     }
   }
 
-  @keyframes shared-axis-x-exit-forward {
-    from { 
-      opacity: 1; 
-      transform: translateX(0); 
-    }
-    to { 
-      opacity: 0; 
-      transform: translateX(-30px); 
-    }
-  }
-
-  @keyframes shared-axis-x-exit-backward {
-    from { 
-      opacity: 1; 
-      transform: translateX(0); 
-    }
-    to { 
-      opacity: 0; 
-      transform: translateX(30px); 
-    }
-  }
-
-  @keyframes shared-axis-y-forward {
+  @keyframes shared-axis-y-enter {
     from { 
       opacity: 0; 
       transform: translateY(30px); 
@@ -76,7 +54,7 @@
     }
   }
 
-  @keyframes shared-axis-y-backward {
+  @keyframes shared-axis-y-exit {
     from { 
       opacity: 0; 
       transform: translateY(-30px); 
@@ -87,7 +65,7 @@
     }
   }
 
-  @keyframes shared-axis-z-forward {
+  @keyframes shared-axis-z-enter {
     from { 
       opacity: 0; 
       transform: scale(0.8); 
@@ -98,7 +76,7 @@
     }
   }
 
-  @keyframes shared-axis-z-backward {
+  @keyframes shared-axis-z-exit {
     from { 
       opacity: 0; 
       transform: scale(1.1); 

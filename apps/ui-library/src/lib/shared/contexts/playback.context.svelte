@@ -5,7 +5,9 @@
   import { createContext } from '../hooks'
   import { PlaybackState } from '../states'
 
-  const { get, set } = createContext<PlaybackState>()
+  export const PLAYBACK_CONTEXT_KEY = 'playback'
+
+  const { get, set } = createContext<PlaybackState>(PLAYBACK_CONTEXT_KEY)
 
   export { get as getPlaybackState }
 </script>
