@@ -1,6 +1,5 @@
 {
   "name": "@neko/permissions",
-  "version": "1.0.0",
   "private": true,
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",

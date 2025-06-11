@@ -1,5 +1,6 @@
 import { render } from '@testing-library/svelte'
 import PlaybackQueue from './playback-queue.svelte'
+import { playbackQueueSelectors } from '@neko/selectors'
 
 import { mockContext } from '@/shared/test-utils'
 import { PLAYBACK_CONTEXT_KEY } from '@/shared/contexts'
@@ -20,7 +21,7 @@ describe('PlaybackQueue', () => {
       })
 
       // Act
-      const queue = getByTestId('playback-queue')
+      const queue = getByTestId(playbackQueueSelectors.queueContainer)
 
       // Assert
       expect(queue).toBeInTheDocument()
@@ -33,7 +34,7 @@ describe('PlaybackQueue', () => {
       })
 
       // Act
-      const tracks = getAllByTestId('playback-queue-track')
+      const tracks = getAllByTestId(playbackQueueSelectors.queueTrack)
 
       // Assert
       expect(tracks).toHaveLength(3)

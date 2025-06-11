@@ -4,9 +4,9 @@ stack: 'frontend'
 type: 'application'
 language: 'typescript'
 
-# dependsOn:
-#   - id: 'eslint-config'
-#     scope: 'development'
+dependsOn:
+  - id: 'selectors'
+    scope: 'production'
 
 fileGroups:
   app:

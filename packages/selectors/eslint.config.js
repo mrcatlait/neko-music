@@ -1,1 +1,1 @@
-export { default } from "@neko/eslint-config";
+export { default } from '@neko/eslint-config'

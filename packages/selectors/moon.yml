@@ -7,3 +7,9 @@ language: 'typescript'
 dependsOn:
   - id: 'eslint-config'
     scope: 'development'
+
+tasks:
+  build:
+    command: 'tsc'
+    inputs:
+      - '@group(sources)'

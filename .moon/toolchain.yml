@@ -12,5 +12,5 @@ typescript:
   rootConfigFileName: 'tsconfig.json'
   routeOutDirToCache: true
   # includeProjectReferenceSources: true
-  syncProjectReferencesToPaths: true
+  # syncProjectReferencesToPaths: true
   syncProjectReferences: true

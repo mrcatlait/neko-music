@@ -3,7 +3,6 @@ $schema: 'https://moonrepo.dev/schemas/tasks.json'
 fileGroups:
   configs:
     - '*.{js,json,yml,yaml}'
-    - 'eslint.config.mjs'
     - '.prettierignore'
     - '.prettierrc'
   sources:

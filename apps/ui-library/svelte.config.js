@@ -10,6 +10,8 @@ const config = {
       '@/features/*': './src/lib/features/*',
       '@/shared/*': './src/lib/shared/*',
       '@/styles/*': './src/lib/styles/*',
+      '@neko/selectors': '../../packages/selectors/src/index.ts',
+      '@neko/selectors/*': '../../packages/selectors/src/*',
     },
   },
 }

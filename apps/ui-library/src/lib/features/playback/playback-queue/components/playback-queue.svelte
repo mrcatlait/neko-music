@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { playbackQueueSelectors } from '@neko/selectors'
   import { getPlaybackState } from '@/shared/contexts'
 
   const states = getPlaybackState()
@@ -10,7 +11,7 @@
   const { tracks }: Props = $props()
 </script>
 
-<div data-testid="playback-queue">
+<div data-testid={playbackQueueSelectors.queueContainer}>
   <h1>Playback Queue</h1>
   <ul>
     {#if states.queue?.tracks}
