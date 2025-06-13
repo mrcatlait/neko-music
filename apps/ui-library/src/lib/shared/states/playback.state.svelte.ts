@@ -3,21 +3,12 @@ import type { Queue, Track } from '../models'
 import { AudioService } from '../services'
 import { shuffleArray } from '../utils'
 
-const mockQueue = {
-  id: '1',
-  tracks: [
-    { id: '1', title: 'Track 1', duration: 100, artists: [{ id: '1', name: 'Artist 1' }] },
-    { id: '2', title: 'Track 2', duration: 200, artists: [{ id: '2', name: 'Artist 2' }] },
-    { id: '3', title: 'Track 3', duration: 300, artists: [{ id: '3', name: 'Artist 3' }] },
-  ],
-} as Queue
-
 export class PlaybackState {
   status = $state<PlaybackStatus>(PLAYBACK_STATUS.Pending)
-  queue = $state<Queue | null>(mockQueue)
+  queue = $state<Queue | null>(null)
 
-  tracks = $state<Track[]>(mockQueue.tracks)
-  currentTrack = $state<Track | null>(mockQueue.tracks[0])
+  nextTracks = $state<Track[]>([])
+  currentTrack = $state<Track | null>(null)
 
   volume = $state<number>(50)
   muted = $state<boolean>(false)
@@ -26,11 +17,11 @@ export class PlaybackState {
   repeat = $state<RepeatOption>(REPEAT_OPTIONS.None)
   shuffle = $state<boolean>(false)
 
-  private readonly currentItemIndex = $derived(this.tracks.findIndex((track) => track.id === this.currentTrack?.id))
+  private readonly currentItemIndex = $derived(this.nextTracks.findIndex((track) => track.id === this.currentTrack?.id))
 
-  nextInQueue = $derived(this.tracks.filter((_, index) => index > this.currentItemIndex))
+  nextInQueue = $derived(this.nextTracks.filter((_, index) => index > this.currentItemIndex))
 
-  hasNext = $derived(this.currentItemIndex < this.tracks.length - 1 || this.repeat === REPEAT_OPTIONS.All)
+  hasNext = $derived(this.currentItemIndex < this.nextTracks.length - 1 || this.repeat === REPEAT_OPTIONS.All)
   hasPrevious = $derived(this.currentItemIndex > 0 || this.repeat === REPEAT_OPTIONS.All)
 
   constructor(
@@ -43,7 +34,7 @@ export class PlaybackState {
       },
       onPlaybackEnded: () => {
         if (this.repeat === REPEAT_OPTIONS.Single) {
-          this.pause()
+          this.play()
         } else if (this.hasNext) {
           this.next()
         } else {
@@ -91,7 +82,7 @@ export class PlaybackState {
 
     if (this.queue?.id !== queue.id) {
       this.queue = queue
-      this.tracks = queue.tracks
+      this.nextTracks = queue.tracks
     }
 
     this.audioService.setSource(this.currentTrack.id)
@@ -123,10 +114,11 @@ export class PlaybackState {
       return
     }
 
-    if (this.currentItemIndex < this.tracks.length - 1) {
-      this.currentTrack = this.tracks[this.currentItemIndex + 1]
+    if (this.currentItemIndex < this.nextTracks.length - 1) {
+      this.currentTrack = this.nextTracks[this.currentItemIndex + 1]
     } else {
-      this.currentTrack = this.tracks[0]
+      // Should reset nextTracks
+      this.currentTrack = this.nextTracks[0]
     }
 
     this.audioService.setSource(this.currentTrack.id)
@@ -138,9 +130,10 @@ export class PlaybackState {
     }
 
     if (this.currentItemIndex > 0) {
-      this.currentTrack = this.tracks[this.currentItemIndex - 1]
+      this.currentTrack = this.nextTracks[this.currentItemIndex - 1]
     } else {
-      this.currentTrack = this.tracks[this.tracks.length - 1]
+      // Should reset nextTracks
+      this.currentTrack = this.nextTracks[this.nextTracks.length - 1]
     }
 
     this.audioService.setSource(this.currentTrack.id)
@@ -169,9 +162,9 @@ export class PlaybackState {
     }
 
     if (this.shuffle) {
-      this.tracks = shuffleArray(this.tracks)
+      this.nextTracks = shuffleArray(this.nextTracks)
     } else {
-      this.tracks = [...this.queue.tracks]
+      this.nextTracks = [...this.queue.tracks]
     }
   }
 
@@ -181,7 +174,7 @@ export class PlaybackState {
     }
 
     const targetPosition = this.currentItemIndex + 1
-    this.tracks.splice(targetPosition, 0, ...tracks)
+    this.nextTracks.splice(targetPosition, 0, ...tracks)
 
     const originalTargetPosition = this.queue.tracks.findIndex((track) => track.id === this.currentTrack?.id) + 1
     this.queue.tracks.splice(originalTargetPosition, 0, ...tracks)
@@ -192,7 +185,7 @@ export class PlaybackState {
       return
     }
 
-    this.tracks.push(...tracks)
+    this.nextTracks.push(...tracks)
     this.queue.tracks.push(...tracks)
   }
 
@@ -201,8 +194,8 @@ export class PlaybackState {
       return
     }
 
-    const trackIndex = this.tracks.findIndex((track) => track.id === trackId)
-    this.tracks.splice(trackIndex, 1)
+    const trackIndex = this.nextTracks.findIndex((track) => track.id === trackId)
+    this.nextTracks.splice(trackIndex, 1)
 
     const originalTrackIndex = this.queue.tracks.findIndex((track) => track.id === trackId)
     this.queue.tracks.splice(originalTrackIndex, 1)
@@ -213,10 +206,10 @@ export class PlaybackState {
       return
     }
 
-    const trackIndex = this.tracks.findIndex((track) => track.id === trackId)
-    const [track] = this.tracks.splice(trackIndex, 1)
+    const trackIndex = this.nextTracks.findIndex((track) => track.id === trackId)
+    const [track] = this.nextTracks.splice(trackIndex, 1)
 
-    this.tracks.splice(targetPosition, 0, track)
+    this.nextTracks.splice(targetPosition, 0, track)
 
     const originalTrackIndex = this.queue.tracks.findIndex((t) => t.id === trackId)
     this.queue.tracks.splice(originalTrackIndex, 1)
