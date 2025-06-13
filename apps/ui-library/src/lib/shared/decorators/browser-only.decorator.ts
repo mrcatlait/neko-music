@@ -33,7 +33,7 @@ export function BrowserOnly<T extends Constructor>(constructor: T) {
               // Handle methods
               return async (...args: unknown[]) => {
                 console.warn(
-                  `[BrowserOnly] Method "${propName}" is not available on the server. ` +
+                  `[BrowserOnly] Class method "${constructor.name}.${propName}" is not available on the server. ` +
                     `Called with args: ${JSON.stringify(args)}`,
                 )
                 return undefined
@@ -42,14 +42,16 @@ export function BrowserOnly<T extends Constructor>(constructor: T) {
             set: (_, prop, value) => {
               const propName = String(prop)
               console.warn(
-                `[BrowserOnly] Cannot set property "${propName}" on the server. ` +
+                `[BrowserOnly] Cannot set class property "${constructor.name}.${propName}" on the server. ` +
                   `Attempted to set value: ${JSON.stringify(value)}`,
               )
               return true // Indicate success to prevent errors
             },
             getOwnPropertyDescriptor: (_, prop) => {
               const propName = String(prop)
-              console.warn(`[BrowserOnly] Property "${propName}" is not available on the server`)
+              console.warn(
+                `[BrowserOnly] Class property "${constructor.name}.${propName}" is not available on the server`,
+              )
               return {
                 configurable: true,
                 enumerable: true,

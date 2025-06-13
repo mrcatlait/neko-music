@@ -1,10 +1,10 @@
 <script lang="ts">
   import { playbackQueueSelectors } from '@neko/selectors'
   import { getPlaybackState } from '@/shared/contexts'
-  import PlaybackQueueNext from './playback-queue-next.svelte'
+  import PlaybackQueueNowPlaying from './playback-queue-now-playing.svelte'
   import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components'
 
-  const states = getPlaybackState()
+  const state = getPlaybackState()
 </script>
 
 <section
@@ -14,15 +14,15 @@
   <h1>Playback Queue</h1>
 
   <Tabs
-    value="next"
+    value="now-playing"
     variant="secondary"
   >
     <TabsList>
       <TabsTrigger
-        value="next"
-        data-testid={playbackQueueSelectors.queueNextTabButton}
+        value="now-playing"
+        data-testid={playbackQueueSelectors.queueNowPlayingTabButton}
       >
-        <i aria-hidden="true">queue_music</i>Next
+        <i aria-hidden="true">queue_music</i>Now playing
       </TabsTrigger>
       <TabsTrigger
         value="history"
@@ -31,9 +31,9 @@
         <i aria-hidden="true">history</i>History
       </TabsTrigger>
     </TabsList>
-    <TabsContent value="next">
-      {#if states.queue?.tracks}
-        <PlaybackQueueNext tracks={states.queue.tracks} />
+    <TabsContent value="now-playing">
+      {#if state.queue?.tracks}
+        <PlaybackQueueNowPlaying tracks={state.queue.tracks} />
       {:else}
         <p data-testid={playbackQueueSelectors.emptyQueueMessage}>No tracks in queue</p>
       {/if}

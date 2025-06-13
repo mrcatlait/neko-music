@@ -1,13 +1,16 @@
 <script>
+  import { browser } from '$app/environment'
   import { PlaybackQueue } from '@/features/playback/playback-queue'
   import { getPlaybackState } from '@/shared/contexts'
   import { QueueBuilder } from '@/shared/test-utils'
 
   const state = getPlaybackState()
 
-  const queue = new QueueBuilder().build()
+  if (browser) {
+    const queue = new QueueBuilder().build()
 
-  state.togglePlay(queue)
+    state.togglePlay(queue)
+  }
 </script>
 
 <h1>Player</h1>

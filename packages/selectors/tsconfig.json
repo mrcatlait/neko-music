@@ -1,0 +1,9 @@
+{
+  "include": [
+    "**/*"
+  ],
+  "references": [],
+  "compilerOptions": {
+    "outDir": "../../.moon/cache/types/packages/selectors"
+  }
+}

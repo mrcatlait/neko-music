@@ -26,7 +26,10 @@ export class TrackBuilder {
       })),
       genres: faker.helpers.multiple(() => faker.music.genre()),
       artwork: {
-        url: faker.image.url(),
+        url: faker.image.url({
+          width: 56,
+          height: 56,
+        }),
         backgroundColor: faker.color.rgb(),
         textColor: faker.color.rgb(),
       },

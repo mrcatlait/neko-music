@@ -28,7 +28,7 @@ describe('PlaybackQueue', () => {
       // Arrange
       const queue = new QueueBuilder().build()
       state.queue = queue
-      state.tracks = queue.tracks
+      state.nextTracks = queue.tracks
 
       // Act
       const { getAllByTestId } = render(PlaybackQueue, {
