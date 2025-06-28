@@ -2,9 +2,6 @@
 .moon/cache
 .moon/docker
 
-# Cursor
-.cursor
-
 # Temporary files
 /server
 /apps/api-library-elysiajs

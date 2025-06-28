@@ -1,0 +1,638 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Test-Driven Development (TDD) Rule
+
+<rule>
+name: test_driven_development
+description: Rules and standards for Test-Driven Development with TypeScript
+filters:
+  - type: file_extension
+    pattern: "\\.(ts|js|tsx|jsx|svelte)$"
+  - type: directory
+    pattern: "src"
+  - type: content
+    pattern: "(describe|test|it)\\("
+actions:
+  - type: suggest
+    message: |
+      Test-Driven Development Rules:
+
+      1. Test First, Code Second:
+         - ALWAYS check for existing tests
+         - Create tests BEFORE implementation
+         - Use tests as documentation
+
+      2. Implementation Process:
+         a) Review/Create Tests
+         b) Run Tests (should fail)
+         c) Implement Code
+         d) Run Tests (should pass)
+         e) Refactor
+
+      3. Test Structure (AAA Pattern):
+         ```typescript
+         describe('ServiceName', () => {
+           describe('methodName', () => {
+             it('should perform expected behavior', () => {
+               // Arrange
+               const mockData = { id: '1', name: 'Test' }
+               const service = new TestService()
+               
+               // Act
+               const result = service.process(mockData)
+               
+               // Assert
+               expect(result).toBe(expectedValue)
+               expect(mockFunction).toHaveBeenCalledWith(mockData)
+             })
+           })
+         })
+         ```
+
+      4. Validation Steps:
+         - Check test location
+         - Review existing tests
+         - Create missing tests
+         - Follow test requirements
+
+      5. Error Prevention:
+         - No implementation without tests
+         - No skipping edge cases
+         - No failing tests
+         - No manual testing only
+examples:
+  - input: |
+      // Bad: Implementation without tests
+      class MyService {
+        call() {
+          // Code without tests
+        }
+      }
+
+      // Good: Test first
+      describe('MyService', () => {
+        describe('call', () => {
+          it('should perform the expected action', () => {
+            // Arrange
+            const service = new MyService()
+            
+            // Act
+            const result = service.call()
+            
+            // Assert
+            expect(result).toBeDefined()
+          })
+        })
+      })
+metadata:
+  priority: high
+  version: 2.0.0
+  changelog:
+    - version: 2.0.0
+      changes:
+        - Updated for TypeScript/JavaScript
+        - Added AAA (Arrange, Act, Assert) pattern
+        - Changed from Ruby/RSpec to Vitest/Jest
+        - Updated file patterns and commands
+    - version: 1.0.0
+      changes:
+        - Initial Ruby version
+</rule>
+
+## Implementation Guide
+
+1. **Finding Existing Tests**
+   ```bash
+   find src/ -name "*.spec.ts" | grep $FEATURE_NAME
+   ```
+
+2. **Creating New Tests**
+   ```typescript
+   // src/services/my-service.spec.ts
+   import { MyService } from './my-service'
+
+   describe('MyService', () => {
+     let service: MyService
+
+     beforeEach(() => {
+       service = new MyService()
+     })
+
+     describe('call', () => {
+       it('should succeed with valid input', () => {
+         // Arrange
+         const validInput = { data: 'test' }
+         
+         // Act
+         const result = service.call(validInput)
+         
+         // Assert
+         expect(result.success).toBe(true)
+       })
+
+       it('should fail gracefully with invalid input', () => {
+         // Arrange
+         const invalidInput = null
+         
+         // Act
+         const result = service.call(invalidInput)
+         
+         // Assert
+         expect(result.success).toBe(false)
+         expect(result.error).toBeDefined()
+       })
+     })
+   })
+   ```
+
+3. **Running Tests**
+   ```bash
+   # Vitest
+   npm run test src/services/my-service.spec.ts
+   ```
+
+4. **Implementation**
+   ```typescript
+   // src/services/my-service.ts
+   export interface ServiceResult {
+     success: boolean
+     data?: any
+     error?: string
+   }
+
+   export class MyService {
+     call(input: any): ServiceResult {
+       // Implementation following test requirements
+       if (!input) {
+         return { success: false, error: 'Invalid input' }
+       }
+       
+       return { success: true, data: input }
+     }
+   }
+   ```
+
+## Best Practices
+
+1. **Test Organization**
+   - One test file per class/module
+   - Logical grouping with describe blocks
+   - Clear, descriptive test names
+   - Use AAA (Arrange, Act, Assert) comments consistently
+
+2. **Test Coverage**
+   - Happy path scenarios
+   - Edge cases
+   - Error conditions
+   - Boundary values
+
+3. **Maintainability**
+   - DRY tests using shared setup
+   - Clear setup using beforeEach/beforeAll
+   - Isolated tests with proper cleanup
+   - Meaningful assertions
+
+4. **Documentation**
+   - Tests serve as documentation
+   - Clear descriptions
+   - Example usage
+   - Edge case documentation
+
+## Overview
+
+This rule establishes Test-Driven Development (TDD) as the standard approach for implementing services and complex code in TypeScript projects.
+
+## Core Principles
+
+1. **Test First, Code Second**
+   - ALWAYS check for existing tests before modifying or creating code
+   - If no test exists, create one BEFORE implementing the feature
+   - Use tests to define the expected behavior and interface
+
+2. **Test Structure (AAA Pattern)**
+   ```typescript
+   describe('ServiceName', () => {
+     // Shared setup for common behavior
+     const createTestData = () => ({
+       id: '1',
+       name: 'Test Data'
+     })
+
+     // Context-specific test cases
+     describe('when conditions are met', () => {
+       it('should behave as expected', () => {
+         // Arrange
+         const testData = createTestData()
+         const service = new ServiceName()
+         
+         // Act
+         const result = service.process(testData)
+         
+         // Assert
+         expect(result).toEqual(expectedOutput)
+       })
+     })
+   })
+   ```
+
+3. **Implementation Process**
+   a. Review existing tests (if any)
+   b. Write new tests defining expected behavior
+   c. Run tests (they should fail - RED)
+   d. Implement code to make tests pass (GREEN)
+   e. Refactor while keeping tests green (REFACTOR)
+
+## Example from Audio Service
+
+Good:
+```typescript
+// First: Review audio-service.spec.ts
+import { AudioService } from './audio-service'
+
+describe('AudioService', () => {
+  let audioService: AudioService
+  
+  beforeEach(() => {
+    audioService = new AudioService()
+  })
+
+  describe('when processing audio files', () => {
+    it('should return processed audio data', () => {
+      // Arrange
+      const audioFile = new File([''], 'test.mp3', { type: 'audio/mpeg' })
+      
+      // Act
+      const result = audioService.process(audioFile)
+      
+      // Assert
+      expect(result).toEqual({
+        duration: expect.any(Number),
+        format: 'mp3',
+        processed: true
+      })
+    })
+
+    it('should handle unsupported formats', () => {
+      // Arrange
+      const invalidFile = new File([''], 'test.xyz', { type: 'application/unknown' })
+      
+      // Act
+      const result = audioService.process(invalidFile)
+      
+      // Assert
+      expect(result.processed).toBe(false)
+      expect(result.error).toContain('Unsupported format')
+    })
+  })
+})
+
+// Then: Implement service based on tests
+export class AudioService {
+  process(file: File): ProcessResult {
+    // Implementation follows test requirements
+  }
+}
+```
+
+Bad:
+```typescript
+// Writing implementation first without tests
+export class AudioService {
+  process(file: File) {
+    // Implementation without clear requirements
+    // No validation of behavior
+    // No test coverage
+  }
+}
+```
+
+## Validation Steps
+
+Before implementing any service or complex code:
+
+1. **Test Location Check**
+   ```bash
+   find src/ -name "*.spec.ts" | grep $FEATURE_NAME
+   ```
+
+2. **Test Review**
+   - Read all related tests
+   - Understand shared setup
+   - Note edge cases
+   - Review mock data and fixtures
+
+3. **Test Creation (if needed)**
+   - Create test file with proper naming
+   - Define shared setup and teardown
+   - Write context-specific tests using AAA pattern
+   - Include edge cases
+   - Add appropriate mocks and fixtures
+
+4. **Implementation**
+   - Follow test requirements
+   - Run tests frequently
+   - Refactor when needed
+   - Maintain test coverage
+
+## Common Patterns
+
+1. **Service Tests**
+   ```typescript
+   describe('ServiceName', () => {
+     describe('methodName', () => {
+       it('should perform expected action with valid input', () => {
+         // Arrange
+         const validInput = { data: 'test' }
+         const service = new ServiceName()
+         
+         // Act
+         const result = service.methodName(validInput)
+         
+         // Assert
+         expect(result.success).toBe(true)
+       })
+
+       it('should handle errors with invalid input', () => {
+         // Arrange
+         const invalidInput = null
+         const service = new ServiceName()
+         
+         // Act
+         const result = service.methodName(invalidInput)
+         
+         // Assert
+         expect(result.success).toBe(false)
+         expect(result.error).toBeDefined()
+       })
+     })
+   })
+   ```
+
+2. **Component Tests (Svelte)**
+   ```typescript
+   import { render, screen } from '@testing-library/svelte'
+   import MyComponent from './my-component.svelte'
+
+   describe('MyComponent', () => {
+     it('should render with props', () => {
+       // Arrange
+       const props = { title: 'Test Title' }
+       
+       // Act
+       render(MyComponent, { props })
+       
+       // Assert
+       expect(screen.getByText('Test Title')).toBeInTheDocument()
+     })
+   })
+   ```
+
+3. **State Tests (Svelte 5)**
+   ```typescript
+   import { describe, it, expect } from 'vitest'
+   import { Counter } from './counter.svelte'
+
+   describe('Counter', () => {
+     it('should increment count', () => {
+       // Arrange
+       const counter = new Counter()
+       const initialCount = counter.count
+       
+       // Act
+       counter.increment()
+       
+       // Assert
+       expect(counter.count).toBe(initialCount + 1)
+     })
+   })
+   ```
+
+## Error Prevention
+
+1. Never start implementation without tests
+2. Don't modify existing code without reviewing tests
+3. Don't skip writing tests for edge cases
+4. Don't leave failing tests unresolved
+5. Always use AAA comments for test structure
+
+## Examples
+
+### Good Process
+1. Check for existing tests
+2. Review existing tests
+3. Write new tests with AAA structure
+4. Implement feature
+5. Refactor while keeping tests green
+
+### Bad Process
+1. Start coding immediately
+2. Test manually
+3. Fix bugs as they appear
+4. Write tests later (or never)
+
+## References
+
+- Vitest documentation: https://vitest.dev/
+- Jest documentation: https://jestjs.io/
+- Testing Library: https://testing-library.com/
+- TypeScript documentation: https://www.typescriptlang.org/
+
+## Enforcement
+
+The AI assistant should:
+
+1. ALWAYS check for existing tests first
+2. Suggest creating tests if none exist
+3. Follow TDD principles with AAA structure
+4. Reference relevant tests in responses
+5. Maintain test coverage
+6. Prevent implementation without tests
+7. Use consistent AAA (Arrange, Act, Assert) comments
+
+## Examples
+
+### Finding Tests
+```bash
+# Good
+find src/ -name "*audio*spec.ts"
+
+# Bad
+Start implementing without checking
+```
+
+## Real-World Example: Music Player Recovery
+
+This example demonstrates how we recovered from an incorrect implementation approach by returning to TDD principles:
+
+### Initial Mistake (What Not To Do)
+```typescript
+// BAD: Started with implementation without tests
+export class MusicPlayer {
+  play(track: Track) {
+    // Started writing player logic without clear requirements
+    // No test coverage for different formats
+    // No validation of expected behavior
+    // Led to confusion about playback states
+  }
+}
+```
+
+### TDD Recovery Process
+
+1. **Step 1: Stop and Write Tests First**
+```typescript
+// GOOD: Created comprehensive tests first
+import { MusicPlayer } from './music-player'
+import type { Track } from './types'
+
+describe('MusicPlayer', () => {
+  let player: MusicPlayer
+  const mockTrack: Track = {
+    id: '1',
+    title: 'Test Song',
+    url: 'test.mp3',
+    duration: 180
+  }
+
+  beforeEach(() => {
+    player = new MusicPlayer()
+  })
+
+  describe('when playing a track', () => {
+    it('should change state to playing', () => {
+      // Arrange
+      expect(player.state).toBe('idle')
+      
+      // Act
+      player.play(mockTrack)
+      
+      // Assert
+      expect(player.state).toBe('playing')
+      expect(player.currentTrack).toEqual(mockTrack)
+    })
+
+    it('should handle invalid tracks gracefully', () => {
+      // Arrange
+      const invalidTrack = null
+      
+      // Act
+      const result = player.play(invalidTrack)
+      
+      // Assert
+      expect(result.success).toBe(false)
+      expect(player.state).toBe('idle')
+    })
+
+    it('should emit play events', () => {
+      // Arrange
+      const onPlay = vi.fn()
+      player.on('play', onPlay)
+      
+      // Act
+      player.play(mockTrack)
+      
+      // Assert
+      expect(onPlay).toHaveBeenCalledWith(mockTrack)
+    })
+  })
+
+  describe('when pausing playback', () => {
+    it('should change state to paused', () => {
+      // Arrange
+      player.play(mockTrack)
+      expect(player.state).toBe('playing')
+      
+      // Act
+      player.pause()
+      
+      // Assert
+      expect(player.state).toBe('paused')
+    })
+  })
+})
+```
+
+2. **Step 2: Implement Against Tests**
+```typescript
+export type PlayerState = 'idle' | 'playing' | 'paused' | 'stopped'
+
+export interface PlayResult {
+  success: boolean
+  error?: string
+}
+
+export class MusicPlayer {
+  private _state: PlayerState = 'idle'
+  private _currentTrack: Track | null = null
+  private eventListeners = new Map<string, Function[]>()
+
+  get state(): PlayerState {
+    return this._state
+  }
+
+  get currentTrack(): Track | null {
+    return this._currentTrack
+  }
+
+  play(track: Track): PlayResult {
+    // Implementation guided by state transition tests
+    if (!track) {
+      return { success: false, error: 'Invalid track' }
+    }
+
+    this._currentTrack = track
+    this._state = 'playing'
+    this.emit('play', track)
+    
+    return { success: true }
+  }
+
+  pause(): void {
+    // Implementation driven by state management tests
+    if (this._state === 'playing') {
+      this._state = 'paused'
+      this.emit('pause')
+    }
+  }
+
+  on(event: string, callback: Function): void {
+    // Implementation guided by event handling tests
+    if (!this.eventListeners.has(event)) {
+      this.eventListeners.set(event, [])
+    }
+    this.eventListeners.get(event)!.push(callback)
+  }
+
+  private emit(event: string, data?: any): void {
+    const listeners = this.eventListeners.get(event) || []
+    listeners.forEach(callback => callback(data))
+  }
+}
+```
+
+### Key Learnings
+
+1. **Problem**: Starting with implementation led to:
+   - Unclear state management
+   - Missing edge cases
+   - No validation of behavior
+   - Difficulty testing different scenarios
+
+2. **Solution**: Returning to TDD principles:
+   - Wrote comprehensive tests first with AAA structure
+   - Defined clear state expectations
+   - Covered error scenarios
+   - Validated event handling
+   - Used proper TypeScript interfaces
+
+3. **Benefits Realized**:
+   - Clear interface definition
+   - Confidence in state management
+   - Easy to add new features
+   - Maintainable test suite
+   - Documented behavior through tests
+
+This real-world example demonstrates how returning to TDD principles with proper TypeScript testing helped recover from an implementation-first approach and led to a more robust, well-tested solution.
