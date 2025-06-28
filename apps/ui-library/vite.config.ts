@@ -1,6 +1,7 @@
 import { svelteTesting } from '@testing-library/svelte/vite'
 import { sveltekit } from '@sveltejs/kit/vite'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
@@ -9,7 +10,17 @@ export default defineConfig({
     viteTsConfigPaths({
       root: './',
     }),
+    visualizer({
+      emitFile: true,
+      filename: 'stats.html',
+    }),
   ],
+  server: {
+    allowedHosts: ['localhost', '127.0.0.1', '0.0.0.0', '8a72-94-30-154-13.ngrok-free.app'],
+  },
+  build: {
+    chunkSizeWarningLimit: 1000,
+  },
   test: {
     globals: true,
     watch: false,
@@ -24,6 +35,9 @@ export default defineConfig({
       exclude: ['**/*.d.ts', '**/index.ts', '**/*.model.ts', '**/*.spec.ts'],
       reporter: ['text', 'lcov'],
       all: true,
+    },
+    benchmark: {
+      reporters: ['default'],
     },
     workspace: [
       {
@@ -45,6 +59,16 @@ export default defineConfig({
           environment: 'node',
           include: ['src/**/*.{test,spec}.{js,ts}'],
           exclude: ['src/**/*.svelte.{test,spec}.{js,ts}'],
+        },
+      },
+      {
+        extends: './vite.config.ts',
+        plugins: [svelteTesting()],
+        test: {
+          name: 'benchmark',
+          environment: 'jsdom',
+          include: ['src/**/*.benchmark.{js,ts}'],
+          setupFiles: ['./vitest-setup-client.ts'],
         },
       },
     ],

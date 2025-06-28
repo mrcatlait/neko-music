@@ -15,7 +15,7 @@
     background-color: var(--n-navigation-drawer-background);
     border-right: 1px solid var(--color-outline);
 
-    @include abstracts.typography(label-medium);
+    @include abstracts.typography(label-large);
 
     ul {
       position: fixed;

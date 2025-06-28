@@ -1,3 +1,5 @@
-export { default as Player } from './player.svelte'
+export { default as KeyboardShortcuts } from './keyboard-shortcuts.svelte'
 export { default as PlayerControls } from './player-controls.svelte'
 export { default as ProgressBar } from './progress-bar.svelte'
+export { default as TrackInfo } from './track-info.svelte'
+export { default as VolumeControl } from './volume-control.svelte'

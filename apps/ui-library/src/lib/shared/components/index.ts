@@ -1,3 +1,4 @@
+export * from './artist-list'
 export * from './button'
 export * from './icon-button'
 export * from './menu'

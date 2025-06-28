@@ -5,19 +5,6 @@
 
   const state = getPlaybackState()
 
-  function handleKeyDown(event: KeyboardEvent) {
-    if (event.key === ' ') {
-      event.preventDefault()
-      state.play()
-    } else if (event.key === 'ArrowRight') {
-      event.preventDefault()
-      state.seek(state.currentTime + 10)
-    } else if (event.key === 'ArrowLeft') {
-      event.preventDefault()
-      state.seek(state.currentTime - 10)
-    }
-  }
-
   function handlePlayPause() {
     if (state.status === PLAYBACK_STATUS.Playing) {
       state.pause()
@@ -26,8 +13,6 @@
     }
   }
 </script>
-
-<svelte:window on:keydown={handleKeyDown} />
 
 <div
   class="player-controls"
@@ -38,6 +23,7 @@
     color="secondary"
     aria-label="Shuffle"
     onclick={() => state.toggleShuffle()}
+    class="player-controls__secondary-action"
   >
     <i class:inactive={!state.shuffle}>shuffle</i>
   </IconButton>
@@ -47,6 +33,7 @@
     disabled={!state.hasPrevious}
     onclick={() => state.previous()}
     color="secondary"
+    class="player-controls__secondary-action"
   >
     <i>skip_previous</i>
   </IconButton>
@@ -75,6 +62,7 @@
   <IconButton
     aria-label="Repeat"
     onclick={() => state.toggleRepeat()}
+    class="player-controls__secondary-action"
   >
     {#if state.repeat === REPEAT_OPTIONS.None}
       <i class:inactive={true}>repeat</i>
@@ -86,12 +74,20 @@
   </IconButton>
 </div>
 
-<style>
+<style lang="scss">
+  @use '../../../../styles/abstracts' as abstracts;
+
   .player-controls {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
+  }
+
+  :global(.player-controls__secondary-action) {
+    @include abstracts.window-class(compact) {
+      display: none;
+    }
   }
 
   button {

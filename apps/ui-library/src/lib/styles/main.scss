@@ -15,7 +15,12 @@
 @include base.typography;
 
 // Include custom components
+@include components.button;
+@include components.icon-button;
 @include components.icon;
+@include components.menu;
+@include components.slider;
+@include components.tabs;
 
 // Include layout
 @include layouts.canonical-layout;

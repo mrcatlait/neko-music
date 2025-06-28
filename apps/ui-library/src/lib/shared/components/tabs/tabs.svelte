@@ -16,12 +16,3 @@
   data-tabs-variant={variant}
   {...restProps}
 />
-
-<style lang="scss">
-  :global {
-    [data-tabs-root] {
-      display: flex;
-      flex-direction: column;
-    }
-  }
-</style>

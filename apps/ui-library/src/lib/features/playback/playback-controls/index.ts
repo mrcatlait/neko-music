@@ -1,1 +1,1 @@
-export { default as Player } from './components/player.svelte'
+export { default as PlaybackControls } from './playback-controls.svelte'

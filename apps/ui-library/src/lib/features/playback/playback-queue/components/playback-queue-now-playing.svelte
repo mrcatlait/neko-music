@@ -1,14 +1,19 @@
 <script lang="ts">
-  import IconButton from '@/shared/components/icon-button/icon-button.svelte'
+  import { MenuContent, MenuTrigger } from '@/shared/components'
+  import { IconButton } from '@/shared/components'
+  import { getPlaybackState } from '@/shared/contexts'
   import type { Track } from '@/shared/models'
   import { formatDuration, getArtworkUrl } from '@/shared/utils'
   import { playbackQueueSelectors } from '@neko/selectors'
+  import { DropdownMenu } from 'bits-ui'
 
   interface Props {
     tracks: Track[]
   }
 
   let { tracks }: Props = $props()
+
+  const state = getPlaybackState()
 </script>
 
 <ol
@@ -17,7 +22,10 @@
 >
   {#each tracks as track (track.id)}
     <li data-testid={playbackQueueSelectors.queueNowPlayingTrackItem}>
-      <article class="track-card truncate">
+      <article
+        class="track-card truncate"
+        class:active={track.id === state.currentTrack?.id}
+      >
         <img
           src={getArtworkUrl(track.artwork.url, 'small')}
           alt=""
@@ -31,7 +39,7 @@
         <div class="track-card__content truncate">
           <h3
             title={track.title}
-            class="truncate"
+            class="truncate body-large"
           >
             {track.title}
           </h3>
@@ -53,12 +61,48 @@
         </time>
 
         <div class="track-card__actions">
-          <IconButton
-            class=""
-            aria-label="More"
-          >
-            <i aria-hidden="true">more_vert</i>
-          </IconButton>
+          <DropdownMenu.Root>
+            <MenuTrigger>
+              {#snippet child({ props })}
+                <IconButton
+                  {...props}
+                  aria-label="More"
+                >
+                  <i aria-hidden="true">more_vert</i>
+                </IconButton>
+              {/snippet}
+            </MenuTrigger>
+            <MenuContent>
+              <ul style="margin: 0; padding: 0;">
+                <li>
+                  <i>play_arrow</i>
+                  <span>Play</span>
+                </li>
+
+                <hr />
+
+                <li>
+                  <i>add</i>
+                  <span>Add to library</span>
+                </li>
+                <li>
+                  <i>playlist_add</i>
+                  <span>Add to playlist</span>
+                </li>
+
+                <hr />
+
+                <li>
+                  <i>queue_play_next</i>
+                  <span>Play next</span>
+                </li>
+                <li>
+                  <i>add_to_queue</i>
+                  <span>Play last</span>
+                </li>
+              </ul>
+            </MenuContent>
+          </DropdownMenu.Root>
         </div>
       </article>
     </li>
@@ -88,9 +132,12 @@
     grid-template-columns: 56px 1fr 56px 40px;
     grid-template-rows: 1fr;
     grid-template-areas: 'image content duration more';
+    border-radius: var(--shape-corner-small);
 
-    &:hover {
-      background-color: var(--color-surface-container);
+    @include abstracts.state(var(--color-text-medium-emphasis));
+
+    &.active {
+      background-color: var(--color-surface-container-high);
     }
   }
 
@@ -103,19 +150,15 @@
     grid-area: content;
   }
 
-  h3 {
-    @include abstracts.typography(title-medium);
-  }
-
   .track-card__artists {
     color: var(--color-text-medium-emphasis);
-    @include abstracts.typography(title-small);
+    @include abstracts.typography(body-medium);
   }
 
   time {
     grid-area: duration;
     color: var(--color-text-medium-emphasis);
-    @include abstracts.typography(title-small);
+    @include abstracts.typography(label-medium);
   }
 
   .track-card__actions {

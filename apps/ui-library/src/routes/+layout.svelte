@@ -1,7 +1,10 @@
 <script lang="ts">
+  import { UiContext } from '@/shared/contexts'
   import '../lib/styles/main.scss'
 
   const { children } = $props()
 </script>
 
-{@render children()}
+<UiContext>
+  {@render children()}
+</UiContext>

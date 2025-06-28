@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Player } from '@/features/playback/playback-controls'
+  import { PlaybackControls } from '@/features/playback/playback-controls'
   import { PlaybackContext } from '@/shared/contexts'
   import { page } from '$app/state'
 
@@ -17,7 +17,7 @@
       {@render children()}
     </main>
 
-    <Player data-layout-area="player" />
+    <PlaybackControls data-layout-area="player" />
 
     <nav
       data-layout-area="navigation"

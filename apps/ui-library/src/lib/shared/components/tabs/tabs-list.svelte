@@ -19,15 +19,3 @@
   data-tabs-density={density}
   {...restProps}
 />
-
-<style lang="scss">
-  @use '../../../styles/abstracts' as abstracts;
-
-  :global {
-    [data-tabs-list] {
-      display: grid;
-      grid-auto-flow: column;
-      border-bottom: 1px solid var(--color-outline);
-    }
-  }
-</style>

@@ -16,6 +16,9 @@
 			grid-area: content;
       overflow: hidden;
       padding: 0 var(--spacing-layout);
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
     }
 
     [data-layout-area="player"] {

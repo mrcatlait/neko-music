@@ -11,6 +11,8 @@ dependsOn:
 fileGroups:
   app:
     - 'svelte.*'
+  assets:
+    - 'static/**/*'
 
 tasks:
   start:
@@ -28,6 +30,8 @@ tasks:
     inputs:
       - '@group(app)'
       - '@group(sources)'
+      - '@group(configs)'
+      - '@group(assets)'
     outputs:
       - 'build'
 
