@@ -4,6 +4,8 @@
   ],
   "references": [],
   "compilerOptions": {
+    "strictNullChecks": true,
+    "composite": true,
     "outDir": "../../.moon/cache/types/packages/selectors"
   }
 }

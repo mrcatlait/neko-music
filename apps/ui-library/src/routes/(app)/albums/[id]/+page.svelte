@@ -3,5 +3,3 @@
 
   const { data }: PageProps = $props()
 </script>
-
-<h1>{data.album}</h1>

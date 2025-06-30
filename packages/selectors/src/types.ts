@@ -5,7 +5,19 @@ const _elements = ['button', 'input', 'textarea', 'checkbox', 'slider', 'link', 
 const _containers = ['container', 'wrapper', 'section', 'panel', 'card', 'list', 'item', 'group'] as const
 
 // State and content suffixes
-const _content = ['message', 'text', 'title', 'description', 'spinner', 'loader', 'indicator', 'badge', 'chip'] as const
+const _content = [
+  'message',
+  'text',
+  'title',
+  'description',
+  'spinner',
+  'loader',
+  'indicator',
+  'badge',
+  'chip',
+  'image',
+  'icon',
+] as const
 
 // All allowed names
 const _allNames = [..._elements, ..._containers, ..._content] as const
