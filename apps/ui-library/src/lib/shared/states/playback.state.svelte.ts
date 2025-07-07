@@ -105,8 +105,12 @@ export class PlaybackState {
   }
 
   toggleMute(): void {
-    this.muted = !this.muted || this.volume === 0
+    this.muted = !this.muted
     this.audioService.setMute(this.muted)
+
+    if (!this.muted && this.volume === 0) {
+      this.setVolume(10)
+    }
   }
 
   next(): void {

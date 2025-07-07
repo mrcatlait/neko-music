@@ -1,10 +1,9 @@
 <script lang="ts">
   import type { Track } from '@/shared/models'
   import { formatDuration, getArtworkUrl } from '@/shared/utils'
-  import { ArtistList } from '../artist-list'
-  import { IconButton } from '../icon-button'
   import { getPlaybackState } from '@/shared/contexts'
   import { trackListSelectors } from '@neko/selectors'
+  import { ArtistList, IconButton } from '@/shared/components'
 
   interface Props {
     track: Track
@@ -26,23 +25,13 @@
   aria-selected={isSelected}
   data-testid={trackListSelectors.trackListItem}
 >
-  <picture>
-    <source
-      srcset={getArtworkUrl(track.artwork.url, 'small')}
-      type="image/webp"
-    />
-    <img
-      alt=""
-      loading="lazy"
-      src="/assets/1x1.gif"
-      role="presentation"
-      decoding="async"
-      class="track-list-item__artwork"
-      width="40"
-      height="40"
-      data-testid={trackListSelectors.trackListItemImage}
-    />
-  </picture>
+  <span class="track-list-item__number title-medium">{track.trackNumber}</span>
+
+  <div class="track-list-item__play-button">
+    <IconButton onclick={() => onTogglePlay(track.id)}>
+      <i>play_arrow</i>
+    </IconButton>
+  </div>
 
   <div class="track-list-item__title title-medium truncate">
     <button
@@ -74,17 +63,6 @@
     <ArtistList artists={track.artists} />
   </div>
 
-  <div class="track-list-item__album body-small truncate">
-    <a
-      href={`/albums/${track.album.id}`}
-      class="track-list-item__album-link"
-      title={track.album.name}
-      data-testid={trackListSelectors.trackListItemAlbumTitle}
-    >
-      {track.album.name}
-    </a>
-  </div>
-
   <div class="track-list-item__duration label-large">
     <time
       datetime={duration}
@@ -102,15 +80,19 @@
 </div>
 
 <style lang="scss">
-  @use '../../../styles/abstracts' as abstracts;
+  @use '../../../../styles/abstracts' as abstracts;
 
   .track-list-item {
     display: grid;
     width: 100%;
-    grid-template-columns: 40px 3fr 2fr 2fr 64px 40px;
+    grid-template-columns: 40px 1fr 64px 40px;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      'number title duration actions'
+      'number artists duration actions';
     align-items: center;
-    gap: 16px;
-    padding: 8px 16px;
+    column-gap: 16px;
+    padding: 8px 16px 8px 8px;
 
     &:not(:first-child) {
       border-top: 1px solid var(--color-outline);
@@ -123,14 +105,25 @@
       &:hover {
         background-color: var(--color-surface-container-high);
       }
+
+      & > .track-list-item__number {
+        display: none;
+      }
+
+      & > .track-list-item__play-button {
+        display: block;
+      }
     }
 
     &:hover {
       background-color: var(--color-surface-container);
 
-      & > .track-list-item__artwork {
-        opacity: 0.5;
+      & > .track-list-item__number {
         display: none;
+      }
+
+      & > .track-list-item__play-button {
+        display: block;
       }
     }
 
@@ -138,11 +131,21 @@
       text-decoration: underline;
     }
 
-    &__artwork {
-      border-radius: var(--shape-corner-small);
+    &__number {
+      grid-area: number;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-medium-emphasis);
+    }
+
+    &__play-button {
+      grid-area: number;
+      display: none;
     }
 
     &__title {
+      grid-area: title;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -166,22 +169,18 @@
     }
 
     &__artists {
+      grid-area: artists;
       color: var(--color-text-medium-emphasis);
-    }
-
-    &__album {
-      color: var(--color-text-medium-emphasis);
-    }
-
-    &__album-link {
     }
 
     &__duration {
+      grid-area: duration;
       color: var(--color-text-medium-emphasis);
       text-align: right;
     }
 
     &__actions {
+      grid-area: actions;
     }
   }
 </style>

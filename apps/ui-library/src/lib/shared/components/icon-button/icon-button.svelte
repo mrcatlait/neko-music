@@ -5,11 +5,14 @@
 
   type Color = 'primary' | 'secondary'
 
+  type Variant = 'filled' | 'text'
+
   type Props = WithElementRef<HTMLButtonAttributes> & {
     color?: Color
+    variant?: Variant
   }
 
-  let { children, ref = $bindable(null), color = 'secondary', ...restProps }: Props = $props()
+  let { children, ref = $bindable(null), color = 'secondary', variant = 'text', ...restProps }: Props = $props()
 </script>
 
 <button
@@ -17,6 +20,7 @@
   use:blurOnClick
   data-icon-button-root
   data-icon-button-color={color}
+  data-icon-button-variant={variant}
   {...restProps}
 >
   {@render children?.()}

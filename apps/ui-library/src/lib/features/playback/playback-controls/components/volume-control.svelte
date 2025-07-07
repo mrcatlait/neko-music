@@ -1,51 +1,47 @@
 <script lang="ts">
-  import { DropdownMenu } from 'bits-ui'
-  import { Slider, MenuContent, IconButton, MenuTrigger } from '@/shared/components'
+  import { Slider, IconButton } from '@/shared/components'
   import { getPlaybackState } from '@/shared/contexts'
 
   const state = getPlaybackState()
 
   function getValue() {
-    return state.volume
+    return volume
   }
 
   function setValue(value: number) {
     state.setVolume(value)
   }
-</script>
 
-<DropdownMenu.Root>
-  <MenuTrigger>
-    {#snippet child({ props })}
-      <IconButton {...props}><i>volume_up</i></IconButton>
-    {/snippet}
-  </MenuTrigger>
-
-  <MenuContent class="volume-control-container">
-    <div class="volume-control-slider">
-      <Slider
-        tabindex={0}
-        aria-label="Volume"
-        bind:value={getValue, setValue}
-        min={0}
-        max={1}
-        step={0.01}
-        type="single"
-        role="slider"
-        color="secondary"
-        orientation="vertical"
-      />
-    </div>
-  </MenuContent>
-</DropdownMenu.Root>
-
-<style>
-  :global(.volume-control-container) {
-    min-width: 0 !important;
+  function toggleMute() {
+    state.toggleMute()
   }
 
-  .volume-control-slider {
-    padding: 8px;
-    height: 160px;
+  const volume = $derived(state.muted ? 0 : state.volume)
+  const icon = $derived(state.muted ? 'volume_off' : state.volume > 0.5 ? 'volume_up' : 'volume_down')
+</script>
+
+<div class="volume-control">
+  <IconButton onclick={toggleMute}><i>{icon}</i></IconButton>
+
+  <Slider
+    tabindex={0}
+    aria-label="Volume"
+    bind:value={getValue, setValue}
+    min={0}
+    max={100}
+    step={1}
+    type="single"
+    role="slider"
+    color="secondary"
+    orientation="horizontal"
+  />
+</div>
+
+<style>
+  .volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 160px;
   }
 </style>

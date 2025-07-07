@@ -29,6 +29,23 @@
 
     @include abstracts.state(var(--n-icon-button-color));
 
+    &[data-icon-button-variant='filled'] {
+      &[data-icon-button-color='primary'] {
+        --n-button-bg: var(--color-primary);
+        --n-button-color: var(--color-on-primary);
+      }
+
+      &[data-icon-button-color='secondary'] {
+        --n-button-bg: var(--color-secondary);
+        --n-button-color: var(--color-on-secondary);
+      }
+
+      background: var(--n-button-bg);
+      color: var(--n-button-color);
+
+      @include abstracts.state(var(--n-button-color));
+    }
+
     &[disabled] {
       cursor: default;
 

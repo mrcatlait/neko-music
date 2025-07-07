@@ -46,7 +46,7 @@
     display: block;
     height: var(--n-playback-controls-height);
 
-    @include abstracts.window-class(compact, medium) {
+    @include abstracts.window-class(compact, medium, expanded) {
       &::before {
         content: '';
       }
@@ -61,6 +61,10 @@
       background: linear-gradient(to bottom, rgba(var(--color-surface-rgb), 0), rgba(var(--color-surface-rgb), 0.9));
       mask: linear-gradient(180deg, rgba(var(--color-surface-rgb), 0), rgba(var(--color-surface-rgb), 1));
       backdrop-filter: blur(5px);
+
+      @include abstracts.window-class(expanded) {
+        bottom: 0;
+      }
     }
 
     &__content {
@@ -79,7 +83,11 @@
 
       @include abstracts.elevation(2);
 
-      @include abstracts.window-class(compact, medium) {
+      @include abstracts.window-class(expanded) {
+        --n-navigation-height: 1px;
+      }
+
+      @include abstracts.window-class(compact, medium, expanded) {
         --n-playback-controls-height: 40px;
 
         grid-template-columns: 1fr auto;
@@ -106,7 +114,7 @@
     &__playback-progress {
       grid-area: playback-progress;
 
-      @include abstracts.window-class(compact, medium) {
+      @include abstracts.window-class(compact, medium, expanded) {
         display: none;
       }
     }
@@ -114,7 +122,7 @@
     &__playback-volume {
       grid-area: playback-volume;
 
-      @include abstracts.window-class(compact, medium) {
+      @include abstracts.window-class(compact, medium, expanded) {
         display: none;
       }
     }
