@@ -4,7 +4,7 @@
 
 # Temporary files
 /server
-/apps/api-library-elysiajs
+/apps/demo
 
 # Compiled output
 /dist

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getArtworkUrl } from '@/shared/utils'
   import type { Album } from '@/shared/models'
+  import { ArtistList } from '@/shared/components'
 
   type Props = {
     album: Album
@@ -20,7 +21,9 @@
 
   <div class="album-details-header__info">
     <h2 class="album-details-header__info-title">{album.title}</h2>
-    <h3 class="display-small">{album.artists.map((artist) => artist.name).join(', ')}</h3>
+    <h3 class="display-small album-details-header__info-artists">
+      <ArtistList artists={album.artists} />
+    </h3>
     <span class="album-details-header__info-meta label-large">{album.genres.join(', ')} • {album.releaseDate}</span>
   </div>
 </header>
@@ -48,13 +51,19 @@
       grid-area: info;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
+      margin-top: 62px;
 
       &-title {
         color: var(--n-album-details-header-bg);
       }
 
+      &-artists {
+        color: var(--color-primary);
+      }
+
       &-meta {
+        margin-top: 10px;
         color: var(--color-text-medium-emphasis);
       }
     }

@@ -4,6 +4,7 @@
   import { getPlaybackState } from '@/shared/contexts'
   import { trackListSelectors } from '@neko/selectors'
   import { ArtistList, IconButton } from '@/shared/components'
+  import PlayButton from '@/shared/components/play-button/play-button.svelte'
 
   interface Props {
     track: Track
@@ -21,19 +22,20 @@
 <div
   class="track-list-item"
   role="row"
-  tabindex="0"
+  aria-label={track.title}
   aria-selected={isSelected}
   data-testid={trackListSelectors.trackListItem}
 >
   <span class="track-list-item__number title-medium">{track.trackNumber}</span>
 
   <div class="track-list-item__play-button">
-    <IconButton onclick={() => onTogglePlay(track.id)}>
-      <i>play_arrow</i>
-    </IconButton>
+    <PlayButton
+      trackId={track.id}
+      onclick={() => onTogglePlay(track.id)}
+    />
   </div>
 
-  <div class="track-list-item__title title-medium truncate">
+  <div class="track-list-item__headline title-medium truncate">
     <button
       class="truncate"
       onclick={() => onTogglePlay(track.id)}
@@ -56,7 +58,7 @@
   </div>
 
   <div
-    class="track-list-item__artists body-small truncate"
+    class="track-list-item__supporting-text body-small truncate"
     role="list"
     data-testid={trackListSelectors.trackListItemArtistsText}
   >
@@ -92,6 +94,7 @@
       'number artists duration actions';
     align-items: center;
     column-gap: 16px;
+    height: 56px;
     padding: 8px 16px 8px 8px;
 
     &:not(:first-child) {
@@ -127,10 +130,6 @@
       }
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
-
     &__number {
       grid-area: number;
       display: flex;
@@ -144,7 +143,7 @@
       display: none;
     }
 
-    &__title {
+    &__headline {
       grid-area: title;
       display: flex;
       align-items: center;
@@ -168,7 +167,7 @@
       }
     }
 
-    &__artists {
+    &__supporting-text {
       grid-area: artists;
       color: var(--color-text-medium-emphasis);
     }

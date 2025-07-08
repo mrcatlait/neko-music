@@ -3,6 +3,7 @@
   import { AlbumDetailsHeader, AlbumDetailsTrackListItem } from './components'
   import { getPlaybackState } from '@/shared/contexts'
   import { QUEUE_TYPES } from '@/shared/enums'
+  import { TrackSummary } from '@/shared/components'
 
   interface Props {
     album: Album
@@ -32,9 +33,9 @@
   <AlbumDetailsHeader {album} />
 
   <div
-    role="list"
     class="album-details__track-list"
-    aria-label="Tracks"
+    aria-label="list"
+    role="listbox"
   >
     {#each tracks as track (track.id)}
       <AlbumDetailsTrackListItem
@@ -43,23 +44,27 @@
       />
     {/each}
   </div>
+
+  <span class="album-details__track-summary body-medium">
+    <TrackSummary {tracks} />
+  </span>
 </section>
 
 <style lang="scss">
   .album-details {
     display: flex;
     flex-direction: column;
-    // padding: 32px 0;
-    padding: 32px var(--spacing-layout-medium);
-    margin: 0 calc(var(--spacing-layout-medium) * -1);
-
-    // background: linear-gradient(0deg, rgba(0, 0, 0, 0), var(--n-album-details-bg));
-    // mask: linear-gradient(180deg, var(--n-album-details-bg), var(--n-album-details-bg));
+    padding: 32px 0;
+    gap: 24px;
 
     &__track-list {
       display: flex;
       flex-direction: column;
       padding: 8px 0;
+    }
+
+    &__track-summary {
+      color: var(--color-text-medium-emphasis);
     }
   }
 </style>

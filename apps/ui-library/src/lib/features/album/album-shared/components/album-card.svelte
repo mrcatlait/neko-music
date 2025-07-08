@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { ArtistList } from '@/shared/components'
-  import { getUiState } from '@/shared/contexts'
-  import type { Album } from '@/shared/models'
+  import { ArtistList, IconButton } from '@/shared/components'
+  import { getPlaybackState, getUiState } from '@/shared/contexts'
+  import type { Album, Queue } from '@/shared/models'
   import { getArtworkUrl } from '@/shared/utils'
 
   interface Props {
@@ -12,28 +12,40 @@
   let { album, variant = 'default' }: Props = $props()
 
   const { touchDevice } = getUiState()
+  const { togglePlay } = getPlaybackState()
 </script>
 
 <article
   class="album-card"
   aria-label="Album"
 >
-  <picture>
-    <source
-      srcset={getArtworkUrl(album.artwork.url, 'medium')}
-      type="image/webp"
-    />
-    <img
-      alt=""
-      loading="lazy"
-      src="/assets/1x1.gif"
-      role="presentation"
-      decoding="async"
-      class="album-card__artwork"
-      width="256"
-      height="256"
-    />
-  </picture>
+  <div class="album-card__artwork-container">
+    <picture>
+      <source
+        srcset={getArtworkUrl(album.artwork.url, 'medium')}
+        type="image/webp"
+      />
+      <img
+        alt=""
+        loading="lazy"
+        src="/assets/1x1.gif"
+        role="presentation"
+        decoding="async"
+        class="album-card__artwork"
+        width="256"
+        height="256"
+      />
+    </picture>
+
+    <div class="album-card__play-button">
+      <IconButton
+        variant="filled"
+        onclick={() => togglePlay(album.id)}
+      >
+        <i>play_arrow</i>
+      </IconButton>
+    </div>
+  </div>
 
   <h3 class="album-card__headline title-medium truncate">
     {#if touchDevice}
@@ -73,13 +85,23 @@
     display: flex;
     flex-direction: column;
 
+    &__artwork-container {
+      position: relative;
+      margin-bottom: 8px;
+    }
+
     &__artwork {
       width: 100%;
-      margin-bottom: 8px;
       height: auto;
       aspect-ratio: 1 / 1;
       object-fit: cover;
       border-radius: var(--shape-corner-large);
+    }
+
+    &__play-button {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
     }
 
     &__headline {

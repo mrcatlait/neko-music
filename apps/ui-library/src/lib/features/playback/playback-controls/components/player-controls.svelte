@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PLAYBACK_STATUS, REPEAT_OPTIONS } from '@/shared/enums'
   import { getPlaybackState } from '@/shared/contexts'
-  import { IconButton } from '@/shared/components'
+  import { IconButton, PlayButton } from '@/shared/components'
 
   const state = getPlaybackState()
 
@@ -37,17 +37,11 @@
     <i>skip_previous</i>
   </IconButton>
 
-  <IconButton
-    aria-label={state.status === PLAYBACK_STATUS.Playing ? 'Pause' : 'Play'}
+  <PlayButton
+    trackId={state.currentTrack?.id}
     onclick={handlePlayPause}
     variant="filled"
-  >
-    {#if state.status === PLAYBACK_STATUS.Playing}
-      <i>pause</i>
-    {:else}
-      <i>play_arrow</i>
-    {/if}
-  </IconButton>
+  />
 
   <IconButton
     aria-label="Next"
