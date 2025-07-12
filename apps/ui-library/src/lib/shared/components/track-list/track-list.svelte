@@ -1,30 +1,32 @@
 <script lang="ts">
-  import type { Queue } from '@/shared/models'
+  import type { Track } from '@/shared/entities'
   import TrackListItem from './track-list-item.svelte'
+  import { GenericQueue } from '@/shared/models'
   import { getPlaybackState } from '@/shared/contexts'
 
   interface Props {
-    queue: Queue
+    tracks: Track[]
+    name: string
+    description?: string
   }
 
-  const { queue }: Props = $props()
+  const { tracks, name, description }: Props = $props()
 
   const playbackState = getPlaybackState()
 
   const handleTogglePlay = (trackId: string) => {
-    // Use existing queue data - no fetching needed!
-    playbackState.queue.setupQueue(
-      {
-        tracks: queue.tracks,
-        metadata: {
-          name: queue.name,
-          description: `${queue.type} • ${queue.tracks.length} tracks`,
-          type: queue.type,
-        },
-      },
-      {
-        startFromTrack: trackId,
-      },
+    playbackState.togglePlay(
+      trackId,
+      (id) =>
+        new GenericQueue({
+          tracks,
+          metadata: {
+            name,
+            description: description || `${tracks.length} tracks`,
+            type: 'playlist',
+          },
+          startFromTrack: id,
+        }),
     )
   }
 </script>
@@ -34,7 +36,7 @@
   class="track-list__items"
   aria-label="Tracks"
 >
-  {#each queue.tracks as track (track.id)}
+  {#each tracks as track (track.id)}
     <TrackListItem
       {track}
       onTogglePlay={handleTogglePlay}

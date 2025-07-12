@@ -2,6 +2,7 @@ import { BrowserOnlyMethod } from '../decorators'
 import { PLAYBACK_STATUS, REPEAT_MODE, type PlaybackStatus } from '../enums'
 import { AudioService } from '../services'
 import { QueueDomainObject } from './queue.domain-object.svelte'
+import type { Queue } from '../models'
 
 export class PlaybackState {
   readonly queue = new QueueDomainObject()
@@ -49,6 +50,30 @@ export class PlaybackState {
 
     if (!this.muted && this.volume === 0) {
       this.setVolume(10)
+    }
+  }
+
+  /**
+   * Toggle play state for a specific track
+   * - If same track playing -> pause
+   * - If same track paused -> resume
+   * - If different track -> set new queue and play
+   */
+  togglePlay(trackId: string, createQueue: (trackId: string) => Queue<unknown>): void {
+    const currentTrack = this.queue.currentTrack
+    const isCurrentTrack = currentTrack?.id === trackId
+    const isPlaying = this.status === PLAYBACK_STATUS.Playing
+
+    if (isCurrentTrack && isPlaying) {
+      // Same track playing -> pause
+      this.pause()
+    } else if (isCurrentTrack && !isPlaying) {
+      // Same track paused -> resume
+      this.play()
+    } else {
+      // Different track -> set queue and play
+      const queue = createQueue(trackId)
+      this.queue.setQueue(queue)
     }
   }
 

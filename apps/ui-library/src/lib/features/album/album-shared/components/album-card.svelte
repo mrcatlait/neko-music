@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ArtistList, IconButton } from '@/shared/components'
-  import { getPlaybackState, getUiState } from '@/shared/contexts'
+  import { getUiState, getPlaybackState } from '@/shared/contexts'
   import type { Album } from '@/shared/entities'
   import { AlbumQueue } from '../models'
   import { getArtworkUrl } from '@/shared/utils'
@@ -13,7 +13,11 @@
   let { album, variant = 'default' }: Props = $props()
 
   const { touchDevice } = getUiState()
-  const state = getPlaybackState()
+  const playbackState = getPlaybackState()
+
+  const handlePlayAlbum = () => {
+    playbackState.togglePlay(album.id, () => new AlbumQueue({ albumId: album.id }))
+  }
 </script>
 
 <article
@@ -41,7 +45,7 @@
     <div class="album-card__play-button">
       <IconButton
         variant="filled"
-        onclick={() => state.queue.setQueue(new AlbumQueue({ albumId: album.id }))}
+        onclick={handlePlayAlbum}
       >
         <i>play_arrow</i>
       </IconButton>

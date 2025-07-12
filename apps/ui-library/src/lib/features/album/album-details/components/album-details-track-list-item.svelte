@@ -1,18 +1,24 @@
 <script lang="ts">
-  import type { Track } from '@/shared/entities'
+  import type { Track, Album } from '@/shared/entities'
   import { formatDuration } from '@/shared/utils'
   import { getPlaybackState } from '@/shared/contexts'
   import { trackListSelectors } from '@neko/selectors'
   import { ArtistList, IconButton, PlayButton } from '@/shared/components'
+  import { AlbumQueue } from '../../album-shared/models'
 
   interface Props {
     track: Track
-    onTogglePlay: (trackId: string) => void
+    album: Album
+    tracks: Track[]
   }
 
-  const { track, onTogglePlay }: Props = $props()
+  const { track, album, tracks }: Props = $props()
 
   const playbackState = getPlaybackState()
+
+  const handleTogglePlay = (trackId: string) => {
+    playbackState.togglePlay(trackId, (id) => new AlbumQueue({ album, tracks, startFromTrack: id }))
+  }
 
   const duration = formatDuration(track.duration)
   const isSelected = $derived(playbackState.queue.currentTrack?.id === track.id)
@@ -30,14 +36,14 @@
   <div class="track-list-item__play-button">
     <PlayButton
       trackId={track.id}
-      onclick={() => onTogglePlay(track.id)}
+      onclick={() => handleTogglePlay(track.id)}
     />
   </div>
 
   <div class="track-list-item__headline title-medium truncate">
     <button
       class="truncate"
-      onclick={() => onTogglePlay(track.id)}
+      onclick={() => handleTogglePlay(track.id)}
       title={track.title}
       data-testid={trackListSelectors.trackListItemTitle}
     >
