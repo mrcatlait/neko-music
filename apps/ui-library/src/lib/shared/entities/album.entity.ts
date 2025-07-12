@@ -1,6 +1,6 @@
 import type { AlbumType } from '../enums'
-import type { AlbumArtist } from './album-artist.model'
-import type { Artwork } from './artwork.model'
+import type { AlbumArtist } from './album-artist.entity'
+import type { Artwork } from './artwork.entity'
 
 export interface Album {
   /**

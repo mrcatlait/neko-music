@@ -5,7 +5,7 @@
 
   const state = getPlaybackState()
 
-  const track = $derived(state.currentTrack)
+  const track = $derived(state.queue.currentTrack)
 </script>
 
 {#if track}

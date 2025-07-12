@@ -1,10 +1,9 @@
 <script lang="ts">
-  import type { Track } from '@/shared/models'
-  import { formatDuration, getArtworkUrl } from '@/shared/utils'
+  import type { Track } from '@/shared/entities'
+  import { formatDuration } from '@/shared/utils'
   import { getPlaybackState } from '@/shared/contexts'
   import { trackListSelectors } from '@neko/selectors'
-  import { ArtistList, IconButton } from '@/shared/components'
-  import PlayButton from '@/shared/components/play-button/play-button.svelte'
+  import { ArtistList, IconButton, PlayButton } from '@/shared/components'
 
   interface Props {
     track: Track
@@ -16,7 +15,7 @@
   const playbackState = getPlaybackState()
 
   const duration = formatDuration(track.duration)
-  const isSelected = $derived(playbackState.currentTrack?.id === track.id)
+  const isSelected = $derived(playbackState.queue.currentTrack?.id === track.id)
 </script>
 
 <div

@@ -5,16 +5,12 @@
 
   const playbackState = getPlaybackState()
 
-  function getValue() {
-    return playbackState.currentTime
-  }
+  let currentTime = $derived(playbackState.currentTime)
+  let duration = $derived(playbackState.currentDuration)
 
-  function setValue(value: number) {
+  function handleValueChange(value: number) {
     playbackState.seek(value)
   }
-
-  let currentTime = $derived(playbackState.currentTime)
-  let duration = $derived(playbackState.currentTrack?.duration ?? 0)
 </script>
 
 <div
@@ -28,12 +24,13 @@
 
   <div class="progress-bar__slider">
     <Slider
-      bind:value={getValue, setValue}
+      bind:value={currentTime}
       type="single"
       min={0}
       max={duration}
       step={0.1}
       hideThumb
+      onValueCommit={handleValueChange}
       aria-label="Seek to position in track"
     />
   </div>

@@ -11,7 +11,7 @@
     const tracks = Array.from({ length: 30 }).map(() => new TrackBuilder().build())
     const queue = new QueueBuilder().withTracks(tracks).build()
 
-    state.togglePlay(queue)
+    // state.togglePlay(queue)
   }
 
   const { data }: PageProps = $props()

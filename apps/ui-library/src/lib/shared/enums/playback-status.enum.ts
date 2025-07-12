@@ -1,9 +1,11 @@
 export const PLAYBACK_STATUS = {
-  Pending: 'pending',
+  None: 'none',
+  Loading: 'loading',
   Playing: 'playing',
   Paused: 'paused',
   Stopped: 'stopped',
-  Loading: 'loading',
+  Ended: 'ended',
+  Seeking: 'seeking',
 } as const
 
 export type PlaybackStatus = (typeof PLAYBACK_STATUS)[keyof typeof PLAYBACK_STATUS]

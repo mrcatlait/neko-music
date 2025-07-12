@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PLAYBACK_STATUS, REPEAT_OPTIONS } from '@/shared/enums'
+  import { PLAYBACK_STATUS, REPEAT_MODE } from '@/shared/enums'
   import { getPlaybackState } from '@/shared/contexts'
   import { IconButton, PlayButton } from '@/shared/components'
 
@@ -22,45 +22,45 @@
   <IconButton
     color="secondary"
     aria-label="Shuffle"
-    onclick={() => state.toggleShuffle()}
+    onclick={() => state.queue.toggleShuffle()}
     class="player-controls__secondary-action"
   >
-    <i class:inactive={!state.shuffle}>shuffle</i>
+    <i class:inactive={!state.queue.shuffle}>shuffle</i>
   </IconButton>
 
   <IconButton
     aria-label="Previous"
-    disabled={!state.hasPrevious}
-    onclick={() => state.previous()}
+    disabled={!state.queue.hasPrevious}
+    onclick={() => state.queue.previous()}
     class="player-controls__secondary-action"
   >
     <i>skip_previous</i>
   </IconButton>
 
   <PlayButton
-    trackId={state.currentTrack?.id}
+    trackId={state.queue.currentTrack?.id}
     onclick={handlePlayPause}
     variant="filled"
   />
 
   <IconButton
     aria-label="Next"
-    disabled={!state.hasNext}
-    onclick={() => state.next()}
+    disabled={!state.queue.hasNext}
+    onclick={() => state.queue.next()}
   >
     <i>skip_next</i>
   </IconButton>
 
   <IconButton
     aria-label="Repeat"
-    onclick={() => state.toggleRepeat()}
+    onclick={() => state.queue.toggleRepeat()}
     class="player-controls__secondary-action"
   >
-    {#if state.repeat === REPEAT_OPTIONS.None}
+    {#if state.queue.repeat === REPEAT_MODE.None}
       <i class:inactive={true}>repeat</i>
-    {:else if state.repeat === REPEAT_OPTIONS.All}
+    {:else if state.queue.repeat === REPEAT_MODE.All}
       <i>repeat</i>
-    {:else if state.repeat === REPEAT_OPTIONS.Single}
+    {:else if state.queue.repeat === REPEAT_MODE.Single}
       <i>repeat_one</i>
     {/if}
   </IconButton>

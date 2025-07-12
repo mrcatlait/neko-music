@@ -1,4 +1,4 @@
-import type { Artwork } from './artwork.model'
+import type { Artwork } from './artwork.entity'
 
 export interface Artist {
   id: string

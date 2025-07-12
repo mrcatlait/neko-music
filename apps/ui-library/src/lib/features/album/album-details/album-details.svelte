@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Album, Queue, Track } from '@/shared/models'
+  import type { Album, Track } from '@/shared/entities'
   import { AlbumDetailsHeader, AlbumDetailsTrackListItem } from './components'
   import { getPlaybackState } from '@/shared/contexts'
-  import { QUEUE_TYPES } from '@/shared/enums'
   import { TrackSummary } from '@/shared/components'
+  import { AlbumQueue } from '../album-shared/models'
 
   interface Props {
     album: Album
@@ -12,17 +12,10 @@
 
   const { album, tracks }: Props = $props()
 
-  const queue: Queue = {
-    id: album.id,
-    name: album.title,
-    type: QUEUE_TYPES.Album,
-    tracks: tracks,
-  }
-
   const playbackState = getPlaybackState()
 
   const handleTogglePlay = (trackId: string) => {
-    playbackState.togglePlay(queue, trackId)
+    playbackState.queue.setQueue(new AlbumQueue({ album, tracks, startFromTrack: trackId }))
   }
 </script>
 

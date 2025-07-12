@@ -2,37 +2,45 @@
   import type { HTMLAttributes } from 'svelte/elements'
 
   import { KeyboardShortcuts, TrackInfo, PlayerControls, ProgressBar, VolumeControl } from './components'
+  import { getPlaybackState } from '@/shared/contexts'
+  import { PLAYBACK_STATUS } from '@/shared/enums'
 
   type Props = HTMLAttributes<HTMLDivElement>
   const { ...restProps }: Props = $props()
+
+  const state = getPlaybackState()
+
+  const isEnabled = $derived(state.status !== PLAYBACK_STATUS.None)
 </script>
 
-<KeyboardShortcuts />
+{#if isEnabled}
+  <KeyboardShortcuts />
 
-<div
-  class="playback-controls"
-  {...restProps}
-  aria-label="Player"
-  role="region"
->
-  <div class="playback-controls__content">
-    <div class="playback-controls__track-info truncate">
-      <TrackInfo />
-    </div>
+  <div
+    class="playback-controls"
+    {...restProps}
+    aria-label="Player"
+    role="region"
+  >
+    <div class="playback-controls__content">
+      <div class="playback-controls__track-info truncate">
+        <TrackInfo />
+      </div>
 
-    <div class="playback-controls__playback-controls">
-      <PlayerControls />
-    </div>
+      <div class="playback-controls__playback-controls">
+        <PlayerControls />
+      </div>
 
-    <div class="playback-controls__playback-progress">
-      <ProgressBar />
-    </div>
+      <div class="playback-controls__playback-progress">
+        <ProgressBar />
+      </div>
 
-    <div class="playback-controls__playback-volume">
-      <VolumeControl />
+      <div class="playback-controls__playback-volume">
+        <VolumeControl />
+      </div>
     </div>
   </div>
-</div>
+{/if}
 
 <style lang="scss">
   @use '../../../styles/abstracts' as abstracts;

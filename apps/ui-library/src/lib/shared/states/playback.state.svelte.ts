@@ -1,48 +1,21 @@
-import { PLAYBACK_STATUS, REPEAT_OPTIONS, type PlaybackStatus, type RepeatOption } from '../enums'
-import type { Queue, Track } from '../models'
+import { BrowserOnlyMethod } from '../decorators'
+import { PLAYBACK_STATUS, REPEAT_MODE, type PlaybackStatus } from '../enums'
 import { AudioService } from '../services'
-import { shuffleArray } from '../utils'
+import { QueueDomainObject } from './queue.domain-object.svelte'
 
 export class PlaybackState {
-  status = $state<PlaybackStatus>(PLAYBACK_STATUS.Pending)
-  queue = $state<Queue | null>(null)
+  readonly queue = new QueueDomainObject()
 
-  nextTracks = $state<Track[]>([])
-  currentTrack = $state<Track | null>(null)
-
+  status = $state<PlaybackStatus>(PLAYBACK_STATUS.None)
   volume = $state<number>(50)
   muted = $state<boolean>(false)
   currentTime = $state<number>(0)
+  readonly currentDuration = $derived(this.queue.currentTrack?.duration ?? 0)
 
-  repeat = $state<RepeatOption>(REPEAT_OPTIONS.None)
-  shuffle = $state<boolean>(false)
-
-  private readonly currentItemIndex = $derived(this.nextTracks.findIndex((track) => track.id === this.currentTrack?.id))
-
-  nextInQueue = $derived(this.nextTracks.filter((_, index) => index > this.currentItemIndex))
-
-  hasNext = $derived(this.currentItemIndex < this.nextTracks.length - 1 || this.repeat === REPEAT_OPTIONS.All)
-  hasPrevious = $derived(this.currentItemIndex > 0 || this.repeat === REPEAT_OPTIONS.All)
-
-  constructor(
-    private readonly audioService = new AudioService({
-      onPlaybackTimeUpdate: (event) => {
-        this.currentTime = event.time ?? 0
-      },
-      onCanPlay: () => {
-        this.play()
-      },
-      onPlaybackEnded: () => {
-        if (this.repeat === REPEAT_OPTIONS.Single) {
-          this.play()
-        } else if (this.hasNext) {
-          this.next()
-        } else {
-          this.pause()
-        }
-      },
-    }),
-  ) {}
+  constructor(private readonly audioService = AudioService.getInstance()) {
+    this.registerEventListeners()
+    this.watchCurrentTrack()
+  }
 
   play(): void {
     this.status = PLAYBACK_STATUS.Playing
@@ -54,45 +27,11 @@ export class PlaybackState {
     this.audioService.pause()
   }
 
-  /**
-   * Smart toggle method that handles all play/pause/queue switching logic
-   * Call this method for any play button - it will automatically decide what to do
-   * @param queue - Queue to play
-   * @param trackId - Id of track to start playing
-   */
-  togglePlay(queue: Queue, trackId?: string): void {
-    if (this.queue?.id === queue.id && (this.currentTrack?.id === trackId || !trackId)) {
-      switch (this.status) {
-        case PLAYBACK_STATUS.Playing:
-          return this.pause()
-        case PLAYBACK_STATUS.Paused:
-          return this.play()
-        default:
-          return
-      }
-    }
-
-    let track = queue.tracks[0]
-
-    if (trackId) {
-      track = queue.tracks.find((r) => r.id === trackId) || track
-    }
-
-    this.currentTrack = track
-
-    if (this.queue?.id !== queue.id) {
-      this.queue = queue
-      this.nextTracks = queue.tracks
-    }
-
-    this.audioService.setSource(this.currentTrack.id)
-  }
-
   seek(time: number): void {
     if (time < 0) {
       this.currentTime = 0
     } else {
-      this.currentTime = Math.min(time, this.currentTrack?.duration ?? 0)
+      this.currentTime = Math.min(time, this.currentDuration)
     }
 
     this.audioService.seek(this.currentTime)
@@ -113,110 +52,49 @@ export class PlaybackState {
     }
   }
 
-  next(): void {
-    if (!this.hasNext) {
-      return
-    }
+  @BrowserOnlyMethod
+  private registerEventListeners(): void {
+    this.audioService.onPlaybackTimeUpdated((event) => {
+      this.currentTime = event.time ?? 0
+    })
 
-    if (this.currentItemIndex < this.nextTracks.length - 1) {
-      this.currentTrack = this.nextTracks[this.currentItemIndex + 1]
-    } else {
-      // Should reset nextTracks
-      this.currentTrack = this.nextTracks[0]
-    }
+    this.audioService.onManifestLoaded(() => {
+      this.play()
+    })
 
-    this.audioService.setSource(this.currentTrack.id)
+    this.audioService.onPlaybackEnded(() => {
+      switch (this.queue.repeat) {
+        case REPEAT_MODE.Single:
+          this.play()
+          break
+        case REPEAT_MODE.All:
+          this.queue.next()
+          break
+        case REPEAT_MODE.None:
+          if (this.queue.hasNext) {
+            this.queue.next()
+          }
+          break
+      }
+    })
+
+    this.audioService.onManifestLoadingStarted(() => {
+      this.status = PLAYBACK_STATUS.Loading
+    })
   }
 
-  previous(): void {
-    if (!this.hasPrevious) {
-      return
-    }
+  /**
+   * Watches for current track changes and loads them into the audio service
+   */
+  @BrowserOnlyMethod
+  private watchCurrentTrack(): void {
+    $effect(() => {
+      const currentTrack = this.queue.currentTrack
 
-    if (this.currentItemIndex > 0) {
-      this.currentTrack = this.nextTracks[this.currentItemIndex - 1]
-    } else {
-      // Should reset nextTracks
-      this.currentTrack = this.nextTracks[this.nextTracks.length - 1]
-    }
-
-    this.audioService.setSource(this.currentTrack.id)
-  }
-
-  toggleRepeat(): void {
-    switch (this.repeat) {
-      case REPEAT_OPTIONS.None:
-        this.repeat = REPEAT_OPTIONS.All
-        break
-      case REPEAT_OPTIONS.All:
-        this.repeat = REPEAT_OPTIONS.Single
-        break
-      case REPEAT_OPTIONS.Single:
-      default:
-        this.repeat = REPEAT_OPTIONS.None
-        break
-    }
-  }
-
-  toggleShuffle(): void {
-    this.shuffle = !this.shuffle
-
-    if (!this.queue) {
-      return
-    }
-
-    if (this.shuffle) {
-      this.nextTracks = shuffleArray(this.nextTracks)
-    } else {
-      this.nextTracks = [...this.queue.tracks]
-    }
-  }
-
-  addToPlayNext(tracks: Track[]): void {
-    if (!this.queue) {
-      return
-    }
-
-    const targetPosition = this.currentItemIndex + 1
-    this.nextTracks.splice(targetPosition, 0, ...tracks)
-
-    const originalTargetPosition = this.queue.tracks.findIndex((track) => track.id === this.currentTrack?.id) + 1
-    this.queue.tracks.splice(originalTargetPosition, 0, ...tracks)
-  }
-
-  addToPlayLater(tracks: Track[]): void {
-    if (!this.queue) {
-      return
-    }
-
-    this.nextTracks.push(...tracks)
-    this.queue.tracks.push(...tracks)
-  }
-
-  removeFromQueue(trackId: string): void {
-    if (!this.queue) {
-      return
-    }
-
-    const trackIndex = this.nextTracks.findIndex((track) => track.id === trackId)
-    this.nextTracks.splice(trackIndex, 1)
-
-    const originalTrackIndex = this.queue.tracks.findIndex((track) => track.id === trackId)
-    this.queue.tracks.splice(originalTrackIndex, 1)
-  }
-
-  moveTrack(trackId: string, targetPosition: number): void {
-    if (!this.queue) {
-      return
-    }
-
-    const trackIndex = this.nextTracks.findIndex((track) => track.id === trackId)
-    const [track] = this.nextTracks.splice(trackIndex, 1)
-
-    this.nextTracks.splice(targetPosition, 0, track)
-
-    const originalTrackIndex = this.queue.tracks.findIndex((t) => t.id === trackId)
-    this.queue.tracks.splice(originalTrackIndex, 1)
-    this.queue.tracks.splice(targetPosition, 0, track)
+      if (currentTrack) {
+        this.status = PLAYBACK_STATUS.Loading
+        this.audioService.loadTrack(currentTrack.id)
+      }
+    })
   }
 }

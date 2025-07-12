@@ -37,8 +37,6 @@ export class ArtistController {
     type: UploadTokenDto,
   })
   getUploadToken(@Param('artistId') artistId: string, @Session() session: UserSession): Promise<UploadTokenDto> {
-    return this.commandBus.execute(
-      new GenerateUploadTokenCommand(session.userId, artistId, EntityType.ARTIST, MediaType.IMAGE),
-    )
+    return this.commandBus.execute(new GenerateUploadTokenCommand(session.userId, MediaType.IMAGE))
   }
 }

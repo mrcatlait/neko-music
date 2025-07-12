@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getArtworkUrl } from '@/shared/utils'
-  import type { Album } from '@/shared/models'
+  import type { Album } from '@/shared/entities'
   import { ArtistList } from '@/shared/components'
 
   type Props = {

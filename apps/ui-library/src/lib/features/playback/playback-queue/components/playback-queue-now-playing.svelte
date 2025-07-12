@@ -2,7 +2,7 @@
   import { MenuContent, MenuTrigger } from '@/shared/components'
   import { IconButton } from '@/shared/components'
   import { getPlaybackState } from '@/shared/contexts'
-  import type { Track } from '@/shared/models'
+  import type { Track } from '@/shared/entities'
   import { formatDuration, getArtworkUrl } from '@/shared/utils'
   import { playbackQueueSelectors } from '@neko/selectors'
   import { DropdownMenu } from 'bits-ui'
@@ -24,7 +24,7 @@
     <li data-testid={playbackQueueSelectors.queueNowPlayingTrackItem}>
       <article
         class="track-card truncate"
-        class:active={track.id === state.currentTrack?.id}
+        class:active={track.id === state.queue.currentTrack?.id}
       >
         <img
           src={getArtworkUrl(track.artwork.url, 'small')}

@@ -39,12 +39,12 @@
       case 'MediaTrackNext':
       case 'MediaNextTrack':
         event.preventDefault()
-        state.next()
+        state.queue.next()
         break
       case 'MediaTrackPrevious':
       case 'MediaPreviousTrack':
         event.preventDefault()
-        state.previous()
+        state.queue.previous()
         break
 
       // Seeking controls
@@ -74,9 +74,7 @@
         break
       case 'End':
         event.preventDefault()
-        if (state.currentTrack) {
-          state.seek(state.currentTrack.duration)
-        }
+        state.seek(state.currentDuration)
         break
 
       // Volume controls
@@ -118,24 +116,24 @@
       case 'r':
       case 'R':
         event.preventDefault()
-        state.toggleRepeat()
+        state.queue.toggleRepeat()
         break
       case 's':
       case 'S':
         event.preventDefault()
-        state.toggleShuffle()
+        state.queue.toggleShuffle()
         break
 
       // Track navigation (letter keys)
       case 'n':
       case 'N':
         event.preventDefault()
-        state.next()
+        state.queue.next()
         break
       case 'p':
       case 'P':
         event.preventDefault()
-        state.previous()
+        state.queue.previous()
         break
       default:
         break

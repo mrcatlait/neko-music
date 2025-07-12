@@ -1,56 +1,40 @@
-import { BrowserOnly } from '@/shared/decorators'
-import type { MediaPlayerClass, PlaybackTimeUpdatedEvent } from 'dashjs'
+import { browser } from '$app/environment'
+import { BrowserOnly } from '../decorators'
+import { Service } from './abstract.service'
+import type { PlaybackTimeUpdatedEvent } from 'dashjs'
+
+let MediaPlayer: typeof import('dashjs').MediaPlayer
+
+if (browser) {
+  MediaPlayer = (await import('dashjs')).MediaPlayer
+}
 
 const DASH_EVENTS = {
   PlaybackTimeUpdated: 'playbackTimeUpdated',
-  ManifestLoaded: 'manifestLoaded',
   CanPlay: 'canPlay',
   PlaybackEnded: 'playbackEnded',
+  ManifestLoadingStarted: 'manifestLoadingStarted',
+  ManifestLoaded: 'manifestLoaded',
 } as const
 
-interface AudioServiceOptions {
-  /**
-   * Callback function to handle playback time update events
-   * @param event - The event object containing the playback time update
-   * @returns void
-   */
-  onPlaybackTimeUpdate: (event: PlaybackTimeUpdatedEvent) => void
-  /**
-   * Callback function to handle playback can play events
-   * @returns void
-   */
-  onCanPlay: () => void
-  /**
-   * Callback function to handle playback ended events
-   * @returns void
-   */
-  onPlaybackEnded: () => void
-}
-
 @BrowserOnly
-export class AudioService {
+export class AudioService extends Service {
   private readonly audio = new Audio()
-  private player: MediaPlayerClass | null = null
+  private readonly player = MediaPlayer().create()
 
-  constructor(private readonly options: AudioServiceOptions) {
-    import('dashjs').then(({ MediaPlayer }) => {
-      this.player = MediaPlayer().create()
-      this.player.initialize(this.audio, undefined, false)
-      this.player.setXHRWithCredentialsForType('', true)
-      this.registerEvents()
-    })
+  constructor() {
+    super()
 
-    // onDestroy(() => {
-    //   this.removeEvents()
-    //   this.player?.destroy()
-    //   this.audio.remove()
-    // })
+    this.player.initialize(this.audio, undefined, false)
+    this.player.setXHRWithCredentialsForType('', true)
+  }
+
+  loadTrack(trackId: string): void {
+    this.player.attachSource(`http://localhost:3000/stream/${trackId}/manifest`)
   }
 
   play(): void {
-    if (this.player?.isPaused()) {
-      this.player?.play()
-    }
+    this.player?.play()
   }
 
   pause(): void {
@@ -83,23 +67,23 @@ export class AudioService {
     this.player?.seek(time)
   }
 
-  private registerEvents() {
-    if (!this.player) {
-      return
-    }
-
-    this.player.on(DASH_EVENTS.CanPlay, this.options.onCanPlay)
-    this.player.on(DASH_EVENTS.PlaybackTimeUpdated, this.options.onPlaybackTimeUpdate)
-    this.player.on(DASH_EVENTS.PlaybackEnded, this.options.onPlaybackEnded)
+  onPlaybackTimeUpdated(callback: (event: PlaybackTimeUpdatedEvent) => void): void {
+    this.player?.on(DASH_EVENTS.PlaybackTimeUpdated, callback)
   }
 
-  private removeEvents() {
-    if (!this.player) {
-      return
-    }
+  onCanPlay(callback: () => void): void {
+    this.player?.on(DASH_EVENTS.CanPlay, callback)
+  }
 
-    this.player.off(DASH_EVENTS.CanPlay, this.options.onCanPlay)
-    this.player.off(DASH_EVENTS.PlaybackTimeUpdated, this.options.onPlaybackTimeUpdate)
-    this.player.off(DASH_EVENTS.PlaybackEnded, this.options.onPlaybackEnded)
+  onPlaybackEnded(callback: () => void): void {
+    this.player?.on(DASH_EVENTS.PlaybackEnded, callback)
+  }
+
+  onManifestLoadingStarted(callback: () => void): void {
+    this.player?.on(DASH_EVENTS.ManifestLoadingStarted, callback)
+  }
+
+  onManifestLoaded(callback: () => void): void {
+    this.player?.on(DASH_EVENTS.ManifestLoaded, callback)
   }
 }

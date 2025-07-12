@@ -12,7 +12,20 @@
   const playbackState = getPlaybackState()
 
   const handleTogglePlay = (trackId: string) => {
-    playbackState.togglePlay(queue, trackId)
+    // Use existing queue data - no fetching needed!
+    playbackState.queue.setupQueue(
+      {
+        tracks: queue.tracks,
+        metadata: {
+          name: queue.name,
+          description: `${queue.type} • ${queue.tracks.length} tracks`,
+          type: queue.type,
+        },
+      },
+      {
+        startFromTrack: trackId,
+      },
+    )
   }
 </script>
 

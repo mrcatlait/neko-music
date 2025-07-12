@@ -19,7 +19,7 @@
 
   const state = getPlaybackState()
   const icon = $derived.by(() => {
-    if (state.currentTrack?.id === trackId) {
+    if (state.queue.currentTrack?.id === trackId) {
       return state.status === PLAYBACK_STATUS.Playing ? 'pause' : 'play_arrow'
     }
 
