@@ -52,7 +52,9 @@ import { StreamingModule } from '@modules/streaming/streaming.module'
       inject: [ConfigService],
       useFactory: (configService: ConfigService<EnvironmentVariables, true>) => ({
         migrations: join(process.cwd(), 'src', 'migrations'),
-        migrationsRun: true,
+        runMigrations: true,
+        seeds: join(process.cwd(), 'src', 'seeds'),
+        runSeeds: true,
         host: configService.get('DATABASE_HOST'),
         port: configService.get('DATABASE_PORT'),
         username: configService.get('DATABASE_USERNAME'),

@@ -1,7 +1,7 @@
 import { DynamicModule, Global, Module, Provider, Type } from '@nestjs/common'
 
 import { DatabaseModuleAsyncOptions, DatabaseModuleOptions, DatabaseOptionsFactory } from './types'
-import { DatabaseMigrationService, DatabaseService } from './services'
+import { DatabaseMigrationService, DatabaseSeedService, DatabaseService } from './services'
 import { DATABASE_MODULE_OPTIONS } from './database.tokens'
 
 @Global()
@@ -13,7 +13,12 @@ export class DatabaseCoreModule {
       useValue: options,
     }
 
-    const providers: Provider[] = [databaseModuleOptions, DatabaseMigrationService, DatabaseService]
+    const providers: Provider[] = [
+      databaseModuleOptions,
+      DatabaseMigrationService,
+      DatabaseSeedService,
+      DatabaseService,
+    ]
 
     return {
       module: DatabaseCoreModule,
@@ -28,6 +33,7 @@ export class DatabaseCoreModule {
     const providers: Provider[] = [
       ...asyncProviders,
       DatabaseMigrationService,
+      DatabaseSeedService,
       DatabaseService,
       ...(options.extraProviders || []),
     ]

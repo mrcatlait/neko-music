@@ -1,9 +1,12 @@
 import { InjectionToken, ModuleMetadata, OptionalFactoryDependency, Provider, Type } from '@nestjs/common'
 
 export interface DatabaseModuleOptions {
-  migrationsRun?: boolean
-  migrations: string
+  runMigrations?: boolean
+  migrations?: string
   migrationsTableName?: string
+  runSeeds?: boolean
+  seeds?: string
+  seedsTableName?: string
   host: string
   port: number
   username: string

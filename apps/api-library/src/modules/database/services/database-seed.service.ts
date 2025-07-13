@@ -5,8 +5,8 @@ import { DATABASE_MODULE_OPTIONS } from '../database.tokens'
 import { DatabasePropagationService } from './database-propagation.service'
 
 @Injectable()
-export class DatabaseMigrationService extends DatabasePropagationService {
-  protected readonly tableName: string = 'migrations'
+export class DatabaseSeedService extends DatabasePropagationService {
+  protected readonly tableName: string = 'seeds'
 
   constructor(
     @Inject(DATABASE_MODULE_OPTIONS)
@@ -18,8 +18,8 @@ export class DatabaseMigrationService extends DatabasePropagationService {
       username: options.username,
       password: options.password,
       database: options.database,
-      scriptsFolder: options.migrations,
-      tableName: options.migrationsTableName,
+      scriptsFolder: options.seeds,
+      tableName: options.seedsTableName,
     })
   }
 }

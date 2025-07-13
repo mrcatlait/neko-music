@@ -1,19 +1,21 @@
 import { Global, Module } from '@nestjs/common'
 
 import { CreateArtistHandler, CreateArtistValidator, CreateGenreHandler, CreateGenreValidator } from './commands'
-import { ArtistController, GenreController } from './controllers'
-import { GetArtistHandler, GetGenresHandler } from './queries'
+import { AlbumsController, ArtistController, GenreController } from './controllers'
+import { GetArtistHandler, GetGenresHandler, GetPopularAlbumsHandler } from './queries'
 import {
   ArtistImageRepository,
   ArtistGenreRepository,
   ArtistNoteRepository,
   ArtistRepository,
   GenreRepository,
+  AlbumWithArtistsRepository,
+  AlbumRepository,
 } from './repositories'
 
 @Global()
 @Module({
-  controllers: [ArtistController, GenreController],
+  controllers: [AlbumsController, ArtistController, GenreController],
   providers: [
     // Commands
     CreateArtistHandler,
@@ -23,7 +25,10 @@ import {
     // Queries
     GetArtistHandler,
     GetGenresHandler,
+    GetPopularAlbumsHandler,
     // Repositories
+    AlbumRepository,
+    AlbumWithArtistsRepository,
     ArtistRepository,
     ArtistNoteRepository,
     ArtistGenreRepository,

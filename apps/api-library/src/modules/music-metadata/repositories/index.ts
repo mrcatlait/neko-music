@@ -1,3 +1,5 @@
+export * from './album-with-artists.repository'
+export * from './album.repository'
 export * from './artist.repository'
 export * from './artist-image.repository'
 export * from './artist-note.repository'

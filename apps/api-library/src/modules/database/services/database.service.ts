@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs'
 import { DATABASE_MODULE_OPTIONS } from '../database.tokens'
 import { DatabaseMigrationService } from './database-migration.service'
 import type { DatabaseModuleOptions } from '../types'
+import { DatabaseSeedService } from './database-seed.service'
 
 @Injectable()
 export class DatabaseService implements OnApplicationBootstrap {
@@ -27,13 +28,21 @@ export class DatabaseService implements OnApplicationBootstrap {
   constructor(
     @Inject(DATABASE_MODULE_OPTIONS) private readonly options: DatabaseModuleOptions,
     private readonly databaseMigrationService: DatabaseMigrationService,
+    private readonly databaseSeedService: DatabaseSeedService,
   ) {}
 
   async onApplicationBootstrap() {
     try {
       await this.connect()
       this.logger.log('Connected to database')
-      await this.databaseMigrationService.executePendingMigrations()
+
+      if (this.options.runMigrations) {
+        await this.databaseMigrationService.executePendingScripts()
+      }
+
+      if (this.options.runSeeds) {
+        await this.databaseSeedService.executePendingScripts()
+      }
     } catch (error) {
       this.logger.error('Failed to connect to database', error)
       process.exit(1)
