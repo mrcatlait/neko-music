@@ -9,7 +9,7 @@ import { AuthGuard } from '@modules/authentication/guards'
 import { Session } from '@modules/authentication/decorators'
 import { UserSession } from '@modules/authentication/interfaces'
 import { GenerateUploadTokenCommand } from '@modules/media/commands'
-import { EntityType, MediaType } from '@modules/media/enums'
+import { MediaType } from '@modules/media/enums'
 import { UploadTokenDto } from '@modules/media/dtos'
 
 @Controller('artists')

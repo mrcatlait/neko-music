@@ -7,12 +7,6 @@ CREATE TABLE "music"."Artist" (
     "background_color": null,
     "text_color": null
   }'::JSONB,
-  "metadata" JSONB NOT NULL DEFAULT '{
-    "editorial_notes": {
-      "short": null,
-      "standard": null
-    }
-  }'::JSONB,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

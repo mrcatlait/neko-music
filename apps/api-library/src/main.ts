@@ -43,7 +43,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder().setTitle('Neko Music API').setVersion('1.0').addCookieAuth().build()
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+  SwaggerModule.setup('swagger', app, document)
 
   await app.listen({
     port: PORT,

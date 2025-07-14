@@ -6,16 +6,12 @@ CREATE TABLE "music"."Track" (
   "disk_number" SMALLINT NOT NULL,
   "release_date" DATE NOT NULL,
   "duration" SMALLINT NOT NULL,
-  -- "primary_artist_id" UUID NOT NULL,
-  "artwork" JSONB NOT NULL DEFAULT '{
-    "url": null,
-    "background_color": null,
-    "text_color": null
-  }'::JSONB,
-  "streaming_info" JSONB,
   "has_lyrics" BOOLEAN NOT NULL DEFAULT FALSE,
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "FK_Track_Album" FOREIGN KEY ("album_id") REFERENCES "music"."Album" ("id")
+  CONSTRAINT "FK_Track_Album" FOREIGN KEY ("album_id") REFERENCES "music"."Album" ("id"),
+  CONSTRAINT "CHK_Track_TrackNumber" CHECK (track_number > 0),
+  CONSTRAINT "CHK_Track_DiskNumber" CHECK (disk_number > 0),
+  CONSTRAINT "CHK_Track_Duration" CHECK (duration > 0 AND duration < 36000)
 );

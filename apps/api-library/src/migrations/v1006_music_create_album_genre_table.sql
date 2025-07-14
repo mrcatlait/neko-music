@@ -5,5 +5,6 @@ CREATE TABLE "music"."AlbumGenre" (
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY ("album_id", "genre_id"),
   CONSTRAINT "FK_AlbumGenre_Album" FOREIGN KEY ("album_id") REFERENCES "music"."Album" ("id"),
-  CONSTRAINT "FK_AlbumGenre_Genre" FOREIGN KEY ("genre_id") REFERENCES "music"."Genre" ("id")
+  CONSTRAINT "FK_AlbumGenre_Genre" FOREIGN KEY ("genre_id") REFERENCES "music"."Genre" ("id"),
+  CONSTRAINT "CHK_AlbumGenre_Position" CHECK (position >= 0)
 );

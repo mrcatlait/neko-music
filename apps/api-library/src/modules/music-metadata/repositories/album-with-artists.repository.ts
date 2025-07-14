@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { DatabaseService } from '@modules/database'
 
 import { AlbumWithArtistsEntity } from '../entities'
+
+import { DatabaseService } from '@modules/database'
 
 @Injectable()
 export class AlbumWithArtistsRepository {
