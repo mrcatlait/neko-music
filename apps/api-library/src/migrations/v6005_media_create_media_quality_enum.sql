@@ -1,4 +1,4 @@
-CREATE TYPE "media"."AudioQuality" AS ENUM (
+CREATE TYPE "media"."MediaQuality" AS ENUM (
   'LOW',
   'MEDIUM',
   'HIGH',
