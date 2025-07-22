@@ -1,18 +1,16 @@
 import { BadRequestException } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
+import { DatabaseService } from '@modules/database'
 
 import { CreateArtistCommand } from './create-artist.command'
 import { CreateArtistValidator } from './create-artist.validator'
-
-import { ArtistNoteRepository, ArtistGenreRepository, ArtistRepository } from '@modules/music-metadata/repositories'
-import { DatabaseService } from '@modules/database'
+import { ArtistGenreRepository, ArtistRepository } from '../../repositories'
 
 @CommandHandler(CreateArtistCommand)
 export class CreateArtistHandler implements ICommandHandler<CreateArtistCommand, void> {
   constructor(
     private readonly createArtistValidator: CreateArtistValidator,
     private readonly artistRepository: ArtistRepository,
-    private readonly artistNoteRepository: ArtistNoteRepository,
     private readonly artistGenreRepository: ArtistGenreRepository,
     private readonly databaseService: DatabaseService,
   ) {}
@@ -33,24 +31,14 @@ export class CreateArtistHandler implements ICommandHandler<CreateArtistCommand,
         transaction,
       )
 
-      await Promise.all([
-        this.artistNoteRepository.create(
-          {
-            artistId: artist.id,
-            shortText: command.shortText,
-            standardText: command.standardText,
-          },
-          transaction,
-        ),
-        this.artistGenreRepository.createMany(
-          command.genres.map((genre, index) => ({
-            artist_id: artist.id,
-            genre_id: genre,
-            position: index,
-          })),
-          transaction,
-        ),
-      ])
+      await this.artistGenreRepository.createMany(
+        command.genres.map((genre, index) => ({
+          artistId: artist.id,
+          genreId: genre,
+          position: index,
+        })),
+        transaction,
+      )
     })
   }
 }

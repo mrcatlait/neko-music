@@ -1,4 +1,6 @@
-export * from './album-with-artists.dto'
+export * from './album.dto'
+export * from './artist.dto'
 export * from './create-artist.dto'
 export * from './create-genre.dto'
 export * from './genre.dto'
+export * from './track.dto'

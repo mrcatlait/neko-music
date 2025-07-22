@@ -3,9 +3,8 @@ import { BadRequestException } from '@nestjs/common'
 
 import { CreateGenreCommand } from './create-genre.command'
 import { CreateGenreValidator } from './create-genre.validator'
-
-import { GenreRepository } from '@modules/music-metadata/repositories'
-import { GenreEntity } from '@modules/music-metadata/entities'
+import { GenreRepository } from '../../repositories'
+import { GenreEntity } from '../../entities'
 
 @CommandHandler(CreateGenreCommand)
 export class CreateGenreHandler implements ICommandHandler<CreateGenreCommand, void> {

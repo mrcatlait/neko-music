@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
 
-import { AlbumWithArtistsRepository } from '../../repositories'
-import { AlbumWithArtistsEntity } from '../../entities'
+import { AlbumRepository } from '../../repositories'
+import { AlbumWithArtistsAndArtworkEntity } from '../../entities'
 import { GetPopularAlbumsQuery } from './get-popular-albums.query'
 
 @QueryHandler(GetPopularAlbumsQuery)
 export class GetPopularAlbumsHandler implements IQueryHandler<GetPopularAlbumsQuery> {
-  constructor(private readonly albumWithArtistsRepository: AlbumWithArtistsRepository) {}
+  constructor(private readonly repository: AlbumRepository) {}
 
-  execute(): Promise<AlbumWithArtistsEntity[]> {
-    return this.albumWithArtistsRepository.findPopular()
+  execute(): Promise<AlbumWithArtistsAndArtworkEntity[]> {
+    return this.repository.findPopular()
   }
 }

@@ -1,8 +1,0 @@
-export enum EntityType {
-  TRACK = 'TRACK',
-  ALBUM = 'ALBUM',
-  ARTIST = 'ARTIST',
-  DRAFT_TRACK = 'DRAFT_TRACK',
-  DRAFT_ALBUM = 'DRAFT_ALBUM',
-  DRAFT_ARTIST = 'DRAFT_ARTIST',
-}

@@ -2,8 +2,8 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common'
 import { ApiOperation, ApiTags, ApiCookieAuth, ApiOkResponse } from '@nestjs/swagger'
 import { QueryBus } from '@nestjs/cqrs'
 
-import { GetPopularAlbumsQuery } from '../queries'
-import { AlbumWithArtistsDto } from '../dtos'
+import { GetPopularAlbumsQuery, GetTracksForAlbumQuery } from '../queries'
+import { AlbumWithArtistsAndArtworkDto, TrackWithAlbumAndArtistsAndArtworkDto } from '../dtos'
 
 import { AuthGuard } from '@modules/authentication/guards'
 
@@ -19,9 +19,9 @@ export class AlbumsController {
     summary: 'Get popular albums',
   })
   @ApiOkResponse({
-    type: [AlbumWithArtistsDto],
+    type: [AlbumWithArtistsAndArtworkDto],
   })
-  getPopularAlbums(): Promise<AlbumWithArtistsDto[]> {
+  getPopularAlbums(): Promise<AlbumWithArtistsAndArtworkDto[]> {
     return this.queryBus.execute(new GetPopularAlbumsQuery())
   }
 
@@ -30,9 +30,9 @@ export class AlbumsController {
     summary: 'Get tracks for an album',
   })
   @ApiOkResponse({
-    type: [TrackDto],
+    type: [TrackWithAlbumAndArtistsAndArtworkDto],
   })
-  getTracksForAlbum(@Param('albumId') albumId: string): Promise<TrackDto[]> {
+  getTracksForAlbum(@Param('albumId') albumId: string): Promise<TrackWithAlbumAndArtistsAndArtworkDto[]> {
     return this.queryBus.execute(new GetTracksForAlbumQuery(albumId))
   }
 }

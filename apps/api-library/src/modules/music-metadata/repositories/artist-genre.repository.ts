@@ -1,46 +1,51 @@
 import { Injectable } from '@nestjs/common'
 import { Sql } from 'postgres'
+import { DatabaseService } from '@modules/database/services'
 
 import { ArtistGenreEntity } from '../entities'
-
-import { DatabaseService } from '@modules/database/services'
 
 @Injectable()
 export class ArtistGenreRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create(artistGenre: Omit<ArtistGenreEntity, 'created_at'>, sql?: Sql): Promise<ArtistGenreEntity> {
-    return (sql ?? this.databaseService.sql)<ArtistGenreEntity[]>`
+  create<Type extends ArtistGenreEntity>(genre: Type, sql?: Sql): Promise<Type> {
+    return (sql ?? this.databaseService.sql)<Type[]>`
       INSERT INTO "music"."ArtistGenre" (artist_id, genre_id)
-      VALUES (${artistGenre.artist_id}, ${artistGenre.genre_id})
-      RETURNING *
+      VALUES (${genre.artistId}, ${genre.genreId})
+      RETURNING
+        artist_id as "artistId",
+        genre_id as "genreId",
+        position
     `.then((result) => result.at(0)!)
   }
 
-  createMany(artistGenres: Omit<ArtistGenreEntity, 'created_at'>[], sql?: Sql): Promise<ArtistGenreEntity[]> {
-    if (artistGenres.length === 0) {
+  createMany(genres: ArtistGenreEntity[], sql?: Sql): Promise<ArtistGenreEntity[]> {
+    if (genres.length === 0) {
       return Promise.resolve([])
     }
 
     return (sql ?? this.databaseService.sql)<ArtistGenreEntity[]>`
-      INSERT INTO "music"."ArtistGenre" ${this.databaseService.sql(artistGenres)}
-      RETURNING *
+      INSERT INTO "music"."ArtistGenre" ${this.databaseService.sql(genres)}
+      RETURNING
+        artist_id as "artistId",
+        genre_id as "genreId",
+        position
     `
   }
 
-  delete(artistGenre: Omit<ArtistGenreEntity, 'created_at' | 'position'>): Promise<void> {
+  delete(genre: Omit<ArtistGenreEntity, 'position'>): Promise<void> {
     return this.databaseService.sql`
-      DELETE FROM "music"."ArtistGenre" WHERE artist_id = ${artistGenre.artist_id} AND genre_id = ${artistGenre.genre_id}
+      DELETE FROM "music"."ArtistGenre" WHERE artist_id = ${genre.artistId} AND genre_id = ${genre.genreId}
     `.then(() => undefined)
   }
 
-  deleteMany(artistGenres: Omit<ArtistGenreEntity, 'created_at' | 'position'>[]): Promise<void> {
-    if (artistGenres.length === 0) {
+  deleteMany(genres: Omit<ArtistGenreEntity, 'position'>[]): Promise<void> {
+    if (genres.length === 0) {
       return Promise.resolve()
     }
 
     return this.databaseService.sql`
-      DELETE FROM "music"."ArtistGenre" ${this.databaseService.sql(artistGenres)}
+      DELETE FROM "music"."ArtistGenre" ${this.databaseService.sql(genres)}
     `.then(() => undefined)
   }
 }

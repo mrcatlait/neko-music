@@ -8,15 +8,15 @@ import { DatabaseService } from '@modules/database'
 export class GenreRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create(genre: Omit<GenreEntity, 'id' | 'created_at' | 'updated_at'>): Promise<GenreEntity> {
-    return this.databaseService.sql<GenreEntity[]>`
+  create<Type extends GenreEntity>(genre: Type): Promise<Type> {
+    return this.databaseService.sql<Type[]>`
       INSERT INTO "music"."Genre" (name)
       VALUES (${genre.name})
       RETURNING *
     `.then((result) => result.at(0)!)
   }
 
-  createMany(genres: Omit<GenreEntity, 'id' | 'created_at' | 'updated_at'>[]): Promise<GenreEntity[]> {
+  createMany(genres: Omit<GenreEntity, 'id'>[]): Promise<GenreEntity[]> {
     if (genres.length === 0) {
       return Promise.resolve([])
     }
@@ -27,14 +27,14 @@ export class GenreRepository {
     `
   }
 
-  findAll(): Promise<GenreEntity[]> {
-    return this.databaseService.sql<GenreEntity[]>`
+  findAll<Type extends GenreEntity>(): Promise<Type[]> {
+    return this.databaseService.sql<Type[]>`
       SELECT * FROM "music"."Genre"
     `.then((result) => result)
   }
 
-  findOneByName(name: string): Promise<GenreEntity | undefined> {
-    return this.databaseService.sql<GenreEntity[]>`
+  findOneByName<Type extends GenreEntity>(name: string): Promise<Type | undefined> {
+    return this.databaseService.sql<Type[]>`
       SELECT * FROM "music"."Genre" WHERE name = ${name}
     `.then((result) => result.at(0))
   }

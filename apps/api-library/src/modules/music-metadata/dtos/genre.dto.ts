@@ -10,14 +10,4 @@ export class GenreDto {
     description: 'The name of the genre',
   })
   name: string
-
-  @ApiProperty({
-    description: 'The created at date of the genre',
-  })
-  created_at: Date
-
-  @ApiProperty({
-    description: 'The updated at date of the genre',
-  })
-  updated_at: Date
 }

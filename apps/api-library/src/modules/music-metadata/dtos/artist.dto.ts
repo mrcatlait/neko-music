@@ -20,7 +20,9 @@ export class ArtistDto {
     example: true,
   })
   verified: boolean
+}
 
+export class ArtistWithArtworkDto extends ArtistDto {
   @ApiProperty({
     description: 'The artwork of the artist',
     type: ArtworkDto,

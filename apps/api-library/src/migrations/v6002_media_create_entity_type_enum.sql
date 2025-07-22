@@ -1,4 +1,5 @@
 CREATE TYPE "media"."EntityType" AS ENUM (
   'ALBUM',
-  'ARTIST'
+  'ARTIST',
+  'TRACK'
 );

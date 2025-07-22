@@ -4,9 +4,10 @@ CREATE TABLE "music"."Artist" (
   "verified" BOOLEAN NOT NULL DEFAULT FALSE,
   "artwork" JSONB NOT NULL DEFAULT '{
     "url": null,
-    "background_color": null,
-    "text_color": null
+    "backgroundColor": null,
+    "textColor": null
   }'::JSONB,
+  "media_file_id" UUID NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

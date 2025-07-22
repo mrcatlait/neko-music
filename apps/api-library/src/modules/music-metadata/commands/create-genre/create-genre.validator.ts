@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common'
+import { ValidationResult, Validator } from '@modules/shared/models'
 
 import { CreateGenreCommand } from './create-genre.command'
-
-import { GenreRepository } from '@modules/music-metadata/repositories'
-import { ValidationResult, Validator } from '@modules/shared/models'
+import { GenreRepository } from '../../repositories'
 
 @Injectable()
 export class CreateGenreValidator implements Validator<CreateGenreCommand> {
