@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { Sql } from 'postgres'
 
-import { AlbumEntity, WithArtists, WithArtwork, WithArtworkAndMediaFile } from '../entities'
+import { AlbumEntity, WithArtists, WithArtwork } from '../entities'
 
 import { DatabaseService } from '@modules/database'
 
@@ -9,20 +9,16 @@ import { DatabaseService } from '@modules/database'
 export class AlbumRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create<Type extends WithArtworkAndMediaFile<AlbumEntity>>(album: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    const artwork = JSON.stringify(album.artwork)
-
+  create<Type extends AlbumEntity>(album: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "music"."Album" (name, release_date, explicit, type, artwork, media_file_id)
-      VALUES (${album.name}, ${album.releaseDate}, ${album.explicit}, ${album.type}, ${artwork}, ${album.mediaFileId})
+      INSERT INTO "music"."Album" (name, release_date, explicit, type)
+      VALUES (${album.name}, ${album.releaseDate}, ${album.explicit}, ${album.type})
       RETURNING
         id,
         name,
         release_date as "releaseDate",
         explicit,
-        type,
-        artwork,
-        media_file_id as "mediaFileId"
+        type
     `.then((result) => result.at(0)!)
   }
 

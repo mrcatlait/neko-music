@@ -6,7 +6,6 @@ export interface AlbumEntity {
   releaseDate: Date
   explicit: boolean
   type: AlbumType
-  mediaFileId: string
 }
 
 export type WithAlbum<T> = T & {

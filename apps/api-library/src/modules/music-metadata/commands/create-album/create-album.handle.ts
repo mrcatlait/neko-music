@@ -1,6 +1,7 @@
 import { BadRequestException } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 
+import { AlbumEntity } from '../../entities'
 import { CreateAlbumCommand } from './create-album.command'
 import { CreateAlbumValidator } from './create-album.validator'
 import { AlbumArtistRepository, AlbumGenreRepository, AlbumRepository } from '../../repositories'
@@ -17,7 +18,7 @@ export class CreateAlbumHandler implements ICommandHandler<CreateAlbumCommand, v
     private readonly databaseService: DatabaseService,
   ) {}
 
-  async execute(command: CreateAlbumCommand): Promise<void> {
+  async execute(command: CreateAlbumCommand): Promise<AlbumEntity> {
     const validationResult = await this.createAlbumValidator.validate(command)
 
     if (!validationResult.isValid) {
@@ -31,8 +32,6 @@ export class CreateAlbumHandler implements ICommandHandler<CreateAlbumCommand, v
           releaseDate: command.releaseDate,
           explicit: command.explicit,
           type: command.type,
-          artwork: command.artwork,
-          mediaFileId: command.mediaFileId,
         },
         transaction,
       )
@@ -55,6 +54,8 @@ export class CreateAlbumHandler implements ICommandHandler<CreateAlbumCommand, v
           transaction,
         ),
       ])
+
+      return album
     })
   }
 }

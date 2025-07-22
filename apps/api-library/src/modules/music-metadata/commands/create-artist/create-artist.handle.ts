@@ -1,10 +1,11 @@
 import { BadRequestException } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
-import { DatabaseService } from '@modules/database'
 
 import { CreateArtistCommand } from './create-artist.command'
 import { CreateArtistValidator } from './create-artist.validator'
 import { ArtistGenreRepository, ArtistRepository } from '../../repositories'
+
+import { DatabaseService } from '@modules/database'
 
 @CommandHandler(CreateArtistCommand)
 export class CreateArtistHandler implements ICommandHandler<CreateArtistCommand, void> {
@@ -27,6 +28,8 @@ export class CreateArtistHandler implements ICommandHandler<CreateArtistCommand,
         {
           name: command.name,
           verified: command.verified,
+          artwork: null,
+          mediaFileId: null,
         },
         transaction,
       )

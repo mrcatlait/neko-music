@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { Sql } from 'postgres'
-import { DatabaseService } from '@modules/database/services'
 
 import { AlbumArtistEntity } from '../entities'
+
+import { DatabaseService } from '@modules/database/services'
 
 @Injectable()
 export class AlbumArtistRepository {

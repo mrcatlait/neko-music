@@ -22,31 +22,26 @@ export class ArtistRepository {
     `.then((result) => result.at(0))
   }
 
-  findOneByName<Type extends WithArtwork<ArtistEntity>>(name: string): Promise<Type | undefined> {
-    return this.databaseService.sql<Type[]>`
-      SELECT 
-        id,
-        name,
-        verified,
-        artwork
-      FROM "music"."Artist" 
-      WHERE name = ${name}
-      LIMIT 1
-    `.then((result) => result.at(0))
+  exists(name: string): Promise<boolean> {
+    return this.databaseService.sql<{ exists: boolean }[]>`
+      SELECT EXISTS(SELECT 1 FROM "music"."Artist" WHERE name = ${name})
+    `.then((result) => result.at(0)?.exists ?? false)
   }
 
-  create<Type extends WithArtworkAndMediaFile<ArtistEntity>>(artist: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    const artwork = JSON.stringify(artist.artwork)
+  existsAll(ids: string[]): Promise<boolean> {
+    return this.databaseService.sql<{ exists: boolean }[]>`
+      SELECT EXISTS(SELECT 1 FROM "music"."Artist" WHERE id IN ${this.databaseService.sql(ids)})
+    `.then((result) => result.at(0)?.exists ?? false)
+  }
 
+  create<Type extends ArtistEntity>(artist: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "music"."Artist" (name, verified, artwork, media_file_id)
-      VALUES (${artist.name}, ${artist.verified}, ${artwork}, ${artist.mediaFileId})
+      INSERT INTO "music"."Artist" (name, verified)
+      VALUES (${artist.name}, ${artist.verified})
       RETURNING 
         id,
         name,
-        verified,
-        artwork,
-        media_file_id as "mediaFileId"
+        verified
     `.then((result) => result.at(0)!)
   }
 

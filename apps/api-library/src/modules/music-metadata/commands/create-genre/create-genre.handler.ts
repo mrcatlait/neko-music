@@ -10,7 +10,7 @@ import { GenreEntity } from '../../entities'
 export class CreateGenreHandler implements ICommandHandler<CreateGenreCommand, void> {
   constructor(
     private readonly createGenreValidator: CreateGenreValidator,
-    private readonly genreRepository: GenreRepository,
+    private readonly repository: GenreRepository,
   ) {}
 
   async execute(command: CreateGenreCommand): Promise<GenreEntity> {
@@ -20,7 +20,7 @@ export class CreateGenreHandler implements ICommandHandler<CreateGenreCommand, v
       throw new BadRequestException(validationResult.errors)
     }
 
-    return this.genreRepository.create({
+    return this.repository.create({
       name: command.name,
     })
   }

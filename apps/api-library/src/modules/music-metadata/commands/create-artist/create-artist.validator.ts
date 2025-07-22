@@ -13,7 +13,7 @@ export class CreateArtistValidator implements Validator<CreateArtistCommand> {
   ) {}
 
   async validate(command: CreateArtistCommand): Promise<ValidationResult> {
-    const artistExists = await this.artistRepository.findOneByName(command.name)
+    const artistExists = await this.artistRepository.exists(command.name)
 
     if (artistExists) {
       return {
@@ -22,12 +22,12 @@ export class CreateArtistValidator implements Validator<CreateArtistCommand> {
       }
     }
 
-    const genres = await this.genreRepository.findAll()
+    const genresExist = await this.genreRepository.existsAll(command.genres)
 
-    if (command.genres.some((genre) => !genres.some((g) => g.id === genre))) {
+    if (!genresExist) {
       return {
         isValid: false,
-        errors: ['Genre not found'],
+        errors: ['Genres not found'],
       }
     }
 

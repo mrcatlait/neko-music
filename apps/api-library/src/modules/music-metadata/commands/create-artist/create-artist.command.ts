@@ -5,8 +5,6 @@ export class CreateArtistCommand extends Command<void> {
     readonly name: string,
     readonly verified: boolean,
     readonly genres: string[],
-    readonly shortText: string,
-    readonly standardText: string,
   ) {
     super()
   }

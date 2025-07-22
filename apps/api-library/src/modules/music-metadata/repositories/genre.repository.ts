@@ -8,7 +8,7 @@ import { DatabaseService } from '@modules/database'
 export class GenreRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create<Type extends GenreEntity>(genre: Type): Promise<Type> {
+  create<Type extends GenreEntity>(genre: Omit<Type, 'id'>): Promise<Type> {
     return this.databaseService.sql<Type[]>`
       INSERT INTO "music"."Genre" (name)
       VALUES (${genre.name})
@@ -27,16 +27,16 @@ export class GenreRepository {
     `
   }
 
-  findAll<Type extends GenreEntity>(): Promise<Type[]> {
-    return this.databaseService.sql<Type[]>`
-      SELECT * FROM "music"."Genre"
-    `.then((result) => result)
+  existsAll(names: string[]): Promise<boolean> {
+    return this.databaseService.sql<{ exists: boolean }[]>`
+      SELECT EXISTS(SELECT 1 FROM "music"."Genre" WHERE name IN ${this.databaseService.sql(names)})
+    `.then((result) => result.at(0)?.exists ?? false)
   }
 
-  findOneByName<Type extends GenreEntity>(name: string): Promise<Type | undefined> {
-    return this.databaseService.sql<Type[]>`
-      SELECT * FROM "music"."Genre" WHERE name = ${name}
-    `.then((result) => result.at(0))
+  exists(name: string): Promise<boolean> {
+    return this.databaseService.sql<{ exists: boolean }[]>`
+      SELECT EXISTS(SELECT 1 FROM "music"."Genre" WHERE name = ${name})
+    `.then((result) => result.at(0)?.exists ?? false)
   }
 
   delete(id: string): Promise<void> {

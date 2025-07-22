@@ -2,15 +2,15 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
 import { ApiOperation, ApiTags, ApiCookieAuth, ApiOkResponse } from '@nestjs/swagger'
 import { CommandBus } from '@nestjs/cqrs'
 
-import { CreateArtistDto } from '../dtos'
 import { CreateArtistCommand } from '../commands'
+import { CreateArtistDto } from '../dtos'
 
-import { AuthGuard } from '@modules/authentication/guards'
-import { Session } from '@modules/authentication/decorators'
-import { UserSession } from '@modules/authentication/interfaces'
-import { GenerateUploadTokenCommand } from '@modules/media/commands'
-import { MediaType } from '@modules/media/enums'
 import { UploadTokenDto } from '@modules/media/dtos'
+import { EntityType, MediaType } from '@modules/media/enums'
+import { GenerateUploadTokenCommand } from '@modules/media/commands'
+import { UserSession } from '@modules/authentication/interfaces'
+import { Session } from '@modules/authentication/decorators'
+import { AuthGuard } from '@modules/authentication/guards'
 
 @Controller('artists')
 @ApiTags('Artists')
@@ -24,9 +24,7 @@ export class ArtistController {
     summary: 'Create an artist',
   })
   createArtist(@Body() body: CreateArtistDto): Promise<void> {
-    return this.commandBus.execute(
-      new CreateArtistCommand(body.name, body.verified, body.genres, body.shortText, body.standardText),
-    )
+    return this.commandBus.execute(new CreateArtistCommand(body.name, body.verified, body.genres))
   }
 
   @Get(':artistId/upload-token')
@@ -37,6 +35,8 @@ export class ArtistController {
     type: UploadTokenDto,
   })
   getUploadToken(@Param('artistId') artistId: string, @Session() session: UserSession): Promise<UploadTokenDto> {
-    return this.commandBus.execute(new GenerateUploadTokenCommand(session.userId, MediaType.IMAGE))
+    return this.commandBus.execute(
+      new GenerateUploadTokenCommand(session.userId, MediaType.ARTWORK, EntityType.ARTIST, artistId),
+    )
   }
 }

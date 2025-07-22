@@ -1,5 +1,5 @@
 import { Query } from '@nestjs/cqrs'
 
-import { AlbumWithArtistsAndArtworkEntity } from '../../entities'
+import { AlbumWithArtistsAndArtworkDto } from '../../dtos'
 
-export class GetPopularAlbumsQuery extends Query<AlbumWithArtistsAndArtworkEntity[]> {}
+export class GetPopularAlbumsQuery extends Query<AlbumWithArtistsAndArtworkDto[]> {}
