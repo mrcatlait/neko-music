@@ -60,14 +60,3 @@ tasks:
     deps:
       - 'test-unit'
       - 'test-integration'
-
-  sonar:
-    command: 'sonar-scanner'
-    args:
-      - 'Dsonar.token=${SONAR_TOKEN}'
-    inputs:
-      - '@group(sources)'
-      - '@group(unit-tests)'
-      - 'sonar-project.properties'
-    deps:
-      - 'test-unit'
