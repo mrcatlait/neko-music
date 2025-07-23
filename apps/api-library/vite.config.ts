@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     globals: true,
     watch: false,
     reporters: ['default', 'junit'],
-    workspace: [
+    projects: [
       {
         extends: true,
         name: 'unit',
