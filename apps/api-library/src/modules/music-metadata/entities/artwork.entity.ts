@@ -8,7 +8,7 @@ export type WithArtwork<T> = T & {
   artwork: ArtworkEntity
 }
 
-export type WithArtworkAndMediaFile<T> = T & {
+export type WithArtworkAndId<T> = T & {
   artwork: ArtworkEntity
-  mediaFileId: string
+  artworkId: string
 }

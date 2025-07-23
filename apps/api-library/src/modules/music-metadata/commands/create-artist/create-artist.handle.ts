@@ -4,11 +4,12 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { CreateArtistCommand } from './create-artist.command'
 import { CreateArtistValidator } from './create-artist.validator'
 import { ArtistGenreRepository, ArtistRepository } from '../../repositories'
+import { ArtistEntity } from '../../entities'
 
 import { DatabaseService } from '@modules/database'
 
 @CommandHandler(CreateArtistCommand)
-export class CreateArtistHandler implements ICommandHandler<CreateArtistCommand, void> {
+export class CreateArtistHandler implements ICommandHandler<CreateArtistCommand, ArtistEntity> {
   constructor(
     private readonly createArtistValidator: CreateArtistValidator,
     private readonly artistRepository: ArtistRepository,
@@ -16,7 +17,7 @@ export class CreateArtistHandler implements ICommandHandler<CreateArtistCommand,
     private readonly databaseService: DatabaseService,
   ) {}
 
-  async execute(command: CreateArtistCommand): Promise<void> {
+  async execute(command: CreateArtistCommand): Promise<ArtistEntity> {
     const validationResult = await this.createArtistValidator.validate(command)
 
     if (!validationResult.isValid) {
@@ -28,20 +29,13 @@ export class CreateArtistHandler implements ICommandHandler<CreateArtistCommand,
         {
           name: command.name,
           verified: command.verified,
-          artwork: null,
-          mediaFileId: null,
         },
         transaction,
       )
 
-      await this.artistGenreRepository.createMany(
-        command.genres.map((genre, index) => ({
-          artistId: artist.id,
-          genreId: genre,
-          position: index,
-        })),
-        transaction,
-      )
+      await this.artistGenreRepository.createMany(artist.id, command.genres, transaction)
+
+      return artist
     })
   }
 }

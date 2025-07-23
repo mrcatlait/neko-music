@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { Sql } from 'postgres'
 
-import { ArtistEntity, WithArtwork, WithArtworkAndMediaFile } from '../entities'
+import { ArtistEntity, WithArtwork } from '../entities'
 
 import { DatabaseService } from '@modules/database'
 
@@ -45,12 +45,10 @@ export class ArtistRepository {
     `.then((result) => result.at(0)!)
   }
 
-  update<Type extends WithArtworkAndMediaFile<ArtistEntity>>(artist: Type, sql?: Sql): Promise<Type> {
-    const artwork = JSON.stringify(artist.artwork)
-
+  update<Type extends ArtistEntity>(artist: Type, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
       UPDATE "music"."Artist" 
-      SET name = ${artist.name}, verified = ${artist.verified}, artwork = ${artwork}, media_file_id = ${artist.mediaFileId}
+      SET name = ${artist.name}, verified = ${artist.verified}
       WHERE id = ${artist.id}
       RETURNING 
         id,

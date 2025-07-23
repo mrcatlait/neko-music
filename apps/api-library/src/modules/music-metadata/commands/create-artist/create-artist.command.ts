@@ -1,6 +1,8 @@
 import { Command } from '@nestjs/cqrs'
 
-export class CreateArtistCommand extends Command<void> {
+import { ArtistEntity } from '../../entities'
+
+export class CreateArtistCommand extends Command<ArtistEntity> {
   constructor(
     readonly name: string,
     readonly verified: boolean,

@@ -1,12 +1,12 @@
 TRUNCATE TABLE "music"."Genre" CASCADE;
 
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Rock', 'rock');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Pop', 'pop');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Jazz', 'jazz');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Classical', 'classical');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Electronic', 'electronic');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Hip Hop', 'hip-hop');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('R&B', 'r-b');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Country', 'country');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Latin', 'latin');
-INSERT INTO "music"."Genre" ("name", "slug") VALUES ('Reggae', 'reggae');
+INSERT INTO "music"."Genre" ("name") VALUES ('Rock');
+INSERT INTO "music"."Genre" ("name") VALUES ('Pop');
+INSERT INTO "music"."Genre" ("name") VALUES ('Jazz');
+INSERT INTO "music"."Genre" ("name") VALUES ('Classical');
+INSERT INTO "music"."Genre" ("name") VALUES ('Electronic');
+INSERT INTO "music"."Genre" ("name") VALUES ('Hip Hop');
+INSERT INTO "music"."Genre" ("name") VALUES ('R&B');
+INSERT INTO "music"."Genre" ("name") VALUES ('Country');
+INSERT INTO "music"."Genre" ("name") VALUES ('Latin');
+INSERT INTO "music"."Genre" ("name") VALUES ('Reggae');

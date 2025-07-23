@@ -20,13 +20,14 @@ export class ArtistGenreRepository {
     `.then((result) => result.at(0)!)
   }
 
-  createMany(genres: ArtistGenreEntity[], sql?: Sql): Promise<ArtistGenreEntity[]> {
+  createMany(artistId: string, genres: string[], sql?: Sql): Promise<ArtistGenreEntity[]> {
     if (genres.length === 0) {
       return Promise.resolve([])
     }
 
     return (sql ?? this.databaseService.sql)<ArtistGenreEntity[]>`
-      INSERT INTO "music"."ArtistGenre" ${this.databaseService.sql(genres)}
+      INSERT INTO "music"."ArtistGenre" (artist_id, genre_id)
+      VALUES (${artistId}, ${this.databaseService.sql(genres)})
       RETURNING
         artist_id as "artistId",
         genre_id as "genreId",

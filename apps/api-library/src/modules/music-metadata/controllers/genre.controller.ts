@@ -1,9 +1,7 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Post, UseGuards } from '@nestjs/common'
 import { ApiOperation, ApiTags, ApiCookieAuth, ApiResponse } from '@nestjs/swagger'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 
-import { GenreEntity } from '../entities'
-import { GetGenresQuery } from '../queries'
 import { CreateGenreCommand } from '../commands'
 import { CreateGenreDto, GenreDto } from '../dtos'
 
@@ -18,14 +16,6 @@ export class GenreController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
-
-  @Get('')
-  @ApiOperation({
-    summary: 'Get all genres',
-  })
-  getGenres(): Promise<GenreEntity[]> {
-    return this.queryBus.execute(new GetGenresQuery())
-  }
 
   @Post('')
   @ApiOperation({

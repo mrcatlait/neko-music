@@ -1,9 +1,10 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
 import { ApiOperation, ApiTags, ApiCookieAuth, ApiOkResponse } from '@nestjs/swagger'
-import { CommandBus } from '@nestjs/cqrs'
+import { CommandBus, QueryBus } from '@nestjs/cqrs'
 
 import { CreateArtistCommand } from '../commands'
-import { CreateArtistDto } from '../dtos'
+import { ArtistDto, CreateArtistDto } from '../dtos'
+import { GetArtistQuery } from '../queries'
 
 import { UploadTokenDto } from '@modules/media/dtos'
 import { EntityType, MediaType } from '@modules/media/enums'
@@ -17,14 +18,31 @@ import { AuthGuard } from '@modules/authentication/guards'
 @ApiCookieAuth()
 @UseGuards(AuthGuard)
 export class ArtistController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @Post('')
   @ApiOperation({
     summary: 'Create an artist',
   })
-  createArtist(@Body() body: CreateArtistDto): Promise<void> {
+  @ApiOkResponse({
+    type: ArtistDto,
+  })
+  createArtist(@Body() body: CreateArtistDto): Promise<ArtistDto> {
     return this.commandBus.execute(new CreateArtistCommand(body.name, body.verified, body.genres))
+  }
+
+  @Get(':artistId')
+  @ApiOperation({
+    summary: 'Get an artist',
+  })
+  @ApiOkResponse({
+    type: ArtistDto,
+  })
+  getArtist(@Param('artistId') artistId: string): Promise<ArtistDto> {
+    return this.queryBus.execute(new GetArtistQuery(artistId))
   }
 
   @Get(':artistId/upload-token')

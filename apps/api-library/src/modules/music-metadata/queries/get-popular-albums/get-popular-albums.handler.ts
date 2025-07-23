@@ -1,8 +1,10 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
 
 import { AlbumRepository } from '../../repositories'
-import { AlbumWithArtistsAndArtworkEntity } from '../../entities'
+import { AlbumEntity, WithArtists, WithArtwork } from '../../entities'
 import { GetPopularAlbumsQuery } from './get-popular-albums.query'
+
+type AlbumWithArtistsAndArtworkEntity = WithArtists<WithArtwork<AlbumEntity>>
 
 @QueryHandler(GetPopularAlbumsQuery)
 export class GetPopularAlbumsHandler implements IQueryHandler<GetPopularAlbumsQuery> {

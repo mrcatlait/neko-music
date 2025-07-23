@@ -27,15 +27,15 @@ export class GenreRepository {
     `
   }
 
-  existsAll(names: string[]): Promise<boolean> {
+  existsAll(ids: string[]): Promise<boolean> {
     return this.databaseService.sql<{ exists: boolean }[]>`
-      SELECT EXISTS(SELECT 1 FROM "music"."Genre" WHERE name IN ${this.databaseService.sql(names)})
+      SELECT EXISTS(SELECT 1 FROM "music"."Genre" WHERE id IN ${this.databaseService.sql(ids)})
     `.then((result) => result.at(0)?.exists ?? false)
   }
 
-  exists(name: string): Promise<boolean> {
+  exists(id: string): Promise<boolean> {
     return this.databaseService.sql<{ exists: boolean }[]>`
-      SELECT EXISTS(SELECT 1 FROM "music"."Genre" WHERE name = ${name})
+      SELECT EXISTS(SELECT 1 FROM "music"."Genre" WHERE id = ${id})
     `.then((result) => result.at(0)?.exists ?? false)
   }
 

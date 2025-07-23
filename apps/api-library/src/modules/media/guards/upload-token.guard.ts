@@ -22,19 +22,20 @@ export class UploadTokenGuard implements CanActivate {
     const token = await this.uploadTokenRepository.findOne(uploadToken)
 
     if (!token) {
-      console.log('No token')
       throw new UnauthorizedException()
     }
 
     if (token.expiresAt < new Date()) {
-      console.log('Token expired')
       throw new UnauthorizedException()
     }
 
-    const session = req.session.get('data') as UserSession
+    const session = req.session.get('data') as UserSession | undefined
+
+    if (!session) {
+      throw new UnauthorizedException()
+    }
 
     if (token.userId !== session.userId) {
-      console.log('Token does not belong to the user')
       throw new UnauthorizedException()
     }
 

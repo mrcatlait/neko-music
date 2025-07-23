@@ -14,8 +14,8 @@ import { CommandBus } from '@nestjs/cqrs'
 
 import { UPLOAD_TOKEN_HEADER } from '../constants'
 import { UploadTokenGuard } from '../guards'
+import { UploadMediaCommand } from '../commands'
 
-// import { UploadMediaCommand } from '@modules/media/commands'
 import { UserSession } from '@modules/authentication/interfaces'
 import { AuthGuard } from '@modules/authentication/guards'
 import { Session } from '@modules/authentication/decorators'
@@ -54,11 +54,7 @@ export class MediaController {
       }),
     )
     file: File,
-  ): Promise<{ mediaFileId: string; processingStatus: string }> {
-    // const result = await this.commandBus.execute(new UploadMediaCommand(file, session.userId, token))
-    // return {
-    //   mediaFileId: result.mediaFileId,
-    //   processingStatus: 'queued',
-    // }
+  ): Promise<void> {
+    return this.commandBus.execute(new UploadMediaCommand(file, session.userId, token))
   }
 }

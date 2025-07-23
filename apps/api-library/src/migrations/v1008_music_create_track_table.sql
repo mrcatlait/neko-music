@@ -10,7 +10,7 @@ CREATE TABLE "music"."Track" (
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "media_file_id" UUID NOT NULL,
+  "audio_id" UUID,
   CONSTRAINT "FK_Track_Album" FOREIGN KEY ("album_id") REFERENCES "music"."Album" ("id"),
   CONSTRAINT "CHK_Track_TrackNumber" CHECK (track_number > 0),
   CONSTRAINT "CHK_Track_DiskNumber" CHECK (disk_number > 0),

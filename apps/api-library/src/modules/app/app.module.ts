@@ -14,6 +14,7 @@ import { AuthorizationModule } from '@modules/authorization/authorization.module
 import { MusicMetadataModule } from '@modules/music-metadata/music-metadata.module'
 import { UserModule } from '@modules/user/user.module'
 import { StreamingModule } from '@modules/streaming/streaming.module'
+import { MediaModule } from '@modules/media/media.module'
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { StreamingModule } from '@modules/streaming/streaming.module'
     AuthenticationModule,
     AuthorizationModule,
     MusicMetadataModule,
+    MediaModule,
     UserModule,
     StreamingModule,
   ],

@@ -9,7 +9,7 @@ CREATE TABLE "music"."Album" (
     "backgroundColor": null,
     "textColor": null
   }'::JSONB,
-  "media_file_id" UUID NOT NULL,
+  "artwork_id" UUID,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
