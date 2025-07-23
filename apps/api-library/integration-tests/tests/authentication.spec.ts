@@ -5,11 +5,11 @@ import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
+import { RegisterHandler } from '@modules/authentication/registration/commands'
+import { LoginHandler } from '@modules/authentication/login/commands'
 
 import { AppModule } from '@modules/app/app.module'
 import { EnvironmentVariables } from '@modules/shared/models'
-import { RegisterHandler } from '@modules/authentication/registration/commands'
-import { LoginHandler } from '@modules/authentication/login/commands'
 
 describe('Authentication', () => {
   let app: NestFastifyApplication
