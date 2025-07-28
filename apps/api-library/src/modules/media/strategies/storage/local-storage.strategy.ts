@@ -1,14 +1,21 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { existsSync, mkdirSync, unlink, writeFile } from 'fs'
-import { dirname } from 'path'
+import { copyFile, existsSync, mkdirSync, unlink, writeFile } from 'fs'
+import { dirname, join } from 'path'
 import { promisify } from 'util'
 
-import { MediaDeleteOptions, MediaStorageStrategy, MediaUploadOptions, MediaUploadResult } from './storage.strategy'
-
-import { StorageProvider } from '@modules/media/enums'
+import {
+  MediaDeleteOptions,
+  MediaDownloadOptions,
+  MediaStorageStrategy,
+  MediaUploadOptions,
+  MediaUploadResult,
+} from './storage.strategy'
+import { StorageProvider } from '../../enums'
+import { MEDIA_PATH } from '../../constants'
 
 const writeFileAsync = promisify(writeFile)
 const unlinkAsync = promisify(unlink)
+const copyFileAsync = promisify(copyFile)
 
 @Injectable()
 export class LocalStorageStrategy implements MediaStorageStrategy {
@@ -16,29 +23,38 @@ export class LocalStorageStrategy implements MediaStorageStrategy {
 
   async upload(options: MediaUploadOptions): Promise<MediaUploadResult> {
     try {
-      if (!options.file.buffer) {
-        throw new Error('File buffer is required')
-      }
-
-      const folder = dirname(options.fileName)
+      const filePath = join(MEDIA_PATH, options.fileName)
+      const folder = dirname(filePath)
 
       if (!existsSync(folder)) {
         mkdirSync(folder, { recursive: true })
         this.logger.debug(`Created directory: ${folder}`)
       }
 
-      await writeFileAsync(options.fileName, options.file.buffer)
-      this.logger.debug(`File uploaded successfully: ${options.fileName}`)
+      await writeFileAsync(filePath, options.content)
+      this.logger.debug(`File uploaded successfully: ${filePath}`)
 
       return {
         storageProvider: StorageProvider.LOCAL,
-        storagePath: options.fileName,
+        storagePath: filePath,
         publicUrl: `/media/${options.fileName}`,
+        fileSize: options.content.length,
       }
     } catch (error) {
       this.logger.error(`Failed to upload file: ${options.fileName}`, error)
       throw new Error(`Local storage upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
+  }
+
+  download(options: MediaDownloadOptions): Promise<void> {
+    const folder = dirname(options.targetPath)
+
+    if (!existsSync(folder)) {
+      mkdirSync(folder, { recursive: true })
+      this.logger.debug(`Created directory: ${folder}`)
+    }
+
+    return copyFileAsync(options.storagePath, options.targetPath)
   }
 
   async delete(options: MediaDeleteOptions): Promise<void> {

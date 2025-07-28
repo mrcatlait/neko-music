@@ -7,7 +7,6 @@ CREATE TABLE "media"."ArtistArtworkVariant" (
   "public_url" VARCHAR(255),
   "size" "media"."ArtworkSize" NOT NULL,
   "file_size" BIGINT NOT NULL,
-  "file_hash" VARCHAR(64) NOT NULL,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT "FK_ArtistArtworkVariant_ArtistArtwork" FOREIGN KEY ("artist_artwork_id") REFERENCES "media"."ArtistArtwork" ("id") ON DELETE CASCADE,

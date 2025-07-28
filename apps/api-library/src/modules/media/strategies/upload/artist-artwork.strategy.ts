@@ -18,10 +18,6 @@ export class ArtistArtworkUploadStrategy extends UploadStrategy {
     super(storageStrategyRegistry)
   }
 
-  protected hasMatchingHash(fileHash: string): Promise<boolean> {
-    return this.artistArtworkVariantRepository.findByHash(fileHash).then((record) => Boolean(record))
-  }
-
   protected recordInDatabase(options: RecordInDatabaseOptions): Promise<void> {
     return this.databaseService.sql.begin(async (transaction) => {
       const mediaFile = await this.artistArtworkRepository.create(
@@ -45,7 +41,6 @@ export class ArtistArtworkUploadStrategy extends UploadStrategy {
           publicUrl: options.publicUrl,
           size: ArtworkSize.ORIGINAL,
           fileSize: options.fileSize,
-          fileHash: options.fileHash,
         },
         transaction,
       )

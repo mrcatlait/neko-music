@@ -2,10 +2,12 @@ import { Global, Module } from '@nestjs/common'
 
 import { MediaController } from './controllers'
 import { GenerateUploadTokenHandler, UploadMediaHandler, UploadMediaValidator } from './commands'
-import { UploadTokenCleanupCron } from './crons'
+import { ProcessArtistArtworkCron, UploadTokenCleanupCron } from './crons'
 import { ArtistArtworkRepository, ArtistArtworkVariantRepository, UploadTokenRepository } from './repositories'
-import { StorageStrategyModule } from './strategies/storage'
-import { UploadStrategyModule } from './strategies/upload'
+import { LocalStorageStrategy, StorageStrategyRegistry } from './strategies/storage'
+import { ArtistArtworkUploadStrategy, UploadStrategyRegistry } from './strategies/upload'
+import { ArtistArtworkProcessingStrategy, ProcessingStrategyRegistry } from './strategies/processing'
+import { ImageProcessingService } from './services'
 
 @Global()
 @Module({
@@ -16,14 +18,23 @@ import { UploadStrategyModule } from './strategies/upload'
     UploadMediaHandler,
     UploadMediaValidator,
     // Crons
+    ProcessArtistArtworkCron,
     UploadTokenCleanupCron,
     // Repositories
     ArtistArtworkRepository,
     ArtistArtworkVariantRepository,
     UploadTokenRepository,
-    // Strategies
-    StorageStrategyModule,
-    UploadStrategyModule,
+    // Upload strategies
+    ArtistArtworkUploadStrategy,
+    UploadStrategyRegistry,
+    // Storage strategies
+    LocalStorageStrategy,
+    StorageStrategyRegistry,
+    // Processing strategies
+    ArtistArtworkProcessingStrategy,
+    ProcessingStrategyRegistry,
+    // Services
+    ImageProcessingService,
   ],
 })
 export class MediaModule {}

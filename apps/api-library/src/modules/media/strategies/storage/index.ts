@@ -1,2 +1,3 @@
-export * from './storage-strategy.module'
+export * from './local-storage.strategy'
 export * from './storage.strategy-registry'
+export * from './storage.strategy'

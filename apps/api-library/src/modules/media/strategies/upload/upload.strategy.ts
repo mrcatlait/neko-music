@@ -3,8 +3,8 @@ import { createHash, randomUUID } from 'crypto'
 import { BadRequestException } from '@nestjs/common'
 
 import { StorageStrategyRegistry } from '../storage'
-
-import { StorageProvider } from '@modules/media/enums'
+import { getFileExtension } from '../../utils'
+import { StorageProvider } from '../../enums'
 
 export interface MediaUploadOptions {
   entityId: string
@@ -13,7 +13,6 @@ export interface MediaUploadOptions {
 
 export interface RecordInDatabaseOptions {
   entityId: string
-  fileHash: string
   fileName: string
   fileExtension: string
   fileSize: number
@@ -32,31 +31,18 @@ export abstract class UploadStrategy {
       throw new BadRequestException('File is required')
     }
 
-    const fileHash = createHash('sha256').update(options.file.buffer).digest('hex')
-
-    const hasMatchingHash = await this.hasMatchingHash(fileHash)
-
-    if (hasMatchingHash) {
-      throw new BadRequestException('File already exists')
-    }
-
-    const fileExtension = options.file.originalname.split('.').pop()
-
-    if (!fileExtension) {
-      throw new BadRequestException('Invalid file extension')
-    }
+    const fileExtension = getFileExtension(options.file.originalname)
 
     const fileName = `${randomUUID()}.${fileExtension}`
 
     const { storagePath, storageProvider, publicUrl } = await storageStrategy.upload({
-      file: options.file,
+      content: options.file.buffer,
       fileName,
     })
 
     try {
       await this.recordInDatabase({
         entityId: options.entityId,
-        fileHash,
         fileName,
         fileExtension,
         fileSize: options.file.size,
@@ -72,8 +58,6 @@ export abstract class UploadStrategy {
       throw error
     }
   }
-
-  protected abstract hasMatchingHash(fileHash: string): Promise<boolean>
 
   protected abstract recordInDatabase(options: RecordInDatabaseOptions): Promise<void>
 }

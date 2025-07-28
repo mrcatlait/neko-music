@@ -9,5 +9,4 @@ export interface ArtistArtworkVariantEntity {
   publicUrl: string
   size: ArtworkSize
   fileSize: number
-  fileHash: string
 }

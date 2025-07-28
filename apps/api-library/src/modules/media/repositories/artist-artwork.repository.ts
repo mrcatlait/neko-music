@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Sql } from 'postgres'
 
 import { ArtistArtworkEntity } from '../entities'
+import { ProcessingStatus } from '../enums'
 
 import { DatabaseService } from '@modules/database'
 
@@ -49,4 +50,26 @@ export class ArtistArtworkRepository {
         processing_error AS "processingError"
     `.then((result) => result.at(0)!)
   }
+
+  findByProcessingStatus<Type extends ArtistArtworkEntity>(
+    processingStatus: ProcessingStatus,
+    sql?: Sql,
+  ): Promise<Type[]> {
+    return (sql ?? this.databaseService.sql)<Type[]>`
+      ${this.selectFragment}
+      WHERE processing_status = ${processingStatus}
+    `
+  }
+
+  private readonly selectFragment = this.databaseService.sql`
+    SELECT
+      id,
+      artist_id AS "artistId",
+      background_color AS "backgroundColor",
+      text_color AS "textColor",
+      processing_status AS "processingStatus",
+      processing_attempts AS "processingAttempts",
+      processing_error AS "processingError"
+    FROM "media"."ArtistArtwork"
+  `
 }
