@@ -33,7 +33,7 @@
     "@nestjs/testing": "^11.0.1",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.7",
-    "@testcontainers/postgresql": "^10.17.1",
+    "@testcontainers/postgresql": "^11.5.0",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.10.7",
     "typescript": "~5.7.2",
