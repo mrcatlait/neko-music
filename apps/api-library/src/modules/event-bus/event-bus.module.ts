@@ -1,21 +1,12 @@
-import { DynamicModule, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 
 import { EventBusCoreModule } from './event-bus-core.module'
-import { EventBusModuleAsyncOptions, EventBusModuleOptions } from './types'
+import { EventBusModuleOptions } from './types'
+
+import { ModuleWithOptions } from '@modules/app/classes'
 
 @Module({})
-export class EventBusModule {
-  static forRoot(options?: EventBusModuleOptions): DynamicModule {
-    return {
-      module: EventBusModule,
-      imports: [EventBusCoreModule.forRoot(options)],
-    }
-  }
-
-  static forRootAsync(options: EventBusModuleAsyncOptions): DynamicModule {
-    return {
-      module: EventBusModule,
-      imports: [EventBusCoreModule.forRootAsync(options)],
-    }
-  }
+export class EventBusModule extends ModuleWithOptions<EventBusModuleOptions> {
+  module = EventBusModule
+  coreModule = EventBusCoreModule
 }

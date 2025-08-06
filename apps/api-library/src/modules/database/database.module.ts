@@ -1,21 +1,12 @@
-import { DynamicModule, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 
 import { DatabaseCoreModule } from './database-core.module'
-import { DatabaseModuleAsyncOptions, DatabaseModuleOptions } from './types'
+import { DatabaseModuleOptions } from './types'
+
+import { ModuleWithOptions } from '@modules/app/classes'
 
 @Module({})
-export class DatabaseModule {
-  static forRoot(options: DatabaseModuleOptions): DynamicModule {
-    return {
-      module: DatabaseModule,
-      imports: [DatabaseCoreModule.forRoot(options)],
-    }
-  }
-
-  static forRootAsync(options: DatabaseModuleAsyncOptions): DynamicModule {
-    return {
-      module: DatabaseModule,
-      imports: [DatabaseCoreModule.forRootAsync(options)],
-    }
-  }
+export class DatabaseModule extends ModuleWithOptions<DatabaseModuleOptions> {
+  module = DatabaseModule
+  coreModule = DatabaseCoreModule
 }

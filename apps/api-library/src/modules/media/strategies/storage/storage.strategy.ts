@@ -21,7 +21,7 @@ export interface MediaDeleteOptions {
   fileName: string
 }
 
-export interface MediaStorageStrategy {
+export interface StorageStrategy {
   upload(options: MediaUploadOptions): Promise<MediaUploadResult>
 
   download(options: MediaDownloadOptions): Promise<void>
