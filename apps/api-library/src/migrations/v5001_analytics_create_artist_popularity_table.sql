@@ -1,9 +1,14 @@
 CREATE TABLE "analytics"."ArtistPopularity" (
-  "artist_id" UUID NOT NULL,
+  "artistId" UUID NOT NULL,
   "score" SMALLINT NOT NULL CHECK (score >= 0 AND score <= 100),
-  "monthly_listeners" INTEGER,
-  "stream_count" BIGINT,
-  "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY ("artist_id"),
-  CONSTRAINT "FK_ArtistPopularity_Artist" FOREIGN KEY ("artist_id") REFERENCES "music"."Artist" ("id")
+  "monthlyListeners" INTEGER,
+  "streamCount" BIGINT,
+  PRIMARY KEY ("artistId"),
+  CONSTRAINT "FK_ArtistPopularity_Artist" FOREIGN KEY ("artistId") REFERENCES "catalog"."Artist" ("id")
 );
+
+COMMENT ON TABLE "analytics"."ArtistPopularity" IS 'A table to store artist popularity data';
+COMMENT ON COLUMN "analytics"."ArtistPopularity"."artistId" IS 'The ID of the artist';
+COMMENT ON COLUMN "analytics"."ArtistPopularity"."score" IS 'The score of the artist';
+COMMENT ON COLUMN "analytics"."ArtistPopularity"."monthlyListeners" IS 'The number of monthly listeners of the artist';
+COMMENT ON COLUMN "analytics"."ArtistPopularity"."streamCount" IS 'The number of streams of the artist';

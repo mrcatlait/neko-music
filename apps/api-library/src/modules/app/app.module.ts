@@ -1,20 +1,18 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import Joi from 'joi'
 import { join } from 'path'
 import { ScheduleModule } from '@nestjs/schedule'
-import { CqrsModule } from '@nestjs/cqrs'
 
 import { DatabaseModule } from '../database/database.module'
 import { SecurityHeadersMiddleware } from './middlewares'
 
 import { EnvironmentVariables } from '@modules/shared/models'
-import { AuthenticationModule } from '@modules/authentication/authentication.module'
-import { AuthorizationModule } from '@modules/authorization/authorization.module'
-import { MusicMetadataModule } from '@modules/music-metadata/music-metadata.module'
+import { AuthModule } from '@modules/auth/auth.module'
 import { UserModule } from '@modules/user/user.module'
 import { StreamingModule } from '@modules/streaming/streaming.module'
 import { MediaModule } from '@modules/media/media.module'
+import { EventBusModule } from '@modules/event-bus'
+import { CatalogModule } from '@modules/catalog/catalog.module'
 
 @Module({
   imports: [
@@ -63,11 +61,10 @@ import { MediaModule } from '@modules/media/media.module'
       }),
       imports: [ConfigModule],
     }),
-    CqrsModule.forRoot(),
     ScheduleModule.forRoot(),
-    AuthenticationModule,
-    AuthorizationModule,
-    MusicMetadataModule,
+    EventBusModule.forRoot(),
+    AuthModule,
+    CatalogModule,
     MediaModule,
     UserModule,
     StreamingModule,

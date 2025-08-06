@@ -10,15 +10,14 @@ import {
 } from '@nestjs/common'
 import { ApiBody, ApiConsumes, ApiCookieAuth, ApiTags } from '@nestjs/swagger'
 import { File, FileInterceptor } from '@nest-lab/fastify-multer'
-import { CommandBus } from '@nestjs/cqrs'
 
 import { UPLOAD_TOKEN_HEADER } from '../constants'
 import { UploadTokenGuard } from '../guards'
-import { UploadMediaCommand } from '../commands'
+import { UploadMediaUseCase } from '../use-cases'
 
-import { UserSession } from '@modules/authentication/interfaces'
-import { AuthGuard } from '@modules/authentication/guards'
-import { Session } from '@modules/authentication/decorators'
+import { UserSession } from '@modules/auth/interfaces'
+import { AuthGuard } from '@modules/auth/guards'
+import { Session } from '@modules/auth/decorators'
 
 const MAX_FILE_SIZE = 1024 * 1024 * 50 // 50MB for audio files
 
@@ -27,7 +26,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 50 // 50MB for audio files
 @ApiCookieAuth()
 @UseGuards(AuthGuard)
 export class MediaController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly uploadMediaUseCase: UploadMediaUseCase) {}
 
   @Post('/upload')
   @UseGuards(UploadTokenGuard)
@@ -55,6 +54,6 @@ export class MediaController {
     )
     file: File,
   ): Promise<void> {
-    return this.commandBus.execute(new UploadMediaCommand(file, session.userId, token))
+    return this.uploadMediaUseCase.invoke({ file, userId: session.userId, token })
   }
 }

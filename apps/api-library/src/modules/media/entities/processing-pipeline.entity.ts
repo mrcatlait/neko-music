@@ -2,8 +2,11 @@ import { ProcessingStatus } from '../enums'
 
 export interface ProcessingPipelineEntity {
   id: string
-  mediaFileId: string
-  processingStatus: ProcessingStatus
+  assetId: string
+  processingJob: string
+  status: ProcessingStatus
   attempts: number
   errorMessage?: string
+  startedAt?: Date
+  completedAt?: Date
 }

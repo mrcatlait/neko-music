@@ -48,8 +48,6 @@ export class ArtistArtworkProcessingStrategy implements ProcessingStrategy {
 
     const originalFilePath = join(TEMP_PATH, getFileName(originalVariant.storagePath))
 
-    console.log('originalFilePath', originalFilePath)
-
     try {
       await this.downloadOriginalVariant(originalVariant, originalFilePath)
 

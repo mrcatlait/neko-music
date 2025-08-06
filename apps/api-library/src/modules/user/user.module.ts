@@ -1,20 +1,17 @@
 import { Global, Module } from '@nestjs/common'
 
-import { CreateAccountHandler, DeleteAccountHandler } from './commands'
-import { GetAccountHandler } from './queries'
-import { UserAccountRepository } from './repositories'
+import { UserProfileRepository } from './repositories'
+import { CreateUserProfileUseCase, GetUserProfileUseCase } from './use-cases'
 
 @Global()
 @Module({
   providers: [
-    // Commands
-    CreateAccountHandler,
-    DeleteAccountHandler,
-    // Queries
-    GetAccountHandler,
+    // Use cases
+    CreateUserProfileUseCase,
+    GetUserProfileUseCase,
     // Repositories
-    UserAccountRepository,
+    UserProfileRepository,
   ],
-  exports: [CreateAccountHandler, GetAccountHandler, DeleteAccountHandler],
+  exports: [CreateUserProfileUseCase],
 })
 export class UserModule {}

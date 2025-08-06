@@ -1,0 +1,5 @@
+export enum SourceType {
+  DIRECT_UPLOAD = 'DIRECT_UPLOAD',
+  YOUTUBE_LINK = 'YOUTUBE_LINK',
+  EXTERNAL_URL = 'EXTERNAL_URL',
+}

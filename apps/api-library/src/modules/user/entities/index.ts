@@ -1,1 +1,1 @@
-export * from './user-account.entity'
+export * from './user-profile.entity'

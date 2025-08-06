@@ -1,7 +1,9 @@
 CREATE TABLE "auth"."Permission" (
   "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  "action" VARCHAR(50) NOT NULL UNIQUE,
-  "description" VARCHAR(255),
-  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  "name" VARCHAR(50) NOT NULL UNIQUE,
+  "description" VARCHAR(255)
 );
+
+COMMENT ON TABLE "auth"."Permission" IS 'A permission';
+COMMENT ON COLUMN "auth"."Permission"."name" IS 'The name of the permission';
+COMMENT ON COLUMN "auth"."Permission"."description" IS 'The description of the permission';
