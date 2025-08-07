@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { DatabaseService } from '@modules/database'
+import { DatabaseService } from '@/modules/database'
 
 import { CreateArtistValidator } from './create-artist.validator'
 import { ArtistGenreRepository, ArtistRepository } from '../../repositories'

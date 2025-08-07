@@ -7,7 +7,7 @@ import { fastifyMultipart } from '@fastify/multipart'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { env } from 'process'
 
-import { AppModule } from '@modules/app/app.module'
+import { AppModule } from '@/modules/app/app.module'
 
 const DAY = 1000 * 60 * 60 * 24
 

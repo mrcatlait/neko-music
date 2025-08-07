@@ -4,8 +4,8 @@ import { genSaltSync, hashSync } from 'bcrypt'
 import { RegisterUserValidator } from './register-user.validator'
 import { RoleRepository, UserAccountRepository, UserCredentialsRepository } from '../../repositories'
 
-import { DatabaseService } from '@modules/database'
-import { CreateUserProfileUseCase } from '@modules/user/use-cases'
+import { DatabaseService } from '@/modules/database'
+import { CreateUserProfileUseCase } from '@/modules/user/use-cases'
 import { env } from 'src/env'
 
 export interface RegisterUserUseCaseParams {

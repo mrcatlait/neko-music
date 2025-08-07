@@ -5,7 +5,7 @@ import { CreateAlbumValidator } from './create-album.validator'
 import { AlbumArtistRepository, AlbumGenreRepository, AlbumRepository } from '../../repositories'
 import { AlbumType } from '../../enums'
 
-import { DatabaseService } from '@modules/database'
+import { DatabaseService } from '@/modules/database'
 
 export interface CreateAlbumUseCaseParams {
   readonly name: string

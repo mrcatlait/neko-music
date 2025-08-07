@@ -3,7 +3,7 @@ import { Sql } from 'postgres'
 
 import { AlbumEntity, WithArtists, WithArtwork } from '../entities'
 
-import { DatabaseService } from '@modules/database'
+import { DatabaseService } from '@/modules/database'
 
 @Injectable()
 export class AlbumRepository {

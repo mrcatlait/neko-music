@@ -4,7 +4,7 @@ import { PermissionRepository, UserAccountRepository } from '../../repositories'
 import { LoginValidator } from './login.validator'
 import { UserSession } from '../../interfaces'
 
-import { GetUserProfileUseCase } from '@modules/user/use-cases'
+import { GetUserProfileUseCase } from '@/modules/user/use-cases'
 
 export interface LoginUseCaseParams {
   readonly email: string

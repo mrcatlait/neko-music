@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common'
 import { DatabaseCoreModule } from './database-core.module'
 import { DatabaseModuleOptions } from './types'
 
-import { ModuleWithOptions } from '@modules/app/classes'
-import { AsyncModuleOptions } from '@modules/app/interfaces'
+import { ModuleWithOptions } from '@/modules/app/classes'
+import { AsyncModuleOptions } from '@/modules/app/interfaces'
 
 @Module({})
 export class DatabaseModule extends ModuleWithOptions {

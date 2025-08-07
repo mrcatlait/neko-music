@@ -4,7 +4,7 @@ import { ApiOperation, ApiTags, ApiCookieAuth, ApiResponse } from '@nestjs/swagg
 import { CreateGenreDto, GenreDto } from '../dtos'
 import { CreateGenreUseCase } from '../use-cases'
 
-import { AuthGuard } from '@modules/auth/guards'
+import { AuthGuard } from '@/modules/auth/guards'
 
 @Controller('genres')
 @ApiTags('Genres')

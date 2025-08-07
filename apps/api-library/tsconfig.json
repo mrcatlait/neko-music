@@ -24,7 +24,7 @@
       "vitest/globals"
     ],
     "paths": {
-      "@modules/*": [
+      "@/modules/*": [
         "src/modules/*"
       ],
       "@neko/permissions": [

@@ -3,7 +3,7 @@ import { Global, Module } from '@nestjs/common'
 import { DatabaseMigrationService, DatabaseSeedService, DatabaseService } from './services'
 import { DATABASE_MODULE_OPTIONS } from './database.tokens'
 
-import { CoreModuleWithOptions } from '@modules/app/classes'
+import { CoreModuleWithOptions } from '@/modules/app/classes'
 
 @Global()
 @Module({})

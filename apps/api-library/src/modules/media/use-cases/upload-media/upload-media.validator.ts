@@ -5,7 +5,7 @@ import { UploadTokenRepository } from '../../repositories'
 import { MediaType } from '../../enums'
 import { UploadMediaUseCaseParams } from './upload-media.use-case'
 
-import { ValidationResult, Validator } from '@modules/shared/models'
+import { ValidationResult, Validator } from '@/modules/shared/models'
 
 const ALLOWED_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 const ALLOWED_VIDEO_MIME_TYPES = ['video/mp4', 'video/webm']

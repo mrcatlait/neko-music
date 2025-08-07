@@ -15,9 +15,9 @@ import { UPLOAD_TOKEN_HEADER } from '../constants'
 import { UploadTokenGuard } from '../guards'
 import { UploadMediaUseCase } from '../use-cases'
 
-import { UserSession } from '@modules/auth/interfaces'
-import { AuthGuard } from '@modules/auth/guards'
-import { Session } from '@modules/auth/decorators'
+import { UserSession } from '@/modules/auth/interfaces'
+import { AuthGuard } from '@/modules/auth/guards'
+import { Session } from '@/modules/auth/decorators'
 
 const MAX_FILE_SIZE = 1024 * 1024 * 50 // 50MB for audio files
 

@@ -4,7 +4,7 @@ import { Sql } from 'postgres'
 import { ArtistArtworkEntity } from '../entities'
 import { ProcessingStatus } from '../enums'
 
-import { DatabaseService } from '@modules/database'
+import { DatabaseService } from '@/modules/database'
 
 @Injectable()
 export class ArtistArtworkRepository {

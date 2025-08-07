@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { hashSync, compareSync } from 'bcrypt'
 
-import { EnvironmentVariables, ValidationResult, Validator } from '@modules/shared/models'
+import { EnvironmentVariables, ValidationResult, Validator } from '@/modules/shared/models'
 import { env } from 'src/env'
 
 export interface LoginValidatorPayload {

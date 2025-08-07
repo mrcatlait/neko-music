@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { UploadTokenEntity } from '../entities'
 import { MediaType } from '../enums'
 
-import { DatabaseService } from '@modules/database'
+import { DatabaseService } from '@/modules/database'
 
 @Injectable()
 export class UploadTokenRepository {

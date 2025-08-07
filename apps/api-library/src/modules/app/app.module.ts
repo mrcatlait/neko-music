@@ -5,15 +5,15 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { DatabaseModule } from '../database/database.module'
 import { SecurityHeadersMiddleware } from './middlewares'
 
-import { AuthModule } from '@modules/auth/auth.module'
-import { UserModule } from '@modules/user/user.module'
-import { StreamingModule } from '@modules/streaming/streaming.module'
+import { AuthModule } from '@/modules/auth/auth.module'
+import { UserModule } from '@/modules/user/user.module'
+import { StreamingModule } from '@/modules/streaming/streaming.module'
 import { env } from 'src/env'
-import { MediaModule } from '@modules/media/media.module'
-import { LocalStorageStrategy } from '@modules/media/strategies/storage'
-import { SharpImageTransformStrategy } from '@modules/media/strategies/image-transform'
-import { SharpImageAnalyzeStrategy } from '@modules/media/strategies/image-analyze'
-import { FfmpegAudioTransformStrategy } from '@modules/media/strategies/audio-transform'
+import { MediaModule } from '@/modules/media/media.module'
+import { LocalStorageStrategy } from '@/modules/media/strategies/storage'
+import { SharpImageTransformStrategy } from '@/modules/media/strategies/image-transform'
+import { SharpImageAnalyzeStrategy } from '@/modules/media/strategies/image-analyze'
+import { FfmpegAudioTransformStrategy } from '@/modules/media/strategies/audio-transform'
 
 @Module({
   imports: [

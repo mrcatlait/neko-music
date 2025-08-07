@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 
 import { GenreEntity } from '../entities'
 
-import { DatabaseService } from '@modules/database'
+import { DatabaseService } from '@/modules/database'
 
 @Injectable()
 export class GenreRepository {

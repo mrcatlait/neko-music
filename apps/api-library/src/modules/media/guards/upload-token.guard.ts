@@ -4,7 +4,7 @@ import { FastifyRequest } from 'fastify'
 import { UploadTokenRepository } from '../repositories'
 import { UPLOAD_TOKEN_HEADER } from '../constants'
 
-import { UserSession } from '@modules/auth/interfaces'
+import { UserSession } from '@/modules/auth/interfaces'
 
 @Injectable()
 export class UploadTokenGuard implements CanActivate {

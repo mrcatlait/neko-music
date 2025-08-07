@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { AlbumRepository, ArtistRepository, GenreRepository } from '../../repositories'
 import { CreateAlbumUseCaseParams } from './create-album.use-case'
 
-import { ValidationResult, Validator } from '@modules/shared/models'
+import { ValidationResult, Validator } from '@/modules/shared/models'
 
 @Injectable()
 export class CreateAlbumValidator implements Validator<CreateAlbumUseCaseParams> {

@@ -5,11 +5,11 @@ import { CreateAlbumDto } from '../dtos/create-album.dto'
 import { AlbumDto, AlbumWithArtistsAndArtworkDto, TrackWithAlbumAndArtistsAndArtworkDto } from '../dtos'
 import { CreateAlbumUseCase, GetPopularAlbumsUseCase, GetTracksForAlbumUseCase } from '../use-cases'
 
-import { AuthGuard } from '@modules/auth/guards'
-import { UploadTokenDto } from '@modules/media/dtos'
-import { MediaType, EntityType } from '@modules/media/enums'
-import { UserSession } from '@modules/auth/interfaces'
-import { GenerateUploadTokenUseCase } from '@modules/media/use-cases'
+import { AuthGuard } from '@/modules/auth/guards'
+import { UploadTokenDto } from '@/modules/media/dtos'
+import { MediaType, EntityType } from '@/modules/media/enums'
+import { UserSession } from '@/modules/auth/interfaces'
+import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 
 @Controller('albums')
 @ApiTags('Albums')

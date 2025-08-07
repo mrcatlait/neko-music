@@ -4,12 +4,12 @@ import { ApiOperation, ApiTags, ApiCookieAuth, ApiOkResponse } from '@nestjs/swa
 import { ArtistDto, CreateArtistDto } from '../dtos'
 import { CreateArtistUseCase, GetArtistUseCase } from '../use-cases'
 
-import { UploadTokenDto } from '@modules/media/dtos'
-import { EntityType, MediaType } from '@modules/media/enums'
-import { UserSession } from '@modules/auth/interfaces'
-import { Session } from '@modules/auth/decorators'
-import { AuthGuard } from '@modules/auth/guards'
-import { GenerateUploadTokenUseCase } from '@modules/media/use-cases'
+import { UploadTokenDto } from '@/modules/media/dtos'
+import { EntityType, MediaType } from '@/modules/media/enums'
+import { UserSession } from '@/modules/auth/interfaces'
+import { Session } from '@/modules/auth/decorators'
+import { AuthGuard } from '@/modules/auth/guards'
+import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 
 @Controller('artists')
 @ApiTags('Artists')

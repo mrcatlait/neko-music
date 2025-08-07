@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { ValidationResult, Validator } from '@modules/shared/models'
+import { ValidationResult, Validator } from '@/modules/shared/models'
 
 import { ArtistRepository, GenreRepository } from '../../repositories'
 import { CreateArtistUseCaseParams } from './create-artist.use-case'

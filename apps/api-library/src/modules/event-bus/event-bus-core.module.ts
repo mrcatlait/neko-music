@@ -5,7 +5,7 @@ import { EVENT_BUS_MODULE_OPTIONS } from './constants'
 import { EventBusService, EventHandlerExplorerService } from './services'
 import { ObservableMessagingStrategy } from './strategies/messaging'
 
-import { CoreModuleWithOptions } from '@modules/app/classes'
+import { CoreModuleWithOptions } from '@/modules/app/classes'
 
 const defaultEventBusModuleOptions: EventBusModuleOptions = {
   messagingStrategy: new ObservableMessagingStrategy(),

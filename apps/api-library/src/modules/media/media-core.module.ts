@@ -5,9 +5,8 @@ import { ProcessArtistArtworkCron, UploadTokenCleanupCron } from './crons'
 import { GenerateUploadTokenUseCase, UploadMediaUseCase, UploadMediaValidator } from './use-cases'
 import { ArtistArtworkRepository, ArtistArtworkVariantRepository, UploadTokenRepository } from './repositories'
 import { MediaController } from './controllers'
-import { TestService } from './test.service'
 
-import { CoreModuleWithOptions } from '@modules/app/classes'
+import { CoreModuleWithOptions } from '@/modules/app/classes'
 
 @Module({})
 export class MediaCoreModule extends CoreModuleWithOptions {
@@ -25,8 +24,6 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     ArtistArtworkRepository,
     ArtistArtworkVariantRepository,
     UploadTokenRepository,
-    // Services
-    TestService,
   ]
   static exports = [GenerateUploadTokenUseCase, UploadMediaUseCase]
   static controllers = [MediaController]
