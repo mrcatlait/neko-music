@@ -4,7 +4,7 @@ CREATE TABLE "playlist"."Playlist" (
   "description" VARCHAR(255),
   "type" "playlist"."PlaylistType" NOT NULL,
   "userId" UUID NOT NULL,
-  CONSTRAINT "FK_Playlist_UserLoginData" FOREIGN KEY ("userId") REFERENCES "auth"."UserLoginData" ("userId") ON DELETE CASCADE
+  CONSTRAINT "FK_Playlist_UserAccount" FOREIGN KEY ("userId") REFERENCES "auth"."UserAccount" ("id") ON DELETE CASCADE
 );
 
 COMMENT ON TABLE "playlist"."Playlist" IS 'A playlist';

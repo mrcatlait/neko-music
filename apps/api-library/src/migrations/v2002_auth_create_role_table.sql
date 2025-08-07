@@ -11,8 +11,7 @@ AS $$
     default_count INTEGER;
   BEGIN
     SELECT COUNT(*) INTO default_count FROM "auth"."Role" WHERE "default" = TRUE;
-  RETURN
-    default_count;
+    RETURN default_count;
   END;
 $$ LANGUAGE plpgsql;
 
@@ -25,4 +24,4 @@ COMMENT ON COLUMN "auth"."Role"."name" IS 'The name of the role';
 COMMENT ON COLUMN "auth"."Role"."description" IS 'The description of the role';
 COMMENT ON COLUMN "auth"."Role"."default" IS 'Whether the role is the default role';
 COMMENT ON CONSTRAINT "CHK_Role_Default" ON "auth"."Role" IS 'Only one default role is allowed';
-COMMENT ON FUNCTION "auth"."fn_role_default_check"() IS 'Calculate the number of default roles';
+COMMENT ON FUNCTION "auth"."fn_role_default_count"() IS 'Calculate the number of default roles';

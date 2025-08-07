@@ -2,14 +2,14 @@ import { DynamicModule, Provider, Type } from '@nestjs/common'
 
 import { AsyncModuleOptions, AsyncModuleOptionsFactory } from '../interfaces'
 
-export abstract class CoreModuleWithOptions<Options> {
-  protected abstract module: Type<CoreModuleWithOptions<Options>>
-  protected abstract optionsToken: string
-  protected providers: Provider[] = []
-  protected exports: Provider[] = []
-  protected controllers: Type<any>[] = []
+export abstract class CoreModuleWithOptions {
+  protected static module: Type<CoreModuleWithOptions>
+  protected static optionsToken: string
+  protected static providers: Provider[] = []
+  protected static exports: Provider[] = []
+  protected static controllers: Type<unknown>[] = []
 
-  forRoot(options: Options): DynamicModule {
+  static forRoot(options: unknown): DynamicModule {
     const optionsProvider: Provider = {
       provide: this.optionsToken,
       useValue: options,
@@ -25,7 +25,7 @@ export abstract class CoreModuleWithOptions<Options> {
     }
   }
 
-  forRootAsync(options: AsyncModuleOptions<Options>): DynamicModule {
+  static forRootAsync(options: AsyncModuleOptions<unknown>): DynamicModule {
     const asyncProviders = this.createAsyncProviders(options)
 
     const providers: Provider[] = [...asyncProviders, ...this.providers, ...(options.extraProviders || [])]
@@ -39,12 +39,12 @@ export abstract class CoreModuleWithOptions<Options> {
     }
   }
 
-  private createAsyncProviders(options: AsyncModuleOptions<Options>): Provider[] {
+  private static createAsyncProviders(options: AsyncModuleOptions<unknown>): Provider[] {
     if (options.useExisting || options.useFactory) {
       return [this.createAsyncOptionsProvider(options)]
     }
 
-    const useClass = options.useClass as Type<AsyncModuleOptionsFactory<Options>>
+    const useClass = options.useClass as Type<AsyncModuleOptionsFactory<unknown>>
 
     return [
       this.createAsyncOptionsProvider(options),
@@ -55,7 +55,7 @@ export abstract class CoreModuleWithOptions<Options> {
     ]
   }
 
-  private createAsyncOptionsProvider(options: AsyncModuleOptions<Options>): Provider {
+  private static createAsyncOptionsProvider(options: AsyncModuleOptions<unknown>): Provider {
     if (options.useFactory) {
       return {
         provide: this.optionsToken,
@@ -64,11 +64,11 @@ export abstract class CoreModuleWithOptions<Options> {
       }
     }
 
-    const inject = [(options.useClass || options.useExisting) as Type<AsyncModuleOptionsFactory<Options>>]
+    const inject = [(options.useClass || options.useExisting) as Type<AsyncModuleOptionsFactory<unknown>>]
 
     return {
       provide: this.optionsToken,
-      useFactory: (optionsFactory: AsyncModuleOptionsFactory<Options>) => optionsFactory.createOptions(),
+      useFactory: (optionsFactory: AsyncModuleOptionsFactory<unknown>) => optionsFactory.createOptions(),
       inject,
     }
   }

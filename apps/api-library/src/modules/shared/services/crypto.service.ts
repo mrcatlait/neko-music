@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { compareSync, hashSync } from 'bcrypt'
 
-import { EnvironmentVariables } from '../models'
+import { env } from 'src/env'
 
 @Injectable()
 export class CryptoService {
   private readonly saltRounds: number
 
-  constructor(private readonly configService: ConfigService<EnvironmentVariables, true>) {
-    this.saltRounds = this.configService.get('SALT_ROUNDS')
+  constructor() {
+    this.saltRounds = env.SALT_ROUNDS
   }
 
   generateHash(password: string): string {

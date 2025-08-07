@@ -12,6 +12,6 @@ import { CreateUserProfileUseCase, GetUserProfileUseCase } from './use-cases'
     // Repositories
     UserProfileRepository,
   ],
-  exports: [CreateUserProfileUseCase],
+  exports: [CreateUserProfileUseCase, GetUserProfileUseCase],
 })
 export class UserModule {}

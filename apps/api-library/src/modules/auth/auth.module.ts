@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common'
 
 import { AuthController } from './controllers'
 import { AuthGuard } from './guards'
-import { LoginUseCase, RegisterUserUseCase } from './use-cases'
+import { LoginUseCase, LoginValidator, RegisterUserUseCase, RegisterUserValidator } from './use-cases'
 import {
   PermissionRepository,
   RolePermissionRepository,
@@ -17,7 +17,9 @@ import {
   providers: [
     // Use cases
     LoginUseCase,
+    LoginValidator,
     RegisterUserUseCase,
+    RegisterUserValidator,
     // Repositories
     PermissionRepository,
     RolePermissionRepository,

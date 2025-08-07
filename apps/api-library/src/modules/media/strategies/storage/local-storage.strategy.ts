@@ -1,74 +1,84 @@
-import { Injectable, Logger } from '@nestjs/common'
-import { copyFile, existsSync, mkdirSync, unlink, writeFile } from 'fs'
+import { createReadStream, createWriteStream, existsSync, mkdirSync, readFile, unlink, writeFile } from 'fs'
 import { dirname, join } from 'path'
 import { promisify } from 'util'
+import { Stream } from 'stream'
 
-import {
-  MediaDeleteOptions,
-  MediaDownloadOptions,
-  MediaStorageStrategy,
-  MediaUploadOptions,
-  MediaUploadResult,
-} from './storage.strategy'
-import { StorageProvider } from '../../enums'
-import { MEDIA_PATH } from '../../constants'
+import { StorageStrategy } from './storage.strategy'
 
 const writeFileAsync = promisify(writeFile)
 const unlinkAsync = promisify(unlink)
-const copyFileAsync = promisify(copyFile)
+const readFileAsync = promisify(readFile)
 
-@Injectable()
-export class LocalStorageStrategy implements MediaStorageStrategy {
-  private readonly logger = new Logger(LocalStorageStrategy.name)
+export interface LocalStorageStrategyOptions {
+  /**
+   * The directory to store the media files in
+   */
+  directory: string
+}
 
-  async upload(options: MediaUploadOptions): Promise<MediaUploadResult> {
-    try {
-      const filePath = join(MEDIA_PATH, options.fileName)
-      const folder = dirname(filePath)
+/**
+ * Storage strategy that uses the local file system to store media files
+ */
+export class LocalStorageStrategy implements StorageStrategy {
+  private readonly directory: string
 
-      if (!existsSync(folder)) {
-        mkdirSync(folder, { recursive: true })
-        this.logger.debug(`Created directory: ${folder}`)
-      }
-
-      await writeFileAsync(filePath, options.content)
-      this.logger.debug(`File uploaded successfully: ${filePath}`)
-
-      return {
-        storageProvider: StorageProvider.LOCAL,
-        storagePath: filePath,
-        publicUrl: `/media/${options.fileName}`,
-        fileSize: options.content.length,
-      }
-    } catch (error) {
-      this.logger.error(`Failed to upload file: ${options.fileName}`, error)
-      throw new Error(`Local storage upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
-    }
+  constructor(private readonly options: LocalStorageStrategyOptions) {
+    this.directory = options.directory
   }
 
-  download(options: MediaDownloadOptions): Promise<void> {
-    const folder = dirname(options.targetPath)
+  uploadFromBuffer(fileName: string, buffer: Buffer): Promise<string> {
+    const filePath = join(this.directory, fileName)
 
-    if (!existsSync(folder)) {
-      mkdirSync(folder, { recursive: true })
-      this.logger.debug(`Created directory: ${folder}`)
-    }
+    this.ensureDirectoryExists(filePath)
 
-    return copyFileAsync(options.storagePath, options.targetPath)
+    return writeFileAsync(filePath, buffer).then(() => filePath)
   }
 
-  async delete(options: MediaDeleteOptions): Promise<void> {
+  uploadFromStream(fileName: string, stream: Stream): Promise<string> {
+    const filePath = join(this.directory, fileName)
+
+    this.ensureDirectoryExists(filePath)
+
+    const writeStream = createWriteStream(filePath, 'binary')
+
+    return new Promise<string>((resolve, reject) => {
+      stream.pipe(writeStream)
+      writeStream.on('close', () => resolve(filePath))
+      writeStream.on('error', reject)
+    })
+  }
+
+  downloadToBuffer(storagePath: string): Promise<Buffer> {
+    return readFileAsync(storagePath)
+  }
+
+  downloadToStream(storagePath: string): Promise<Stream> {
+    const readStream = createReadStream(storagePath, 'binary')
+
+    return Promise.resolve(readStream)
+  }
+
+  async delete(storagePath: string): Promise<void> {
     try {
-      await unlinkAsync(options.fileName)
-      this.logger.debug(`File deleted successfully: ${options.fileName}`)
+      await unlinkAsync(storagePath)
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-        this.logger.warn(`File not found for deletion: ${options.fileName}`)
         return
       }
 
-      this.logger.error(`Failed to delete file: ${options.fileName}`, error)
-      throw new Error(`Local storage deletion failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw error
+    }
+  }
+
+  /**
+   * Ensures that the directory exists
+   * @param path - The path to the file or directory
+   */
+  private ensureDirectoryExists(path: string): void {
+    const folder = dirname(path)
+
+    if (!existsSync(folder)) {
+      mkdirSync(folder, { recursive: true })
     }
   }
 }

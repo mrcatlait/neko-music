@@ -10,9 +10,9 @@ CREATE TABLE "catalog"."Track" (
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   "status" "catalog"."RecordStatus" NOT NULL DEFAULT 'DRAFT',
   CONSTRAINT "FK_Track_Album" FOREIGN KEY ("albumId") REFERENCES "catalog"."Album" ("id") ON DELETE CASCADE,
-  CONSTRAINT "CHK_Track_TrackNumber" CHECK (trackNumber > 0),
-  CONSTRAINT "CHK_Track_DiskNumber" CHECK (diskNumber > 0),
-  CONSTRAINT "CHK_Track_Duration" CHECK (duration > 0 AND duration < 36000)
+  CONSTRAINT "CHK_Track_TrackNumber" CHECK ("trackNumber" > 0),
+  CONSTRAINT "CHK_Track_DiskNumber" CHECK ("diskNumber" > 0),
+  CONSTRAINT "CHK_Track_Duration" CHECK ("duration" > 0 AND "duration" < 36000)
 );
 
 COMMENT ON TABLE "catalog"."Track" IS 'A track';

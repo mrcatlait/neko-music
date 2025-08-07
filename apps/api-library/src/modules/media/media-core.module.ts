@@ -1,22 +1,23 @@
 import { Module } from '@nestjs/common'
 
 import { MEDIA_MODULE_OPTIONS } from './tokens'
-import { MediaModuleOptions } from './types'
 import { ProcessArtistArtworkCron, UploadTokenCleanupCron } from './crons'
-import { GenerateUploadTokenUseCase, UploadMediaUseCase } from './use-cases'
+import { GenerateUploadTokenUseCase, UploadMediaUseCase, UploadMediaValidator } from './use-cases'
 import { ArtistArtworkRepository, ArtistArtworkVariantRepository, UploadTokenRepository } from './repositories'
 import { MediaController } from './controllers'
+import { TestService } from './test.service'
 
 import { CoreModuleWithOptions } from '@modules/app/classes'
 
 @Module({})
-export class MediaCoreModule extends CoreModuleWithOptions<MediaModuleOptions> {
-  module = MediaCoreModule
-  optionsToken = MEDIA_MODULE_OPTIONS
-  providers = [
+export class MediaCoreModule extends CoreModuleWithOptions {
+  static module = MediaCoreModule
+  static optionsToken = MEDIA_MODULE_OPTIONS
+  static providers = [
     // Use cases
     GenerateUploadTokenUseCase,
     UploadMediaUseCase,
+    UploadMediaValidator,
     // Crons
     ProcessArtistArtworkCron,
     UploadTokenCleanupCron,
@@ -24,7 +25,9 @@ export class MediaCoreModule extends CoreModuleWithOptions<MediaModuleOptions> {
     ArtistArtworkRepository,
     ArtistArtworkVariantRepository,
     UploadTokenRepository,
+    // Services
+    TestService,
   ]
-  exports = [GenerateUploadTokenUseCase, UploadMediaUseCase]
-  controllers = [MediaController]
+  static exports = [GenerateUploadTokenUseCase, UploadMediaUseCase]
+  static controllers = [MediaController]
 }

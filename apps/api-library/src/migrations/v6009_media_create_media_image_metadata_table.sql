@@ -4,7 +4,7 @@ CREATE TABLE "media"."MediaImageMetadata" (
   "height" SMALLINT NOT NULL,
   "dominantColor" VARCHAR(7) NOT NULL,
   CONSTRAINT "FK_MediaImageMetadata_MediaAsset" FOREIGN KEY ("assetId") REFERENCES "media"."MediaAsset" ("id") ON DELETE CASCADE,
-  CONSTRAINT "CHK_MediaImageMetadata_DominantColor" CHECK (dominant_color ~ '^#[0-9A-Fa-f]{6}$')
+  CONSTRAINT "CHK_MediaImageMetadata_DominantColor" CHECK ("dominantColor" ~ '^#[0-9A-Fa-f]{6}$')
 );
 
 COMMENT ON TABLE "media"."MediaImageMetadata" IS 'A media image metadata';

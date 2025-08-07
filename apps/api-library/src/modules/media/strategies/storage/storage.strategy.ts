@@ -1,30 +1,42 @@
-import { StorageProvider } from '@modules/media/enums'
+import Stream from 'stream'
 
-export interface MediaUploadOptions {
-  content: Buffer
-  fileName: string
-}
-
-export interface MediaUploadResult {
-  storageProvider: StorageProvider
-  storagePath: string
-  publicUrl: string
-  fileSize: number
-}
-
-export interface MediaDownloadOptions {
-  storagePath: string
-  targetPath: string
-}
-
-export interface MediaDeleteOptions {
-  fileName: string
-}
-
+/**
+ * Storage strategy interface defines the methods that a storage strategy must implement
+ */
 export interface StorageStrategy {
-  upload(options: MediaUploadOptions): Promise<MediaUploadResult>
+  /**
+   * Uploads a buffer to the storage
+   * @param fileName - The name of the file
+   * @param buffer - The buffer to upload
+   * @returns The storage path of the uploaded file
+   */
+  uploadFromBuffer(fileName: string, buffer: Buffer): Promise<string>
 
-  download(options: MediaDownloadOptions): Promise<void>
+  /**
+   * Uploads a stream to the storage
+   * @param fileName - The name of the file
+   * @param stream - The stream to upload
+   * @returns The storage path of the uploaded file
+   */
+  uploadFromStream(fileName: string, stream: Stream): Promise<string>
 
-  delete(options: MediaDeleteOptions): Promise<void>
+  /**
+   * Downloads a file from the storage to a buffer
+   * @param storagePath - The storage path of the file
+   * @returns The buffer of the downloaded file
+   */
+  downloadToBuffer(storagePath: string): Promise<Buffer>
+
+  /**
+   * Downloads a file from the storage to a stream
+   * @param storagePath - The storage path of the file
+   * @returns The stream of the downloaded file
+   */
+  downloadToStream(storagePath: string): Promise<Stream>
+
+  /**
+   * Deletes a file from the storage
+   * @param storagePath - The storage path of the file
+   */
+  delete(storagePath: string): Promise<void>
 }

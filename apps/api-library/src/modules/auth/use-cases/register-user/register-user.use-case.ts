@@ -6,6 +6,7 @@ import { RoleRepository, UserAccountRepository, UserCredentialsRepository } from
 
 import { DatabaseService } from '@modules/database'
 import { CreateUserProfileUseCase } from '@modules/user/use-cases'
+import { env } from 'src/env'
 
 export interface RegisterUserUseCaseParams {
   readonly email: string
@@ -27,7 +28,7 @@ export class RegisterUserUseCase {
     private readonly userCredentialsRepository: UserCredentialsRepository,
     private readonly createUserProfileUseCase: CreateUserProfileUseCase,
   ) {
-    this.saltRounds = configService.get('SALT_ROUNDS')
+    this.saltRounds = env.SALT_ROUNDS
   }
 
   async invoke(params: RegisterUserUseCaseParams): Promise<void> {

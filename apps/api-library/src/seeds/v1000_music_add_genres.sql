@@ -1,12 +1,12 @@
-TRUNCATE TABLE "music"."Genre" CASCADE;
+TRUNCATE TABLE "catalog"."Genre" CASCADE;
 
-INSERT INTO "music"."Genre" ("name") VALUES ('Rock');
-INSERT INTO "music"."Genre" ("name") VALUES ('Pop');
-INSERT INTO "music"."Genre" ("name") VALUES ('Jazz');
-INSERT INTO "music"."Genre" ("name") VALUES ('Classical');
-INSERT INTO "music"."Genre" ("name") VALUES ('Electronic');
-INSERT INTO "music"."Genre" ("name") VALUES ('Hip Hop');
-INSERT INTO "music"."Genre" ("name") VALUES ('R&B');
-INSERT INTO "music"."Genre" ("name") VALUES ('Country');
-INSERT INTO "music"."Genre" ("name") VALUES ('Latin');
-INSERT INTO "music"."Genre" ("name") VALUES ('Reggae');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Rock');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Pop');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Jazz');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Classical');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Electronic');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Hip Hop');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('R&B');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Country');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Latin');
+INSERT INTO "catalog"."Genre" ("name") VALUES ('Reggae');

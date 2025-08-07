@@ -5,7 +5,7 @@ CREATE TABLE "media"."UploadToken" (
   "entityType" "media"."EntityType" NOT NULL,
   "entityId" UUID NOT NULL,
   "expiresAt" TIMESTAMP WITH TIME ZONE NOT NULL,
-  CONSTRAINT "FK_UploadToken_UserLoginData" FOREIGN KEY ("userId") REFERENCES "auth"."UserLoginData" ("userId") ON DELETE CASCADE,
+  CONSTRAINT "FK_UploadToken_UserAccount" FOREIGN KEY ("userId") REFERENCES "auth"."UserAccount" ("id") ON DELETE CASCADE,
   CONSTRAINT "UK_UploadToken_UserMediaEntity" UNIQUE ("userId", "mediaType", "entityType", "entityId"),
   CONSTRAINT "CHK_UploadToken_ExpiresAt" CHECK ("expiresAt" > CURRENT_TIMESTAMP)
 );

@@ -1,25 +1,22 @@
 import { NestFactory, Reflector } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
-import { ConfigService } from '@nestjs/config'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { fastifySession } from '@fastify/session'
 import { fastifyCookie } from '@fastify/cookie'
 import { fastifyMultipart } from '@fastify/multipart'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { env } from 'process'
 
 import { AppModule } from '@modules/app/app.module'
-import { EnvironmentVariables } from '@modules/shared/models'
 
 const DAY = 1000 * 60 * 60 * 24
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
 
-  const configService = app.get<ConfigService<EnvironmentVariables, true>>(ConfigService)
-
-  const PORT = configService.get('PORT')
-  const UI_URL = configService.get('UI_URL')
-  const COOKIE_SECRET = configService.get('COOKIE_SECRET')
+  const PORT = env.PORT
+  const UI_URL = env.UI_URL
+  const COOKIE_SECRET = env.COOKIE_SECRET
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -41,7 +38,15 @@ async function bootstrap() {
     credentials: true,
   })
 
-  const config = new DocumentBuilder().setTitle('Neko Music API').setVersion('1.0').addCookieAuth().build()
+  const config = new DocumentBuilder()
+    .setTitle('Neko Music API')
+    .setVersion('1.0')
+    .addCookieAuth()
+    .addGlobalResponse({
+      status: 500,
+      description: 'Internal server error',
+    })
+    .build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('swagger', app, document)
 

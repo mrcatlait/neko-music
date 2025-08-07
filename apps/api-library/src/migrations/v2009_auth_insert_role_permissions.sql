@@ -5,11 +5,11 @@ WITH roles AS (
 
 -- Get all permissions
 permissions AS (
-    SELECT id, action FROM "auth"."Permission"
+    SELECT id, name FROM "auth"."Permission"
 )
 
 -- Insert permissions for admin role (all permissions)
-INSERT INTO "auth"."RolePermission" ("role_id", "permission_id")
+INSERT INTO "auth"."RolePermission" ("roleId", "permissionId")
 SELECT 
     (SELECT id FROM roles WHERE name = 'admin'),
     p.id
@@ -21,7 +21,7 @@ SELECT
     (SELECT id FROM roles WHERE name = 'user'),
     p.id
 FROM permissions p
-WHERE p.action IN (
+WHERE p.name IN (
     -- Basic read permissions
     'track:read',
     'library:read',
@@ -35,4 +35,4 @@ WHERE p.action IN (
     'playlist:follow',
     'artist:follow'
 )
-ON CONFLICT ("role_id", "permission_id") DO NOTHING;
+ON CONFLICT ("roleId", "permissionId") DO NOTHING;

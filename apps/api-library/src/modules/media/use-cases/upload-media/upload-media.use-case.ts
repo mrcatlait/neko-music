@@ -3,7 +3,7 @@ import { File } from '@nest-lab/fastify-multer'
 
 import { UploadMediaValidator } from './upload-media.validator'
 import { UploadTokenRepository } from '../../repositories'
-import { UploadStrategyName, UploadStrategyRegistry } from '../../strategies/upload'
+// import { UploadStrategyName, UploadStrategyRegistry } from '../../strategies/upload'
 import { EntityType } from '../../enums'
 
 export interface UploadMediaUseCaseParams {
@@ -17,7 +17,7 @@ export class UploadMediaUseCase {
   constructor(
     private readonly uploadMediaValidator: UploadMediaValidator,
     private readonly uploadTokenRepository: UploadTokenRepository,
-    private readonly uploadStrategyRegistry: UploadStrategyRegistry,
+    // private readonly uploadStrategyRegistry: UploadStrategyRegistry,
   ) {}
 
   async invoke(params: UploadMediaUseCaseParams): Promise<void> {
@@ -33,21 +33,21 @@ export class UploadMediaUseCase {
       throw new ForbiddenException()
     }
 
-    let strategyName: UploadStrategyName
+    // let strategyName: UploadStrategyName
 
-    switch (uploadToken.entityType) {
-      case EntityType.ARTIST:
-        strategyName = 'artist-artwork'
-        break
-      default:
-        throw new BadRequestException('Invalid entity type')
-    }
+    // switch (uploadToken.entityType) {
+    //   case EntityType.ARTIST:
+    //     strategyName = 'artist-artwork'
+    //     break
+    //   default:
+    //     throw new BadRequestException('Invalid entity type')
+    // }
 
-    const uploadStrategy = this.uploadStrategyRegistry.getStrategy(strategyName)
+    // const uploadStrategy = this.uploadStrategyRegistry.getStrategy(strategyName)
 
-    return uploadStrategy.upload({
-      entityId: uploadToken.entityId,
-      file: params.file,
-    })
+    // return uploadStrategy.upload({
+    //   entityId: uploadToken.entityId,
+    //   file: params.file,
+    // })
   }
 }

@@ -2,7 +2,7 @@ CREATE TABLE "playlist"."PlaylistArtwork" (
   "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   "playlistId" UUID NOT NULL,
   "mediaAssetId" UUID NOT NULL,
-  CONSTRAINT "FK_PlaylistArtwork_Playlist" FOREIGN KEY ("playlistId") REFERENCES "playlist"."Playlist" ("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_PlaylistArtwork_Playlist" FOREIGN KEY ("playlistId") REFERENCES "playlist"."Playlist" ("id") ON DELETE CASCADE
   -- CONSTRAINT "FK_PlaylistArtwork_MediaAsset" FOREIGN KEY ("mediaAssetId") REFERENCES "media"."MediaAsset" ("id") ON DELETE CASCADE
 );
 

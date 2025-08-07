@@ -17,7 +17,8 @@ export class StreamingService {
   }
 
   private getManifestPath(trackId: string): string {
-    const filePath = join(STREAM_PATH, 'tracks', trackId, 'manifest.mpd')
+    // const filePath = join(STREAM_PATH, 'tracks', trackId, 'manifest.mpd')
+    const filePath = join(process.cwd(), 'media', 'test', 'manifest.mpd')
 
     console.log('filePath', filePath)
 
@@ -29,7 +30,8 @@ export class StreamingService {
   }
 
   private getSegmentPath(trackId: string, segmentId: string): string {
-    const filePath = join(STREAM_PATH, 'tracks', trackId, segmentId)
+    // const filePath = join(STREAM_PATH, 'tracks', trackId, segmentId)
+    const filePath = join(process.cwd(), 'media', 'test', segmentId)
 
     if (!existsSync(filePath)) {
       throw new NotFoundException()

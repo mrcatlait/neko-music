@@ -5,7 +5,7 @@ CREATE TABLE "catalog"."AlbumArtwork" (
   "publicUrl" VARCHAR(255) NOT NULL DEFAULT '',
   "dominantColor" VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY ("albumId", "mediaAssetId"),
-  CONSTRAINT "FK_AlbumArtwork_Album" FOREIGN KEY ("albumId") REFERENCES "catalog"."Album" ("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_AlbumArtwork_Album" FOREIGN KEY ("albumId") REFERENCES "catalog"."Album" ("id") ON DELETE CASCADE
   -- CONSTRAINT "FK_AlbumArtwork_MediaAsset" FOREIGN KEY ("mediaAssetId") REFERENCES "media"."MediaAsset" ("id")
 );
 

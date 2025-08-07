@@ -3,21 +3,21 @@ import { DynamicModule, Type } from '@nestjs/common'
 import { AsyncModuleOptions } from '../interfaces'
 import { CoreModuleWithOptions } from './core-module-with-options.class'
 
-export abstract class ModuleWithOptions<Options> {
-  protected abstract module: Type<ModuleWithOptions<Options>>
-  protected abstract coreModule: Type<CoreModuleWithOptions<Options>>
+export abstract class ModuleWithOptions {
+  protected static module: Type<ModuleWithOptions>
+  protected static coreModule: typeof CoreModuleWithOptions
 
-  forRoot(options: Options): DynamicModule {
+  static forRoot(options: unknown): DynamicModule {
     return {
       module: this.module,
-      imports: [(this.coreModule as unknown as CoreModuleWithOptions<Options>).forRoot(options)],
+      imports: [this.coreModule.forRoot(options)],
     }
   }
 
-  forRootAsync(options: AsyncModuleOptions<Options>): DynamicModule {
+  static forRootAsync(options: AsyncModuleOptions<unknown>): DynamicModule {
     return {
       module: this.module,
-      imports: [(this.coreModule as unknown as CoreModuleWithOptions<Options>).forRootAsync(options)],
+      imports: [this.coreModule.forRootAsync(options)],
     }
   }
 }
