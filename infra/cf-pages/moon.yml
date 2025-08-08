@@ -1,0 +1,27 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'infrastructure'
+type: 'configuration'
+language: 'hcl'
+
+tasks:
+  init:
+    description: 'Terraform init'
+    command: 'terraform init'
+    platform: 'system'
+
+  apply:
+    description: 'Terraform apply'
+    deps:
+      - 'init'
+    command: 'terraform apply'
+    args:
+      - '-auto-approve'
+    options:
+      envFile: true
+    env:
+      TF_VAR_cloudflare_api_token: ${CLOUDFLARE_API_TOKEN}
+      TF_VAR_cloudflare_account_id: ${CLOUDFLARE_ACCOUNT_ID}
+      TF_VAR_cloudflare_zone_id: ${CLOUDFLARE_ZONE_ID}
+      TF_VAR_cloudflare_domain_name: ${CLOUDFLARE_DOMAIN_NAME}
+    platform: 'system'

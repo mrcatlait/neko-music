@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { DatabaseService } from '@/modules/database'
 
 import { CreateArtistValidator } from './create-artist.validator'
 import { ArtistGenreRepository, ArtistRepository } from '../../repositories'
 import { ArtistEntity } from '../../entities'
+import { RecordStatus } from '../../enums'
+
+import { DatabaseService } from '@/modules/database'
 
 export interface CreateArtistUseCaseParams {
   readonly name: string
@@ -32,6 +34,7 @@ export class CreateArtistUseCase {
         {
           name: params.name,
           verified: params.verified,
+          status: RecordStatus.DRAFT,
         },
         transaction,
       )

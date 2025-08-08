@@ -1,7 +1,8 @@
-import { applyDecorators, SetMetadata, Injectable, InjectableOptions } from '@nestjs/common'
+import { applyDecorators, Injectable, InjectableOptions } from '@nestjs/common'
+import { DiscoveryService } from '@nestjs/core'
 
-import { EVENT_HANDLER_METADATA } from '../constants'
+export const EventHandlerInternal = DiscoveryService.createDecorator<string>()
 
 export function EventHandler(event: string, options?: InjectableOptions) {
-  return applyDecorators(Injectable(options), SetMetadata(EVENT_HANDLER_METADATA, event))
+  return applyDecorators(Injectable(options), EventHandlerInternal(event))
 }

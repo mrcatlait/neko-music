@@ -5,9 +5,11 @@ import { AsyncModuleOptions, AsyncModuleOptionsFactory } from '../interfaces'
 export abstract class CoreModuleWithOptions {
   protected static module: Type<CoreModuleWithOptions>
   protected static optionsToken: string
+  protected static imports: Type<unknown>[] = []
   protected static providers: Provider[] = []
   protected static exports: Provider[] = []
   protected static controllers: Type<unknown>[] = []
+  protected static global: boolean = true
 
   static forRoot(options: unknown): DynamicModule {
     const optionsProvider: Provider = {
@@ -19,8 +21,10 @@ export abstract class CoreModuleWithOptions {
 
     return {
       module: this.module,
+      imports: this.imports,
       controllers: this.controllers,
       providers,
+      global: this.global,
       exports: [...this.exports],
     }
   }
@@ -32,9 +36,10 @@ export abstract class CoreModuleWithOptions {
 
     return {
       module: this.module,
-      imports: options.imports,
+      imports: [...this.imports, ...(options.imports || [])],
       controllers: this.controllers,
       providers,
+      global: this.global,
       exports: [...this.exports],
     }
   }

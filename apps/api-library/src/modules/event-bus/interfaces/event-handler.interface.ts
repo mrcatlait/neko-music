@@ -1,12 +1,10 @@
-import { IEvent } from './event.interface'
-
 /**
  * Represents an event handler.
  */
-export interface IEventHandler<T extends IEvent = any, TResult = any> {
+export interface IEventHandler<TData = unknown, TResult = void> {
   /**
    * Handles an event.
    * @param event The event to handle.
    */
-  handle(event: T): TResult
+  handle(data: TData): TResult
 }

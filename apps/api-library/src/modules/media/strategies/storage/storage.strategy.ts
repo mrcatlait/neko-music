@@ -1,4 +1,4 @@
-import Stream from 'stream'
+import Stream, { Readable } from 'stream'
 
 /**
  * Storage strategy interface defines the methods that a storage strategy must implement
@@ -32,7 +32,7 @@ export interface StorageStrategy {
    * @param storagePath - The storage path of the file
    * @returns The stream of the downloaded file
    */
-  downloadToStream(storagePath: string): Promise<Stream>
+  downloadToStream(storagePath: string): Readable
 
   /**
    * Deletes a file from the storage

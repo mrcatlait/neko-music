@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 
 import { AlbumRepository } from '../../repositories'
-import { AlbumEntity, WithArtists, WithArtwork } from '../../entities'
+import { AlbumEntity, WithArtistArtworks, WithArtists } from '../../entities'
 
-type AlbumWithArtistsAndArtworkEntity = WithArtists<WithArtwork<AlbumEntity>>
+type AlbumWithArtistsAndArtworkEntity = WithArtists<WithArtistArtworks<AlbumEntity>>
 
 @Injectable()
 export class GetPopularAlbumsUseCase {

@@ -19,7 +19,7 @@ import { UserSession } from '@/modules/auth/interfaces'
 import { AuthGuard } from '@/modules/auth/guards'
 import { Session } from '@/modules/auth/decorators'
 
-const MAX_FILE_SIZE = 1024 * 1024 * 50 // 50MB for audio files
+const DEFAULT_MAX_FILE_SIZE = 1024 * 1024 * 50 // 50MB
 
 @Controller('media')
 @ApiTags('Media')
@@ -49,7 +49,7 @@ export class MediaController {
     @Headers(UPLOAD_TOKEN_HEADER) token: string,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [new MaxFileSizeValidator({ maxSize: MAX_FILE_SIZE })],
+        validators: [new MaxFileSizeValidator({ maxSize: DEFAULT_MAX_FILE_SIZE })],
       }),
     )
     file: File,

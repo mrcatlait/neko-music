@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 
 import { MediaCoreModule } from './media-core.module'
 import { MediaModuleOptions } from './types'
@@ -6,7 +6,6 @@ import { MediaModuleOptions } from './types'
 import { ModuleWithOptions } from '@/modules/app/classes'
 import { AsyncModuleOptions } from '@/modules/app/interfaces'
 
-@Global()
 @Module({})
 export class MediaModule extends ModuleWithOptions {
   static module = MediaModule

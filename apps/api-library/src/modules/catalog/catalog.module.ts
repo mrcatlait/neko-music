@@ -21,6 +21,7 @@ import {
   GetPopularAlbumsUseCase,
   GetTracksForAlbumUseCase,
 } from './use-cases'
+import { ArtworkEvent } from './events/artwork.event'
 
 @Global()
 @Module({
@@ -44,6 +45,8 @@ import {
     ArtistRepository,
     GenreRepository,
     TrackRepository,
+    // Events
+    ArtworkEvent,
   ],
 })
 export class CatalogModule {}

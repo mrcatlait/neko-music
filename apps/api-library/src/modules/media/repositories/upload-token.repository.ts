@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { Sql } from 'postgres'
 
 import { UploadTokenEntity } from '../entities'
 import { MediaType } from '../enums'
@@ -9,8 +10,8 @@ import { DatabaseService } from '@/modules/database'
 export class UploadTokenRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create(uploadToken: Omit<UploadTokenEntity, 'id'>): Promise<UploadTokenEntity> {
-    return this.databaseService.sql<UploadTokenEntity[]>`
+  create<Type extends UploadTokenEntity>(uploadToken: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
+    return (sql ?? this.databaseService.sql)<Type[]>`
       INSERT INTO "media"."UploadToken" ("userId", "mediaType", "entityType", "entityId", "expiresAt")
       VALUES (${uploadToken.userId}, ${uploadToken.mediaType}, ${uploadToken.entityType}, ${uploadToken.entityId}, ${uploadToken.expiresAt})
       RETURNING *

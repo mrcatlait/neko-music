@@ -1,74 +1,62 @@
-import { exec } from 'child_process'
-import { promisify } from 'util'
-import { unlink, writeFile } from 'fs'
+import { execSync } from 'child_process'
+import { readdirSync, rmSync, writeFileSync } from 'fs'
+import { ModuleRef } from '@nestjs/core'
 import { join } from 'path'
 
-import { AudioTransformOptions, AudioTransformStrategy } from './audio-transform.strategy'
-import { Bitrate, Channels, Codec, SampleRate } from './types'
+import { AudioTransformParameters, AudioTransformResult, AudioTransformStrategy } from './audio-transform.strategy'
+import { NamingStrategy } from '../naming/naming.strategy'
+import { MEDIA_MODULE_OPTIONS } from '../../tokens'
+import { MediaModuleOptions } from '../../types'
+import { FileUtilsService } from '../../services'
 
-const execAsync = promisify(exec)
-const writeFileAsync = promisify(writeFile)
-const unlinkAsync = promisify(unlink)
+import { InjectableStrategy } from '@/modules/app/interfaces'
 
-interface FfmpegAudioTransformStrategyOptions {
-  /**
-   * Bitrate of the audio stream (in kbps)
-   * @example ['256k']
-   */
-  readonly bitrate: Bitrate[]
-  /**
-   * Number of channels in the audio stream
-   * @example 2
-   */
-  readonly channels: Channels
-  /**
-   * Sample rate of the audio stream (in Hz)
-   * @example 44100
-   */
-  readonly sampleRate: SampleRate
-  /**
-   * Codec of the audio stream
-   * @example 'aac'
-   */
-  readonly codec: Codec
-  /**
-   * Segment duration of the audio stream (in seconds)
-   * @example 10
-   */
-  readonly segmentDuration: number
-}
+export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, InjectableStrategy {
+  private namingStrategy: NamingStrategy
+  private fileUtilsService: FileUtilsService
 
-export class FfmpegAudioTransformStrategy implements AudioTransformStrategy {
-  constructor(private readonly options: FfmpegAudioTransformStrategyOptions) {}
+  onInit(moduleRef: ModuleRef): void {
+    this.namingStrategy = moduleRef.get<MediaModuleOptions>(MEDIA_MODULE_OPTIONS).namingStrategy
+    this.fileUtilsService = moduleRef.get(FileUtilsService)
+  }
 
-  async transform(options: AudioTransformOptions): Promise<void> {
+  async transform(
+    audio: Buffer,
+    targetPath: string,
+    parameters: AudioTransformParameters,
+  ): Promise<AudioTransformResult> {
+    const manifestName = this.namingStrategy.generateDashManifestName()
     // https://stackoverflow.com/questions/40046444/how-should-i-use-the-dash-not-webm-dash-manifest-format-in-ffmpeg
-    const manifestPath = options.targetPath + '/manifest.mpd'
+    const manifestPath = `${targetPath}/${manifestName}`
 
-    const randomId = crypto.randomUUID()
-    const tempPath = join(options.targetPath, `${randomId}.${options.sourceFormat}`)
+    const format = await this.fileUtilsService.getFileTypeFromBuffer(audio)
 
-    await writeFileAsync(tempPath, options.sourceBuffer)
+    if (!format) {
+      throw new Error('Failed to get file type from buffer')
+    }
 
-    const bitrateArgs = this.options.bitrate.map((b, index) =>
+    const sourceFilePath = join(targetPath, `${crypto.randomUUID()}.${format}`)
+    writeFileSync(sourceFilePath, audio)
+
+    const bitrateArgs = parameters.bitrate.map((b, index) =>
       [
         '-map 0:a:0',
         `-b:a:${index} ${b}`,
-        `-c:a:${index} ${this.options.codec}`,
-        `-ar:${index} ${this.options.sampleRate}`,
-        `-ac:${index} ${this.options.channels}`,
+        `-c:a:${index} ${parameters.codec}`,
+        `-ar:${index} ${parameters.sampleRate}`,
+        `-ac:${index} ${parameters.channels}`,
       ].join(' '),
     )
 
     const args = [
       // Input file
       '-i',
-      tempPath,
+      sourceFilePath,
       // DASH options
       '-f dash',
-      '-init_seg_name init_$RepresentationID$.m4s',
-      '-media_seg_name chunk_$RepresentationID$_$Number%05d$.m4s',
-      `-seg_duration ${this.options.segmentDuration}`,
+      `-init_seg_name ${this.namingStrategy.generateDashInitSegmentName('$RepresentationID$')}`,
+      `-media_seg_name ${this.namingStrategy.generateDashMediaSegmentName('$RepresentationID$', '$Number%05d$')}`,
+      `-seg_duration ${parameters.segmentDuration}`,
       '-vn', // No video
       // Audio options
       ...bitrateArgs,
@@ -80,9 +68,27 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy {
     const command = `ffmpeg ${args.join(' ')}`
 
     try {
-      await execAsync(command)
-    } finally {
-      await unlinkAsync(tempPath)
+      execSync(command, {
+        stdio: 'ignore',
+      })
+
+      rmSync(sourceFilePath)
+
+      const files = readdirSync(targetPath)
+
+      const segmentPaths = files.filter((fileName) => fileName !== manifestName)
+      const totalSize = this.fileUtilsService.getDirectorySize(targetPath)
+
+      return {
+        manifestPath,
+        segmentPaths,
+        metadata: {
+          totalSize,
+        },
+      }
+    } catch (error) {
+      this.fileUtilsService.deleteDirectory(targetPath)
+      throw error
     }
   }
 }

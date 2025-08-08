@@ -19,7 +19,7 @@ export class StreamingController {
     return this.streamingService.streamManifest(trackId)
   }
 
-  @Get(':trackId/:segmentId')
+  @Get(':trackId/:segmentFileName')
   @ApiOperation({
     summary: 'Get track segment',
   })
@@ -27,7 +27,7 @@ export class StreamingController {
     type: String,
   })
   @ApiProduces('video/iso.segment')
-  streamSegment(@Param('trackId') trackId: string, @Param('segmentId') segmentId: string): StreamableFile {
-    return this.streamingService.streamSegment(trackId, segmentId)
+  streamSegment(@Param('trackId') trackId: string, @Param('segmentFileName') segmentFileName: string): StreamableFile {
+    return this.streamingService.streamSegment(trackId, segmentFileName)
   }
 }

@@ -1,18 +1,14 @@
 import { filter, Subject, takeUntil } from 'rxjs'
 
 import { MessagingStrategy } from './messaging.strategy'
-import { IEventHandler } from '../../interfaces'
-
-interface Event {
-  type: string
-}
+import { IEvent, IEventHandler } from '../../interfaces'
 
 export function notNullOrUndefined<T>(val: T | undefined | null): val is T {
   return val !== undefined && val !== null
 }
 
 export class ObservableMessagingStrategy implements MessagingStrategy {
-  private readonly streamSubject = new Subject<Event>()
+  private readonly streamSubject = new Subject<IEvent>()
   private readonly stream$ = this.streamSubject.asObservable()
 
   private readonly destroySubject = new Subject<void>()
@@ -28,17 +24,17 @@ export class ObservableMessagingStrategy implements MessagingStrategy {
     this.streamSubject.complete()
   }
 
-  publish<T extends Event>(event: T) {
+  publish<T extends IEvent>(event: T) {
     this.streamSubject.next(event)
   }
 
-  subscribe<T extends Event>(event: T, eventHandler: IEventHandler<T>) {
+  subscribe(eventName: string, eventHandler: IEventHandler<unknown>) {
     this.stream$
       .pipe(
         takeUntil(this.destroy$),
-        filter((e) => e.type === event.type),
+        filter((e) => e.type === eventName),
         filter(notNullOrUndefined),
       )
-      .subscribe((e) => eventHandler.handle(e as T))
+      .subscribe((e) => eventHandler.handle(e.data))
   }
 }

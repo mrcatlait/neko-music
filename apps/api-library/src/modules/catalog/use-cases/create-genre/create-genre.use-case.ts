@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { CreateGenreValidator } from './create-genre.validator'
 import { GenreRepository } from '../../repositories'
 import { GenreEntity } from '../../entities'
+import { RecordStatus } from '../../enums'
 
 export interface CreateGenreUseCaseParams {
   readonly name: string
@@ -24,6 +25,7 @@ export class CreateGenreUseCase {
 
     return this.repository.create({
       name: params.name,
+      status: RecordStatus.DRAFT,
     })
   }
 }

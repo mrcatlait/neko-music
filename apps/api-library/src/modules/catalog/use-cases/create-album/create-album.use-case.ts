@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { AlbumEntity } from '../../entities'
 import { CreateAlbumValidator } from './create-album.validator'
 import { AlbumArtistRepository, AlbumGenreRepository, AlbumRepository } from '../../repositories'
-import { AlbumType } from '../../enums'
+import { AlbumType, RecordStatus } from '../../enums'
 
 import { DatabaseService } from '@/modules/database'
 
@@ -40,6 +40,7 @@ export class CreateAlbumUseCase {
           releaseDate: params.releaseDate,
           explicit: params.explicit,
           type: params.type,
+          status: RecordStatus.DRAFT,
         },
         transaction,
       )

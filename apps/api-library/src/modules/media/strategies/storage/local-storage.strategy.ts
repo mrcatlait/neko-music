@@ -1,7 +1,7 @@
 import { createReadStream, createWriteStream, existsSync, mkdirSync, readFile, unlink, writeFile } from 'fs'
 import { dirname, join } from 'path'
 import { promisify } from 'util'
-import { Stream } from 'stream'
+import { Readable, Stream } from 'stream'
 
 import { StorageStrategy } from './storage.strategy'
 
@@ -52,10 +52,8 @@ export class LocalStorageStrategy implements StorageStrategy {
     return readFileAsync(storagePath)
   }
 
-  downloadToStream(storagePath: string): Promise<Stream> {
-    const readStream = createReadStream(storagePath, 'binary')
-
-    return Promise.resolve(readStream)
+  downloadToStream(storagePath: string): Readable {
+    return createReadStream(storagePath, 'binary')
   }
 
   async delete(storagePath: string): Promise<void> {

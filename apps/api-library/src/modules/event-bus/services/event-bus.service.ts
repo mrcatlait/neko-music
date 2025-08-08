@@ -1,31 +1,37 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common'
+import { Inject, Injectable, OnApplicationBootstrap } from '@nestjs/common'
+import { DiscoveryService } from '@nestjs/core'
+import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper'
 
-import { EventHandlerExplorerService } from './event-handler-explorer.service'
-import { IEvent } from '../interfaces'
+import { IEvent, IEventHandler } from '../interfaces'
 import { EventBusModuleOptions } from '../types'
-import { EVENT_BUS_MODULE_OPTIONS } from '../constants'
 import { MessagingStrategy } from '../strategies/messaging'
+import { EVENT_BUS_MODULE_OPTIONS } from '../tokens'
+import { EventHandlerInternal } from '../decorators'
 
 @Injectable()
-export class EventBusService implements OnModuleInit {
+export class EventBusService implements OnApplicationBootstrap {
   private readonly messagingStrategy: MessagingStrategy
 
   constructor(
-    private readonly eventHandlerExplorerService: EventHandlerExplorerService,
     @Inject(EVENT_BUS_MODULE_OPTIONS) private readonly options: EventBusModuleOptions,
+    private readonly discoveryService: DiscoveryService,
   ) {
     this.messagingStrategy = this.options.messagingStrategy
   }
 
-  async onModuleInit(): Promise<void> {
-    const eventHandlers = this.eventHandlerExplorerService.discover()
+  async onApplicationBootstrap(): Promise<void> {
+    const providers: InstanceWrapper<IEventHandler<IEvent>>[] = this.discoveryService.getProviders({
+      metadataKey: EventHandlerInternal.KEY,
+    })
 
-    for (const eventHandler of eventHandlers) {
-      if (!eventHandler.instance?.handle) {
+    for (const provider of providers) {
+      const eventName: string | undefined = this.discoveryService.getMetadataByDecorator(EventHandlerInternal, provider)
+
+      if (!eventName) {
         continue
       }
 
-      await this.messagingStrategy.subscribe(eventHandler.event, eventHandler.instance)
+      await this.messagingStrategy.subscribe(eventName, provider.instance)
     }
   }
 

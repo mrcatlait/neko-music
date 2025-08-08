@@ -1,13 +1,16 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { join } from 'path'
 import { ScheduleModule } from '@nestjs/schedule'
+import { DiscoveryModule } from '@nestjs/core'
 
 import { DatabaseModule } from '../database/database.module'
 import { SecurityHeadersMiddleware } from './middlewares'
+import { EventBusModule, ObservableMessagingStrategy } from '../event-bus'
+import { DefaultNamingStrategy } from '../media/strategies/naming'
+import { CatalogModule } from '../catalog/catalog.module'
 
 import { AuthModule } from '@/modules/auth/auth.module'
 import { UserModule } from '@/modules/user/user.module'
-import { StreamingModule } from '@/modules/streaming/streaming.module'
 import { env } from 'src/env'
 import { MediaModule } from '@/modules/media/media.module'
 import { LocalStorageStrategy } from '@/modules/media/strategies/storage'
@@ -59,25 +62,46 @@ import { FfmpegAudioTransformStrategy } from '@/modules/media/strategies/audio-t
       database: env.DATABASE_NAME,
     }),
     ScheduleModule.forRoot(),
-    // EventBusModule.forRoot(),
+    EventBusModule.forRoot({
+      messagingStrategy: new ObservableMessagingStrategy(),
+    }),
     AuthModule,
-    // CatalogModule,
+    CatalogModule,
     MediaModule.forRoot({
       storageStrategy: new LocalStorageStrategy({
         directory: join(process.cwd(), 'media'),
       }),
       imageTransformStrategy: new SharpImageTransformStrategy(),
+      imageTransformPresets: [
+        {
+          width: 56,
+          height: 56,
+          format: 'webp',
+        },
+        {
+          width: 256,
+          height: 256,
+          format: 'webp',
+        },
+        {
+          width: 720,
+          height: 720,
+          format: 'webp',
+        },
+      ],
       imageAnalyzeStrategy: new SharpImageAnalyzeStrategy(),
-      audioTransformStrategy: new FfmpegAudioTransformStrategy({
+      audioTransformStrategy: new FfmpegAudioTransformStrategy(),
+      audioTransformPreset: {
         bitrate: ['128k', '256k'],
         channels: 2,
         sampleRate: 44100,
         codec: 'aac',
         segmentDuration: 10,
-      }),
+      },
+      namingStrategy: new DefaultNamingStrategy(),
+      temporaryDirectory: join(process.cwd(), 'temp'),
     }),
     UserModule,
-    StreamingModule,
   ],
 })
 export class AppModule implements NestModule {
