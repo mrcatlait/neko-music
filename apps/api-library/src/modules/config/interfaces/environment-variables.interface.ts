@@ -1,10 +1,7 @@
-import { Environment } from '../enums'
-
 export interface EnvironmentVariables {
   // Application
   PORT: number
   UI_URL: string
-  NODE_ENV: Environment
 
   // Database
   DATABASE_HOST: string

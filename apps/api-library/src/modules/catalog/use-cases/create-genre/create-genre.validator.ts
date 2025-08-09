@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { ValidationResult, Validator } from '@/modules/shared/models'
 
 import { GenreRepository } from '../../repositories'
 import { CreateGenreUseCaseParams } from './create-genre.use-case'
+
+import { ValidationResult, Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class CreateGenreValidator implements Validator<CreateGenreUseCaseParams> {

@@ -9,7 +9,7 @@ import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
 import { FileUtilsService } from '../../services'
 
-import { InjectableStrategy } from '@/modules/app/interfaces'
+import { InjectableStrategy } from '@/modules/shared/interfaces'
 
 export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, InjectableStrategy {
   private namingStrategy: NamingStrategy

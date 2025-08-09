@@ -6,7 +6,7 @@ import { RoleRepository, UserAccountRepository, UserCredentialsRepository } from
 
 import { DatabaseService } from '@/modules/database'
 import { CreateUserProfileUseCase } from '@/modules/user/use-cases'
-import { env } from 'src/env'
+import { ConfigService } from '@/modules/config/services'
 
 export interface RegisterUserUseCaseParams {
   readonly email: string
@@ -21,6 +21,7 @@ export class RegisterUserUseCase {
   private readonly saltRounds: number
 
   constructor(
+    private readonly configService: ConfigService,
     private readonly registerValidator: RegisterUserValidator,
     private readonly databaseService: DatabaseService,
     private readonly roleRepository: RoleRepository,
@@ -28,7 +29,7 @@ export class RegisterUserUseCase {
     private readonly userCredentialsRepository: UserCredentialsRepository,
     private readonly createUserProfileUseCase: CreateUserProfileUseCase,
   ) {
-    this.saltRounds = env.SALT_ROUNDS
+    this.saltRounds = this.configService.config.SALT_ROUNDS
   }
 
   async invoke(params: RegisterUserUseCaseParams): Promise<void> {

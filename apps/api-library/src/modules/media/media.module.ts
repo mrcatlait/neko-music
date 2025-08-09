@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common'
 import { MediaCoreModule } from './media-core.module'
 import { MediaModuleOptions } from './types'
 
-import { ModuleWithOptions } from '@/modules/app/classes'
-import { AsyncModuleOptions } from '@/modules/app/interfaces'
+import { ModuleWithOptions } from '@/modules/shared/classes'
+import { AsyncModuleOptions } from '@/modules/shared/interfaces'
 
 @Module({})
 export class MediaModule extends ModuleWithOptions {

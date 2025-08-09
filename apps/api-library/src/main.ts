@@ -5,7 +5,8 @@ import { fastifySession } from '@fastify/session'
 import { fastifyCookie } from '@fastify/cookie'
 import { fastifyMultipart } from '@fastify/multipart'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { env } from 'process'
+
+import { ConfigService } from './modules/config/services'
 
 import { AppModule } from '@/modules/app/app.module'
 
@@ -14,9 +15,11 @@ const DAY = 1000 * 60 * 60 * 24
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
 
-  const PORT = env.PORT
-  const UI_URL = env.UI_URL
-  const COOKIE_SECRET = env.COOKIE_SECRET
+  const configService = app.get(ConfigService)
+
+  const PORT = configService.config.PORT
+  const UI_URL = configService.config.UI_URL
+  const COOKIE_SECRET = configService.config.COOKIE_SECRET
 
   app.useGlobalPipes(
     new ValidationPipe({

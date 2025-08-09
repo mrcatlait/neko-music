@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { ValidationResult, Validator } from '@/modules/shared/models'
 
 import { ArtistRepository, GenreRepository } from '../../repositories'
 import { CreateArtistUseCaseParams } from './create-artist.use-case'
+
+import { ValidationResult, Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class CreateArtistValidator implements Validator<CreateArtistUseCaseParams> {

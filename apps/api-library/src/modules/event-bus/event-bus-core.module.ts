@@ -4,7 +4,7 @@ import { DiscoveryModule } from '@nestjs/core'
 import { EVENT_BUS_MODULE_OPTIONS } from './tokens'
 import { EventBusService } from './services'
 
-import { CoreModuleWithOptions } from '@/modules/app/classes'
+import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
 @Module({})
 export class EventBusCoreModule extends CoreModuleWithOptions {

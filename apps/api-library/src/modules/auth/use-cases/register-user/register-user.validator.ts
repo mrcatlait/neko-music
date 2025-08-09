@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { RegisterUserUseCaseParams } from './register-user.use-case'
 import { UserAccountRepository } from '../../repositories'
 
-import { ValidationResult, Validator } from '@/modules/shared/models'
+import { ValidationResult, Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class RegisterUserValidator implements Validator<RegisterUserUseCaseParams> {

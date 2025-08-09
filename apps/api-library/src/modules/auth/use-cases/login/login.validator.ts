@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { hashSync, compareSync } from 'bcrypt'
 
-import { EnvironmentVariables, ValidationResult, Validator } from '@/modules/shared/models'
-import { env } from 'src/env'
+import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { ConfigService } from '@/modules/config/services'
 
 export interface LoginValidatorPayload {
   password: string
@@ -16,9 +16,8 @@ export class LoginValidator implements Validator<LoginValidatorPayload> {
   private readonly saltRounds: number
   private readonly dummyHash: string
 
-  constructor() {
-    // this.saltRounds = env.SALT_ROUNDS
-    this.saltRounds = 10
+  constructor(private readonly configService: ConfigService) {
+    this.saltRounds = configService.config.SALT_ROUNDS
     this.dummyHash = hashSync('password', this.saltRounds)
   }
 
