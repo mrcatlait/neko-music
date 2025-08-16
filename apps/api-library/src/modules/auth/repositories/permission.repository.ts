@@ -49,10 +49,10 @@ export class PermissionRepository {
     return this.databaseService.sql<PermissionEntity[]>`
       SELECT p.*
       FROM "auth"."Permission" p
-        INNER JOIN "auth"."GrantedPermission" gp ON p.id = gp.permissionId
-        INNER JOIN "auth"."UserRole" ur ON gp.roleId = ur.roleId
-        INNER JOIN "auth"."UserAccount" ua ON ur.userId = ua.id
-      WHERE ua.id = ${userId}
+        INNER JOIN "auth"."RolePermission" rp ON p."id" = rp."permissionId"
+        INNER JOIN "auth"."Role" r ON rp."roleId" = r."id"
+        INNER JOIN "auth"."UserAccount" ua ON r."id" = ua."roleId"  
+      WHERE ua."id" = ${userId}
     `
   }
 

@@ -1,13 +1,5 @@
-import { ArtworkRole } from '../enums'
+import { ArtworkEntity } from './artwork.entity'
 
-export interface ArtistArtworkEntity {
+export interface ArtistArtworkEntity extends ArtworkEntity {
   artistId: string
-  mediaAssetId: string
-  role: ArtworkRole
-  publicUrl: string
-  dominantColor: string
-}
-
-export type WithArtistArtworks<T> = T & {
-  artworks: ArtistArtworkEntity[]
 }

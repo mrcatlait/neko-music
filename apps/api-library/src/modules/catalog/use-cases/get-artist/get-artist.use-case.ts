@@ -12,7 +12,7 @@ export class GetArtistUseCase {
   constructor(private readonly artistRepository: ArtistRepository) {}
 
   async invoke(params: GetArtistUseCaseParams): Promise<ArtistEntity> {
-    const artist = await this.artistRepository.findOne(params.id)
+    const artist = await this.artistRepository.find(params.id)
 
     if (!artist) {
       throw new NotFoundException('Artist not found')

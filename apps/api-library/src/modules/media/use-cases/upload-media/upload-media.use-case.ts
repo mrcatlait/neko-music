@@ -1,10 +1,19 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Inject, Injectable } from '@nestjs/common'
 import { File } from '@nest-lab/fastify-multer'
 
 import { UploadMediaValidator } from './upload-media.validator'
-import { UploadTokenRepository } from '../../repositories'
-// import { UploadStrategyName, UploadStrategyRegistry } from '../../strategies/upload'
-import { EntityType } from '../../enums'
+import {
+  MediaSourceRepository,
+  ProcessingJobRepository,
+  ProcessingPipelineRepository,
+  UploadTokenRepository,
+} from '../../repositories'
+import { MediaModuleOptions } from '../../types'
+import { MEDIA_MODULE_OPTIONS } from '../../tokens'
+import { StorageStrategy } from '../../strategies/storage'
+import { MediaType, ProcessingJob, ProcessingStatus } from '../../enums'
+
+import { DatabaseService } from '@/modules/database'
 
 export interface UploadMediaUseCaseParams {
   readonly file: File
@@ -14,11 +23,19 @@ export interface UploadMediaUseCaseParams {
 
 @Injectable()
 export class UploadMediaUseCase {
+  private readonly storageStrategy: StorageStrategy
+
   constructor(
+    @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
     private readonly uploadMediaValidator: UploadMediaValidator,
     private readonly uploadTokenRepository: UploadTokenRepository,
-    // private readonly uploadStrategyRegistry: UploadStrategyRegistry,
-  ) {}
+    private readonly mediaSourceRepository: MediaSourceRepository,
+    private readonly processingPipelineRepository: ProcessingPipelineRepository,
+    private readonly processingJobRepository: ProcessingJobRepository,
+    private readonly databaseService: DatabaseService,
+  ) {
+    this.storageStrategy = this.options.storageStrategy
+  }
 
   async invoke(params: UploadMediaUseCaseParams): Promise<void> {
     const validationResult = await this.uploadMediaValidator.validate(params)
@@ -33,21 +50,78 @@ export class UploadMediaUseCase {
       throw new ForbiddenException()
     }
 
-    // let strategyName: UploadStrategyName
+    if (!params.file.buffer) {
+      throw new BadRequestException()
+    }
 
-    // switch (uploadToken.entityType) {
-    //   case EntityType.ARTIST:
-    //     strategyName = 'artist-artwork'
-    //     break
-    //   default:
-    //     throw new BadRequestException('Invalid entity type')
-    // }
+    const fileName = this.options.namingStrategy.generateFileName(params.file.originalname, uploadToken.entityId)
 
-    // const uploadStrategy = this.uploadStrategyRegistry.getStrategy(strategyName)
+    const storagePath = await this.storageStrategy.uploadFromBuffer(fileName, params.file.buffer)
 
-    // return uploadStrategy.upload({
-    //   entityId: uploadToken.entityId,
-    //   file: params.file,
-    // })
+    try {
+      await this.databaseService.sql.begin(async (transaction) => {
+        const mediaSource = await this.mediaSourceRepository.create(
+          {
+            mediaType: uploadToken.mediaType,
+            entityId: uploadToken.entityId,
+            entityType: uploadToken.entityType,
+            format: params.file.mimetype,
+            fileSize: params.file.size ?? 0,
+            storageProvider: this.storageStrategy.storageProvider,
+            storagePath,
+          },
+          transaction,
+        )
+
+        const processingPipeline = await this.processingPipelineRepository.create(
+          {
+            sourceId: mediaSource.id,
+            status: ProcessingStatus.PENDING,
+          },
+          transaction,
+        )
+
+        switch (uploadToken.mediaType) {
+          case MediaType.ARTWORK:
+            await Promise.all([
+              this.processingJobRepository.create(
+                {
+                  pipelineId: processingPipeline.id,
+                  jobName: ProcessingJob.IMAGE_TRANSFORM,
+                  jobOrder: 1,
+                  status: ProcessingStatus.PENDING,
+                },
+                transaction,
+              ),
+              this.processingJobRepository.create(
+                {
+                  pipelineId: processingPipeline.id,
+                  jobName: ProcessingJob.IMAGE_ANALYZE,
+                  jobOrder: 2,
+                  status: ProcessingStatus.PENDING,
+                },
+                transaction,
+              ),
+            ])
+            break
+          case MediaType.AUDIO:
+            await this.processingJobRepository.create(
+              {
+                pipelineId: processingPipeline.id,
+                jobName: ProcessingJob.AUDIO_TRANSFORM,
+                jobOrder: 1,
+                status: ProcessingStatus.PENDING,
+              },
+              transaction,
+            )
+            break
+        }
+
+        await this.uploadTokenRepository.delete(params.token, transaction)
+      })
+    } catch (error) {
+      await this.storageStrategy.delete(storagePath)
+      throw error
+    }
   }
 }

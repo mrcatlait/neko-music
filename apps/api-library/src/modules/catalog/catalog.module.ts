@@ -17,11 +17,17 @@ import {
   CreateArtistValidator,
   CreateGenreUseCase,
   CreateGenreValidator,
+  GetArtistArtworkUploadTokenUseCase,
+  GetArtistArtworkUploadTokenValidator,
   GetArtistUseCase,
-  GetPopularAlbumsUseCase,
   GetTracksForAlbumUseCase,
+  UpdateArtistStatusUseCase,
+  UpdateArtistStatusValidator,
+  UpdateArtistUseCase,
+  UpdateArtistValidator,
+  UpdateVerifiedStatusUseCase,
+  UpdateVerifiedStatusValidator,
 } from './use-cases'
-import { ArtworkEvent } from './events/artwork.event'
 
 @Global()
 @Module({
@@ -35,8 +41,15 @@ import { ArtworkEvent } from './events/artwork.event'
     CreateGenreUseCase,
     CreateGenreValidator,
     GetArtistUseCase,
-    GetPopularAlbumsUseCase,
+    GetArtistArtworkUploadTokenUseCase,
+    GetArtistArtworkUploadTokenValidator,
     GetTracksForAlbumUseCase,
+    UpdateArtistUseCase,
+    UpdateArtistValidator,
+    UpdateArtistStatusUseCase,
+    UpdateArtistStatusValidator,
+    UpdateVerifiedStatusUseCase,
+    UpdateVerifiedStatusValidator,
     // Repositories
     AlbumArtistRepository,
     AlbumGenreRepository,
@@ -45,8 +58,6 @@ import { ArtworkEvent } from './events/artwork.event'
     ArtistRepository,
     GenreRepository,
     TrackRepository,
-    // Events
-    ArtworkEvent,
   ],
 })
 export class CatalogModule {}

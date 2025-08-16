@@ -5,8 +5,6 @@ import { MEDIA_MODULE_OPTIONS } from '../tokens'
 import { StorageStrategy } from '../strategies/storage'
 import { NamingStrategy } from '../strategies/naming'
 
-const MANIFEST_FILE_NAME = 'manifest.mpd'
-
 @Injectable()
 export class StreamingService {
   private readonly storageStrategy: StorageStrategy
@@ -18,7 +16,8 @@ export class StreamingService {
   }
 
   streamManifest(trackId: string): StreamableFile {
-    const filePath = this.namingStrategy.generateFileName(MANIFEST_FILE_NAME, trackId)
+    const manifestFileName = this.namingStrategy.generateDashManifestName()
+    const filePath = this.namingStrategy.generateFileName(manifestFileName, trackId)
     return new StreamableFile(this.storageStrategy.downloadToStream(filePath))
   }
 

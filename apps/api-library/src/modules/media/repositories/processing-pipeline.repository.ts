@@ -12,8 +12,8 @@ export class ProcessingPipelineRepository {
 
   create<Type extends ProcessingPipelineEntity>(processingPipeline: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "media"."ProcessingPipeline" ("assetId", "processingJob", "status")
-      VALUES (${processingPipeline.assetId}, ${processingPipeline.processingJob}, ${processingPipeline.status})
+      INSERT INTO "media"."ProcessingPipeline" ("sourceId", "status")
+      VALUES (${processingPipeline.sourceId}, ${processingPipeline.status})
       RETURNING *
     `.then((result) => result.at(0)!)
   }
@@ -47,15 +47,6 @@ export class ProcessingPipelineRepository {
       SELECT *
       FROM "media"."ProcessingPipeline"
       WHERE status = ${status}
-      LIMIT 1
-    `.then((result) => result.at(0))
-  }
-
-  findOneFailedByAttempts<Type extends ProcessingPipelineEntity>(attempts: number): Promise<Type | undefined> {
-    return this.databaseService.sql<Type[]>`
-      SELECT *
-      FROM "media"."ProcessingPipeline"
-      WHERE status = ${ProcessingStatus.FAILED} AND attempts < ${attempts}
       LIMIT 1
     `.then((result) => result.at(0))
   }

@@ -1,8 +1,12 @@
-import { AudioTransformParameters, AudioTransformStrategy } from './strategies/audio-transform'
-import { ImageAnalyzeStrategy } from './strategies/image-analyze'
-import { ImageTransformParameters, ImageTransformStrategy } from './strategies/image-transform'
-import { NamingStrategy } from './strategies/naming'
-import { StorageStrategy } from './strategies/storage'
+import {
+  AudioTransformParameters,
+  AudioTransformStrategy,
+  ImageAnalyzeStrategy,
+  ImageTransformParameters,
+  ImageTransformStrategy,
+  NamingStrategy,
+  StorageStrategy,
+} from './strategies'
 
 export interface MediaModuleOptions {
   storageStrategy: StorageStrategy
@@ -12,9 +16,16 @@ export interface MediaModuleOptions {
   audioTransformStrategy: AudioTransformStrategy
   audioTransformPreset: AudioTransformParameters
   namingStrategy: NamingStrategy
+
   /**
    * The directory where the media will be stored during processing.
    * This directory will be cleaned up after the media is processed.
    */
   temporaryDirectory: string
+
+  /**
+   * Flag to indicate whether to cleanup the source file after processing.
+   * Enable this flag to reduce the storage usage.
+   */
+  cleanupSourceAfterProcessing?: boolean
 }

@@ -24,7 +24,7 @@ export class CreateAlbumValidator implements Validator<CreateAlbumUseCaseParams>
     }
 
     if (params.artists.length > 0) {
-      const artistExists = await this.artistRepository.existsAll(params.artists)
+      const artistExists = await this.artistRepository.existsMany(params.artists)
 
       if (!artistExists) {
         return {
@@ -35,7 +35,7 @@ export class CreateAlbumValidator implements Validator<CreateAlbumUseCaseParams>
     }
 
     if (params.genres.length > 0) {
-      const genreExists = await this.genreRepository.existsAll(params.genres)
+      const genreExists = await this.genreRepository.existsMany(params.genres)
 
       if (!genreExists) {
         return {

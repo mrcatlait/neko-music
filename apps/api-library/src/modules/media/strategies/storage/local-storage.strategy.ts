@@ -4,6 +4,7 @@ import { promisify } from 'util'
 import { Readable, Stream } from 'stream'
 
 import { StorageStrategy } from './storage.strategy'
+import { StorageProvider } from '../../enums'
 
 const writeFileAsync = promisify(writeFile)
 const unlinkAsync = promisify(unlink)
@@ -21,6 +22,8 @@ export interface LocalStorageStrategyOptions {
  */
 export class LocalStorageStrategy implements StorageStrategy {
   private readonly directory: string
+
+  readonly storageProvider = StorageProvider.LOCAL
 
   constructor(private readonly options: LocalStorageStrategyOptions) {
     this.directory = options.directory

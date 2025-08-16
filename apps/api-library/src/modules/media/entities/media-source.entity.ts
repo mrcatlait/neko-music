@@ -1,8 +1,10 @@
-import { SourceType, StorageProvider } from '../enums'
+import { EntityType, MediaType, StorageProvider } from '../enums'
 
 export interface MediaSourceEntity {
   id: string
-  sourceType: SourceType
+  mediaType: MediaType
+  entityId: string
+  entityType: EntityType
   format: string
   fileSize: number
   storageProvider: StorageProvider

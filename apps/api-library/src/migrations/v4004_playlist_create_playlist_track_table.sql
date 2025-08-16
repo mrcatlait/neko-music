@@ -8,6 +8,8 @@ CREATE TABLE "playlist"."PlaylistTrack" (
   CONSTRAINT "CHK_PlaylistTrack_Position" CHECK (position >= 0)
 );
 
+CREATE INDEX "IX_PlaylistTrack_PlaylistId_Position" ON "playlist"."PlaylistTrack" ("playlistId", "position");
+
 COMMENT ON TABLE "playlist"."PlaylistTrack" IS 'A relationship between a playlist and a track';
 COMMENT ON COLUMN "playlist"."PlaylistTrack"."playlistId" IS 'Foreign key to the playlist';
 COMMENT ON COLUMN "playlist"."PlaylistTrack"."trackId" IS 'Foreign key to the track';

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { fileTypeFromBuffer } from 'file-type'
-import { existsSync, mkdirSync, readdirSync, rmSync, statSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } from 'fs'
 import { join } from 'path'
 
 export interface SegmentInfo {
@@ -56,5 +56,14 @@ export class FileUtilsService {
    */
   deleteDirectory(directory: string): void {
     rmSync(directory, { recursive: true })
+  }
+
+  /**
+   * Read a file from a path
+   * @param path Path to the file
+   * @returns The file content
+   */
+  readFile(path: string): Buffer {
+    return readFileSync(path)
   }
 }

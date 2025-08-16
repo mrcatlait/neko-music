@@ -11,7 +11,7 @@ export class UserAccountRepository {
 
   create<Type extends UserAccountEntity>(user: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "auth"."UserAccount" (emailAddress, roleId, verified)
+      INSERT INTO "auth"."UserAccount" ("emailAddress", "roleId", "verified")
       VALUES (${user.emailAddress}, ${user.roleId}, ${user.verified})
       RETURNING *
     `.then((result) => result.at(0)!)
@@ -27,7 +27,7 @@ export class UserAccountRepository {
   update<Type extends UserAccountEntity>(user: Type, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
       UPDATE "auth"."UserAccount"
-      SET emailAddress = ${user.emailAddress}, roleId = ${user.roleId}, verified = ${user.verified}
+      SET "emailAddress" = ${user.emailAddress}, "roleId" = ${user.roleId}, "verified" = ${user.verified}
       WHERE id = ${user.id}
       RETURNING *
     `.then((result) => result.at(0)!)
@@ -57,18 +57,18 @@ export class UserAccountRepository {
     return this.databaseService.sql<WithCredentials<UserAccountEntity>[]>`
       SELECT 
         ua.*,
-        uc.passwordHash,
-        uc.passwordSalt
+        uc."passwordHash",
+        uc."passwordSalt"
       FROM "auth"."UserAccount" ua
-        INNER JOIN "auth"."UserCredentials" uc ON ua.id = uc.userId
-      WHERE ua.emailAddress = ${email}
+        INNER JOIN "auth"."UserCredentials" uc ON ua.id = uc."userId"
+      WHERE ua."emailAddress" = ${email}
       LIMIT 1
     `.then((result) => result.at(0))
   }
 
   existsByEmail(email: string): Promise<boolean> {
     return this.databaseService.sql<{ exists: boolean }[]>`
-      SELECT EXISTS(SELECT 1 FROM "auth"."UserAccount" WHERE emailAddress = ${email})
+      SELECT EXISTS(SELECT 1 FROM "auth"."UserAccount" WHERE "emailAddress" = ${email})
     `.then((result) => result.at(0)?.exists ?? false)
   }
 }

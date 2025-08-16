@@ -1,5 +1,5 @@
 export * from './entity-type.enum'
 export * from './media-type.enum'
+export * from './processing-job.enum'
 export * from './processing-status.enum'
-export * from './source-type.enum'
 export * from './storage-provider.enum'

@@ -1,9 +1,16 @@
 import Stream, { Readable } from 'stream'
 
+import { StorageProvider } from '../../enums'
+
 /**
  * Storage strategy interface defines the methods that a storage strategy must implement
  */
 export interface StorageStrategy {
+  /**
+   * The storage provider
+   */
+  readonly storageProvider: StorageProvider
+
   /**
    * Uploads a buffer to the storage
    * @param fileName - The name of the file

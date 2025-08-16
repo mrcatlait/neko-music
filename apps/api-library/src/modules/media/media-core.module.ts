@@ -1,13 +1,21 @@
-import { Inject, Module } from '@nestjs/common'
+import { Global, Inject, Module } from '@nestjs/common'
 import { ModuleRef } from '@nestjs/core'
 
 import { MEDIA_MODULE_OPTIONS } from './tokens'
-import { ProcessArtistArtworkCron, UploadTokenCleanupCron } from './crons'
+import { TriggerMediaProcessingCron, UploadTokenCleanupCron } from './crons'
 import { GenerateUploadTokenUseCase, UploadMediaUseCase, UploadMediaValidator } from './use-cases'
-import { MediaAssetRepository, ProcessingPipelineRepository, UploadTokenRepository } from './repositories'
+import {
+  MediaAssetRepository,
+  MediaImageMetadataRepository,
+  MediaSourceRepository,
+  ProcessingJobRepository,
+  ProcessingPipelineRepository,
+  UploadTokenRepository,
+} from './repositories'
 import { MediaController, StreamingController } from './controllers'
-import { FileUtilsService, StreamingService, TestService } from './services'
+import { FileUtilsService, ImageService, StreamingService } from './services'
 import { MediaModuleOptions } from './types'
+import { ProcessMediaEvent, ProcessMediaEventHandler } from './events'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -21,16 +29,21 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     UploadMediaUseCase,
     UploadMediaValidator,
     // Crons
-    ProcessArtistArtworkCron,
+    TriggerMediaProcessingCron,
     UploadTokenCleanupCron,
+    // Events
+    ProcessMediaEventHandler,
     // Repositories
     MediaAssetRepository,
+    MediaImageMetadataRepository,
+    MediaSourceRepository,
+    ProcessingJobRepository,
     ProcessingPipelineRepository,
     UploadTokenRepository,
     // Services
     FileUtilsService,
+    ImageService,
     StreamingService,
-    TestService,
   ]
   static exports = [GenerateUploadTokenUseCase, UploadMediaUseCase]
   static controllers = [MediaController, StreamingController]

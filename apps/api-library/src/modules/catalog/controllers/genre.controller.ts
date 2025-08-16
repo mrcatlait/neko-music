@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common'
 import { ApiOperation, ApiTags, ApiCookieAuth, ApiResponse } from '@nestjs/swagger'
 
-import { CreateGenreDto, GenreDto } from '../dtos'
+import { GenreCreationRequest, GenreResponse } from '../dtos'
 import { CreateGenreUseCase } from '../use-cases'
 
 import { AuthGuard } from '@/modules/auth/guards'
@@ -20,9 +20,9 @@ export class GenreController {
   @ApiResponse({
     status: 201,
     description: 'The genre has been successfully created.',
-    type: GenreDto,
+    type: GenreResponse,
   })
-  createGenre(@Body() createGenreDto: CreateGenreDto): Promise<GenreDto> {
-    return this.createGenreUseCase.invoke({ name: createGenreDto.name })
+  createGenre(@Body() body: GenreCreationRequest): Promise<GenreResponse> {
+    return this.createGenreUseCase.invoke({ name: body.name })
   }
 }

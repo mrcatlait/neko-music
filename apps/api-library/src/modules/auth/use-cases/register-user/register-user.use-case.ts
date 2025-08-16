@@ -46,8 +46,8 @@ export class RegisterUserUseCase {
       throw new InternalServerErrorException()
     }
 
-    await this.databaseService.sql.begin(async (transaction) => {
-      const userAccount = await this.userAccountRepository.create(
+    const userAccount = await this.databaseService.sql.begin(async (transaction) => {
+      const account = await this.userAccountRepository.create(
         {
           emailAddress: params.email,
           roleId: defaultRole.id,
@@ -61,17 +61,19 @@ export class RegisterUserUseCase {
 
       await this.userCredentialsRepository.create(
         {
-          userId: userAccount.id,
+          userId: account.id,
           passwordHash,
           passwordSalt,
         },
         transaction,
       )
 
-      await this.createUserProfileUseCase.invoke({
-        userId: userAccount.id,
-        displayName: params.displayName,
-      })
+      return account
+    })
+
+    await this.createUserProfileUseCase.invoke({
+      userId: userAccount.id,
+      displayName: params.displayName,
     })
   }
 }

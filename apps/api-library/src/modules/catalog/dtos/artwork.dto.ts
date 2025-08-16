@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class ArtworkDto {
+export class Artwork {
   @ApiProperty({
     description: 'The URL of the artwork',
     example: 'https://example.com/artwork.jpg',
@@ -8,14 +8,20 @@ export class ArtworkDto {
   url: string
 
   @ApiProperty({
-    description: 'The background color of the artwork',
-    example: '#000000',
+    description: 'The height of the artwork',
+    example: 100,
   })
-  backgroundColor: string
+  height: number
 
   @ApiProperty({
-    description: 'The text color of the artwork',
-    example: '#ffffff',
+    description: 'The width of the artwork',
+    example: 100,
   })
-  textColor: string
+  width: number
+
+  @ApiProperty({
+    description: 'The dominant color of the artwork',
+    example: '#000000',
+  })
+  dominantColor: string
 }

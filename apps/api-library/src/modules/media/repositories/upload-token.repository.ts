@@ -20,7 +20,8 @@ export class UploadTokenRepository {
 
   findOne<Type extends UploadTokenEntity>(id: string): Promise<Type | undefined> {
     return this.databaseService.sql<Type[]>`
-      ${this.selectFragment}
+      SELECT *
+      FROM "media"."UploadToken"
       WHERE "id" = ${id}
       LIMIT 1
     `.then((result) => result.at(0))
@@ -28,7 +29,8 @@ export class UploadTokenRepository {
 
   findExpiredTokens<Type extends UploadTokenEntity>(now: Date): Promise<Type[]> {
     return this.databaseService.sql<Type[]>`
-      ${this.selectFragment}
+      SELECT *
+      FROM "media"."UploadToken"
       WHERE "expiresAt" < ${now}
     `.then((result) => result)
   }
@@ -38,14 +40,15 @@ export class UploadTokenRepository {
     mediaType: MediaType,
   ): Promise<Type | undefined> {
     return this.databaseService.sql<Type[]>`
-      ${this.selectFragment}
+      SELECT *
+      FROM "media"."UploadToken"
       WHERE "userId" = ${userId} AND "mediaType" = ${mediaType}
       LIMIT 1
     `.then((result) => result.at(0))
   }
 
-  delete(id: string): Promise<void> {
-    return this.databaseService.sql`
+  delete(id: string, sql?: Sql): Promise<void> {
+    return (sql ?? this.databaseService.sql)`
       DELETE FROM "media"."UploadToken" WHERE "id" = ${id}
     `.then(() => undefined)
   }
@@ -55,15 +58,4 @@ export class UploadTokenRepository {
       DELETE FROM "media"."UploadToken" WHERE "expiresAt" < NOW()
     `.then(() => undefined)
   }
-
-  private readonly selectFragment = this.databaseService.sql`
-    SELECT
-      id,
-      userId,
-      mediaType,
-      entityType,
-      entityId,
-      expiresAt
-    FROM "media"."UploadToken"
-  `
 }

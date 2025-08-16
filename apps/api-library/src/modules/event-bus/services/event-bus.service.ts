@@ -25,13 +25,13 @@ export class EventBusService implements OnApplicationBootstrap {
     })
 
     for (const provider of providers) {
-      const eventName: string | undefined = this.discoveryService.getMetadataByDecorator(EventHandlerInternal, provider)
+      const event: IEvent | undefined = this.discoveryService.getMetadataByDecorator(EventHandlerInternal, provider)
 
-      if (!eventName) {
+      if (!event) {
         continue
       }
 
-      await this.messagingStrategy.subscribe(eventName, provider.instance)
+      await this.messagingStrategy.subscribe(event, provider.instance)
     }
   }
 

@@ -1,7 +1,10 @@
 export type ImageTransformFormat = 'jpg' | 'jpeg' | 'png' | 'webp' | 'avif'
 
-export type ImageTransformMode = 'crop' | 'resize'
+export type ImageTransformMode = 'cover' | 'fill'
 
+/**
+ * @todo Support presets per each type
+ */
 export interface ImageTransformParameters {
   width: number
   height: number

@@ -9,7 +9,6 @@ import { DatabaseService } from '@/modules/database'
 
 export interface CreateArtistUseCaseParams {
   readonly name: string
-  readonly verified: boolean
   readonly genres: string[]
 }
 
@@ -33,7 +32,7 @@ export class CreateArtistUseCase {
       const artist = await this.artistRepository.create(
         {
           name: params.name,
-          verified: params.verified,
+          verified: false,
           status: RecordStatus.DRAFT,
         },
         transaction,

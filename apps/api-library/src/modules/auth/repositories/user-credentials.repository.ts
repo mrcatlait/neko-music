@@ -11,7 +11,7 @@ export class UserCredentialsRepository {
 
   create<Type extends UserCredentialsEntity>(user: Type, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "auth"."UserCredentials" (userId, passwordHash, passwordSalt)
+      INSERT INTO "auth"."UserCredentials" ("userId", "passwordHash", "passwordSalt")
       VALUES (${user.userId}, ${user.passwordHash}, ${user.passwordSalt})
       RETURNING *
     `.then((result) => result.at(0)!)
@@ -27,8 +27,8 @@ export class UserCredentialsRepository {
   update<Type extends UserCredentialsEntity>(user: Type, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
       UPDATE "auth"."UserCredentials"
-      SET passwordHash = ${user.passwordHash}, passwordSalt = ${user.passwordSalt}
-      WHERE userId = ${user.userId}
+      SET "passwordHash" = ${user.passwordHash}, "passwordSalt" = ${user.passwordSalt}
+      WHERE "userId" = ${user.userId}
       RETURNING *
     `.then((result) => result.at(0)!)
   }
@@ -43,13 +43,13 @@ export class UserCredentialsRepository {
 
   delete(id: string): Promise<void> {
     return this.databaseService.sql`
-      DELETE FROM "auth"."UserCredentials" WHERE userId = ${id}
+      DELETE FROM "auth"."UserCredentials" WHERE "userId" = ${id}
     `.then(() => undefined)
   }
 
   deleteMany(ids: string[]): Promise<void> {
     return this.databaseService.sql`
-      DELETE FROM "auth"."UserCredentials" WHERE userId IN (${this.databaseService.sql(ids)})
+      DELETE FROM "auth"."UserCredentials" WHERE "userId" IN (${this.databaseService.sql(ids)})
     `.then(() => undefined)
   }
 }

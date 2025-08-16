@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface IEvent {}
+
 /**
  * Represents an event handler.
  */
-export interface IEventHandler<TData = unknown, TResult = void> {
+export interface IEventHandler<T extends IEvent = any> {
   /**
    * Handles an event.
    * @param event The event to handle.
    */
-  handle(data: TData): TResult
+  handle(event: T): any
 }

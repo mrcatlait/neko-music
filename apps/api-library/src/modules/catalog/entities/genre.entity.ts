@@ -5,3 +5,7 @@ export interface GenreEntity {
   name: string
   status: RecordStatus
 }
+
+export type WithGenres<T> = T & {
+  genres: GenreEntity[]
+}

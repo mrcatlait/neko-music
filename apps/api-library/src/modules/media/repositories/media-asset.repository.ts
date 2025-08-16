@@ -9,10 +9,12 @@ import { DatabaseService } from '@/modules/database'
 export class MediaAssetRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create<Type extends MediaAssetEntity>(mediaAsset: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "media"."MediaAsset" (entity_type, entity_id, source_id, storage_provider, storage_path)
-      VALUES (${mediaAsset.entityType}, ${mediaAsset.entityId}, ${mediaAsset.sourceId}, ${mediaAsset.storageProvider}, ${mediaAsset.storagePath})
+  create(mediaAsset: Omit<MediaAssetEntity, 'id'>, transaction?: Sql): Promise<MediaAssetEntity> {
+    const sql = transaction ?? this.databaseService.sql
+
+    return sql<MediaAssetEntity[]>`
+      INSERT INTO "media"."MediaAsset"
+      ${sql(mediaAsset)}
       RETURNING *
     `.then((result) => result.at(0)!)
   }
@@ -39,5 +41,13 @@ export class MediaAssetRepository {
       WHERE id = ${id}
       LIMIT 1
     `.then((result) => result.at(0))
+  }
+
+  findManyBySourceId<Type extends MediaAssetEntity>(sourceId: string): Promise<Type[]> {
+    return this.databaseService.sql<Type[]>`
+      SELECT *
+      FROM "media"."MediaAsset"
+      WHERE "sourceId" = ${sourceId}
+    `.then((result) => result)
   }
 }

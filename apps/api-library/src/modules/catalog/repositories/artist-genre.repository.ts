@@ -11,12 +11,9 @@ export class ArtistGenreRepository {
 
   create<Type extends ArtistGenreEntity>(genre: Type, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "music"."ArtistGenre" (artist_id, genre_id)
-      VALUES (${genre.artistId}, ${genre.genreId})
-      RETURNING
-        artist_id as "artistId",
-        genre_id as "genreId",
-        position
+      INSERT INTO "catalog"."ArtistGenre" ("artistId", "genreId", "position")
+      VALUES (${genre.artistId}, ${genre.genreId}, ${genre.position})
+      RETURNING *
     `.then((result) => result.at(0)!)
   }
 
@@ -26,28 +23,27 @@ export class ArtistGenreRepository {
     }
 
     return (sql ?? this.databaseService.sql)<ArtistGenreEntity[]>`
-      INSERT INTO "music"."ArtistGenre" (artist_id, genre_id)
+      INSERT INTO "catalog"."ArtistGenre" ("artistId", "genreId")
       VALUES (${artistId}, ${this.databaseService.sql(genres)})
-      RETURNING
-        artist_id as "artistId",
-        genre_id as "genreId",
-        position
+      RETURNING *
     `
   }
 
   delete(genre: Omit<ArtistGenreEntity, 'position'>): Promise<void> {
     return this.databaseService.sql`
-      DELETE FROM "music"."ArtistGenre" WHERE artist_id = ${genre.artistId} AND genre_id = ${genre.genreId}
+      DELETE FROM "catalog"."ArtistGenre" WHERE "artistId" = ${genre.artistId} AND "genreId" = ${genre.genreId}
     `.then(() => undefined)
   }
 
-  deleteMany(genres: Omit<ArtistGenreEntity, 'position'>[]): Promise<void> {
-    if (genres.length === 0) {
-      return Promise.resolve()
-    }
-
-    return this.databaseService.sql`
-      DELETE FROM "music"."ArtistGenre" ${this.databaseService.sql(genres)}
+  deleteManyByArtistId(artistId: string, sql?: Sql): Promise<void> {
+    return (sql ?? this.databaseService.sql)`
+      DELETE FROM "catalog"."ArtistGenre" WHERE "artistId" = ${artistId}
     `.then(() => undefined)
+  }
+
+  findMany(artistId: string): Promise<ArtistGenreEntity[]> {
+    return this.databaseService.sql<ArtistGenreEntity[]>`
+      SELECT * FROM "catalog"."ArtistGenre" WHERE "artistId" = ${artistId}
+    `
   }
 }

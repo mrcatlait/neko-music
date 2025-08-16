@@ -6,17 +6,19 @@ import { SecurityHeadersMiddleware } from './middlewares'
 
 import { DatabaseModule } from '@/modules/database/database.module'
 import { EventBusModule, ObservableMessagingStrategy } from '@/modules/event-bus'
-import { DefaultNamingStrategy } from '@/modules/media/strategies/naming'
 import { CatalogModule } from '@/modules/catalog/catalog.module'
 import { ConfigService } from '@/modules/config/services'
 import { ConfigModule } from '@/modules/config/config.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { UserModule } from '@/modules/user/user.module'
 import { MediaModule } from '@/modules/media/media.module'
-import { LocalStorageStrategy } from '@/modules/media/strategies/storage'
-import { SharpImageTransformStrategy } from '@/modules/media/strategies/image-transform'
-import { SharpImageAnalyzeStrategy } from '@/modules/media/strategies/image-analyze'
-import { FfmpegAudioTransformStrategy } from '@/modules/media/strategies/audio-transform'
+import {
+  LocalStorageStrategy,
+  SharpImageTransformStrategy,
+  SharpImageAnalyzeStrategy,
+  FfmpegAudioTransformStrategy,
+  DefaultNamingStrategy,
+} from '@/modules/media/strategies'
 
 @Module({
   imports: [
@@ -51,16 +53,19 @@ import { FfmpegAudioTransformStrategy } from '@/modules/media/strategies/audio-t
           width: 56,
           height: 56,
           format: 'webp',
+          mode: 'cover',
         },
         {
           width: 256,
           height: 256,
           format: 'webp',
+          mode: 'cover',
         },
         {
           width: 720,
           height: 720,
           format: 'webp',
+          mode: 'cover',
         },
       ],
       imageAnalyzeStrategy: new SharpImageAnalyzeStrategy(),

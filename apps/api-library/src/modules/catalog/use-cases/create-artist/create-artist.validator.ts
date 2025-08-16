@@ -13,7 +13,7 @@ export class CreateArtistValidator implements Validator<CreateArtistUseCaseParam
   ) {}
 
   async validate(params: CreateArtistUseCaseParams): Promise<ValidationResult> {
-    const artistExists = await this.artistRepository.exists(params.name)
+    const artistExists = await this.artistRepository.existsByName(params.name)
 
     if (artistExists) {
       return {
@@ -22,7 +22,7 @@ export class CreateArtistValidator implements Validator<CreateArtistUseCaseParam
       }
     }
 
-    const genresExist = await this.genreRepository.existsAll(params.genres)
+    const genresExist = await this.genreRepository.existsMany(params.genres)
 
     if (!genresExist) {
       return {

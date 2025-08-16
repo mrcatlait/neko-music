@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { Sql } from 'postgres'
 
-import { AlbumEntity, WithArtists, WithArtwork } from '../entities'
+import { AlbumEntity, WithArtists } from '../entities'
 
 import { DatabaseService } from '@/modules/database'
 
@@ -22,7 +22,7 @@ export class AlbumRepository {
     `.then((result) => result.at(0)!)
   }
 
-  findOne<Type extends WithArtists<WithArtwork<AlbumEntity>>>(id: string): Promise<Type | undefined> {
+  findOne<Type extends WithArtists<AlbumEntity>>(id: string): Promise<Type | undefined> {
     return this.databaseService.sql<Type[]>`
       ${this.selectAlbumWithArtistsAndArtworkFragment}
       WHERE a.id = ${id}
@@ -37,7 +37,7 @@ export class AlbumRepository {
     `.then((result) => result.at(0)?.exists ?? false)
   }
 
-  findPopular<Type extends WithArtists<WithArtwork<AlbumEntity>>>(): Promise<Type[]> {
+  findPopular<Type extends WithArtists<AlbumEntity>>(): Promise<Type[]> {
     return this.databaseService.sql<Type[]>`
       ${this.selectAlbumWithArtistsAndArtworkFragment}
       GROUP BY a.id

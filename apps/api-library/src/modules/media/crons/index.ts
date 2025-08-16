@@ -1,2 +1,2 @@
-export * from './process-artist-artwork.cron'
+export * from './trigger-media-processing.cron'
 export * from './upload-token-cleanup.cron'
