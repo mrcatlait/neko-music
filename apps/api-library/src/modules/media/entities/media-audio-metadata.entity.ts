@@ -1,5 +1,8 @@
 export interface MediaAudioMetadataEntity {
   assetId: string
-  bitrate: number
+  bitrate: string
+  sampleRate: number
+  channels: number
+  codec: string
   duration: number
 }

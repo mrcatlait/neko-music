@@ -16,7 +16,7 @@ export class StreamingService {
   }
 
   streamManifest(trackId: string): StreamableFile {
-    const manifestFileName = this.namingStrategy.generateDashManifestName()
+    const manifestFileName = this.namingStrategy.generateDashManifestName(trackId)
     const filePath = this.namingStrategy.generateFileName(manifestFileName, trackId)
     return new StreamableFile(this.storageStrategy.downloadToStream(filePath))
   }

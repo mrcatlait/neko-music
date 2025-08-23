@@ -1,3 +1,7 @@
+export * from './audio.service'
+export * from './dash-utils.service'
 export * from './file-utils.service'
 export * from './image.service'
+export * from './media-processing.service'
 export * from './streaming.service'
+export * from './storage.service'

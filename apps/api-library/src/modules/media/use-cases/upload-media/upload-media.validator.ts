@@ -35,8 +35,8 @@ export class UploadMediaValidator implements Validator<UploadMediaUseCaseParams>
     switch (uploadToken.mediaType) {
       case MediaType.ARTWORK:
         return this.validateImage(params)
-      // case MediaType.AUDIO:
-      //   return this.validateAudio(command)
+      case MediaType.AUDIO:
+        return this.validateAudio(params)
       default:
         return {
           isValid: false,
@@ -66,6 +66,19 @@ export class UploadMediaValidator implements Validator<UploadMediaUseCaseParams>
       return {
         isValid: false,
         errors: ['Invalid image'],
+      }
+    }
+
+    return {
+      isValid: true,
+    }
+  }
+
+  private validateAudio(params: UploadMediaUseCaseParams): ValidationResult {
+    if (!ALLOWED_AUDIO_MIME_TYPES.includes(params.file.mimetype)) {
+      return {
+        isValid: false,
+        errors: ['Invalid audio mime type'],
       }
     }
 

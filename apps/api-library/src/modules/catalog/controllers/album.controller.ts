@@ -14,7 +14,7 @@ import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 @ApiTags('Albums')
 @ApiCookieAuth()
 @UseGuards(AuthGuard)
-export class AlbumsController {
+export class AlbumController {
   constructor(
     private readonly createAlbumUseCase: CreateAlbumUseCase,
     private readonly getTracksForAlbumUseCase: GetTracksForAlbumUseCase,
@@ -58,6 +58,9 @@ export class AlbumsController {
     type: UploadTokenDto,
   })
   getUploadToken(@Param('albumId') albumId: string, @Session() session: UserSession): Promise<UploadTokenDto> {
+    /**
+     * @todo create use case for this
+     */
     return this.generateUploadTokenUseCase.invoke({
       userId: session.userId,
       mediaType: MediaType.ARTWORK,

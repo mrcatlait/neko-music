@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 
-import { AlbumsController, ArtistController, GenreController } from './controllers'
+import { AlbumController, ArtistController, GenreController, TrackController } from './controllers'
 import {
   GenreRepository,
   AlbumRepository,
@@ -9,6 +9,8 @@ import {
   AlbumArtistRepository,
   AlbumGenreRepository,
   ArtistGenreRepository,
+  TrackGenreRepository,
+  TrackArtistRepository,
 } from './repositories'
 import {
   CreateAlbumUseCase,
@@ -17,6 +19,8 @@ import {
   CreateArtistValidator,
   CreateGenreUseCase,
   CreateGenreValidator,
+  CreateTrackUseCase,
+  CreateTrackValidator,
   GetArtistArtworkUploadTokenUseCase,
   GetArtistArtworkUploadTokenValidator,
   GetArtistUseCase,
@@ -31,7 +35,7 @@ import {
 
 @Global()
 @Module({
-  controllers: [AlbumsController, ArtistController, GenreController],
+  controllers: [AlbumController, ArtistController, GenreController, TrackController],
   providers: [
     // Use cases
     CreateAlbumUseCase,
@@ -40,6 +44,8 @@ import {
     CreateArtistValidator,
     CreateGenreUseCase,
     CreateGenreValidator,
+    CreateTrackUseCase,
+    CreateTrackValidator,
     GetArtistUseCase,
     GetArtistArtworkUploadTokenUseCase,
     GetArtistArtworkUploadTokenValidator,
@@ -57,6 +63,8 @@ import {
     ArtistGenreRepository,
     ArtistRepository,
     GenreRepository,
+    TrackArtistRepository,
+    TrackGenreRepository,
     TrackRepository,
   ],
 })

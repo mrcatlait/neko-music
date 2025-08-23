@@ -13,21 +13,25 @@ export class CreateArtistValidator implements Validator<CreateArtistUseCaseParam
   ) {}
 
   async validate(params: CreateArtistUseCaseParams): Promise<ValidationResult> {
-    const artistExists = await this.artistRepository.existsByName(params.name)
+    const [artistExists, genresExist] = await Promise.all([
+      this.artistRepository.existsByName(params.name),
+      this.genreRepository.existsMany(params.genres),
+    ])
+
+    const errors: string[] = []
 
     if (artistExists) {
-      return {
-        isValid: false,
-        errors: ['Artist already exists'],
-      }
+      errors.push('Artist already exists')
     }
 
-    const genresExist = await this.genreRepository.existsMany(params.genres)
-
     if (!genresExist) {
+      errors.push('Genres not found')
+    }
+
+    if (errors.length > 0) {
       return {
         isValid: false,
-        errors: ['Genres not found'],
+        errors,
       }
     }
 

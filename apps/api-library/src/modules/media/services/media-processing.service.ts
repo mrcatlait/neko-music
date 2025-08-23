@@ -1,31 +1,44 @@
-import { Logger } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 
-import { ProcessingJobRepository, ProcessingPipelineRepository } from '../../repositories'
-import { ProcessingJob, ProcessingStatus } from '../../enums'
-import { ImageService } from '../../services'
-import { ProcessMediaEvent } from './process-media.event'
+import { ProcessingJobRepository, ProcessingPipelineRepository } from '../repositories'
+import { ImageService } from './image.service'
+import { ProcessingJob, ProcessingStatus } from '../enums'
+import { AudioService } from './audio.service'
 
-import { EventHandler, IEventHandler } from '@/modules/event-bus'
-
-const MAX_FAILED_ATTEMPTS = 3
-
-@EventHandler(ProcessMediaEvent)
-export class ProcessMediaEventHandler implements IEventHandler<ProcessMediaEvent> {
-  private readonly logger = new Logger(this.constructor.name)
+@Injectable()
+export class MediaProcessingService {
+  private processing = false
+  private readonly maxFailedAttempts = 3
 
   constructor(
     private readonly processingPipelineRepository: ProcessingPipelineRepository,
     private readonly processingJobRepository: ProcessingJobRepository,
     private readonly imageService: ImageService,
+    private readonly audioService: AudioService,
   ) {}
 
-  async handle(): Promise<void> {
-    this.logger.debug('Processing media')
+  next(): void {
+    if (this.processing) {
+      return
+    }
+
+    void this.processMedia()
+  }
+
+  async processMedia(): Promise<void> {
+    this.processing = true
 
     const pipeline = await this.processingPipelineRepository.findOneByStatus(ProcessingStatus.PENDING)
 
     if (!pipeline) {
+      this.processing = false
       return
+    }
+
+    const updatedPipeline = {
+      ...pipeline,
+      status: ProcessingStatus.PROCESSING,
+      startedAt: new Date(),
     }
 
     await this.processingPipelineRepository.update({
@@ -43,11 +56,13 @@ export class ProcessMediaEventHandler implements IEventHandler<ProcessMediaEvent
         throw new Error('No job to process in pending pipeline')
       }
 
-      await this.processingJobRepository.update({
+      const updatedJob = {
         ...jobToProcess,
         status: ProcessingStatus.PROCESSING,
         startedAt: new Date(),
-      })
+      }
+
+      await this.processingJobRepository.update(updatedJob)
 
       const currentAttempts = jobToProcess.attempts ?? 0
 
@@ -60,7 +75,7 @@ export class ProcessMediaEventHandler implements IEventHandler<ProcessMediaEvent
             await this.imageService.analyze(pipeline.sourceId)
             break
           case ProcessingJob.AUDIO_TRANSFORM:
-            // await this.audioService.transform(pipeline.source)
+            await this.audioService.transform(pipeline.sourceId)
             break
           default:
             throw new Error(`Unknown job name: ${jobToProcess.jobName as string}`)
@@ -68,7 +83,7 @@ export class ProcessMediaEventHandler implements IEventHandler<ProcessMediaEvent
 
         // Job succeeded - mark as completed
         await this.processingJobRepository.update({
-          ...jobToProcess,
+          ...updatedJob,
           status: ProcessingStatus.COMPLETED,
           completedAt: new Date(),
           attempts: currentAttempts + 1,
@@ -78,13 +93,13 @@ export class ProcessMediaEventHandler implements IEventHandler<ProcessMediaEvent
 
         if (lastJobCompleted) {
           await this.processingPipelineRepository.update({
-            ...pipeline,
+            ...updatedPipeline,
             status: ProcessingStatus.COMPLETED,
             completedAt: new Date(),
           })
         } else {
           await this.processingPipelineRepository.update({
-            ...pipeline,
+            ...updatedPipeline,
             status: ProcessingStatus.PENDING,
           })
         }
@@ -92,7 +107,7 @@ export class ProcessMediaEventHandler implements IEventHandler<ProcessMediaEvent
         const newAttempts = currentAttempts + 1
         const errorMessage = jobError instanceof Error ? jobError.message : 'Unknown error'
 
-        if (newAttempts >= MAX_FAILED_ATTEMPTS) {
+        if (newAttempts >= this.maxFailedAttempts) {
           // Max attempts reached - mark job as failed
           await this.processingJobRepository.update({
             ...jobToProcess,
@@ -111,7 +126,7 @@ export class ProcessMediaEventHandler implements IEventHandler<ProcessMediaEvent
         } else {
           // Retry available - update attempts and keep as pending
           await this.processingJobRepository.update({
-            ...jobToProcess,
+            ...updatedJob,
             status: ProcessingStatus.PENDING,
             attempts: newAttempts,
             errorMessage,
@@ -119,17 +134,20 @@ export class ProcessMediaEventHandler implements IEventHandler<ProcessMediaEvent
 
           // Reset pipeline to pending for retry
           await this.processingPipelineRepository.update({
-            ...pipeline,
+            ...updatedPipeline,
             status: ProcessingStatus.PENDING,
           })
         }
       }
     } catch {
       await this.processingPipelineRepository.update({
-        ...pipeline,
+        ...updatedPipeline,
         status: ProcessingStatus.FAILED,
         completedAt: new Date(),
       })
+    } finally {
+      this.processing = false
+      this.next()
     }
   }
 }

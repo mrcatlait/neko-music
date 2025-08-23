@@ -14,6 +14,9 @@ import { MediaType } from '../enums'
 
 import { DatabaseService } from '@/modules/database'
 
+/**
+ * @todo Split into multiple services or sagas
+ */
 @Injectable()
 export class ImageService {
   private readonly imageTransformStrategy: ImageTransformStrategy

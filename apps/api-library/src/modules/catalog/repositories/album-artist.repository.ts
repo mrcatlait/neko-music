@@ -11,12 +11,9 @@ export class AlbumArtistRepository {
 
   create<Type extends AlbumArtistEntity>(artist: Type, sql?: Sql): Promise<Type> {
     return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "music"."AlbumArtist" (album_id, artist_id)
+      INSERT INTO "catalog"."AlbumArtist" ("albumId", "artistId")
       VALUES (${artist.albumId}, ${artist.artistId})
-      RETURNING
-        album_id as "albumId",
-        artist_id as "artistId",
-        position
+      RETURNING *
     `.then((result) => result.at(0)!)
   }
 
@@ -26,17 +23,14 @@ export class AlbumArtistRepository {
     }
 
     return (sql ?? this.databaseService.sql)<AlbumArtistEntity[]>`
-      INSERT INTO "music"."AlbumArtist" ${this.databaseService.sql(artists)}
-      RETURNING
-        album_id as "albumId",
-        artist_id as "artistId",
-        position
+      INSERT INTO "catalog"."AlbumArtist" ${this.databaseService.sql(artists)}
+      RETURNING *
     `
   }
 
   delete(artist: Omit<AlbumArtistEntity, 'position'>): Promise<void> {
     return this.databaseService.sql`
-      DELETE FROM "music"."AlbumArtist" WHERE album_id = ${artist.albumId} AND artist_id = ${artist.artistId}
+      DELETE FROM "catalog"."AlbumArtist" WHERE "albumId" = ${artist.albumId} AND "artistId" = ${artist.artistId}
     `.then(() => undefined)
   }
 
@@ -46,7 +40,7 @@ export class AlbumArtistRepository {
     }
 
     return this.databaseService.sql`
-      DELETE FROM "music"."AlbumArtist" ${this.databaseService.sql(artists)}
+      DELETE FROM "catalog"."AlbumArtist" ${this.databaseService.sql(artists)}
     `.then(() => undefined)
   }
 }

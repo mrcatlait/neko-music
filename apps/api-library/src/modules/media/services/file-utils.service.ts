@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { fileTypeFromBuffer } from 'file-type'
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, unlinkSync, writeFileSync } from 'fs'
 import { join } from 'path'
 
 export interface SegmentInfo {
@@ -23,12 +23,30 @@ export class FileUtilsService {
   }
 
   /**
+   * Create a file if it does not exist
+   * @param path Path to the file
+   * @param content The content of the file
+   */
+  createFile(path: string, content: Buffer): void {
+    writeFileSync(path, content)
+  }
+
+  /**
    * Get the file type from a buffer
    * @param buffer The buffer to get the file type from
    * @returns The file type
    */
   getFileTypeFromBuffer(buffer: Buffer): Promise<string | undefined> {
     return fileTypeFromBuffer(buffer).then((fileType) => fileType?.ext)
+  }
+
+  /**
+   * Get the file type from a path
+   * @param path The path to get the file type from
+   * @returns The file type
+   */
+  getFileTypeFromPath(path: string): string | undefined {
+    return path.split('.').pop()
   }
 
   /**
@@ -59,11 +77,28 @@ export class FileUtilsService {
   }
 
   /**
+   * Delete a file
+   * @param path Path to the file
+   */
+  deleteFile(path: string): void {
+    unlinkSync(path)
+  }
+
+  /**
    * Read a file from a path
    * @param path Path to the file
    * @returns The file content
    */
   readFile(path: string): Buffer {
     return readFileSync(path)
+  }
+
+  /**
+   * Read a file from a path
+   * @param path Path to the file
+   * @returns The file content
+   */
+  readFileSync(path: string): string {
+    return readFileSync(path, 'utf8')
   }
 }

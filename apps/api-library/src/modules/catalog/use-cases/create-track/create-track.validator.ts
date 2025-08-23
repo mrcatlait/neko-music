@@ -1,30 +1,26 @@
 import { Injectable } from '@nestjs/common'
 
 import { AlbumRepository, ArtistRepository, GenreRepository } from '../../repositories'
-import { CreateAlbumUseCaseParams } from './create-album.use-case'
+import { CreateTrackUseCaseParams } from './create-track.use-case'
 
 import { ValidationResult, Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
-export class CreateAlbumValidator implements Validator<CreateAlbumUseCaseParams> {
+export class CreateTrackValidator implements Validator<CreateTrackUseCaseParams> {
   constructor(
-    private readonly albumRepository: AlbumRepository,
     private readonly artistRepository: ArtistRepository,
     private readonly genreRepository: GenreRepository,
+    private readonly albumRepository: AlbumRepository,
   ) {}
 
-  async validate(params: CreateAlbumUseCaseParams): Promise<ValidationResult> {
-    const [albumExists, artistExists, genreExists] = await Promise.all([
-      this.albumRepository.existsByName(params.name),
+  async validate(params: CreateTrackUseCaseParams): Promise<ValidationResult> {
+    const [artistExists, genreExists, albumExists] = await Promise.all([
       this.artistRepository.existsMany(params.artists),
       this.genreRepository.existsMany(params.genres),
+      this.albumRepository.exists(params.album),
     ])
 
     const errors: string[] = []
-
-    if (albumExists) {
-      errors.push('Album already exists')
-    }
 
     if (!artistExists) {
       errors.push('Artists not found')
@@ -32,6 +28,10 @@ export class CreateAlbumValidator implements Validator<CreateAlbumUseCaseParams>
 
     if (!genreExists) {
       errors.push('Genres not found')
+    }
+
+    if (!albumExists) {
+      errors.push('Album not found')
     }
 
     if (errors.length > 0) {

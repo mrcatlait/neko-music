@@ -2,6 +2,7 @@ import { execSync } from 'child_process'
 import { readdirSync, rmSync, writeFileSync } from 'fs'
 import { ModuleRef } from '@nestjs/core'
 import { join } from 'path'
+import { Logger } from '@nestjs/common'
 
 import { AudioTransformParameters, AudioTransformResult, AudioTransformStrategy } from './audio-transform.strategy'
 import { NamingStrategy } from '../naming/naming.strategy'
@@ -12,6 +13,7 @@ import { FileUtilsService } from '../../services'
 import { InjectableStrategy } from '@/modules/shared/interfaces'
 
 export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, InjectableStrategy {
+  private readonly logger = new Logger(this.constructor.name)
   private namingStrategy: NamingStrategy
   private fileUtilsService: FileUtilsService
 
@@ -22,12 +24,12 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, Inj
 
   async transform(
     audio: Buffer,
-    targetPath: string,
+    targetDirectory: string,
     parameters: AudioTransformParameters,
   ): Promise<AudioTransformResult> {
     const manifestName = this.namingStrategy.generateDashManifestName()
     // https://stackoverflow.com/questions/40046444/how-should-i-use-the-dash-not-webm-dash-manifest-format-in-ffmpeg
-    const manifestPath = `${targetPath}/${manifestName}`
+    const manifestPath = `${targetDirectory}/${manifestName}`
 
     const format = await this.fileUtilsService.getFileTypeFromBuffer(audio)
 
@@ -35,8 +37,9 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, Inj
       throw new Error('Failed to get file type from buffer')
     }
 
-    const sourceFilePath = join(targetPath, `${crypto.randomUUID()}.${format}`)
-    writeFileSync(sourceFilePath, audio)
+    const sourceFilePath = join(targetDirectory, `${crypto.randomUUID()}.${format}`)
+    this.fileUtilsService.createDirectory(targetDirectory)
+    this.fileUtilsService.createFile(sourceFilePath, audio)
 
     const bitrateArgs = parameters.bitrate.map((b, index) =>
       [
@@ -74,20 +77,20 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, Inj
 
       rmSync(sourceFilePath)
 
-      const files = readdirSync(targetPath)
+      const files = readdirSync(targetDirectory)
 
-      const segmentPaths = files.filter((fileName) => fileName !== manifestName)
-      const totalSize = this.fileUtilsService.getDirectorySize(targetPath)
+      const segmentNames = files.filter((fileName) => fileName !== manifestName)
+      const totalSize = this.fileUtilsService.getDirectorySize(targetDirectory)
 
-      return {
-        manifestPath,
-        segmentPaths,
+      return Promise.resolve({
+        manifestName,
+        segmentNames,
         metadata: {
           totalSize,
         },
-      }
+      })
     } catch (error) {
-      this.fileUtilsService.deleteDirectory(targetPath)
+      this.logger.error(error)
       throw error
     }
   }
