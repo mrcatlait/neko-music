@@ -1,6 +1,0 @@
-@for (artist of artists; track artist.id; let last = $last) {
-  <a [routerLink]="['/artists', artist.id]">{{ artist.name }}</a>
-  @if (!last) {
-    ,
-  }
-}

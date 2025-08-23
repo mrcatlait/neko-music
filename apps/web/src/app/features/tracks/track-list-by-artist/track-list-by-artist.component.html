@@ -1,8 +1,0 @@
-@if (loading()) {
-} @else {
-  <neko-track-list
-    [label]="queue().source.name"
-    [tracks]="tracks()"
-    (togglePlay)="handleTogglePlay($event)"
-  />
-}
