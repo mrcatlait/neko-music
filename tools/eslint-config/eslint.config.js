@@ -1,5 +1,5 @@
 import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
+import { config, configs as tseslint } from 'typescript-eslint'
 import importPlugin from 'eslint-plugin-import'
 import { includeIgnoreFile } from '@eslint/compat'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
@@ -7,27 +7,14 @@ import { fileURLToPath } from 'node:url'
 
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url))
 
-export default tseslint.config(
+export default config(
   includeIgnoreFile(gitignorePath),
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.recommendedTypeChecked,
   importPlugin.flatConfigs.recommended,
+  importPlugin.flatConfigs.typescript,
   eslintPluginPrettierRecommended,
   {
-    settings: {
-      'import/resolver': {
-        typescript: true,
-        node: true,
-      },
-    },
-    languageOptions: {
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
     rules: {
       // Disallow returning a value with type any from a function.
       '@typescript-eslint/no-unsafe-return': 'off',
@@ -70,6 +57,6 @@ export default tseslint.config(
   },
   {
     files: ['**/*.js'],
-    ...tseslint.configs.disableTypeChecked,
+    ...tseslint.disableTypeChecked,
   },
 )

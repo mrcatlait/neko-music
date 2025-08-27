@@ -1,0 +1,53 @@
+@use 'abstracts' as abstracts;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  padding: 2px 0;
+}
+
+.textfield__input {
+  --n-input-outline-color: var(--color-outline);
+  --n-input-outline-hover-color: var(--color-text-medium-emphasis);
+  --n-input-outline-focus-color: var(--color-primary);
+
+  display: flex;
+  align-items: center;
+  height: 56px;
+
+  border-radius: var(--shape-corner-small);
+  outline-offset: -2px;
+  outline: 1px solid var(--n-input-outline-color);
+  
+  transition: outline-color var(--motion-duration-short3) var(--motion-easing-standard);
+
+  &:has(input:focus, input:focus-visible) {
+    outline: 2px solid var(--n-input-outline-focus-color);
+  }
+
+  &:hover:not(:has(input:focus, input:focus-visible, input:disabled)) {
+    outline-color: var(--n-input-outline-hover-color);
+  }
+
+  &:has(input.ng-invalid.ng-touched) {
+    --n-input-outline-color: var(--color-error);
+    --n-input-outline-focus-color: var(--color-error);
+    --n-input-outline-hover-color: var(--color-error);
+  }
+
+  &:disabled {
+    pointer-events: none;
+  }
+
+  button {
+    padding-right: 12px;
+  }
+}
+
+.textfield__error {
+  margin-top: 4px;
+  padding: 0 16px;
+  color: var(--color-error);
+  @include abstracts.typography('body-small');
+}

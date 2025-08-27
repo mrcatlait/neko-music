@@ -1,6 +1,3 @@
-packages-old/
-docs/
-server/
-apps/web/
-apps/web-ng/
-apps/ui-library-admin-ng/
+/docs
+/server
+/demo

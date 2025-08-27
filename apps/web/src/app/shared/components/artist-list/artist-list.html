@@ -1,0 +1,22 @@
+<span aria-label="Artists">
+  @if (touchDevice()) {
+    @for (artist of artists(); track artist.id; let last = $last) {
+      <span>{{ artist.name }}</span>
+      @if (!last) {
+        <span aria-hidden="true">,&nbsp;</span>
+      }
+    }
+  } @else {
+    @for (artist of artists(); track artist.id; let last = $last) {
+      <a
+        class="artist-list__link"
+        [routerLink]="['/artists', artist.id]"
+        [title]="artist.name"
+        >{{ artist.name }}</a
+      >
+      @if (!last) {
+        <span aria-hidden="true">,&nbsp;</span>
+      }
+    }
+  }
+</span>

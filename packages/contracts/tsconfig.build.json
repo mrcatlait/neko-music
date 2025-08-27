@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "emitDeclarationOnly": false,
+    "module": "ES2022",
+    "target": "ES2021",
+    "moduleResolution": "node",
+    "tsBuildInfoFile": "../../.moon/cache/tsbuildinfo/contracts.tsbuildinfo"
+  },
+  "include": ["src/**/*"],
+  "references": []
+}

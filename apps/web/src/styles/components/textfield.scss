@@ -1,0 +1,62 @@
+@use '../abstracts' as abstracts;
+
+@mixin textfield() {
+  n-textfield {
+    --n-input-color: var(--color-text-high-emphasis);
+    --n-input-caret-color: var(--color-text-high-emphasis);
+    --n-input-caret-focus-color: var(--color-primary);
+    --n-input-font-family: var(--typography-font-family);
+    --n-input-placeholder-color: var(--color-text-medium-emphasis);
+    --n-input-error-color: var(--color-error);
+
+    & input {
+      background-color: transparent;
+      border: none;
+      height: 56px;
+      caret-color: var(--n-input-caret-color);
+      color: var(--n-input-color);
+      font-family: var(--n-input-font-family);
+      box-sizing: border-box;
+      flex-grow: 1;
+      padding: 0 16px;
+      @include abstracts.typography('body-large');
+
+      &:focus,
+      &:focus-visible {
+        caret-color: var(--n-input-caret-focus-color);
+        outline: none;
+      }
+
+      &::placeholder {
+        color: var(--n-input-placeholder-color);
+        @include abstracts.typography('body-large');
+      }
+
+      &.ng-invalid.ng-touched {
+        --n-input-caret-focus-color: var(--n-input-error-color);
+        --n-input-placeholder-color: var(--n-input-error-color);
+      }
+
+      &:disabled {
+        --n-input-color: var(--color-text-disabled);
+        --n-input-caret-color: var(--color-text-disabled);
+        --n-input-caret-focus-color: var(--color-text-disabled);
+        --n-input-placeholder-color: var(--color-text-disabled);
+      }
+    }
+
+    & [slot='right'] {
+      margin-right: 12px;
+    }
+
+    & label {
+      @include abstracts.typography(body-large);
+      padding-left: 4px;
+      padding-bottom: 8px;
+    }
+
+    & [slot='left'] {
+      margin-left: 12px;
+    }
+  }
+}

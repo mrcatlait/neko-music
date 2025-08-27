@@ -1,0 +1,10 @@
+.player-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.inactive {
+  opacity: var(--state-disabled-layer-opacity);
+}

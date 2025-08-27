@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "type": "application",
+  "root": "./",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "builder": "swc",
+    "typeCheck": true,
+    "deleteOutDir": true,
+    "tsConfigPath": "tsconfig.json",
+    "assets": [
+      { "include": "../src/migrations/**", "outDir": "dist/src", "watchAssets": true }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+h1 {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 24px;
+}
+
+p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.registration-page {
+  &__password-requirements {
+    margin-top: -16px;
+    margin-left: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 4px 0;
+      padding: 0;
+    }
+    
+    li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+    
+      i {
+        font-size: 16px;
+      }
+    }
+  }
+
+  &__name-label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__name-label-description {
+    color: var(--color-text-medium-emphasis);
+  }
+}
+
+.success {
+  color: var(--color-success);
+}
+
+.error {
+  color: var(--color-error);
+}

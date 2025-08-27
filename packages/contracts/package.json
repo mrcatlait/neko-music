@@ -1,0 +1,19 @@
+{
+  "name": "@neko/contracts",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "devDependencies": {
+    "@neko/eslint-config": "*",
+    "typescript": "~5.7.2"
+  },
+  "prettier": "@neko/eslint-config/prettier"
+}

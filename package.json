@@ -4,8 +4,7 @@
   "private": true,
   "license": "MIT",
   "workspaces": [
-    "apps/api-library",
-    "apps/ui-library",
+    "apps/*",
     "packages/*",
     "tools/*"
   ],

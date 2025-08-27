@@ -1,0 +1,67 @@
+@use '../abstracts' as abstracts;
+@use './navigation-rail' as navigation-rail;
+@use './navigation-bar' as navigation-bar;
+@use './navigation-drawer' as navigation-drawer;
+
+@mixin canonical-layout() {
+  [data-layout] {
+		display: grid;
+		min-height: 100%;
+
+    [data-layout-area="navigation"] {
+      grid-area: navigation;
+    }
+
+    [data-layout-area="content"] {
+			grid-area: content;
+      overflow: hidden;
+      padding: 0 var(--spacing-layout);
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    [data-layout-area="player"] {
+      grid-area: player;
+    }
+
+		@include abstracts.window-class(compact, medium) {
+			--spacing-layout: var(--spacing-layout-compact);
+
+      grid-template-columns: 1fr;
+			grid-template-rows: 1fr auto auto;
+			grid-template-areas:
+				'content'
+				'player'
+				'navigation';
+
+      @include navigation-bar.navigation-bar;
+    }
+
+		@include abstracts.window-class(expanded) {
+			--spacing-layout: var(--spacing-layout-medium);
+
+			grid-template-columns: auto 1fr; 
+			grid-template-rows: auto 1fr auto;
+			grid-template-areas:
+				'header header'
+				'navigation content'
+				'player player';
+
+      @include navigation-rail.navigation-rail;
+    }
+
+    @include abstracts.window-class(large, extra-large) {
+      --spacing-layout: var(--spacing-layout-large);
+
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        'header header'
+        'navigation content'
+        'player player';
+
+      @include navigation-drawer.navigation-drawer;
+    }
+  }
+}

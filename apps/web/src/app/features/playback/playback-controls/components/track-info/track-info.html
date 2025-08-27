@@ -1,0 +1,24 @@
+@let trackInfo = track();
+
+<div class="track-info">
+  <div class="track-info__artwork">
+    <img
+      alt=""
+      height="56"
+      width="56"
+    />
+  </div>
+
+  <div class="track-info__title truncate">
+    <h3
+      class="body-large truncate"
+      [title]="trackInfo.title"
+    >
+      {{ trackInfo.title }}
+    </h3>
+
+    <div class="track-info__artists truncate body-medium">
+      <n-artist-list [artists]="trackInfo.artists" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div
+  class="linear-progress"
+  role="progressbar"
+  tabindex="-1"
+  [attr.aria-valuemax]="100"
+  [attr.aria-valuemin]="0"
+  [attr.aria-valuenow]="buffer()"
+  [class.linear-progress--complete]="isComplete()"
+>
+  <div
+    aria-hidden="true"
+    class="linear-progress__active-indicator"
+    [style.width]="bufferWidth()"
+  ></div>
+
+  <div
+    aria-hidden="true"
+    class="linear-progress__track"
+  ></div>
+</div>

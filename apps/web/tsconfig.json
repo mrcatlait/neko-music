@@ -1,0 +1,69 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "outDir": "../../.moon/cache/types/apps/web",
+    "paths": {
+      "@/core/*": [
+        "src/app/core/*"
+      ],
+      "@/shared/*": [
+        "src/app/shared/*"
+      ],
+      "@/features/*": [
+        "src/app/features/*"
+      ],
+      "@/features": [
+        "src/app/features"
+      ],
+      "@/environment": [
+        "src/environments/environment"
+      ],
+      "@neko/permissions": [
+        "../../packages/permissions/src"
+      ],
+      "@neko/selectors": [
+        "../../packages/selectors/src"
+      ],
+      "@neko/contracts": [
+        "../../packages/contracts/src"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "../../packages/contracts"
+    },
+    {
+      "path": "../../packages/permissions"
+    },
+    {
+      "path": "../../packages/selectors"
+    }
+  ]
+}

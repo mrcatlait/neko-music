@@ -3,8 +3,7 @@ $schema: 'https://moonrepo.dev/schemas/workspace.json'
 telemetry: false
 
 projects:
-  - 'apps/api-library'
-  - 'apps/ui-library'
+  - 'apps/*'
   - 'packages/*'
   - 'infra/*'
   - 'tools/*'

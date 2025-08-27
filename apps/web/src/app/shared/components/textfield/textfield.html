@@ -1,0 +1,13 @@
+<ng-content select="label" />
+
+<div class="textfield__input">
+  <ng-content select="[slot='left']" />
+
+  <ng-content select="input" />
+
+  <ng-content select="[slot='right']" />
+</div>
+
+<div class="textfield__error">
+  <ng-content select="[slot='error']" />
+</div>

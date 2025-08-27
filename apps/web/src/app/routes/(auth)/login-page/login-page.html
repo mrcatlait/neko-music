@@ -1,0 +1,86 @@
+<h1 class="headline-large">Log In</h1>
+
+@if (invalidCredentials()) {
+  <div class="login-page__error-banner body-medium">
+    Sorry, couldn't find an account matching the username and password you entered. Please try again.
+  </div>
+}
+
+<form
+  autocomplete="off"
+  [formGroup]="form"
+>
+  <n-textfield>
+    <label for="email">Email address</label>
+
+    <input
+      formControlName="email"
+      id="email"
+      type="email"
+    />
+
+    @let emailControl = form.controls.email;
+
+    <span slot="error">
+      @if (emailControl.invalid && emailControl.touched) {
+        @if (emailControl.hasError('required')) {
+          <span>Email is required</span>
+        }
+
+        @if (emailControl.hasError('email')) {
+          <span>Email must be in the format name&#64;example.com</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  <n-textfield>
+    <label for="password">Password</label>
+
+    <input
+      formControlName="password"
+      id="password"
+      [type]="hidePassword ? 'password' : 'text'"
+    />
+
+    <button
+      aria-label="Show password"
+      nIconButton
+      slot="right"
+      type="button"
+      [attr.aria-pressed]="hidePassword"
+      (click)="hidePassword = !hidePassword"
+    >
+      <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
+    </button>
+
+    @let passwordControl = form.controls.password;
+
+    <span slot="error">
+      @if (passwordControl.invalid && passwordControl.touched) {
+        @if (passwordControl.hasError('required')) {
+          <span>Password is required</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  <button
+    nButton
+    type="submit"
+    [disabled]="loading()"
+    (click)="login()"
+  >
+    Log In
+  </button>
+</form>
+
+<p class="body-medium">
+  Don't have an account?
+  <a
+    class="link"
+    routerLink="/registration"
+  >
+    Sign up
+  </a>
+</p>

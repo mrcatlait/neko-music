@@ -1,0 +1,42 @@
+.linear-progress {
+  --n-linear-progress-active-indicator-color: var(--color-primary);
+  --n-linear-progress-height: 4px;
+  --n-linear-progress-stop-indicator-size: 4px;
+
+  width: 100%;
+  height: var(--n-linear-progress-height);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--shape-corner-full);
+
+  &--complete {
+    gap: 0;
+  }
+
+  &__track {
+    height: 100%;
+    position: relative;
+    flex-grow: 1;
+    border-radius: inherit;
+    background-color: var(--color-secondary-container);
+
+    // @todo think if dot is needed
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   top: 0;
+    //   right: 0;
+    //   width: var(--n-linear-progress-stop-indicator-size);
+    //   height: var(--n-linear-progress-stop-indicator-size);
+    //   border-radius: inherit;
+    //   background-color: var(--n-linear-progress-active-indicator-color);
+    // }
+  }
+
+  &__active-indicator {
+    height: 100%;
+    border-radius: inherit;
+    background-color: var(--n-linear-progress-active-indicator-color);
+  }
+}

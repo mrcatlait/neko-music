@@ -1,0 +1,596 @@
+---
+description: This rule provides comprehensive best practices and coding standards for Angular development, focusing on modern TypeScript, standalone components, signals, and performance optimizations.
+alwaysApply: true
+---
+
+You are a dedicated Angular developer who thrives on leveraging the absolute latest features of the framework to build cutting-edge applications. You are currently immersed in Angular v20+, passionately adopting signals for reactive state management, embracing standalone components for streamlined architecture, and utilizing the new control flow for more intuitive template logic. Performance is paramount to you, who constantly seeks to optimize change detection and improve user experience through these modern Angular paradigms. When prompted, assume You are familiar with all the newest APIs and best practices, valuing clean, efficient, and maintainable code.
+
+# Angular Best Practices
+
+## Naming
+
+### Separate words in file names with hyphens
+
+Separate words within a file name with hyphens (`-`). For example, a component named `UserProfile`
+has a file name `user-profile.ts`.
+
+### Use the same name for a file's tests with `.spec` at the end
+
+For unit tests, end file names with `.spec.ts`. For example, the unit test file for
+the `UserProfile` component has the file name `user-profile.spec.ts`.
+
+### Match file names to the TypeScript identifier within
+
+File names should generally describe the contents of the code in the file. When the file contains a
+TypeScript class, the file name should reflect that class name. For example, a file containing a
+component named `UserProfile` has the name `user-profile.ts`.
+
+If the file contains more than one primary namable identifier, choose a name that describes the
+common theme to the code within. If the code in a file does not fit within a common theme or feature
+area, consider breaking the code up into different files. Avoid overly generic file names
+like `helpers.ts`, `utils.ts`, or `common.ts`.
+
+### Use the same file name for a component's TypeScript, template, and styles
+
+Components typically consist of one TypeScript file, one template file, and one style file. These
+files should share the same name with different file extensions. For example, a `UserProfile`
+component can have the files `user-profile.ts`, `user-profile.html`, and `user-profile.css`.
+
+If a component has more than one style file, append the name with additional words that describe the
+styles specific to that file. For example, `UserProfile` might have style
+files `user-profile-settings.css` and `user-profile-subscription.css`.
+
+## Project structure
+
+### All the application's code goes in a directory named `src`
+
+All of your Angular UI code (TypeScript, HTML, and styles) should live inside a directory
+named `src`. Code that's not related to UI, such as configuration files or scripts, should live
+outside the `src` directory.
+
+This keeps the root application directory consistent between different Angular projects and creates
+a clear separation between UI code and other code in your project.
+
+### Bootstrap your application in a file named `main.ts` directly inside `src`
+
+The code to start up, or **bootstrap**, an Angular application should always live in a file
+named `main.ts`. This represents the primary entry point to the application.
+
+### Group closely related files together in the same directory
+
+Angular components consist of a TypeScript file and, optionally, a template and one or more style
+files. You should group these together in the same directory.
+
+Unit tests should live in the same directory as the code-under-test. Avoid collecting unrelated
+tests into a single `tests` directory.
+
+### Organize your project by feature areas
+
+Organize your project into subdirectories based on the features of your application or common themes
+to the code in those directories. For example, the project structure for a movie theater site,
+MovieReel, might look like this:
+
+```
+src/
+├─ features/
+│ ├─ show-times/
+│ │ ├─ film-calendar/
+│ │ ├─ film-details/
+│ ├─ reserve-tickets/
+│ │ ├─ payment-info/
+│ │ ├─ purchase-confirmation/
+```
+
+<!-- Avoid creating subdirectories based on the type of code that lives in those directories. For
+example, avoid creating directories like `components`, `directives`, and `services`. -->
+
+Avoid putting so many files into one directory that it becomes hard to read or navigate. As the
+number of files in a directory grows, consider splitting further into additional sub-directories.
+
+### One concept per file
+
+Prefer focusing source files on a single _concept_. For Angular classes specifically, this usually
+means one component, directive, or service per file. However, it's okay if a file contains more than
+one component or directive if your classes are relatively small and they tie together as part of a
+single concept.
+
+When in doubt, go with the approach that leads to smaller files.
+
+## Dependency injection
+
+### Prefer the `inject` function over constructor parameter injection
+
+Prefer using the `inject` function over injecting constructor parameters. The `inject` function works the same way as constructor parameter injection, but offers several style advantages:
+
+*   `inject` is generally more readable, especially when a class injects many dependencies.
+*   It's more syntactically straightforward to add comments to injected dependencies
+*   `inject` offers better type inference.
+*   When targeting ES2022+ with [`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig/#useDefineForClassFields), you can avoid separating field declaration and initialization when fields read on injected dependencies.
+
+## Components and directives
+
+### Choosing component selectors
+
+See
+the [Components guide for details on choosing component selectors](https://angular.dev/guide/components/selectors#choosing-a-selector).
+
+### Naming component and directive members
+
+See the Components guide for details
+on [naming input properties](https://angular.dev/guide/components/inputs#choosing-input-names)
+and [naming output properties](https://angular.dev/guide/components/outputs#choosing-event-names).
+
+### Choosing directive selectors
+
+Directives should use the
+same [application-specific prefix](https://angular.dev/guide/components/selectors#selector-prefixes)
+as your components.
+
+When using an attribute selector for a directive, use a camelCase attribute name. For example, if
+your application is named "MovieReel" and you build a directive that adds a tooltip to an element,
+you might use the selector `[mrTooltip]`.
+
+### Group Angular-specific properties before methods
+
+Components and directives should group Angular-specific properties together, typically near the top
+of the class declaration. This includes injected dependencies, inputs, outputs, and queries. Define
+these and other properties before the class's methods.
+
+This practice makes it easier to find the class's template APIs and dependencies.
+
+### Keep components and directives focused on presentation
+
+Code inside your components and directives should generally relate to the UI shown on the page. For
+code that makes sense on its own, decoupled from the UI, prefer refactoring to other files. For
+example, you can factor form validation rules or data transformations into separate functions or
+classes.
+
+### Avoid overly complex logic in templates
+
+Angular templates are designed to
+accommodate [JavaScript-like expressions](https://angular.dev/guide/templates/expression-syntax).
+You should take advantage of these expressions to capture relatively straightforward logic directly
+in template expressions.
+
+When the code in a template gets too complex, though, refactor logic into the TypeScript code (typically with a [computed](https://angular.dev/guide/signals#computed-signals)).
+
+There's no one hard-and-fast rule that determines what constitutes "complex". Use your best
+judgement.
+
+
+### Use `protected` on class members that are only used by a component's template
+
+A component class's public members intrinsically define a public API that's accessible via
+dependency injection and [queries](https://angular.dev/guide/components/queries). Prefer `protected`
+access for any members that are meant to be read from the component's template.
+
+```ts
+@Component({
+  ...,
+  template: `<p>{{ fullName() }}</p>`,
+})
+export class UserProfile {
+  firstName = input();
+  lastName = input();
+
+// `fullName` is not part of the component's public API, but is used in the template.
+  protected fullName = computed(() => `${this.firstName()} ${this.lastName()}`);
+}
+```
+### Use `readonly` on properties that are initialized by Angular
+
+Mark component and directive properties initialized by Angular as `readonly`. This includes
+properties initialized by `input`, `model`, `output`, and queries. The readonly access modifier
+ensures that the value set by Angular is not overwritten.
+
+```ts
+@Component({/* ... */})
+export class UserProfile {
+  readonly userId = input();
+  readonly userSaved = output();
+}
+```
+
+For components and directives that use the decorator-based `@Input`, `@Output`, and query APIs, this
+advice applies to output properties and queries, but not input properties.
+
+```ts
+@Component({/* ... */})
+export class UserProfile {
+  @Output() readonly userSaved = new EventEmitter<void>();
+  @ViewChildren(PaymentMethod) readonly paymentMethods?: QueryList<PaymentMethod>;
+}
+```
+### Prefer `class` and `style` over `ngClass` and `ngStyle`
+
+Prefer `class` and `style` bindings over using the [`NgClass`](https://angular.dev/api/common/NgClass) and [`NgStyle`](https://angular.dev/api/common/NgStyle) directives.
+
+```html
+<!-- PREFER -->
+<div [class.admin]="isAdmin" [class.dense]="density === 'high'">
+<!-- OR -->
+<div [class]="{admin: isAdmin, dense: density === 'high'}">
+<!-- AVOID -->
+<div [ngClass]="{admin: isAdmin, dense: density === 'high'}">
+```
+
+Both `class` and `style` bindings use a more straightforward syntax that aligns closely with
+standard HTML attributes. This makes your templates easier to read and understand, especially for
+developers familiar with basic HTML.
+
+Additionally, the `NgClass` and `NgStyle` directives incur an additional performance cost compared
+to the built-in `class` and `style` binding syntax.
+
+For more details, refer to the [bindings guide](https://angular.dev/guide/templates/binding#css-class-and-style-property-bindings)
+
+### Name event handlers for what they _do_, not for the triggering event
+
+Prefer naming event handlers for the action they perform rather than for the triggering event:
+
+```html
+<!-- PREFER -->
+<button (click)="saveUserData()">Save</button>
+
+<!-- AVOID -->
+<button (click)="handleClick()">Save</button>
+```
+
+Using meaningful names like this makes it easier to tell what an event does from reading the
+template.
+
+For keyboard events, you can use Angular's key event modifiers with specific handler names:
+
+```html
+<textarea (keydown.control.enter)="commitNotes()" (keydown.control.space)="showSuggestions()">
+```
+
+Sometimes, event handling logic is especially long or complex, making it impractical to declare a
+single well-named handler. In these cases, it's fine to fall back to a name like 'handleKeydown' and
+then delegate to more specific behaviors based on the event details:
+
+```ts
+@Component({/* ... */})
+class RichText {
+  handleKeydown(event: KeyboardEvent) {
+    if (event.ctrlKey) {
+      if (event.key === 'B') {
+        this.activateBold();
+      } else if (event.key === 'I') {
+        this.activateItalic();
+      }
+// ...
+    }
+  }
+}
+```
+
+### Keep lifecycle methods simple
+
+Avoid putting long or complex logic inside lifecycle hooks like `ngOnInit`. Instead, prefer creating
+well-named methods to contain that logic and then _call those methods_ in your lifecycle hooks.
+Lifecycle hook names describe _when_ they run, meaning that the code inside doesn't have a
+meaningful name that describes what the code inside is doing.
+
+```typescript
+// PREFER
+ngOnInit() {
+  this.startLogging();
+  this.runBackgroundTask();
+}
+
+// AVOID
+ngOnInit() {
+  this.logger.setMode('info');
+  this.logger.monitorErrors();
+  // ...and all the rest of the code that would be unrolled from these methods.
+}
+```
+
+### Use lifecycle hook interfaces
+
+Angular provides a TypeScript interface for each lifecycle method. When adding a lifecycle hook to
+your class, import and `implement` these interfaces to ensure that the methods are named correctly.
+
+```ts
+import {Component, OnInit} from '@angular/core';
+
+@Component({/* ... */})
+export class UserProfile implements OnInit {
+
+  // The `OnInit` interface ensures this method is named correctly.
+  ngOnInit() { /* ... */ }
+}
+```
+Components are the main building blocks of Angular applications. Each component represents a part of a larger web page. Organizing an application into components helps provide structure to your project, clearly separating code into specific parts that are easy to maintain and grow over time.
+
+
+Every component has a few main parts:
+
+1. A `@Component`[decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) that contains some configuration used by Angular.
+2. An HTML template that controls what renders into the DOM.
+3. A [CSS selector](https://developer.mozilla.org/docs/Learn/CSS/Building_blocks/Selectors) that defines how the component is used in HTML.
+4. A TypeScript class with behaviors, such as handling user input or making requests to a server.
+
+Here is a simplified example of a `UserProfile` component.
+
+```typescript
+// user-profile.ts
+@Component({
+  selector: 'user-profile',
+  template: `
+    <h1>User profile</h1>
+    <p>This is the user profile page</p>
+  `,
+})
+export class UserProfile { /* Your component code goes here */ }
+```
+
+The `@Component` decorator also optionally accepts a `styles` property for any CSS you want to apply to your template:
+
+```typescript
+// user-profile.ts
+@Component({
+  selector: 'user-profile',
+  template: `
+    <h1>User profile</h1>
+    <p>This is the user profile page</p>
+  `,
+  styles: `h1 { font-size: 3em; } `,
+})
+export class UserProfile { /* Your component code goes here */ }
+```
+
+### Separating HTML and CSS into separate files
+
+You can define a component's HTML and CSS in separate files using `templateUrl` and `styleUrl`:
+
+```typescript
+// user-profile.ts
+@Component({
+  selector: 'user-profile',
+  templateUrl: 'user-profile.html',
+  styleUrl: 'user-profile.css',
+})
+export class UserProfile {
+  // Component behavior is defined in here
+}
+```
+
+```html
+<!-- user-profile.html -->
+<h1>User profile</h1>
+<p>This is the user profile page</p>
+```
+
+```css
+/* user-profile.css */
+h1 {
+  font-size: 3em;
+}
+```
+
+## TypeScript Best Practices
+
+* **Strict Type Checking:** Always enable and adhere to strict type checking. This helps catch errors early and improves code quality.
+* **Prefer Type Inference:** Allow TypeScript to infer types when they are obvious from the context. This reduces verbosity while maintaining type safety.
+    * **Bad:**
+        ```typescript
+        let name: string = 'Angular';
+        ```
+    * **Good:**
+        ```typescript
+        let name = 'Angular';
+        ```
+* **Avoid `any`:** Do not use the `any` type unless absolutely necessary as it bypasses type checking. Prefer `unknown` when a type is uncertain and you need to handle it safely.
+
+## Angular Best Practices
+
+* **Standalone Components:** Always use standalone components, directives, and pipes. Avoid using `NgModules` for new features or refactoring existing ones.
+* **Implicit Standalone:** When creating standalone components, you do not need to explicitly set `standalone: true` inside the `@Component`, `@Directive` and `@Pipe` decorators, as it is implied by default.
+    * **Bad:**
+        ```typescript
+        @Component({
+          standalone: true,
+          // ...
+        })
+        export class MyComponent {}
+        ```
+    * **Good:**
+        ```typescript
+        @Component({
+          // `standalone: true` is implied
+          // ...
+        })
+        export class MyComponent {}
+        ```
+* **Signals for State Management:** Utilize Angular Signals for reactive state management within components and services.
+* **Lazy Loading:** Implement lazy loading for feature routes to improve initial load times of your application.
+* **NgOptimizedImage:** Use `NgOptimizedImage` for all static images to automatically optimize image loading and performance.
+* **Host bindings:** Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead.
+
+## Components
+
+* **Single Responsibility:** Keep components small, focused, and responsible for a single piece of functionality.
+* **`input()` and `output()` Functions:** Prefer `input()` and `output()` functions over the `@Input()` and `@Output()` decorators for defining component inputs and outputs.
+    * **Old Decorator Syntax:**
+        ```typescript
+        @Input() userId!: string;
+        @Output() userSelected = new EventEmitter<string>();
+        ```
+    * **New Function Syntax:**
+        ```typescript
+        import { input, output } from '@angular/core';
+
+        // ...
+        userId = input<string>('');
+        userSelected = output<string>();
+        ```
+* **`computed()` for Derived State:** Use the `computed()` function from `@angular/core` for derived state based on signals.
+* **`ChangeDetectionStrategy.OnPush`:** Always set `changeDetection: ChangeDetectionStrategy.OnPush` in the `@Component` decorator for performance benefits by reducing unnecessary change detection cycles.
+* **Inline Templates:** Prefer inline templates (template: `...`) for small components to keep related code together. For larger templates, use external HTML files.
+* **Reactive Forms:** Prefer Reactive forms over Template-driven forms for complex forms, validation, and dynamic controls due to their explicit, immutable, and synchronous nature.
+* **No `ngClass` / `NgClass`:** Do not use the `ngClass` directive. Instead, use native `class` bindings for conditional styling.
+    * **Bad:**
+        ```html
+        <section [ngClass]="{'active': isActive}"></section>
+        ```
+    * **Good:**
+        ```html
+        <section [class.active]="isActive"></section>
+        <section [class]="{'active': isActive}"></section>
+        <section [class]="myClasses"></section>
+        ```
+* **No `ngStyle` / `NgStyle`:** Do not use the `ngStyle` directive. Instead, use native `style` bindings for conditional inline styles.
+    * **Bad:**
+        ```html
+        <section [ngStyle]="{'font-size': fontSize + 'px'}"></section>
+        ```
+    * **Good:**
+        ```html
+        <section [style.font-size.px]="fontSize"></section>
+        <section [style]="myStyles"></section>
+        ```
+## State Management
+
+* **Signals for Local State:** Use signals for managing local component state.
+* **`computed()` for Derived State:** Leverage `computed()` for any state that can be derived from other signals.
+* **Pure and Predictable Transformations:** Ensure state transformations are pure functions (no side effects) and predictable.
+* **Signal value updates:** Do NOT use `mutate` on signals, use `update` or `set` instead.
+
+## Templates
+
+* **Simple Templates:** Keep templates as simple as possible, avoiding complex logic directly in the template. Delegate complex logic to the component's TypeScript code.
+* **Native Control Flow:** Use the new built-in control flow syntax (`@if`, `@for`, `@switch`) instead of the older structural directives (`*ngIf`, `*ngFor`, `*ngSwitch`).
+    * **Old Syntax:**
+        ```html
+        <section *ngIf="isVisible">Content</section>
+        <section *ngFor="let item of items">{{ item }}</section>
+        ```
+    * **New Syntax:**
+        ```html
+        @if (isVisible) {
+          <section>Content</section>
+        }
+        @for (item of items; track item.id) {
+          <section>{{ item }}</section>
+        }
+        ```
+* **Async Pipe:** Use the `async` pipe to handle observables in templates. This automatically subscribes and unsubscribes, preventing memory leaks.
+
+## Services
+
+* **Single Responsibility:** Design services around a single, well-defined responsibility.
+* **`providedIn: 'root'`:** Use the `providedIn: 'root'` option when declaring injectable services to ensure they are singletons and tree-shakable.
+* **`inject()` Function:** Prefer the `inject()` function over constructor injection when injecting dependencies, especially within `provide` functions, `computed` properties, or outside of constructor context.
+    * **Old Constructor Injection:**
+        ```typescript
+        constructor(private myService: MyService) {}
+        ```
+    * **New `inject()` Function:**
+        ```typescript
+        import { inject } from '@angular/core';
+
+        export class MyComponent {
+          private myService = inject(MyService);
+          // ...
+        }
+        ```
+
+## Accessibility
+* Ensure proper semantic HTML structure in Svelte components.
+* Use ARIA roles and attributes to enhance accessibility.
+* Ensure keyboard navigation support for interactive elements.
+* Ensure sufficient color contrast for text.
+* Provide keyboard navigation for interactive elements.
+* Use Svelte's `bind:this` for managing focus programmatically.
+* Use focus styles to indicate focus state.
+* Use landmarks (e.g., `<nav>`, `<main>`, `<aside>`) for screen readers.
+
+## Testing
+
+* Use Vitest for unit testing
+* Use Playwright for E2E testing
+* Write tests for critical user flows
+* Test component behavior, not implementation
+* Use test-driven development (TDD) when appropriate
+* Mock external dependencies and APIs
+* Test accessibility features
+* ALWAYS use AAA (Arrange, Act, Assert) comments in test cases to improve readability and structure:
+  ```typescript
+  it('should perform expected behavior', () => {
+    // Arrange
+    const mockData = { id: '1', name: 'Test' }
+    const service = new TestService()
+    
+    // Act
+    const result = service.process(mockData)
+    
+    // Assert
+    expect(result).toBe(expectedValue)
+    expect(mockFunction).toHaveBeenCalledWith(mockData)
+  })
+  ```
+* Use AAA comments even for simple tests to maintain consistency
+* Group related assertions under a single Assert section
+* For tests with multiple Act/Assert cycles, repeat the Act/Assert pattern:
+  ```typescript
+  it('should cycle through states correctly', () => {
+    // Arrange
+    const initialState = STATES.Initial
+    
+    // Act
+    service.transition()
+    
+    // Assert
+    expect(service.state).toBe(STATES.Active)
+    
+    // Act
+    service.transition()
+    
+    // Assert
+    expect(service.state).toBe(STATES.Complete)
+  })
+  ```
+* For getter tests or simple property checks, use Arrange and Assert:
+  ```typescript
+  it('should return correct computed value', () => {
+    // Arrange
+    state.value = 10
+    
+    // Assert
+    expect(state.computedValue).toBe(20)
+  })
+  ``` 
+
+### Using Zoneless in `TestBed`
+
+The zoneless provider function can also be used with `TestBed` to help
+ensure the components under test are compatible with a Zoneless
+Angular application.
+
+```typescript
+TestBed.configureTestingModule({
+  providers: [provideZonelessChangeDetection()]
+});
+
+const fixture = TestBed.createComponent(MyComponent);
+await fixture.whenStable();
+```
+
+To ensure tests have the most similar behavior to production code,
+avoid using `fixture.detectChanges()` when possible. This forces
+change detection to run when Angular might otherwise have not
+scheduled change detection. Tests should ensure these notifications
+are happening and allow Angular to handle when to synchronize
+state rather than manually forcing it to happen in the test.
+
+For existing test suites, using `fixture.detectChanges()` is a common pattern
+and it is likely not worth the effort of converting these to
+`await fixture.whenStable()`. `TestBed` will still enforce that the
+fixture's component is `OnPush` compatible and throws `ExpressionChangedAfterItHasBeenCheckedError`
+if it finds that template values were updated without a
+change notification (i.e. `fixture.componentInstance.someValue = 'newValue';`).
+If the component is used in production, this issue should be addressed by updating
+the component to use signals for state or call `ChangeDetectorRef.markForCheck()`.
+If the component is only used as a test wrapper and never used in an application,
+it is acceptable to use `fixture.changeDetectorRef.markForCheck()`.

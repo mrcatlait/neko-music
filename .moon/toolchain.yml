@@ -5,12 +5,14 @@ node:
   dependencyVersionFormat: 'star'
   packageManager: 'npm'
   npm:
-    version: '10'
+    version: '11'
 
 typescript:
   projectConfigFileName: 'tsconfig.json'
   rootConfigFileName: 'tsconfig.json'
+  rootOptionsConfigFileName: 'tsconfig.options.json'
   routeOutDirToCache: true
-  # includeProjectReferenceSources: true
-  # syncProjectReferencesToPaths: true
+  includeProjectReferenceSources: false
+  syncProjectReferencesToPaths: false
   syncProjectReferences: true
+  createMissingConfig: true

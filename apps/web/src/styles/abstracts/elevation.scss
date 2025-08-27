@@ -1,0 +1,3 @@
+@mixin elevation($level) {
+  z-index: var(--elevation-level-#{$level});
+}

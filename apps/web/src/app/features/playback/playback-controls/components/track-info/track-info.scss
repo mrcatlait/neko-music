@@ -1,0 +1,38 @@
+@use 'abstracts' as abstracts;
+
+.track-info {
+  --n-track-info-size: 56px;
+
+  display: flex;
+  align-items: center;
+  height: var(--n-track-info-size);
+  overflow: hidden;
+
+  @include abstracts.window-class(compact) {
+    --n-track-info-size: 40px;
+  }
+
+  &__artwork {
+    img {
+      width: var(--n-track-info-size);
+      height: var(--n-track-info-size);
+      border-radius: var(--shape-corner-small);
+      object-fit: cover;
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+  }
+
+  &__artists {
+    color: var(--color-text-medium-emphasis);
+  }
+}
+
+.track-info__artwork {
+  width: var(--n-track-info-size);
+  height: var(--n-track-info-size);
+  border-radius: var(--shape-corner-small);
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-right: 16px;
+}

@@ -1,0 +1,34 @@
+import { Controller, Get, Param, StreamableFile } from '@nestjs/common'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiProduces } from '@nestjs/swagger'
+
+import { StreamingService } from '../services'
+
+@Controller('stream')
+@ApiBearerAuth()
+export class StreamingController {
+  constructor(private readonly streamingService: StreamingService) {}
+
+  @Get(':trackId/manifest')
+  @ApiOperation({
+    summary: 'Get track manifest',
+  })
+  @ApiOkResponse({
+    type: String,
+  })
+  @ApiProduces('application/dash+xml')
+  streamManifest(@Param('trackId') trackId: string): StreamableFile {
+    return this.streamingService.streamManifest(trackId)
+  }
+
+  @Get(':trackId/:segmentFileName')
+  @ApiOperation({
+    summary: 'Get track segment',
+  })
+  @ApiOkResponse({
+    type: String,
+  })
+  @ApiProduces('video/iso.segment')
+  streamSegment(@Param('trackId') trackId: string, @Param('segmentFileName') segmentFileName: string): StreamableFile {
+    return this.streamingService.streamSegment(trackId, segmentFileName)
+  }
+}

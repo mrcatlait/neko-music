@@ -1,0 +1,67 @@
+<div
+  aria-label="Playback Controls"
+  class="player-controls"
+  role="group"
+>
+  <button
+    aria-label="Shuffle"
+    class="player-controls__secondary-action"
+    nIconButton
+    type="button"
+    (click)="queue.toggleShuffle()"
+  >
+    <i [class.inactive]="!queue.shuffle()">shuffle</i>
+  </button>
+
+  <button
+    aria-label="Previous"
+    class="player-controls__secondary-action"
+    nIconButton
+    type="button"
+    [disabled]="!queue.hasPrevious()"
+    (click)="queue.previous()"
+  >
+    <i>skip_previous</i>
+  </button>
+
+  <button
+    aria-label="Play"
+    color="secondary"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="togglePlay()"
+  >
+    <n-play-icon [trackId]="queue.currentTrack().id" />
+  </button>
+
+  <button
+    aria-label="Next"
+    nIconButton
+    type="button"
+    [disabled]="!queue.hasNext()"
+    (click)="queue.next()"
+  >
+    <i>skip_next</i>
+  </button>
+
+  <button
+    aria-label="Repeat"
+    class="player-controls__secondary-action"
+    nIconButton
+    type="button"
+    (click)="queue.toggleRepeat()"
+  >
+    @switch (queue.repeat()) {
+      @case (repeatMode.None) {
+        <i [class.inactive]="true">repeat</i>
+      }
+      @case (repeatMode.All) {
+        <i>repeat</i>
+      }
+      @case (repeatMode.Single) {
+        <i>repeat_one</i>
+      }
+    }
+  </button>
+</div>
