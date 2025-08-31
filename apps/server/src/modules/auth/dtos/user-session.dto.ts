@@ -13,7 +13,7 @@ export class UserSessionDto {
 
   @ApiProperty({
     description: 'List of user permissions',
-    type: [String],
+    example: ['user.read', 'user.write'],
   })
   permissions: string[]
 }

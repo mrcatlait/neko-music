@@ -6,7 +6,7 @@ export interface AuthModuleOptions {
   /**
    * The expiration time for the JWT access token.
    */
-  accessTokenExpiresIn: number
+  accessTokenExpiresIn: string
   /**
    * The name of the header for the JWT access token.
    * @default 'authorization'
@@ -19,7 +19,7 @@ export interface AuthModuleOptions {
   /**
    * The expiration time for the JWT refresh token.
    */
-  refreshTokenExpiresIn: number
+  refreshTokenExpiresIn: string
   /**
    * The name of the cookie for the JWT refresh token.
    * @default 'n-refresh-token'

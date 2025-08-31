@@ -9,6 +9,7 @@ import { LoadingIndicator, Textfield } from '@/shared/components'
 import { emailValidator } from '@/shared/validators'
 import { AuthRepository } from '@/core/repositories'
 import { AuthStore } from '@/core/stores'
+import { SessionCookie } from '@/core/services'
 
 @Component({
   selector: 'n-registration-page',
@@ -20,6 +21,7 @@ import { AuthStore } from '@/core/stores'
 export class RegistrationPage {
   private readonly authRepository = inject(AuthRepository)
   private readonly authStore = inject(AuthStore)
+  private readonly sessionCookie = inject(SessionCookie)
 
   protected readonly form = new FormGroup({
     email: new FormControl('', [Validators.required, emailValidator]),
@@ -55,9 +57,11 @@ export class RegistrationPage {
     this.emailTaken.set(false)
 
     this.authRepository.register({ email, password, displayName }).subscribe({
-      next: (session) => {
+      next: (response) => {
         this.loading.set(false)
-        // this.authStore.updateSession(session)
+        this.authStore.updateSession(response)
+        this.authStore.updateAccessToken(response.accessToken)
+        this.sessionCookie.set()
       },
       error: (payload) => {
         this.loading.set(false)

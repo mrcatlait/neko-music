@@ -19,8 +19,8 @@ export interface EnvironmentVariables {
 
   // Authentication
   JWT_ACCESS_TOKEN_SECRET: string
-  JWT_ACCESS_TOKEN_EXPIRES_IN: number
+  JWT_ACCESS_TOKEN_EXPIRES_IN: string
   JWT_REFRESH_TOKEN_SECRET: string
-  JWT_REFRESH_TOKEN_EXPIRES_IN: number
+  JWT_REFRESH_TOKEN_EXPIRES_IN: string
   JWT_REFRESH_TOKEN_COOKIE_NAME: string
 }

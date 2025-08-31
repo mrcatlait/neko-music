@@ -38,15 +38,15 @@ export class AuthGuard implements CanActivate {
         permissions: payload.scopes,
       }
     } catch {
-      return false
+      throw new UnauthorizedException()
     }
 
-    const requiredPermissions = this.reflector.getAllAndOverride<string[]>(PERMISSIONS_METADATA_KEY, [
+    const requiredPermissions = this.reflector.getAllAndOverride<string[] | undefined>(PERMISSIONS_METADATA_KEY, [
       context.getHandler(),
       context.getClass(),
-    ]) as string[] | undefined
+    ])
 
-    if (requiredPermissions) {
+    if (requiredPermissions?.length) {
       const hasPermission = requiredPermissions.some((permission) => req.user?.permissions.includes(permission))
 
       if (!hasPermission) {

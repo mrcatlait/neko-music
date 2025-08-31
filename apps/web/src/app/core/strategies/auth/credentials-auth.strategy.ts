@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core'
 import { catchError, Observable, of, shareReplay, tap, throwError } from 'rxjs'
+import { Router } from '@angular/router'
 
 import { AuthStrategy } from './auth.strategy'
 
@@ -17,13 +18,16 @@ export interface Credentials {
 export class CredentialsAuthStrategy extends AuthStrategy {
   private readonly authRepository = inject(AuthRepository)
   private readonly authStore = inject(AuthStore)
+  private readonly router = inject(Router)
   private readonly sessionCookie = inject(SessionCookie)
 
   authenticate(credentials: Credentials): Observable<Session | null> {
     return this.authRepository.login(credentials).pipe(
       tap((session) => {
         this.authStore.updateSession(session)
+        this.authStore.updateAccessToken(session.accessToken)
         this.sessionCookie.set()
+        this.router.navigate(['/'])
       }),
       catchError((error) => {
         this.authStore.clearSession()

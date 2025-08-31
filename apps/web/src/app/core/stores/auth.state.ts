@@ -1,22 +1,36 @@
-import { computed, Injectable, signal } from '@angular/core'
+import { computed, inject, Injectable, signal } from '@angular/core'
+import { Router } from '@angular/router'
 
 import { Session } from '@/shared/interfaces'
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
+  private readonly router = inject(Router)
+
   readonly session = signal<Session | null>(null)
-  readonly permissions = signal<string[]>([])
+
+  readonly accessToken = signal<string | null>(null)
+
+  readonly permissions = computed(() => this.session()?.permissions ?? [])
 
   readonly isAuthenticated = computed(() => Boolean(this.session()))
 
   updateSession(session: Session): void {
     this.session.set(session)
-    this.updatePermissionsFromToken(session.permissions)
   }
 
   clearSession(): void {
     this.session.set(null)
-    this.permissions.set([])
+  }
+
+  updateAccessToken(accessToken: string): void {
+    this.accessToken.set(accessToken)
+  }
+
+  logout(): void {
+    this.session.set(null)
+    this.accessToken.set(null)
+    this.router.navigate(['/login'])
   }
 
   hasPermission(permission: string): boolean {
@@ -29,9 +43,5 @@ export class AuthStore {
 
   hasAllPermissions(permissions: string[]): boolean {
     return permissions.every((permission) => this.permissions().includes(permission))
-  }
-
-  private updatePermissionsFromToken(permissions: string[]): void {
-    this.permissions.set(permissions)
   }
 }

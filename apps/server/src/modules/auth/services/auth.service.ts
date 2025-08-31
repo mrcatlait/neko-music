@@ -7,12 +7,13 @@ import { ACCESS_TOKEN_HEADER_NAME, REFRESH_TOKEN_COOKIE_NAME } from '../constant
 import { AccessTokenPayload, JwtService } from './jwt.service'
 import { RefreshTokenRepository } from '../repositories'
 import { User } from '../interfaces'
+import { parseTimePeriod } from '../parse-time-period.util'
 
 @Injectable()
 export class AuthService {
   private readonly accessTokenHeaderName: string
   private readonly refreshTokenCookieName: string
-  private readonly refreshTokenExpiresIn: number
+  private readonly refreshTokenExpiresIn: string
 
   constructor(
     @Inject(AUTH_MODULE_OPTIONS) private readonly options: AuthModuleOptions,
@@ -49,8 +50,9 @@ export class AuthService {
     response.setCookie(this.refreshTokenCookieName, token, {
       httpOnly: true,
       secure: true,
+      path: '/',
       sameSite: 'strict',
-      maxAge: this.refreshTokenExpiresIn,
+      maxAge: parseTimePeriod(this.refreshTokenExpiresIn),
     })
   }
 

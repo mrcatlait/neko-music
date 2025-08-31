@@ -4,6 +4,7 @@ import { ModuleRef } from '@nestjs/core'
 import { AUTH_MODULE_OPTIONS } from './tokens'
 import { AuthModuleOptions } from './types'
 import {
+  GetUserUseCase,
   LoginUseCase,
   LoginValidator,
   RefreshTokenUseCase,
@@ -45,6 +46,7 @@ export class AuthCoreModule extends CoreModuleWithOptions {
     AuthService,
     JwtService,
     // Use cases
+    GetUserUseCase,
     LoginUseCase,
     LoginValidator,
     RefreshTokenUseCase,

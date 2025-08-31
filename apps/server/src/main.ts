@@ -6,7 +6,6 @@ import { fastifyMultipart } from '@fastify/multipart'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 import { ConfigService } from './modules/config/services'
-import { ACCESS_TOKEN_HEADER_NAME } from './modules/auth/constants'
 
 import { AppModule } from '@/modules/app/app.module'
 

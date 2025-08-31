@@ -4,6 +4,7 @@ import { JWTPayload as JoseJwtPayload, jwtVerify, SignJWT } from 'jose'
 import { AuthModuleOptions } from '../types'
 import { AUTH_MODULE_OPTIONS } from '../tokens'
 import { JwtClaims, JwtPayload } from '../interfaces'
+import { parseTimePeriod } from '../parse-time-period.util'
 
 export interface AccessTokenPayload extends JwtClaims {
   userId: string
@@ -21,9 +22,9 @@ interface SignRefreshTokenResult {
 @Injectable()
 export class JwtService {
   private readonly accessTokenSecret: Uint8Array
-  private readonly accessTokenExpiresIn: number
+  private readonly accessTokenExpiresIn: string
   private readonly refreshTokenSecret: Uint8Array
-  private readonly refreshTokenExpiresIn: number
+  private readonly refreshTokenExpiresIn: string
 
   private readonly alg = 'HS256'
 
@@ -52,7 +53,7 @@ export class JwtService {
   }
 
   signRefreshToken(payload: RefreshTokenPayload): Promise<SignRefreshTokenResult> {
-    const expiresAt = new Date(Date.now() + this.refreshTokenExpiresIn * 1000)
+    const expiresAt = new Date(Date.now() + parseTimePeriod(this.refreshTokenExpiresIn))
 
     return new SignJWT()
       .setProtectedHeader({ alg: this.alg })
@@ -67,18 +68,7 @@ export class JwtService {
     return this.verify(token, this.refreshTokenSecret)
   }
 
-  async verify(token: string, secret: Uint8Array): Promise<JwtPayload> {
-    const { payload } = await jwtVerify(token, secret)
-    const timestamp = Math.floor(Date.now() / 1000)
-
-    if (typeof payload.exp !== 'number') {
-      throw new Error('invalid exp value')
-    }
-
-    if (timestamp >= payload.exp) {
-      throw new Error('jwt expired')
-    }
-
-    return payload as JwtPayload
+  verify(token: string, secret: Uint8Array): Promise<JwtPayload> {
+    return jwtVerify(token, secret).then(({ payload }) => payload as JwtPayload)
   }
 }

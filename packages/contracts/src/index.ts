@@ -1,4 +1,10 @@
-import { LoginRequestDto, LoginResponseDto, RefreshTokenResponseDto, RegistrationRequestDto } from './auth'
+import {
+  LoginRequestDto,
+  LoginResponseDto,
+  RefreshTokenResponseDto,
+  RegistrationRequestDto,
+  WhoamiResponseDto,
+} from './auth'
 import { BadRequestDto } from './error'
 
 export namespace Contracts {
@@ -7,6 +13,7 @@ export namespace Contracts {
     export type LoginResponse = LoginResponseDto
     export type RefreshTokenResponse = RefreshTokenResponseDto
     export type RegistrationRequest = RegistrationRequestDto
+    export type WhoamiResponse = WhoamiResponseDto
   }
 
   export namespace Error {

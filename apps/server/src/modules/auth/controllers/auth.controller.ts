@@ -3,14 +3,16 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
 import { RegistrationRequest, LoginResponse, LoginRequest, RefreshTokenResponse } from '../dtos'
-import { LoginUseCase, RefreshTokenUseCase, RegisterUserUseCase } from '../use-cases'
+import { GetUserUseCase, LoginUseCase, RefreshTokenUseCase, RegisterUserUseCase } from '../use-cases'
 import { Public, Session } from '../decorators'
 import { AuthService } from '../services'
 import { User } from '../interfaces'
+import { WhoamiResponse } from '../dtos/whoami-response.dto'
 
 @Controller('auth')
 export class AuthController {
   constructor(
+    private readonly getUserUseCase: GetUserUseCase,
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUserUseCase: RegisterUserUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
@@ -86,7 +88,10 @@ export class AuthController {
   @ApiOkResponse({
     type: RefreshTokenResponse,
   })
-  async refresh(@Req() request: FastifyRequest, @Res() response: FastifyReply): Promise<RefreshTokenResponse> {
+  async refresh(
+    @Req() request: FastifyRequest,
+    @Res({ passthrough: true }) response: FastifyReply,
+  ): Promise<RefreshTokenResponse> {
     const token = this.authService.extractRefreshTokenFromCookie(request)
 
     if (!token) {
@@ -108,16 +113,9 @@ export class AuthController {
     summary: 'Get the current user',
   })
   @ApiOkResponse({
-    type: LoginResponse,
+    type: WhoamiResponse,
   })
-  whoami(@Res({ passthrough: true }) response: FastifyReply, @Session() user: User): LoginResponse {
-    // this.authService.injectRefreshTokenToCookie(response, tokenPair.refreshToken)
-
-    return {
-      accessToken: '',
-      email: '',
-      displayName: '',
-      permissions: [],
-    }
+  whoami(@Session() user: User): Promise<WhoamiResponse> {
+    return this.getUserUseCase.invoke({ userId: user.id })
   }
 }

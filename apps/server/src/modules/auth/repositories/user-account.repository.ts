@@ -53,6 +53,13 @@ export class UserAccountRepository {
     `.then(() => undefined)
   }
 
+  findOne(id: string): Promise<UserAccountEntity | undefined> {
+    return this.databaseService.sql<UserAccountEntity[]>`
+      SELECT * FROM "auth"."UserAccount" WHERE id = ${id}
+      LIMIT 1
+    `.then((result) => result.at(0))
+  }
+
   findOneByEmail(email: string): Promise<WithCredentials<UserAccountEntity> | undefined> {
     return this.databaseService.sql<WithCredentials<UserAccountEntity>[]>`
       SELECT 

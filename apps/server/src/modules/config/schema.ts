@@ -23,8 +23,8 @@ export const environmentSchema = z.object({
 
   // Authentication
   JWT_ACCESS_TOKEN_SECRET: z.string(),
-  JWT_ACCESS_TOKEN_EXPIRES_IN: z.coerce.number(),
+  JWT_ACCESS_TOKEN_EXPIRES_IN: z.string(),
   JWT_REFRESH_TOKEN_SECRET: z.string(),
-  JWT_REFRESH_TOKEN_EXPIRES_IN: z.coerce.number(),
+  JWT_REFRESH_TOKEN_EXPIRES_IN: z.string(),
   JWT_REFRESH_TOKEN_COOKIE_NAME: z.string(),
 }) satisfies ZodType<EnvironmentVariables>
