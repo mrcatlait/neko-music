@@ -1,0 +1,12 @@
+<header>
+  <i aria-hidden="true">artist</i>
+  <h1 class="display-small">Artists</h1>
+</header>
+
+<section class="artist-management__table">
+  <ag-grid-angular
+    class="ag-theme-alpine artist-management__table-grid"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+  />
+</section>

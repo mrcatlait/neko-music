@@ -5,6 +5,7 @@ import {
   RegistrationRequestDto,
   WhoamiResponseDto,
 } from './auth'
+import { GenreCreationRequestDto, GenreResponseDto } from './catalog-management'
 import { BadRequestDto } from './error'
 
 export namespace Contracts {
@@ -14,6 +15,11 @@ export namespace Contracts {
     export type RefreshTokenResponse = RefreshTokenResponseDto
     export type RegistrationRequest = RegistrationRequestDto
     export type WhoamiResponse = WhoamiResponseDto
+  }
+
+  export namespace CatalogManagement {
+    export type GenreCreationRequest = GenreCreationRequestDto
+    export type GenreResponse = GenreResponseDto
   }
 
   export namespace Error {

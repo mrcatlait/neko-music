@@ -1,6 +1,9 @@
+import { Contracts } from '@neko/contracts'
 import { ApiProperty } from '@nestjs/swagger'
 
-export class GenreResponse {
+import { RecordStatus } from '../enums'
+
+export class GenreResponse implements Contracts.CatalogManagement.GenreResponse {
   @ApiProperty({
     description: 'The id of the genre',
   })
@@ -10,4 +13,10 @@ export class GenreResponse {
     description: 'The name of the genre',
   })
   name: string
+
+  @ApiProperty({
+    description: 'The status of the genre',
+    enum: RecordStatus,
+  })
+  status: RecordStatus
 }

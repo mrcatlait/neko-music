@@ -11,7 +11,7 @@ import { User } from '@/modules/auth/interfaces'
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 import { RequirePermissions } from '@/modules/auth/decorators'
 
-@Controller('albums')
+@Controller('catalog/albums')
 @ApiTags('Albums')
 @ApiBearerAuth()
 export class AlbumController {

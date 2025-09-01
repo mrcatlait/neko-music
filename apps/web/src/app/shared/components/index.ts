@@ -1,4 +1,5 @@
 export * from './artist-list/artist-list'
+export * from './avatar/avatar'
 export * from './linear-progress/linear-progress'
 export * from './loading-indicator/loading-indicator'
 export * from './play-icon/play-icon'

@@ -22,6 +22,7 @@
     --color-secondary-rgb: #{abstracts.hex-to-rgb(#fff)};
     --color-on-secondary: var(--color-surface);
     --color-secondary-container: #262626;
+    --color-on-secondary-container: var(--color-on-surface);
 
     // Outline
     --color-outline: rgb(255 255 255 / 16%);

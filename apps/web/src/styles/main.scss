@@ -1,6 +1,5 @@
 @use 'base' as base;
 @use 'components' as components;
-@use 'layout' as layouts;
 @use 'themes' as themes;
 
 // Base styles
@@ -22,9 +21,6 @@
 @include components.slider;
 @include components.tabs;
 @include components.textfield;
-
-// Include layout
-@include layouts.canonical-layout;
 
 // Theme
 @include themes.default;

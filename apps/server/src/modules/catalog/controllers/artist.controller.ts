@@ -22,7 +22,7 @@ import { UploadTokenDto } from '@/modules/media/dtos'
 import { RequirePermissions, Session } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
 
-@Controller('artists')
+@Controller('catalog/artists')
 @ApiTags('Artists')
 @ApiBearerAuth()
 export class ArtistController {

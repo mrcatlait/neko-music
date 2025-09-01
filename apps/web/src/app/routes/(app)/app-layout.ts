@@ -7,6 +7,7 @@ import { PlaybackControls } from '@/features/playback/playback-controls'
   selector: 'n-app-layout',
   imports: [RouterLink, RouterLinkActive, RouterOutlet, PlaybackControls],
   templateUrl: './app-layout.html',
+  styleUrl: './app-layout.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppLayoutComponent {}
+export class AppLayout {}

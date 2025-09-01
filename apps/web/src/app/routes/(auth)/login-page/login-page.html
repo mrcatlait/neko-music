@@ -71,7 +71,11 @@
     [disabled]="loading()"
     (click)="login()"
   >
-    Log In
+    @if (loading()) {
+      <n-loading-indicator [size]="12" />
+    } @else {
+      Log In
+    }
   </button>
 </form>
 

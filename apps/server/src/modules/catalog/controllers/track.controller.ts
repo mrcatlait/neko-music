@@ -11,7 +11,7 @@ import { EntityType, MediaType } from '@/modules/media/enums'
 import { RequirePermissions, Session } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
 
-@Controller('tracks')
+@Controller('catalog/tracks')
 @ApiTags('Tracks')
 @ApiBearerAuth()
 export class TrackController {

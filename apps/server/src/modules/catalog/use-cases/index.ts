@@ -1,6 +1,6 @@
 export * from './create-album'
 export * from './create-artist'
-export * from './create-genre'
+export * from './genres'
 export * from './create-track'
 export * from './get-artist'
 export * from './get-artist-artwork-upload-token'

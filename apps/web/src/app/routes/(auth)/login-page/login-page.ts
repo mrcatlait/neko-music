@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { take } from 'rxjs'
 import { HttpErrorResponse } from '@angular/common/http'
@@ -6,12 +6,12 @@ import { RouterLink } from '@angular/router'
 
 import { CredentialsAuthStrategy } from '@/core/strategies'
 import { emailValidator } from '@/shared/validators'
-import { Textfield } from '@/shared/components'
+import { LoadingIndicator, Textfield } from '@/shared/components'
 import { Button } from '@/shared/directives'
 
 @Component({
   selector: 'n-login-page',
-  imports: [Button, ReactiveFormsModule, Textfield, RouterLink],
+  imports: [Button, LoadingIndicator, ReactiveFormsModule, Textfield, RouterLink],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,6 +28,10 @@ export class LoginPage {
   protected readonly invalidCredentials = signal(false)
 
   protected hidePassword = true
+
+  constructor() {
+    this.handleLoading()
+  }
 
   login(): void {
     if (this.form.invalid) {
@@ -60,5 +64,15 @@ export class LoginPage {
         this.invalidCredentials.set(true)
       }
     }
+  }
+
+  private handleLoading() {
+    effect(() => {
+      if (this.loading()) {
+        this.form.disable()
+      } else {
+        this.form.enable()
+      }
+    })
   }
 }

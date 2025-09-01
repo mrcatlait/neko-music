@@ -1,0 +1,55 @@
+@use 'abstracts' as abstracts;
+@use 'layout' as layout;
+
+.admin-layout {
+  --spacing-layout: var(--spacing-layout-large);
+  --n-header-height: 0;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'header header'
+    'navigation content';
+  min-height: 100%;
+
+  @include layout.navigation-drawer;
+
+  // Override the navigation-drawer mixin
+  .admin-layout__navigation ul {
+    inset: var(--n-header-height) 0 auto;
+  }
+
+  .admin-layout-header {
+    &__profile {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    height: var(--n-header-height);
+    border-bottom: 1px solid var(--color-outline);
+  }
+
+  [data-layout-area="header"] {
+    grid-area: header;
+  }
+
+  [data-layout-area="navigation"] {
+    grid-area: navigation;
+  }
+
+  [data-layout-area="content"] {
+    grid-area: content;
+    overflow: hidden;
+    padding: 0 var(--spacing-layout);
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
