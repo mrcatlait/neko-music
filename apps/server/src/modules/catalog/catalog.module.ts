@@ -1,6 +1,13 @@
 import { Global, Module } from '@nestjs/common'
 
-import { AlbumController, ArtistController, GenreController, TrackController } from './controllers'
+import {
+  AlbumController,
+  ArtistController,
+  ArtistManagementController,
+  GenreController,
+  GenreManagementController,
+  TrackController,
+} from './controllers'
 import {
   GenreRepository,
   AlbumRepository,
@@ -13,18 +20,23 @@ import {
   TrackArtistRepository,
 } from './repositories'
 import {
+  AddGenreUseCase,
+  AddGenreValidator,
   CreateAlbumUseCase,
   CreateAlbumValidator,
   CreateArtistUseCase,
   CreateArtistValidator,
-  CreateGenreUseCase,
-  CreateGenreValidator,
   CreateTrackUseCase,
   CreateTrackValidator,
   GetArtistArtworkUploadTokenUseCase,
   GetArtistArtworkUploadTokenValidator,
   GetArtistUseCase,
   GetTracksForAlbumUseCase,
+  ListAllArtistsUseCase,
+  ListAllGenresUseCase,
+  ListPublishedGenresUseCase,
+  PublishGenreUseCase,
+  PublishGenreValidator,
   UpdateArtistStatusUseCase,
   UpdateArtistStatusValidator,
   UpdateArtistUseCase,
@@ -35,15 +47,27 @@ import {
 
 @Global()
 @Module({
-  controllers: [AlbumController, ArtistController, GenreController, TrackController],
+  controllers: [
+    AlbumController,
+    ArtistController,
+    ArtistManagementController,
+    GenreController,
+    GenreManagementController,
+    TrackController,
+  ],
   providers: [
     // Use cases
+    AddGenreUseCase,
+    AddGenreValidator,
+    ListAllArtistsUseCase,
+    ListAllGenresUseCase,
+    ListPublishedGenresUseCase,
+    PublishGenreUseCase,
+    PublishGenreValidator,
     CreateAlbumUseCase,
     CreateAlbumValidator,
     CreateArtistUseCase,
     CreateArtistValidator,
-    CreateGenreUseCase,
-    CreateGenreValidator,
     CreateTrackUseCase,
     CreateTrackValidator,
     GetArtistUseCase,

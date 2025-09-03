@@ -5,7 +5,7 @@ import {
   RegistrationRequestDto,
   WhoamiResponseDto,
 } from './auth'
-import { GenreCreationRequestDto, GenreResponseDto } from './catalog-management'
+import { ArtistResponseDto, GenreCreationRequestDto, GenreResponseDto } from './catalog-management'
 import { BadRequestDto } from './error'
 
 export namespace Contracts {
@@ -18,6 +18,7 @@ export namespace Contracts {
   }
 
   export namespace CatalogManagement {
+    export type ArtistResponse = ArtistResponseDto
     export type GenreCreationRequest = GenreCreationRequestDto
     export type GenreResponse = GenreResponseDto
   }

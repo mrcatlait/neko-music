@@ -1,0 +1,92 @@
+@use 'abstracts' as abstracts;
+
+.player {
+  --n-player-height: 80px;
+  --n-navigation-height: 64px;
+  --n-player-background: var(--color-surface-container-high);
+
+  position: relative;
+  display: block;
+  height: var(--n-player-height);
+
+  @include abstracts.window-class(compact, medium, expanded) {
+    &::before {
+      content: '';
+    }
+  }
+
+  &::before {
+    position: fixed;
+    height: var(--n-player-height);
+    bottom: var(--n-player-height);
+    left: 0;
+    right: 0;
+    background: linear-gradient(to bottom, rgba(var(--color-surface-rgb), 0), rgba(var(--color-surface-rgb), 0.9));
+    mask: linear-gradient(180deg, rgba(var(--color-surface-rgb), 0), rgba(var(--color-surface-rgb), 1));
+    backdrop-filter: blur(5px);
+
+    @include abstracts.window-class(expanded) {
+      bottom: 0;
+    }
+  }
+
+  &__content {
+    position: fixed;
+    display: grid;
+    grid-template-columns: 240px auto 1fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'track-info player-controls progress-control playback-volume';
+    align-items: center;
+    column-gap: 48px;
+    inset: auto 0 0;
+    padding: 0 var(--spacing-layout);
+    height: var(--n-player-height);
+    background: var(--n-player-background);
+    overflow: hidden;
+
+    @include abstracts.elevation(2);
+
+    @include abstracts.window-class(expanded) {
+      --n-navigation-height: 1px;
+    }
+
+    @include abstracts.window-class(compact, medium, expanded) {
+      --n-player-height: 40px;
+
+      grid-template-columns: 1fr auto;
+      grid-template-rows: 1fr;
+      grid-template-areas: 'track-info player-controls';
+      bottom: calc(var(--n-navigation-height) + var(--spacing-layout));
+      left: var(--spacing-layout);
+      right: var(--spacing-layout);
+      gap: 12px;
+      border-radius: var(--shape-corner-large);
+      height: auto;
+      padding: 8px 12px;
+    }
+  }
+
+  &__track-info {
+    grid-area: track-info;
+  }
+
+  &__player-controls {
+    grid-area: player-controls;
+  }
+
+  &__progress-control {
+    grid-area: progress-control;
+
+    @include abstracts.window-class(compact, medium, expanded) {
+      display: none;
+    }
+  }
+
+  &__playback-volume {
+    grid-area: playback-volume;
+
+    @include abstracts.window-class(compact, medium, expanded) {
+      display: none;
+    }
+  }
+}

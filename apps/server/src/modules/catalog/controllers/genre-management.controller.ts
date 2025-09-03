@@ -9,7 +9,7 @@ import { RecordStatus } from '../enums'
 import { RequirePermissions } from '@/modules/auth/decorators'
 
 @Controller('catalog-management/genres')
-@RequirePermissions(Permissions.Genre.Write)
+// @RequirePermissions(Permissions.Genre.Write)
 @ApiTags('Genres')
 @ApiBearerAuth()
 export class GenreManagementController {

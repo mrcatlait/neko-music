@@ -1,0 +1,69 @@
+<div class="admin-layout">
+  <main data-layout-area="content">
+    <router-outlet />
+  </main>
+
+  <nav
+    aria-label="Main Menu"
+    class="admin-layout__navigation"
+    data-layout-area="navigation"
+  >
+    <ul>
+      <li [aria-current]="home.isActive ? 'page' : undefined">
+        <a
+          #home="routerLinkActive"
+          routerLink="/catalog-management"
+          routerLinkActive="active"
+          [class.active]="home.isActive"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <i
+            aria-hidden="true"
+            [class.outlined]="!home.isActive"
+          >
+            space_dashboard
+          </i>
+
+          <span>Overview</span>
+        </a>
+      </li>
+
+      <span class="label-small">Catalog</span>
+
+      <li [aria-current]="artists.isActive ? 'page' : undefined">
+        <a
+          #artists="routerLinkActive"
+          routerLink="/catalog-management/artists"
+          routerLinkActive="active"
+          [class.active]="artists.isActive"
+        >
+          <i
+            aria-hidden="true"
+            [class.outlined]="!artists.isActive"
+          >
+            artist
+          </i>
+
+          <span>Artists</span>
+        </a>
+      </li>
+
+      <li [aria-current]="genres.isActive ? 'page' : undefined">
+        <a
+          #genres="routerLinkActive"
+          routerLink="/catalog-management/genres"
+          routerLinkActive="active"
+          [class.active]="genres.isActive"
+        >
+          <i
+            aria-hidden="true"
+            [class.outlined]="!genres.isActive"
+          >
+            genres
+          </i>
+          <span>Genres</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

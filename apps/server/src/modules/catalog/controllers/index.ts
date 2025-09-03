@@ -1,4 +1,6 @@
 export * from './album.controller'
+export * from './artist-management.controller'
 export * from './artist.controller'
+export * from './genre-management.controller'
 export * from './genre.controller'
 export * from './track.controller'

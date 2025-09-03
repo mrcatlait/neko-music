@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, DOCUMENT, inject, OnInit } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community'
+
+ModuleRegistry.registerModules([AllCommunityModule])
 
 @Component({
   selector: 'n-root',

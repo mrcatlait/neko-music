@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { AddGenreValidator } from './add-genre.validator'
-import { GenreEntity } from '../../entities'
+// import { GenreEntity } from '../../entities'
 
 import { UseCase } from '@/modules/shared/interfaces'
 import { DatabaseService } from '@/modules/database'
@@ -10,7 +10,7 @@ export interface AddGenreUseCaseParams {
   readonly name: string
 }
 
-export type AddGenreUseCaseResult = GenreEntity
+export type AddGenreUseCaseResult = any
 
 @Injectable()
 export class AddGenreUseCase implements UseCase<AddGenreUseCaseParams, AddGenreUseCaseResult> {

@@ -1,3 +1,3 @@
-export * from './ag-grid-service'
 export * from './environment'
+export * from './grid-options'
 export * from './window'

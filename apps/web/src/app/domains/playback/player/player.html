@@ -1,0 +1,25 @@
+@defer (when !enabled()) {
+  <div
+    aria-label="Player"
+    class="player"
+    role="region"
+  >
+    <div class="player__content">
+      <div class="player__track-info truncate">
+        <n-track-info [track]="track()" />
+      </div>
+
+      <div class="player__player-controls">
+        <n-player-controls />
+      </div>
+
+      <div class="player__progress-control">
+        <n-progress-control />
+      </div>
+
+      <div class="player__playback-volume">
+        <n-volume-control />
+      </div>
+    </div>
+  </div>
+}
