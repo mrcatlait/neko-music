@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core'
 
-import { Slider } from '@/shared/directives'
+import { Slider } from '@/shared/components'
 import { PlaybackStore } from '@/core/stores'
 
 @Component({

@@ -1,12 +1,10 @@
 @if (!artistsResource.error()) {
-  <section class="artist-table">
-    <ag-grid-angular
-      class="artist-table__table"
-      [columnDefs]="columnDefs"
-      [gridOptions]="gridOptions"
-      [rowData]="artistsResource.value()"
-    />
-  </section>
+  <ag-grid-angular
+    class="artist-table__table"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [rowData]="artistsResource.value()"
+  />
 } @else {
   <div class="artist-table__error">
     <p class="body-medium">An error occurred while fetching genres. Please try again later.</p>

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core'
 
 import { PlaybackStore } from '@/core/stores'
-import { Button, Slider } from '@/shared/directives'
+import { IconButton, Slider } from '@/shared/components'
 
 @Component({
   selector: 'n-volume-control',
-  imports: [Button, Slider],
+  imports: [IconButton, Slider],
   templateUrl: './volume-control.html',
   styleUrl: './volume-control.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

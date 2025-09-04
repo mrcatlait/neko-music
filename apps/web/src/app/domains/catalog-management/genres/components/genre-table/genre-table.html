@@ -1,12 +1,10 @@
 @if (!genresResource.error()) {
-  <section class="genre-table">
-    <ag-grid-angular
-      class="genre-table__table"
-      [columnDefs]="columnDefs"
-      [gridOptions]="gridOptions"
-      [rowData]="genresResource.value()"
-    />
-  </section>
+  <ag-grid-angular
+    class="genre-table__table"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [rowData]="genresResource.value()"
+  />
 } @else {
   <div class="genre-table__error">
     <p class="body-medium">An error occurred while fetching genres. Please try again later.</p>

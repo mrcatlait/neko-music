@@ -1,0 +1,81 @@
+@use 'abstracts' as abstracts;
+
+[nIconButton] {
+  --n-icon-button-size: 40px;
+  --n-icon-button-icon-size: 24px;
+  --n-icon-button-bg: transparent;
+  --n-icon-button-shape-corner: var(--shape-corner-full);
+  --n-icon-button-color: inherit;
+  --n-icon-button-border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  height: var(--n-icon-button-size);
+  min-height: var(--n-icon-button-size);
+  width: var(--n-icon-button-size);
+  min-width: var(--n-icon-button-size);
+  border-radius: var(--n-icon-button-shape-corner);
+  color: var(--n-icon-button-color);
+  background: var(--n-icon-button-bg);
+  border: var(--n-icon-button-border);
+
+  i {
+    --n-icon-button-icon-size: var(--n-icon-button-icon-size);
+  }
+
+  @include abstracts.state(var(--n-icon-button-color));
+  
+  &[data-icon-button-color='filled'] {
+    --n-icon-button-bg: var(--color-primary);
+    --n-icon-button-color: var(--color-on-primary);
+  }
+
+  &[data-icon-button-color='standard'] {
+    --n-icon-button-color: var(--color-on-surface);
+  }
+
+  &[data-icon-button-color='tonal'] {
+    --n-icon-button-bg: var(--color-secondary);
+    --n-icon-button-color: var(--color-on-secondary);
+  }
+
+  &[data-icon-button-color='outlined'] {
+    --n-icon-button-border: 1px solid var(--color-outline);
+    --n-icon-button-color: var(--color-on-surface);
+  }
+
+  &[data-icon-button-size='x-small'] {
+    --n-icon-button-size: 32px;
+    --n-icon-button-icon-size: 20px;
+  }
+
+  &[data-icon-button-size='small'] {
+    --n-icon-button-size: 40px;
+    --n-icon-button-icon-size: 24px;
+  }
+
+  &[data-icon-button-size='medium'] {
+    --n-icon-button-size: 56px;
+    --n-icon-button-icon-size: 24px;
+  }
+
+  &[data-icon-button-size='large'] {
+    --n-icon-button-size: 96px;
+    --n-icon-button-icon-size: 32px;
+  }
+
+  &[data-icon-button-size='x-large'] {
+    --n-icon-button-size: 136px;
+    --n-icon-button-icon-size: 40px;
+  }
+
+  &[disabled] {
+    cursor: default;
+
+    --n-icon-button-color: rgba(var(--color-on-surface-rgb), 0.38);
+  }
+}

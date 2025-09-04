@@ -4,8 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpErrorResponse } from '@angular/common/http'
 import { Contracts } from '@neko/contracts'
 
-import { Button } from '@/shared/directives'
-import { LoadingIndicator, Textfield } from '@/shared/components'
+import { Button, LoadingIndicator, Textfield } from '@/shared/components'
 import { emailValidator } from '@/shared/validators'
 import { AuthRepository } from '@/core/repositories'
 import { AuthStore } from '@/core/stores'

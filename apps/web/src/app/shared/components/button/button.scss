@@ -1,0 +1,76 @@
+@use 'abstracts' as abstracts;
+
+[nButton] {
+  --n-button-size: 40px;
+  --n-button-gap: 8px;
+  --n-button-shape-corner: var(--shape-corner-full);
+  --n-button-padding: 0 16px;
+  --n-button-min-width: 72px;
+  --n-button-bg: transparent;
+  --n-button-color: var(--color-on-surface);
+  --n-button-border: none;
+
+  font-family: var(--typography-font-family);
+
+  @include abstracts.typography(label-large);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--n-button-gap);
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  block-size: var(--n-button-size);
+  border-radius: var(--n-button-shape-corner);
+  background: var(--n-button-bg);
+  color: var(--n-button-color);
+  border: var(--n-button-border);
+  min-width: var(--n-button-min-width);
+  padding: var(--n-button-padding);
+
+  @include abstracts.state(var(--n-button-color));
+
+  &[data-button-variant='filled'] {
+    &[data-button-color='primary'] {
+      --n-button-bg: var(--color-primary);
+      --n-button-color: var(--color-on-primary);
+    }
+
+    &[data-button-color='secondary'] {
+      --n-button-bg: var(--color-secondary);
+      --n-button-color: var(--color-on-secondary);
+    }
+
+    &[disabled] {
+      --n-button-color: rgba(var(--color-on-surface-rgb), 0.38);
+      --n-button-bg: rgba(var(--color-on-surface-rgb), 0.12);
+    }
+  }
+
+  &[data-button-variant='outlined'] {
+    --n-button-border: var(--color-outline);
+    --n-button-color: var(--color-on-surface);
+
+    &[disabled] {
+      --n-button-color: rgba(var(--color-on-surface-rgb), 0.38);
+      --n-button-border: 1px solid rgba(var(--color-on-surface-rgb), 0.12);
+    }
+  }
+
+  &[data-button-variant='text'] {
+    --n-button-color: var(--color-on-surface);
+
+    &[disabled] {
+      --n-button-color: rgba(var(--color-on-surface-rgb), 0.38);
+    }
+  }
+
+  &[disabled] {
+    cursor: default;
+
+    --n-button-color: rgba(var(--color-on-surface-rgb), 0.38);
+    --n-button-border: rgba(var(--color-on-surface-rgb), 0.12);
+    --n-button-bg: rgba(var(--color-on-surface-rgb), 0.12);
+  }
+}

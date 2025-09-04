@@ -1,0 +1,64 @@
+<form
+  autocomplete="off"
+  [formGroup]="form"
+>
+  <n-textfield>
+    <label for="name">Artist Name</label>
+
+    <input
+      formControlName="name"
+      id="name"
+      required
+      type="text"
+    />
+
+    @let nameControl = form.controls.name;
+    @let nameTouched = nameControl.touched;
+
+    <span slot="error">
+      @if (nameControl.invalid && nameTouched) {
+        @if (nameControl.hasError('required')) {
+          <span>Name is required</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  <n-textfield>
+    <label for="genres">Genres</label>
+
+    <input
+      formControlName="genres"
+      id="genres"
+      placeholder="Type genre name"
+      required
+      type="text"
+    />
+
+    @let genresControl = form.controls.genres;
+    @let genresTouched = genresControl.touched;
+
+    <span slot="error">
+      @if (genresControl.invalid && genresTouched) {
+        @if (genresControl.hasError('required')) {
+          <span>At least one genre is required</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  <n-input-chip> Electric </n-input-chip>
+
+  <button
+    nButton
+    type="submit"
+    [disabled]="saving()"
+    (click)="submit()"
+  >
+    @if (saving()) {
+      <n-loading-indicator [size]="12" />
+    } @else {
+      {{ submitLabel() }}
+    }
+  </button>
+</form>

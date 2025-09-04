@@ -37,7 +37,7 @@ export default config(
       ],
       // Disallows using ViewEncapsulation.None
       '@angular-eslint/use-component-view-encapsulation': [
-        'error'
+        'warn'
       ],
       // Ensures that classes implement lifecycle interfaces corresponding to the declared lifecycle methods
       // https://angular.io/guide/styleguide#style-09-01

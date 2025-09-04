@@ -6,12 +6,11 @@ import { RouterLink } from '@angular/router'
 
 import { CredentialsAuthStrategy } from '@/core/strategies'
 import { emailValidator } from '@/shared/validators'
-import { LoadingIndicator, Textfield } from '@/shared/components'
-import { Button } from '@/shared/directives'
+import { Button, IconButton, LoadingIndicator, Textfield } from '@/shared/components'
 
 @Component({
   selector: 'n-login-page',
-  imports: [Button, LoadingIndicator, ReactiveFormsModule, Textfield, RouterLink],
+  imports: [Button, IconButton, LoadingIndicator, ReactiveFormsModule, Textfield, RouterLink],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

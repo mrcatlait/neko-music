@@ -1,0 +1,34 @@
+<h1>Create Artist</h1>
+
+<n-artist-form
+  submitLabel="Create artist"
+  [availableGenres]="genresResource.value() ?? []"
+  [saving]="saving()"
+  (formCancel)="cancel()"
+  (formSubmit)="createArtist($event)"
+/>
+
+<input
+  #fileInput
+  hidden
+  type="file"
+/>
+
+<div
+  class="dropzone"
+  role="button"
+  tabindex="0"
+  [class.dropzone--dragover]="isDragging()"
+  (click)="browseFiles()"
+  (dragleave)="dragleave($event)"
+  (dragover)="dragover($event)"
+  (drop)="drop($event)"
+>
+  <!-- Use icon based on file type -->
+  <div class="dropzone__icon">
+    <i class="outlined">upload_file</i>
+  </div>
+
+  <span class="body-large"> Drag and drop your image or <span class="link">browse</span></span>
+  <span class="dropzone__hint label-medium">JPEG or PNGs only * 10MB max</span>
+</div>
