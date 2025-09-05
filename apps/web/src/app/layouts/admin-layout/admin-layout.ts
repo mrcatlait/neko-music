@@ -1,10 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core'
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 
 import { AuthStore } from '@/core/stores'
-
-ModuleRegistry.registerModules([AllCommunityModule])
 
 @Component({
   selector: 'n-admin-layout',

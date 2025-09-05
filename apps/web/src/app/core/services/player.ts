@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { MediaPlayer, PlaybackTimeUpdatedEvent } from 'dashjs'
+import { PlaybackTimeUpdatedEvent, MediaPlayerClass, MediaPlayer } from 'dashjs'
 
 const DASH_EVENTS = {
   PlaybackTimeUpdated: 'playbackTimeUpdated',
@@ -14,7 +14,7 @@ const DASH_EVENTS = {
 })
 export class Player {
   private readonly audio = new Audio()
-  private readonly player = MediaPlayer().create()
+  private readonly player: MediaPlayerClass = MediaPlayer().create()
 
   constructor() {
     this.player.initialize(this.audio, undefined, false)

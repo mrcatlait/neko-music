@@ -14,7 +14,6 @@ import { LoadingIndicator, Textfield, Button, InputChip } from '@/shared/compone
 export class ArtistForm {
   readonly submitLabel = input.required<string>()
   readonly saving = input.required<boolean>()
-  readonly availableGenres = input.required<Contracts.CatalogManagement.GenreResponse[]>()
 
   readonly formSubmit = output<{ name: string; genres: string[] }>()
   readonly formCancel = output<void>()

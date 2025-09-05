@@ -5,8 +5,9 @@ import { HttpClient } from '@angular/common/http'
 import { firstValueFrom } from 'rxjs'
 import { Contracts } from '@neko/contracts'
 
-import { ENVIRONMENT, GRID_OPTIONS } from '@/core/providers'
+import { GRID_OPTIONS } from '@/core/injectors'
 import { RecordStatusCellRenderer } from '@/domains/catalog-management/shared/components'
+import { ENVIRONMENT } from '@/core/providers'
 
 @Component({
   selector: 'n-genre-table',

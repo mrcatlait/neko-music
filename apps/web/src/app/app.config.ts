@@ -1,6 +1,5 @@
 import {
   ApplicationConfig,
-  DOCUMENT,
   inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
@@ -12,7 +11,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { routes } from './app.routes'
 import { SilentAuthStrategy } from './core/strategies'
 
-import { provideEnvironment, provideGridOptions, WINDOW, windowProvider } from '@/core/providers'
+import { provideEnvironment } from '@/core/providers'
 import { jwtInterceptor } from '@/core/interceptors'
 import { environment } from '@/environment'
 
@@ -24,11 +23,5 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideEnvironment(environment),
     provideAppInitializer(() => inject(SilentAuthStrategy).authenticate()),
-    {
-      provide: WINDOW,
-      useFactory: (document: Document) => windowProvider(document),
-      deps: [DOCUMENT],
-    },
-    provideGridOptions(),
   ],
 }

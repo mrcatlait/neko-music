@@ -2,7 +2,6 @@
 
 <n-artist-form
   submitLabel="Create artist"
-  [availableGenres]="genresResource.value() ?? []"
   [saving]="saving()"
   (formCancel)="cancel()"
   (formSubmit)="createArtist($event)"

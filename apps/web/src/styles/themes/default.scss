@@ -39,6 +39,8 @@
     --color-surface-container-low: #090909;
     --color-surface-container-lowest: #000;
     --color-surface-container-lowest-rgb: #{abstracts.hex-to-rgb(#000)};
+    --color-inverse-surface: #cfcfcf;
+    --color-inverse-on-surface: #303030;
 
     // Error
     --color-error: #ffb4ab;

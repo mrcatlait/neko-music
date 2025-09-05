@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core'
 
-import { WINDOW } from '@/core/providers'
+import { WINDOW } from '@/core/injectors'
 
 @Injectable({
   providedIn: 'root',

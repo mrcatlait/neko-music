@@ -15,7 +15,6 @@ export function withStyles(component: Type<unknown>): undefined {
   const environmentInjector = inject(EnvironmentInjector)
 
   if (!map.has(component)) {
-    console.log('createComponent', component)
     map.set(component, createComponent(component, { environmentInjector }))
   }
 

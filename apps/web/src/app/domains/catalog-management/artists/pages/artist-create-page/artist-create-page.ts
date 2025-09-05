@@ -32,9 +32,9 @@ export class ArtistCreatePage {
       ),
   })
 
-  protected createArtist(artist: { name: string; genres: Contracts.CatalogManagement.GenreResponse[] }): void {
+  protected createArtist(artist: { name: string; genres: string[] }): void {
     console.log('Creating artist:', artist)
-    console.log('Selected genres:', artist.genres.map((g) => g.name).join(', '))
+    console.log('Selected genres:', artist.genres.join(', '))
   }
 
   protected cancel(): void {

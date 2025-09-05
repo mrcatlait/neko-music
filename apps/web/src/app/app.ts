@@ -1,17 +1,19 @@
-import { ChangeDetectionStrategy, Component, DOCUMENT, inject, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, DOCUMENT, inject, OnInit, ViewContainerRef } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community'
 
-ModuleRegistry.registerModules([AllCommunityModule])
+import { SnackbarOutlet } from '@/shared/snackbar'
+import { Portal } from '@/shared/portal'
 
 @Component({
   selector: 'n-root',
-  imports: [RouterOutlet],
-  template: `<router-outlet />`,
+  imports: [RouterOutlet, SnackbarOutlet],
+  template: `<router-outlet /><n-snackbar-outlet />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
   private readonly document = inject(DOCUMENT)
+  private readonly portal = inject(Portal)
+  private readonly vcr = inject(ViewContainerRef)
 
   ngOnInit(): void {
     const attributes = ['nBlurOnClick', 'nButton', 'nIconButton']
@@ -27,5 +29,7 @@ export class App implements OnInit {
       },
       { capture: true, passive: true },
     )
+
+    this.portal.attach(this.vcr)
   }
 }

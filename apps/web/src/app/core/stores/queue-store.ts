@@ -4,7 +4,6 @@ import { REPEAT_MODE, RepeatMode } from '@/shared/enums'
 import { Track } from '@/shared/entities'
 import { shuffleArray } from '@/shared/utils'
 import { Queue } from '@/shared/models'
-import { TrackBuilder } from 'src/test-utils'
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +11,7 @@ import { TrackBuilder } from 'src/test-utils'
 export class QueueStore {
   readonly tracks = signal<Track[]>([])
   readonly nextTracks = signal<Track[]>([])
-  readonly currentTrack = signal<Track>(new TrackBuilder().build() as Track)
+  readonly currentTrack = signal<Track>({} as Track)
 
   readonly queueId = signal<string | null>(null)
   readonly queueName = signal<string | null>(null)

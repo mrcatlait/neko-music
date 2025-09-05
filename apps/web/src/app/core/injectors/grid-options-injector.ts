@@ -1,9 +1,7 @@
-import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders } from '@angular/core'
+import { InjectionToken } from '@angular/core'
 import { GridOptions, themeMaterial } from 'ag-grid-community'
 
-export const GRID_OPTIONS = new InjectionToken<GridOptions>('GRID_OPTIONS')
-
-export const DEFAULT_GRID_OPTIONS: GridOptions = {
+const DEFAULT_GRID_OPTIONS: GridOptions = {
   singleClickEdit: true,
   stopEditingWhenCellsLoseFocus: true,
   theme: themeMaterial.withParams({
@@ -29,11 +27,8 @@ export const DEFAULT_GRID_OPTIONS: GridOptions = {
     checkboxCheckedShapeColor: 'var(--color-text-high-emphasis)',
     checkboxUncheckedBorderColor: 'var(--color-text-medium-emphasis)',
   }),
-  // defaultColDef: {
-  //   cellRenderer: AgGridCellRendererComponent,
-  //   cellDataType: false,
-  // },
 }
 
-export const provideGridOptions = (): EnvironmentProviders =>
-  makeEnvironmentProviders([{ provide: GRID_OPTIONS, useValue: DEFAULT_GRID_OPTIONS }])
+export const GRID_OPTIONS = new InjectionToken<GridOptions>('GRID_OPTIONS', {
+  factory: () => DEFAULT_GRID_OPTIONS,
+})

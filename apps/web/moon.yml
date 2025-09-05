@@ -34,7 +34,15 @@ tasks:
       - 'dist'
 
   bundle:
-    command: 'esbuild-visualizer --metadata dist/stats.json --filename dist/stats.html'
+    command: 'esbuild-visualizer'
+    args:
+      - '--open'
+      - '--metadata'
+      - 'dist/stats.json'
+      - '--template'
+      - 'treemap'
+      - '--filename'
+      - 'dist/stats.html'
     local: true
     deps:
       - 'build'
