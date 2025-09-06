@@ -1,16 +1,30 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
 
-import { AuthService } from '../services'
+import { AuthService, JwtService } from '../services'
 
 @Injectable()
 export class RefreshTokenGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<FastifyRequest>()
-    const token = this.authService.extractRefreshTokenFromCookie(request)
 
-    return Boolean(token)
+    const refreshToken = this.authService.extractRefreshTokenFromCookie(request)
+
+    if (!refreshToken) {
+      throw new UnauthorizedException()
+    }
+
+    try {
+      await this.jwtService.verifyRefreshToken(refreshToken)
+    } catch {
+      throw new UnauthorizedException()
+    }
+
+    return true
   }
 }

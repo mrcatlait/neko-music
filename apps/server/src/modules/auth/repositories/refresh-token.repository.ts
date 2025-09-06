@@ -35,6 +35,12 @@ export class RefreshTokenRepository {
     `.then(() => undefined)
   }
 
+  deleteByToken(token: string): Promise<void> {
+    return this.databaseService.sql`
+      DELETE FROM auth."RefreshToken" WHERE "token" = ${token}
+    `.then(() => undefined)
+  }
+
   deleteExpired(): Promise<void> {
     return this.databaseService.sql`
       DELETE FROM auth."RefreshToken" WHERE "expiresAt" < NOW()

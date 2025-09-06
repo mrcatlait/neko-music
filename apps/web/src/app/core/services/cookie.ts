@@ -9,6 +9,7 @@ export interface CookieOptions {
   expires?: number | Date
   secure?: boolean
   sameSite?: SameSite
+  path?: string
 }
 
 const DAY = 1000 * 60 * 60 * 24
@@ -36,7 +37,7 @@ export class Cookie {
     return ''
   }
 
-  set({ name, value, expires, secure }: CookieOptions): void {
+  set({ name, value, expires, secure, path = '/' }: CookieOptions): void {
     const nameWithPrefix = this.prefix + name
     let cookieString: string = encodeURIComponent(nameWithPrefix) + '=' + encodeURIComponent(value) + ';'
 
@@ -52,6 +53,10 @@ export class Cookie {
 
     if (secure) {
       cookieString += 'Secure;'
+    }
+
+    if (path) {
+      cookieString += `Path=${path};`
     }
 
     cookieString += 'SameSite=Strict;'

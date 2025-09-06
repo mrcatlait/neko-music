@@ -53,7 +53,7 @@ export class JwtService {
   }
 
   signRefreshToken(payload: RefreshTokenPayload): Promise<SignRefreshTokenResult> {
-    const expiresAt = new Date(Date.now() + parseTimePeriod(this.refreshTokenExpiresIn))
+    const expiresAt = new Date(Date.now() + parseTimePeriod(this.refreshTokenExpiresIn) * 1000)
 
     return new SignJWT()
       .setProtectedHeader({ alg: this.alg })
