@@ -2,12 +2,12 @@
   "name": "web",
   "private": true,
   "dependencies": {
-    "@angular/common": "^20.2.0",
-    "@angular/compiler": "^20.2.0",
+    "@angular/common": "^20.2.4",
+    "@angular/compiler": "^20.2.4",
     "@angular/core": "^20.2.0",
-    "@angular/forms": "^20.2.0",
+    "@angular/forms": "^20.2.4",
     "@angular/platform-browser": "^20.2.0",
-    "@angular/router": "^20.2.0",
+    "@angular/router": "^20.2.4",
     "@neko/permissions": "*",
     "@neko/selectors": "*",
     "ag-grid-angular": "^34.1.2",
@@ -16,8 +16,8 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.2.0",
-    "@angular/cli": "^20.2.0",
+    "@angular/build": "^20.2.2",
+    "@angular/cli": "^20.2.2",
     "@angular/compiler-cli": "^20.2.0",
     "@faker-js/faker": "^10.0.0",
     "@neko/contracts": "*",
