@@ -6,23 +6,6 @@
   </div>
 }
 
-<button
-  type="button"
-  [nMenuTrigger]="menu"
->
-  Test
-</button>
-
-<ng-template #menu>
-  <n-menu>
-    <h1>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat
-    </h1>
-  </n-menu>
-</ng-template>
-
 <form
   autocomplete="off"
   [formGroup]="form"
@@ -36,15 +19,13 @@
       type="email"
     />
 
-    @let emailControl = form.controls.email;
-
     <span slot="error">
-      @if (emailControl.invalid && emailControl.touched) {
-        @if (emailControl.hasError('required')) {
+      @if (email.invalid && email.touched) {
+        @if (email.hasError('required')) {
           <span>Email is required</span>
         }
 
-        @if (emailControl.hasError('email')) {
+        @if (email.hasError('email')) {
           <span>Email must be in the format name&#64;example.com</span>
         }
       }
@@ -72,12 +53,14 @@
       <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
     </button>
 
-    @let passwordControl = form.controls.password;
-
     <span slot="error">
-      @if (passwordControl.invalid && passwordControl.touched) {
-        @if (passwordControl.hasError('required')) {
+      @if (password.invalid && password.touched) {
+        @if (password.hasError('required')) {
           <span>Password is required</span>
+        }
+
+        @if (password.hasError('minlength')) {
+          <span>Password must be at least 8 characters</span>
         }
       }
     </span>

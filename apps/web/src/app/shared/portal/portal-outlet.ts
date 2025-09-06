@@ -32,8 +32,6 @@ export class PortalOutlet<C> implements OnInit {
 
     this.vcr.clear()
 
-    console.log('createComponent', this.component, this.context)
-
     this.createComponent(this.component, this.context)
   }
 

@@ -12,12 +12,11 @@
       type="text"
     />
 
-    @let nameControl = form.controls.name;
-    @let nameTouched = nameControl.touched;
+    @let nameTouched = name.touched;
 
     <span slot="error">
-      @if (nameControl.invalid && nameTouched) {
-        @if (nameControl.hasError('required')) {
+      @if (name.invalid && nameTouched) {
+        @if (name.hasError('required')) {
           <span>Name is required</span>
         }
       }
@@ -28,26 +27,28 @@
     <label for="genres">Genres</label>
 
     <input
-      formControlName="genres"
       id="genres"
       placeholder="Type genre name"
       required
       type="text"
+      [nAutocompleteTrigger]="autocomplete"
+      (optionSelected)="addGenre($event)"
     />
 
-    @let genresControl = form.controls.genres;
-    @let genresTouched = genresControl.touched;
-
-    <span slot="error">
-      @if (genresControl.invalid && genresTouched) {
-        @if (genresControl.hasError('required')) {
-          <span>At least one genre is required</span>
+    <ng-template #autocomplete>
+      <n-autocomplete>
+        @for (genre of genresResource.value(); track genre.id) {
+          <n-autocomplete-option [value]="genre.id">
+            {{ genre.name }}
+          </n-autocomplete-option>
         }
-      }
-    </span>
+      </n-autocomplete>
+    </ng-template>
   </n-textfield>
 
-  <n-input-chip> Electric </n-input-chip>
+  @for (genre of selectedGenres(); track genre) {
+    <n-input-chip (remove)="removeGenre(genre.value)"> {{ genre.label }} </n-input-chip>
+  }
 
   <button
     nButton

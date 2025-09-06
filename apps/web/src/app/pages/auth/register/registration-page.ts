@@ -4,7 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpErrorResponse } from '@angular/common/http'
 import { Contracts } from '@neko/contracts'
 
-import { Button, LoadingIndicator, Textfield } from '@/shared/components'
+import { Button, IconButton, LoadingIndicator, Textfield } from '@/shared/components'
 import { emailValidator } from '@/shared/validators'
 import { AuthRepository } from '@/core/repositories'
 import { AuthStore } from '@/core/stores'
@@ -12,7 +12,7 @@ import { SessionCookie } from '@/core/services'
 
 @Component({
   selector: 'n-registration-page',
-  imports: [Button, LoadingIndicator, ReactiveFormsModule, RouterLink, Textfield],
+  imports: [Button, IconButton, LoadingIndicator, ReactiveFormsModule, RouterLink, Textfield],
   templateUrl: './registration-page.html',
   styleUrl: './registration-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

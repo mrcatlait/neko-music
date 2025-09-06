@@ -7,16 +7,17 @@ import { RouterLink } from '@angular/router'
 import { CredentialsAuthStrategy } from '@/core/strategies'
 import { emailValidator } from '@/shared/validators'
 import { Button, IconButton, LoadingIndicator, Textfield } from '@/shared/components'
-import { Menu, MenuTrigger } from '@/shared/menu'
+import { Snackbar } from '@/shared/snackbar'
 
 @Component({
   selector: 'n-login-page',
-  imports: [Button, IconButton, LoadingIndicator, Menu, MenuTrigger, ReactiveFormsModule, Textfield, RouterLink],
+  imports: [Button, IconButton, LoadingIndicator, ReactiveFormsModule, Textfield, RouterLink],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
+  private readonly snackbar = inject(Snackbar)
   private readonly credentialsAuthStrategy = inject(CredentialsAuthStrategy)
 
   protected readonly form = new FormGroup({
@@ -31,6 +32,14 @@ export class LoginPage {
 
   constructor() {
     this.handleLoading()
+  }
+
+  get email(): FormControl {
+    return this.form.controls.email
+  }
+
+  get password(): FormControl {
+    return this.form.controls.password
   }
 
   login(): void {
@@ -62,6 +71,8 @@ export class LoginPage {
     if (payload.error instanceof HttpErrorResponse) {
       if (payload.error.status === 401) {
         this.invalidCredentials.set(true)
+      } else {
+        this.snackbar.info('An error occurred while logging in')
       }
     }
   }

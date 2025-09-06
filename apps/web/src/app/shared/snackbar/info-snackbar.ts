@@ -35,11 +35,23 @@ import { Snackbar } from './snackbar'
       border-radius: var(--shape-corner-extra-small);
       background: var(--color-inverse-surface);
       color: var(--color-inverse-on-surface);
+      animation: snackbar-enter var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
 
       &__close {
         --n-icon-button-color: var(--color-inverse-on-surface);
 
         margin-right: 4px;
+      }
+
+      @keyframes snackbar-enter {
+        from {
+          opacity: 0;
+          transform: translateY(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     }
   `,

@@ -2,20 +2,31 @@ import { inject, Injectable } from '@angular/core'
 
 import { VIEWPORT } from '@/core/injectors'
 
+type Directions = 'top' | 'bottom'
+type Aligns = 'left' | 'right' | 'center'
+
+interface PortalPositionOptions {
+  direction: Directions
+  align: Aligns
+  width: number
+  offset?: number
+  height: number
+  hostElement: HTMLElement
+}
+
 @Injectable({ providedIn: 'root' })
-export class MenuPosition {
+export class PortalPosition {
   private readonly viewport = inject(VIEWPORT)
 
-  getPosition(menuElement: HTMLElement, hostElement: HTMLElement): { top: number; left: number } {
+  getPosition({ direction, align, width, height, hostElement, offset = 4 }: PortalPositionOptions): {
+    top: number
+    left: number
+  } {
     const viewportRect = this.viewport.getClientRect()
     const hostRect = hostElement.getBoundingClientRect()
-    const { height, width } = menuElement.getBoundingClientRect()
 
-    const offset = 4
     const minHeight = height ?? 80
-    const direction: 'bottom' | 'top' | null = 'bottom'
     const dropdownSidedOffset = 48
-    const align: 'left' | 'right' | 'center' = 'right'
     let previous: keyof typeof position = 'bottom'
 
     const viewport = {

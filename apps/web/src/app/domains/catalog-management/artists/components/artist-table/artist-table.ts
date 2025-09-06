@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core'
 import { AgGridModule } from 'ag-grid-angular'
-import { ColDef } from 'ag-grid-community'
+import { ColDef, ModuleRegistry, AllCommunityModule } from 'ag-grid-community'
 import { HttpClient } from '@angular/common/http'
 import { firstValueFrom } from 'rxjs'
 import { Contracts } from '@neko/contracts'
@@ -8,6 +8,8 @@ import { Contracts } from '@neko/contracts'
 import { GRID_OPTIONS } from '@/core/injectors'
 import { ENVIRONMENT } from '@/core/providers'
 import { RecordStatusCellRenderer } from '@/domains/catalog-management/shared/components'
+
+ModuleRegistry.registerModules([AllCommunityModule])
 
 @Component({
   selector: 'n-artist-table',
