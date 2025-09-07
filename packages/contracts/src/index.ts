@@ -7,6 +7,7 @@ import {
 } from './auth'
 import { ArtistResponseDto, GenreCreationRequestDto, GenreResponseDto } from './catalog-management'
 import { BadRequestDto } from './error'
+import { UploadTokenResponseDto } from './media'
 
 export namespace Contracts {
   export namespace Auth {
@@ -21,6 +22,10 @@ export namespace Contracts {
     export type ArtistResponse = ArtistResponseDto
     export type GenreCreationRequest = GenreCreationRequestDto
     export type GenreResponse = GenreResponseDto
+  }
+
+  export namespace Media {
+    export type UploadTokenResponse = UploadTokenResponseDto
   }
 
   export namespace Error {

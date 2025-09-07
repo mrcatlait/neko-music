@@ -1,0 +1,59 @@
+<div class="picture-upload">
+  <picture class="picture-upload__preview">
+    @if (previewUrl()) {
+      <img
+        alt="Picture Preview"
+        [src]="previewUrl()!"
+        (error)="error.set('Failed to load image')"
+      />
+    } @else {
+      <img
+        alt=""
+        src="assets/images/placeholders/1x1.gif"
+      />
+    }
+  </picture>
+
+  <input
+    #fileInput
+    hidden
+    type="file"
+    [accept]="allowedTypes.join(',')"
+    (change)="onFileSelected($event)"
+  />
+
+  <div
+    class="picture-upload__dropzone"
+    role="button"
+    tabindex="0"
+    [class.picture-upload__dropzone--dragover]="dragging()"
+    (dragleave)="onDragleave($event)"
+    (dragover)="onDragover($event)"
+    (drop)="onDrop($event)"
+  >
+    <div class="picture-upload__dropzone-icon">
+      <i class="outlined">upload_file</i>
+    </div>
+
+    <div class="picture-upload__dropzone-text">
+      <span class="body-large">
+        <span
+          class="picture-upload__dropzone-link link"
+          tabindex="0"
+          (click)="onBrowseFiles()"
+          (keydown)="onBrowseFiles()"
+          >Click to upload</span
+        >
+        or drag and drop</span
+      >
+
+      <span class="picture-upload__dropzone-hint-text body-small">JPEG, WEBP or PNGs only • 10MB max</span>
+    </div>
+  </div>
+
+  @if (error()) {
+    <div class="picture-upload__error">
+      <span class="body-small">{{ error() }}</span>
+    </div>
+  }
+</div>

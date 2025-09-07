@@ -1,7 +1,6 @@
 export * from './artist-list/artist-list'
 export * from './avatar/avatar'
 export * from './button/button'
-export * from './genre-autocomplete/genre-autocomplete'
 export * from './icon-button/icon-button'
 export * from './input-chip/input-chip'
 export * from './linear-progress/linear-progress'

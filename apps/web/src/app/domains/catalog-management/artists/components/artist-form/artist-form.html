@@ -1,7 +1,14 @@
 <form
   autocomplete="off"
+  class="artist-form"
   [formGroup]="form"
 >
+  <div class="artist-form__profile-picture">
+    <span class="body-large">Profile Picture</span>
+
+    <n-picture-upload />
+  </div>
+
   <n-textfield>
     <label for="name">Artist Name</label>
 

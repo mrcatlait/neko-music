@@ -1,24 +1,24 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 
-import { GetArtistArtworkUploadTokenValidator } from './get-artist-artwork-upload-token.validator'
+import { GenerateArtistUploadTokenValidator } from './generate-artist-upload-token.validator'
 
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 import { EntityType, MediaType } from '@/modules/media/enums'
 
-export interface GetArtistArtworkUploadTokenUseCaseParams {
+export interface GenerateArtistUploadTokenUseCaseParams {
   readonly artistId: string
   readonly userId: string
 }
 
 @Injectable()
-export class GetArtistArtworkUploadTokenUseCase {
+export class GenerateArtistUploadTokenUseCase {
   constructor(
-    private readonly getArtistArtworkUploadTokenValidator: GetArtistArtworkUploadTokenValidator,
+    private readonly generateArtistUploadTokenValidator: GenerateArtistUploadTokenValidator,
     private readonly generateUploadTokenUseCase: GenerateUploadTokenUseCase,
   ) {}
 
-  async invoke(params: GetArtistArtworkUploadTokenUseCaseParams): Promise<{ uploadToken: string }> {
-    const validationResult = await this.getArtistArtworkUploadTokenValidator.validate(params)
+  async invoke(params: GenerateArtistUploadTokenUseCaseParams): Promise<{ uploadToken: string }> {
+    const validationResult = await this.generateArtistUploadTokenValidator.validate(params)
 
     if (!validationResult.isValid) {
       throw new BadRequestException(validationResult.errors)

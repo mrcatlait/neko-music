@@ -1,0 +1,74 @@
+.picture-upload {
+  --n-picture-upload-size: 256px;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'preview dropzone'
+    'error error';
+  column-gap: 40px;
+  row-gap: 8px;
+  
+  &__preview {
+    grid-area: preview;
+    overflow: hidden;
+    object-fit: cover;
+    height: var(--n-picture-upload-size);
+    width: var(--n-picture-upload-size);
+    border-radius: var(--shape-corner-full);
+    background-color: var(--color-surface-container);
+  }
+
+  &__dropzone {
+    grid-area: dropzone;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    height: var(--n-picture-upload-size);
+    width: 100%;
+    border-radius: var(--shape-corner-medium);
+    outline: 1px dashed var(--color-text-disabled);
+
+    &--dragover {
+      background-color: var(--color-surface-container);
+      outline-width: 0;
+    }
+  }
+
+  &__dropzone-icon {
+    $icon-size: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--shape-corner-full);
+    background-color: var(--color-surface-container-high);
+    width: $icon-size;
+    height: $icon-size;
+    text-align: center;
+    
+    i {
+      font-size: calc($icon-size * 0.4);
+    }
+  }
+
+  &__dropzone-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__dropzone-link {
+    cursor: pointer;
+  }
+
+  &__dropzone-hint-text {
+    color: var(--color-text-medium-emphasis);
+  }
+
+  &__error {
+    grid-area: error;
+    color: var(--color-error);
+  }
+}

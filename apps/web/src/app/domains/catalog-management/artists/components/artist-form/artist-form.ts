@@ -3,11 +3,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpClient } from '@angular/common/http'
 import { firstValueFrom } from 'rxjs'
 import { Contracts } from '@neko/contracts'
+import { toSignal } from '@angular/core/rxjs-interop'
 
 import { Autocomplete, AutocompleteOption, AutocompleteTrigger } from '@/shared/autocomplete'
 import { LoadingIndicator, Textfield, Button, InputChip } from '@/shared/components'
 import { ENVIRONMENT } from '@/core/providers'
 import { RECORD_STATUSES } from '@/domains/catalog-management/shared/enums'
+import { PictureUpload } from '@/domains/catalog-management/shared/components'
 
 interface Genre {
   value: string
@@ -23,6 +25,7 @@ interface Genre {
     Button,
     InputChip,
     LoadingIndicator,
+    PictureUpload,
     ReactiveFormsModule,
     Textfield,
   ],
@@ -40,7 +43,7 @@ export class ArtistForm {
   readonly formSubmit = output<{ name: string; genres: string[] }>()
   readonly formCancel = output<void>()
 
-  readonly genresResource = resource({
+  protected readonly genresResource = resource({
     loader: () =>
       firstValueFrom(
         this.http.get<Contracts.CatalogManagement.GenreResponse[]>(
@@ -52,6 +55,9 @@ export class ArtistForm {
   protected readonly form = new FormGroup({
     name: new FormControl('', [Validators.required]),
   })
+
+  private readonly filterValue = toSignal(this.form.controls.name.valueChanges)
+  protected readonly availableGenres = computed(() => {})
 
   protected get name(): FormControl {
     return this.form.controls.name

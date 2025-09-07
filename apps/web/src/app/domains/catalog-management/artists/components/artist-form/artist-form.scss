@@ -1,20 +1,12 @@
 .artist-form {
-  &__genres {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+
+  &__profile-picture {
     display: flex;
     flex-direction: column;
     gap: 8px;
-
-    &-label {
-      font-size: var(--typography-body-medium-size);
-      font-weight: var(--typography-body-medium-weight);
-      line-height: var(--typography-body-medium-line-height);
-      color: var(--color-on-surface);
-    }
-
-    &-error {
-      color: var(--color-error);
-      font-size: var(--typography-body-small-size);
-      line-height: var(--typography-body-small-line-height);
-    }
   }
 }

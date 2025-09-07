@@ -11,16 +11,13 @@ import {
 } from '../dtos'
 import {
   CreateArtistUseCase,
-  GetArtistArtworkUploadTokenUseCase,
   GetArtistUseCase,
   UpdateArtistStatusUseCase,
   UpdateArtistUseCase,
   UpdateVerifiedStatusUseCase,
 } from '../use-cases'
 
-import { UploadTokenDto } from '@/modules/media/dtos'
-import { RequirePermissions, Session } from '@/modules/auth/decorators'
-import { User } from '@/modules/auth/interfaces'
+import { RequirePermissions } from '@/modules/auth/decorators'
 
 @Controller('catalog/artists')
 @ApiTags('Artists')
@@ -32,7 +29,6 @@ export class ArtistController {
     private readonly updateArtistUseCase: UpdateArtistUseCase,
     private readonly updateArtistStatusUseCase: UpdateArtistStatusUseCase,
     private readonly updateVerifiedStatusUseCase: UpdateVerifiedStatusUseCase,
-    private readonly getArtistArtworkUploadTokenUseCase: GetArtistArtworkUploadTokenUseCase,
   ) {}
 
   @Get(':artistId')
@@ -102,17 +98,5 @@ export class ArtistController {
   })
   reviewArtist(@Param('artistId') artistId: string, @Body() body: ArtistReviewRequest): Promise<ArtistResponse> {
     return this.updateArtistStatusUseCase.invoke({ id: artistId, status: body.status })
-  }
-
-  @Get(':artistId/upload-token')
-  @RequirePermissions(Permissions.Artist.Write)
-  @ApiOperation({
-    summary: 'Get an upload token for an artist',
-  })
-  @ApiOkResponse({
-    type: UploadTokenDto,
-  })
-  getUploadToken(@Param('artistId') artistId: string, @Session() user: User): Promise<UploadTokenDto> {
-    return this.getArtistArtworkUploadTokenUseCase.invoke({ artistId, userId: user.id })
   }
 }
