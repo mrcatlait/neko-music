@@ -4,7 +4,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
 import { RegistrationRequest, LoginResponse, LoginRequest, RefreshTokenResponse } from '../dtos'
 import { GetUserUseCase, LoginUseCase, RefreshTokenUseCase, RegisterUserUseCase } from '../use-cases'
-import { Public, Session } from '../decorators'
+import { Public, UserSession } from '../decorators'
 import { AuthService } from '../services'
 import { User } from '../interfaces'
 import { WhoamiResponse } from '../dtos/whoami-response.dto'
@@ -76,7 +76,7 @@ export class AuthController {
   @ApiOperation({
     summary: 'Logout a user',
   })
-  logout(@Res() response: FastifyReply, @Session() user: User): Promise<void> {
+  logout(@Res() response: FastifyReply, @UserSession() user: User): Promise<void> {
     return this.authService.logout(response, user)
   }
 
@@ -115,7 +115,7 @@ export class AuthController {
   @ApiOkResponse({
     type: WhoamiResponse,
   })
-  whoami(@Session() user: User): Promise<WhoamiResponse> {
+  whoami(@UserSession() user: User): Promise<WhoamiResponse> {
     return this.getUserUseCase.invoke({ userId: user.id })
   }
 }

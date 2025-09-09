@@ -9,4 +9,16 @@
     flex-direction: column;
     gap: 8px;
   }
+
+  &__genres {
+    display: flex;
+    flex-direction: row;
+    margin-top: -8px;
+    gap: 8px;
+  }
+
+  &__submit {
+    margin-top: 24px;
+    width: fit-content;
+  }
 }

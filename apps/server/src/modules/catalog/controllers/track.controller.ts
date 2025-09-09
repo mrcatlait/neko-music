@@ -8,7 +8,7 @@ import { CreateTrackUseCase } from '../use-cases'
 import { UploadTokenDto } from '@/modules/media/dtos'
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 import { EntityType, MediaType } from '@/modules/media/enums'
-import { RequirePermissions, Session } from '@/modules/auth/decorators'
+import { RequirePermissions, UserSession } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
 
 @Controller('catalog/tracks')
@@ -61,7 +61,7 @@ export class TrackController {
   @ApiOkResponse({
     type: UploadTokenDto,
   })
-  getUploadToken(@Param('trackId') trackId: string, @Session() user: User): Promise<UploadTokenDto> {
+  getUploadToken(@Param('trackId') trackId: string, @UserSession() user: User): Promise<UploadTokenDto> {
     return this.generateUploadTokenUseCase.invoke({
       entityType: EntityType.TRACK,
       entityId: trackId,

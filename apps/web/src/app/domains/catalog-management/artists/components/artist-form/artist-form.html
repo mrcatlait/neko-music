@@ -6,7 +6,7 @@
   <div class="artist-form__profile-picture">
     <span class="body-large">Profile Picture</span>
 
-    <n-picture-upload />
+    <n-picture-upload (selectedFile)="onSelectedFile($event)" />
   </div>
 
   <n-textfield>
@@ -34,9 +34,9 @@
     <label for="genres">Genres</label>
 
     <input
+      formControlName="genreFilter"
       id="genres"
       placeholder="Type genre name"
-      required
       type="text"
       [nAutocompleteTrigger]="autocomplete"
       (optionSelected)="addGenre($event)"
@@ -44,20 +44,29 @@
 
     <ng-template #autocomplete>
       <n-autocomplete>
-        @for (genre of genresResource.value(); track genre.id) {
-          <n-autocomplete-option [value]="genre.id">
-            {{ genre.name }}
-          </n-autocomplete-option>
+        @if (availableGenres().length > 0) {
+          @for (genre of availableGenres(); track genre.id) {
+            <n-autocomplete-option [value]="genre.id">
+              {{ genre.name }}
+            </n-autocomplete-option>
+          }
+        } @else {
+          <n-autocomplete-option disabled> No genres found </n-autocomplete-option>
         }
       </n-autocomplete>
     </ng-template>
   </n-textfield>
 
-  @for (genre of selectedGenres(); track genre) {
-    <n-input-chip (remove)="removeGenre(genre.value)"> {{ genre.label }} </n-input-chip>
+  @if (selectedGenres().length > 0) {
+    <div class="artist-form__genres">
+      @for (genre of selectedGenres(); track genre) {
+        <n-input-chip (remove)="removeGenre(genre.value)"> {{ genre.label }} </n-input-chip>
+      }
+    </div>
   }
 
   <button
+    class="artist-form__submit"
     nButton
     type="submit"
     [disabled]="saving()"

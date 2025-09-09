@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, signal, viewChild } from '@angular/core'
+import { ChangeDetectionStrategy, Component, ElementRef, output, signal, viewChild } from '@angular/core'
 
 @Component({
   selector: 'n-picture-upload',
@@ -8,6 +8,8 @@ import { ChangeDetectionStrategy, Component, ElementRef, signal, viewChild } fro
 })
 export class PictureUpload {
   private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput')
+
+  readonly selectedFile = output<File>()
 
   protected readonly maxFileSize = 10 * 1024 * 1024 // 10MB
   protected readonly allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
@@ -65,6 +67,7 @@ export class PictureUpload {
     try {
       const url = URL.createObjectURL(file)
       this.previewUrl.set(url)
+      this.selectedFile.emit(file)
     } catch {
       this.error.set('Failed to create image preview')
     }

@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common'
 
-import { ArtistRepository, GenreRepository } from '../../repositories'
-import { CreateArtistUseCaseParams } from './create-artist.use-case'
+import { ArtistRepository, GenreRepository } from '../../../repositories'
+import { AddArtistUseCaseParams } from './add-artist.use-case'
 
 import { ValidationResult, Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
-export class CreateArtistValidator implements Validator<CreateArtistUseCaseParams> {
+export class AddArtistValidator implements Validator<AddArtistUseCaseParams> {
   constructor(
     private readonly artistRepository: ArtistRepository,
     private readonly genreRepository: GenreRepository,
   ) {}
 
-  async validate(params: CreateArtistUseCaseParams): Promise<ValidationResult> {
+  async validate(params: AddArtistUseCaseParams): Promise<ValidationResult> {
     const [artistExists, genresExist] = await Promise.all([
       this.artistRepository.existsByName(params.name),
       this.genreRepository.existsMany(params.genres),

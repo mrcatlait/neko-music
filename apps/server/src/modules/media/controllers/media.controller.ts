@@ -16,7 +16,7 @@ import { UploadTokenGuard } from '../guards'
 import { UploadMediaUseCase } from '../use-cases'
 
 import { AuthGuard } from '@/modules/auth/guards'
-import { Session } from '@/modules/auth/decorators'
+import { UserSession } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
 
 const DEFAULT_MAX_FILE_SIZE = 1024 * 1024 * 50 // 50MB
@@ -45,7 +45,7 @@ export class MediaController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
   async uploadMedia(
-    @Session() user: User,
+    @UserSession() user: User,
     @Headers(UPLOAD_TOKEN_HEADER) token: string,
     @UploadedFile(
       new ParseFilePipe({

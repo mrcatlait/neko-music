@@ -41,7 +41,7 @@ import { PORTAL_CONTEXT } from '../portal'
 export class AutocompleteOption {
   private readonly context = inject<AutocompleteContext>(PORTAL_CONTEXT)
 
-  value = input.required<string | number>()
+  value = input<string | number>()
 
   protected onMouseDown(event: Event): void {
     event.preventDefault()

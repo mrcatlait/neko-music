@@ -10,7 +10,6 @@ import {
   ArtistVerifyRequest,
 } from '../dtos'
 import {
-  CreateArtistUseCase,
   GetArtistUseCase,
   UpdateArtistStatusUseCase,
   UpdateArtistUseCase,
@@ -24,7 +23,6 @@ import { RequirePermissions } from '@/modules/auth/decorators'
 @ApiBearerAuth()
 export class ArtistController {
   constructor(
-    private readonly createArtistUseCase: CreateArtistUseCase,
     private readonly getArtistUseCase: GetArtistUseCase,
     private readonly updateArtistUseCase: UpdateArtistUseCase,
     private readonly updateArtistStatusUseCase: UpdateArtistStatusUseCase,
@@ -40,21 +38,6 @@ export class ArtistController {
   })
   getArtist(@Param('artistId') artistId: string): Promise<ArtistResponse> {
     return this.getArtistUseCase.invoke({ id: artistId })
-  }
-
-  @Post('')
-  @RequirePermissions(Permissions.Artist.Write)
-  @ApiOperation({
-    summary: 'Create an artist',
-  })
-  @ApiOkResponse({
-    type: ArtistResponse,
-  })
-  createArtist(@Body() body: ArtistCreationRequest): Promise<ArtistResponse> {
-    return this.createArtistUseCase.invoke({
-      name: body.name,
-      genres: body.genres,
-    })
   }
 
   @Put(':artistId')

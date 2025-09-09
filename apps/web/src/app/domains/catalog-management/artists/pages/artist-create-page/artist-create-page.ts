@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, resource, signal, viewChild } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
+import { switchMap } from 'rxjs'
+import { Contracts } from '@neko/contracts'
 
 import { ArtistForm } from '../../components'
 
 import { ENVIRONMENT } from '@/core/providers'
 import { Button } from '@/shared/components'
+import { Snackbar } from '@/shared/snackbar'
 
 @Component({
   selector: 'n-artist-create-page',
@@ -15,15 +18,44 @@ import { Button } from '@/shared/components'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArtistCreatePage {
-  protected readonly router = inject(Router)
+  private readonly router = inject(Router)
+  private readonly http = inject(HttpClient)
+  private readonly environment = inject(ENVIRONMENT)
+  private readonly snackbar = inject(Snackbar)
 
   protected readonly saving = signal(false)
   protected readonly isDragging = signal(false)
   protected readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput')
 
-  protected createArtist(artist: { name: string; genres: string[] }): void {
-    console.log('Creating artist:', artist)
-    console.log('Selected genres:', artist.genres.join(', '))
+  protected createArtist(artist: { name: string; genres: string[]; image: File }): void {
+    this.http
+      .post(`${this.environment.apiUrl}/catalog-management/artists`, artist)
+      .pipe(
+        switchMap((artistResponse) => {
+          const artistId = (artistResponse as unknown as Contracts.CatalogManagement.ArtistResponse).id
+          return this.http.get(`${this.environment.apiUrl}/catalog-management/artists/${artistId}/upload-token`)
+        }),
+        switchMap((uploadTokenResponse) => {
+          const uploadToken = (uploadTokenResponse as unknown as Contracts.Media.UploadTokenResponse).uploadToken
+          const formData = new FormData()
+          formData.append('file', artist.image)
+          return this.http.post(`${this.environment.apiUrl}/media/upload`, formData, {
+            headers: {
+              'x-upload-token': uploadToken,
+            },
+          })
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.snackbar.info('Artist created successfully')
+          this.router.navigate(['/catalog-management/artists'])
+        },
+        error: () => {
+          this.snackbar.info('Failed to create artist')
+          this.saving.set(false)
+        },
+      })
   }
 
   protected cancel(): void {

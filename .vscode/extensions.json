@@ -4,6 +4,7 @@
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
     "moonrepo.moon-console",
-    "angular.ng-template"
+    "angular.ng-template",
+    "searKing.preview-vscode"
   ]
 }

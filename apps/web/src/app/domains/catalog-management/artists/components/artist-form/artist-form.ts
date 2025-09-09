@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, resource, signal } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { HttpClient } from '@angular/common/http'
-import { firstValueFrom } from 'rxjs'
+import { firstValueFrom, startWith } from 'rxjs'
 import { Contracts } from '@neko/contracts'
 import { toSignal } from '@angular/core/rxjs-interop'
 
@@ -40,7 +40,7 @@ export class ArtistForm {
   readonly submitLabel = input.required<string>()
   readonly saving = input.required<boolean>()
 
-  readonly formSubmit = output<{ name: string; genres: string[] }>()
+  readonly formSubmit = output<{ name: string; genres: string[]; image: File }>()
   readonly formCancel = output<void>()
 
   protected readonly genresResource = resource({
@@ -54,13 +54,26 @@ export class ArtistForm {
 
   protected readonly form = new FormGroup({
     name: new FormControl('', [Validators.required]),
+    genreFilter: new FormControl('', []),
   })
 
-  private readonly filterValue = toSignal(this.form.controls.name.valueChanges)
-  protected readonly availableGenres = computed(() => {})
+  private readonly filterValue$ = this.genreFilter.valueChanges.pipe(startWith(this.genreFilter.value))
+  readonly filterValue = toSignal(this.filterValue$)
+  protected readonly availableGenres = computed(() => {
+    const filterValue = this.filterValue()?.toLowerCase() ?? ''
+    const notSelectedGenres = this.genresResource.value()?.filter((genre) => !this.genres().includes(genre.id))
+
+    return notSelectedGenres?.filter((genre) => genre.name.toLowerCase().includes(filterValue)) ?? []
+  })
+
+  private image: File | null = null
 
   protected get name(): FormControl {
     return this.form.controls.name
+  }
+
+  protected get genreFilter(): FormControl {
+    return this.form.controls.genreFilter
   }
 
   private readonly genres = signal<string[]>([])
@@ -82,8 +95,13 @@ export class ArtistForm {
     })
   })
 
+  protected onSelectedFile(file: File): void {
+    this.image = file
+  }
+
   protected addGenre(genre: unknown): void {
     this.genres.set([...this.genres(), genre as string])
+    this.genreFilter.setValue('')
   }
 
   protected removeGenre(genreId: string): void {
@@ -91,18 +109,19 @@ export class ArtistForm {
   }
 
   protected submit(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || !this.image) {
       this.form.markAllAsTouched()
       return
     }
 
     const name = this.form.controls.name.value
-    const genres = this.genres()
+    const genres = this.selectedGenres().map((genre) => genre.value)
 
     if (name) {
       this.formSubmit.emit({
         name,
         genres,
+        image: this.image,
       })
     }
   }

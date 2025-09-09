@@ -9,14 +9,20 @@
   column-gap: 40px;
   row-gap: 8px;
   
-  &__preview {
+  &__preview, &__preview > img {
     grid-area: preview;
     overflow: hidden;
-    object-fit: cover;
     height: var(--n-picture-upload-size);
     width: var(--n-picture-upload-size);
     border-radius: var(--shape-corner-full);
     background-color: var(--color-surface-container);
+
+    & > img {
+      grid-area: preview;
+      object-fit: cover;
+      height: var(--n-picture-upload-size);
+      width: var(--n-picture-upload-size);
+    }
   }
 
   &__dropzone {

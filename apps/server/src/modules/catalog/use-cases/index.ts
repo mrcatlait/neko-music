@@ -1,6 +1,5 @@
 export * from './artists'
 export * from './create-album'
-export * from './create-artist'
 export * from './genres'
 export * from './create-track'
 export * from './get-artist'
