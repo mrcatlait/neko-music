@@ -4,6 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { APP_GUARD } from '@nestjs/core'
 
 import { SecurityHeadersMiddleware } from './middlewares'
+import { BackstageModule } from '../backstage/backstage.module'
 
 import { AuthGuard } from '@/modules/auth/guards'
 import { DatabaseModule } from '@/modules/database/database.module'
@@ -53,6 +54,7 @@ import { AuthModule } from '@/modules/auth/auth.module'
       }),
       inject: [ConfigService],
     }),
+    BackstageModule.forRoot({}),
     CatalogModule,
     MediaModule.forRoot({
       storageStrategy: new LocalStorageStrategy({

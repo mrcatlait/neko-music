@@ -5,9 +5,19 @@ import {
   RegistrationRequestDto,
   WhoamiResponseDto,
 } from './auth'
-import { ArtistResponseDto, GenreCreationRequestDto, GenreResponseDto } from './catalog-management'
+import {
+  ArtistCreationRequestDto,
+  ArtistDto,
+  ArtistsResponseDto,
+  ArtistUpdateRequestDto,
+  GenreCreationRequestDto,
+  GenreDto,
+  GenresResponseDto,
+  GenreUpdateRequestDto,
+} from './backstage'
 import { BadRequestDto } from './error'
 import { UploadTokenResponseDto } from './media'
+import { ArtworkDto } from './shared'
 
 export namespace Contracts {
   export namespace Auth {
@@ -18,10 +28,17 @@ export namespace Contracts {
     export type WhoamiResponse = WhoamiResponseDto
   }
 
-  export namespace CatalogManagement {
-    export type ArtistResponse = ArtistResponseDto
+  export namespace Backstage {
+    // Genres
     export type GenreCreationRequest = GenreCreationRequestDto
-    export type GenreResponse = GenreResponseDto
+    export type GenreUpdateRequest = GenreUpdateRequestDto
+    export type Genre = GenreDto
+    export type GenresResponse = GenresResponseDto
+    // Artists
+    export type ArtistCreationRequest = ArtistCreationRequestDto
+    export type ArtistUpdateRequest = ArtistUpdateRequestDto
+    export type ArtistsResponse = ArtistsResponseDto
+    export type Artist = ArtistDto
   }
 
   export namespace Media {
@@ -30,5 +47,9 @@ export namespace Contracts {
 
   export namespace Error {
     export type BadRequest = BadRequestDto
+  }
+
+  export namespace Shared {
+    export type Artwork = ArtworkDto
   }
 }

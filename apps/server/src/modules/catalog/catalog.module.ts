@@ -1,13 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 
-import {
-  AlbumController,
-  ArtistController,
-  ArtistManagementController,
-  GenreController,
-  GenreManagementController,
-  TrackController,
-} from './controllers'
+import { AlbumController, ArtistController, GenreController, TrackController } from './controllers'
 import {
   GenreRepository,
   AlbumRepository,
@@ -19,67 +12,15 @@ import {
   TrackGenreRepository,
   TrackArtistRepository,
 } from './repositories'
-import {
-  AddGenreUseCase,
-  AddGenreValidator,
-  CreateAlbumUseCase,
-  CreateAlbumValidator,
-  AddArtistUseCase,
-  AddArtistValidator,
-  CreateTrackUseCase,
-  CreateTrackValidator,
-  GenerateArtistUploadTokenUseCase,
-  GenerateArtistUploadTokenValidator,
-  GetArtistUseCase,
-  GetTracksForAlbumUseCase,
-  ListAllArtistsUseCase,
-  ListAllGenresUseCase,
-  ListPublishedGenresUseCase,
-  PublishGenreUseCase,
-  PublishGenreValidator,
-  UpdateArtistStatusUseCase,
-  UpdateArtistStatusValidator,
-  UpdateArtistUseCase,
-  UpdateArtistValidator,
-  UpdateVerifiedStatusUseCase,
-  UpdateVerifiedStatusValidator,
-} from './use-cases'
+import { GetArtistUseCase, GetTracksForAlbumUseCase } from './use-cases'
 
 @Global()
 @Module({
-  controllers: [
-    AlbumController,
-    ArtistController,
-    ArtistManagementController,
-    GenreController,
-    GenreManagementController,
-    TrackController,
-  ],
+  controllers: [AlbumController, ArtistController, GenreController, TrackController],
   providers: [
     // Use cases
-    AddGenreUseCase,
-    AddGenreValidator,
-    ListAllArtistsUseCase,
-    ListAllGenresUseCase,
-    ListPublishedGenresUseCase,
-    PublishGenreUseCase,
-    PublishGenreValidator,
-    CreateAlbumUseCase,
-    CreateAlbumValidator,
-    AddArtistUseCase,
-    AddArtistValidator,
-    CreateTrackUseCase,
-    CreateTrackValidator,
     GetArtistUseCase,
-    GenerateArtistUploadTokenUseCase,
-    GenerateArtistUploadTokenValidator,
     GetTracksForAlbumUseCase,
-    UpdateArtistUseCase,
-    UpdateArtistValidator,
-    UpdateArtistStatusUseCase,
-    UpdateArtistStatusValidator,
-    UpdateVerifiedStatusUseCase,
-    UpdateVerifiedStatusValidator,
     // Repositories
     AlbumArtistRepository,
     AlbumGenreRepository,

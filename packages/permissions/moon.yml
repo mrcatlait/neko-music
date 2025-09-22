@@ -19,4 +19,4 @@ tasks:
       - '@globs(sources)'
       - '@globs(configs)'
     outputs:
-      - 'lib'
+      - 'dist'

@@ -9,29 +9,6 @@ import { DatabaseService } from '@/modules/database'
 export class ArtistRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  create<Type extends ArtistEntity>(artist: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "catalog"."Artist" (name, verified, status)
-      VALUES (${artist.name}, ${artist.verified}, ${artist.status})
-      RETURNING *
-    `.then((result) => result.at(0)!)
-  }
-
-  update(artist: ArtistEntity, sql?: Sql): Promise<ArtistEntity> {
-    return (sql ?? this.databaseService.sql)<ArtistEntity[]>`
-      UPDATE "catalog"."Artist" 
-      SET ${this.databaseService.sql(artist)}
-      WHERE id = ${artist.id}
-      RETURNING *
-    `.then((result) => result.at(0)!)
-  }
-
-  delete(id: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "catalog"."Artist" WHERE id = ${id}
-    `.then(() => undefined)
-  }
-
   find<Type extends ArtistEntity>(id: string, sql?: Sql): Promise<Type | undefined> {
     return (sql ?? this.databaseService.sql)<Type[]>`
       SELECT *

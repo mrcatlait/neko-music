@@ -1,9 +1,8 @@
-import { Contracts } from '@neko/contracts'
 import { ApiProperty } from '@nestjs/swagger'
 
 import { RecordStatus } from '../enums'
 
-export class ArtistResponse implements Contracts.CatalogManagement.ArtistResponse {
+export class ArtistResponse {
   @ApiProperty({
     description: 'The id of the artist',
     example: '123e4567-e89b-12d3-a456-426614174000',

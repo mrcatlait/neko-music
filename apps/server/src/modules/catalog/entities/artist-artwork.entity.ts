@@ -1,4 +1,4 @@
-import { ArtworkEntity } from './artwork.entity'
+import { ArtworkEntity } from '@/modules/shared/entities'
 
 export interface ArtistArtworkEntity extends ArtworkEntity {
   artistId: string

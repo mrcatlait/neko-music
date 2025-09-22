@@ -1,1 +1,1 @@
-export * from './image.entity'
+export * from './artwork.entity'

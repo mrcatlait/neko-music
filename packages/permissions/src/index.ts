@@ -25,6 +25,8 @@ export const Permissions = {
   Artist: {
     Read: 'artist.read',
     Write: 'artist.write',
+    Manage: 'artist.manage',
+    ManageAll: 'artist.manage.all',
     Follow: 'artist.follow',
   },
   User: {
