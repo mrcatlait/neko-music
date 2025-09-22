@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@neko/eslint-config": "*",
-    "typescript": "~5.7.2"
+    "typescript": "~5.9.2"
   },
   "prettier": "@neko/eslint-config/prettier"
 }
