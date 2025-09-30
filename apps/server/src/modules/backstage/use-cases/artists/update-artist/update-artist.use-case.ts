@@ -6,7 +6,6 @@ import { GetArtistByIdUseCase } from '../get-artist-by-id'
 import { DatabaseService } from '@/modules/database'
 import { UseCase } from '@/modules/shared/interfaces'
 import { ArtistEntity, ArtistGenreEntity } from '@/modules/catalog/entities'
-import { WithArtwork } from '@/modules/shared/entities'
 
 export interface UpdateArtistUseCaseParams {
   readonly id: string
@@ -14,7 +13,7 @@ export interface UpdateArtistUseCaseParams {
   readonly genres: string[]
 }
 
-export type UpdateArtistUseCaseResult = WithArtwork<ArtistEntity>
+export type UpdateArtistUseCaseResult = ArtistEntity
 
 @Injectable()
 export class UpdateArtistUseCase implements UseCase<UpdateArtistUseCaseParams, UpdateArtistUseCaseResult> {

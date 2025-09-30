@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { File } from '@nest-lab/fastify-multer'
 
 import { AddArtistValidator } from './add-artist.validator'
 import { GetArtistByIdUseCase } from '../get-artist-by-id'
@@ -6,23 +7,17 @@ import { GetArtistByIdUseCase } from '../get-artist-by-id'
 import { DatabaseService } from '@/modules/database'
 import { UseCase } from '@/modules/shared/interfaces'
 import { ArtistEntity, ArtistGenreEntity } from '@/modules/catalog/entities'
-import { ArtworkEntity, WithArtwork } from '@/modules/shared/entities'
 
 export interface AddArtistUseCaseParams {
   readonly name: string
   readonly genres: string[]
+  readonly artwork: File
 }
 
-export type AddArtistUseCaseResult = WithArtwork<ArtistEntity>
+export type AddArtistUseCaseResult = ArtistEntity
 
 @Injectable()
 export class AddArtistUseCase implements UseCase<AddArtistUseCaseParams, AddArtistUseCaseResult> {
-  private readonly placeholderArtwork: ArtworkEntity = {
-    url: 'https://placehold.co/600x400',
-    sizes: ['small', 'medium', 'large'],
-    dominantColor: '#000000',
-  }
-
   constructor(
     private readonly addArtistValidator: AddArtistValidator,
     private readonly databaseService: DatabaseService,
@@ -38,24 +33,18 @@ export class AddArtistUseCase implements UseCase<AddArtistUseCaseParams, AddArti
 
     const artistId = await this.databaseService.sql.begin(async (transaction) => {
       const artist = await transaction<ArtistEntity[]>`
-        INSERT INTO "catalog"."Artist" ("name")
+        INSERT INTO "catalog"."Artist" ("name", "artwork")
         VALUES (${params.name})
         RETURNING *
       `.then((result) => result.at(0)!)
 
-      await Promise.all([
-        transaction<ArtworkEntity[]>`
-        INSERT INTO "catalog"."ArtistArtwork" ("artistId", "url", "sizes", "dominantColor")
-        VALUES (${artist.id}, ${this.placeholderArtwork.url}, ${this.placeholderArtwork.sizes}, ${this.placeholderArtwork.dominantColor})
-        RETURNING *
-      `.then((result) => result.at(0)!),
-
-        transaction<ArtistGenreEntity[]>`
+      await transaction<ArtistGenreEntity[]>`
         INSERT INTO "catalog"."ArtistGenre" ("artistId", "genreId")
         VALUES (${artist.id}, ${params.genres})
         RETURNING *
-      `.then(() => undefined),
-      ])
+      `
+
+      
 
       return artist.id
     })

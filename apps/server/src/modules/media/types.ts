@@ -24,8 +24,14 @@ export interface MediaModuleOptions {
   temporaryDirectory: string
 
   /**
-   * Flag to indicate whether to cleanup the source file after processing.
-   * Enable this flag to reduce the storage usage.
+   * The allowed image mime types.
+   * @example ['image/jpeg', 'image/png', 'image/webp']
    */
-  cleanupSourceAfterProcessing?: boolean
+  allowedImageMimeTypes: string[]
+
+  /**
+   * The maximum size of the image in bytes.
+   * @example 10485760 // (10MB)
+   */
+  maxImageSize: number
 }

@@ -9,7 +9,7 @@ export interface StorageStrategy {
   /**
    * The storage provider
    */
-  readonly storageProvider: StorageProvider
+  readonly name: StorageProvider
 
   /**
    * Uploads a buffer to the storage

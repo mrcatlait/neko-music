@@ -3,6 +3,7 @@ CREATE TABLE "catalog"."Album" (
   "name" VARCHAR(255) NOT NULL,
   "releaseDate" DATE NOT NULL,
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
+  "artwork" JSONB NOT NULL,
   "type" "catalog"."AlbumType" NOT NULL DEFAULT 'ALBUM'
 );
 

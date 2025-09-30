@@ -17,8 +17,6 @@ import {
   UpdateArtistValidator,
   RemoveArtistUseCase,
   RemoveArtistValidator,
-  GenerateArtistUploadTokenUseCase,
-  GenerateArtistUploadTokenValidator,
 } from './use-cases'
 import { ArtistController, GenreController } from './controllers'
 
@@ -32,7 +30,6 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     // Use cases
     AddArtistUseCase,
     AddGenreUseCase,
-    GenerateArtistUploadTokenUseCase,
     GetArtistByIdUseCase,
     ListArtistsUseCase,
     ListGenresUseCase,
@@ -43,7 +40,6 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     // Use case validators
     AddArtistValidator,
     AddGenreValidator,
-    GenerateArtistUploadTokenValidator,
     RemoveArtistValidator,
     RemoveGenreValidator,
     UpdateArtistValidator,

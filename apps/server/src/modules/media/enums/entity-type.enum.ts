@@ -3,5 +3,4 @@ export enum EntityType {
   ALBUM = 'ALBUM',
   ARTIST = 'ARTIST',
   PLAYLIST = 'PLAYLIST',
-  RELEASE = 'RELEASE',
 }

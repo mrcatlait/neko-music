@@ -1,5 +1,5 @@
 CREATE TYPE "media"."MediaType" AS ENUM (
-  'ARTWORK',
+  'IMAGE',
   'AUDIO'
 );
 

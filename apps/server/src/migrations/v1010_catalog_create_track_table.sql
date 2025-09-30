@@ -5,8 +5,11 @@ CREATE TABLE "catalog"."Track" (
   "trackNumber" SMALLINT,
   "diskNumber" SMALLINT,
   "releaseDate" DATE NOT NULL,
+  "type" "catalog"."TrackType" NOT NULL DEFAULT 'ORIGINAL',
   "originalTrackId" UUID,
   "duration" SMALLINT NOT NULL,
+  "artwork" JSONB NOT NULL,
+  "playback" JSONB NOT NULL,
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   CONSTRAINT "FK_Track_Album" FOREIGN KEY ("albumId") REFERENCES "catalog"."Album" ("id") ON DELETE CASCADE,
   CONSTRAINT "FK_Track_OriginalTrack" FOREIGN KEY ("originalTrackId") REFERENCES "catalog"."Track" ("id"),
@@ -25,5 +28,4 @@ COMMENT ON COLUMN "catalog"."Track"."trackNumber" IS 'The track number of the tr
 COMMENT ON COLUMN "catalog"."Track"."diskNumber" IS 'The disk number of the track';
 COMMENT ON COLUMN "catalog"."Track"."releaseDate" IS 'The release date of the track';
 COMMENT ON COLUMN "catalog"."Track"."duration" IS 'The duration of the track';
-COMMENT ON COLUMN "catalog"."Track"."hasLyrics" IS 'Whether the track has lyrics';
 COMMENT ON COLUMN "catalog"."Track"."explicit" IS 'Whether the track is explicit';

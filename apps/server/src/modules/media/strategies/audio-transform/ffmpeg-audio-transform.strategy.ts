@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import { readdirSync, rmSync, writeFileSync } from 'fs'
+import { readdirSync, rmSync } from 'fs'
 import { ModuleRef } from '@nestjs/core'
 import { join } from 'path'
 import { Logger } from '@nestjs/common'

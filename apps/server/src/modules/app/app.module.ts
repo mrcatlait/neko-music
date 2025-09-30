@@ -92,6 +92,8 @@ import { AuthModule } from '@/modules/auth/auth.module'
       },
       namingStrategy: new DefaultNamingStrategy(),
       temporaryDirectory: join(process.cwd(), 'temp'),
+      allowedImageMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+      maxImageSize: 10485760, // 10MB
     }),
     UserModule,
   ],

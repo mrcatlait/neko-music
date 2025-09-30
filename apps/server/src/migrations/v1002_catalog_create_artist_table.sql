@@ -1,6 +1,7 @@
 CREATE TABLE "catalog"."Artist" (
   "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   "name" VARCHAR(255) NOT NULL UNIQUE,
+  "artwork" JSONB NOT NULL,
   "verified" BOOLEAN NOT NULL DEFAULT FALSE,
   CONSTRAINT "UK_Artist_Name" UNIQUE (name)
 );

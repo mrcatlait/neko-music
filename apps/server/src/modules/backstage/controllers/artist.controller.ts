@@ -1,13 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation, ApiOkResponse } from '@nestjs/swagger'
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common'
+import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation, ApiOkResponse, ApiConsumes } from '@nestjs/swagger'
+import { FileInterceptor, File } from '@nest-lab/fastify-multer'
 
-import {
-  AddArtistUseCase,
-  GenerateArtistUploadTokenUseCase,
-  ListArtistsUseCase,
-  RemoveArtistUseCase,
-  UpdateArtistUseCase,
-} from '../use-cases'
+import { AddArtistUseCase, ListArtistsUseCase, RemoveArtistUseCase, UpdateArtistUseCase } from '../use-cases'
 import { Artist, ArtistCreationRequest, ArtistsResponse, ArtistUpdateRequest } from '../dtos'
 
 import { UploadTokenDto } from '@/modules/media/dtos'
@@ -20,7 +15,6 @@ import { User } from '@/modules/auth/interfaces'
 export class ArtistController {
   constructor(
     private readonly addArtistUseCase: AddArtistUseCase,
-    private readonly generateArtistUploadTokenUseCase: GenerateArtistUploadTokenUseCase,
     private readonly listArtistsUseCase: ListArtistsUseCase,
     private readonly removeArtistUseCase: RemoveArtistUseCase,
     private readonly updateArtistUseCase: UpdateArtistUseCase,
@@ -48,8 +42,14 @@ export class ArtistController {
     description: 'The artist has been successfully created',
     type: Artist,
   })
-  createArtist(@Body() body: ArtistCreationRequest): Promise<Artist> {
-    return this.addArtistUseCase.invoke({ name: body.name, genres: body.genres })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('artwork'))
+  createArtist(
+    @Body() body: ArtistCreationRequest,
+    @UploadedFile()
+    artwork: File,
+  ): Promise<Artist> {
+    return this.addArtistUseCase.invoke({ name: body.name, genres: body.genres, artwork })
   }
 
   @Put(':artistId')
@@ -75,16 +75,5 @@ export class ArtistController {
   })
   deleteArtist(@Param('artistId') artistId: string): Promise<void> {
     return this.removeArtistUseCase.invoke({ id: artistId })
-  }
-
-  @Get(':artistId/upload-token')
-  @ApiOperation({
-    summary: 'Get an upload token for the artist artwork',
-  })
-  @ApiOkResponse({
-    type: UploadTokenDto,
-  })
-  getUploadToken(@Param('artistId') artistId: string, @UserSession() user: User): Promise<UploadTokenDto> {
-    return this.generateArtistUploadTokenUseCase.invoke({ artistId, userId: user.id })
   }
 }

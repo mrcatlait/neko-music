@@ -18,4 +18,11 @@ export class ArtistCreationRequest implements Contracts.Backstage.ArtistCreation
   @IsArray()
   @IsUUID('4', { each: true })
   genres: string[]
+
+  @ApiProperty({
+    description: 'The artwork of the artist',
+    type: 'string',
+    format: 'binary',
+  })
+  artwork: string
 }

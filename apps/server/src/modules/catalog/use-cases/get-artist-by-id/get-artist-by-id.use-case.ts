@@ -1,9 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { ArtistEntity } from '../../entities'
-import { ArtistRepository } from '../../repositories'
 
-import { WithArtwork } from '@/modules/shared/entities'
 import { UseCase } from '@/modules/shared/interfaces'
 import { DatabaseService } from '@/modules/database'
 
@@ -11,14 +9,14 @@ export interface GetArtistByIdUseCaseParams {
   readonly id: string
 }
 
-export type GetArtistByIdUseCaseResult = WithArtwork<ArtistEntity>
+export type GetArtistByIdUseCaseResult = ArtistEntity
 
 @Injectable()
 export class GetArtistByIdUseCase implements UseCase<GetArtistByIdUseCaseParams, GetArtistByIdUseCaseResult> {
   constructor(private readonly databaseService: DatabaseService) {}
 
   invoke(params: GetArtistByIdUseCaseParams): Promise<GetArtistByIdUseCaseResult> {
-    return this.databaseService.sql<WithArtwork<ArtistEntity>[]>`
+    return this.databaseService.sql<ArtistEntity[]>`
       SELECT
         artist.*,
         jsonb_build_object(

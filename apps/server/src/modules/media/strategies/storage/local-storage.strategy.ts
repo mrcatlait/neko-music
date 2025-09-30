@@ -32,7 +32,7 @@ export interface LocalStorageStrategyOptions {
 export class LocalStorageStrategy implements StorageStrategy {
   private readonly directory: string
 
-  readonly storageProvider = StorageProvider.LOCAL
+  readonly name = StorageProvider.LOCAL
 
   constructor(private readonly options: LocalStorageStrategyOptions) {
     this.directory = options.directory

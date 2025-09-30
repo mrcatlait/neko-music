@@ -5,7 +5,3 @@ export interface ArtworkEntity {
   sizes: ArtworkSize[]
   dominantColor: string
 }
-
-export type WithArtwork<T> = T & {
-  artwork: ArtworkEntity
-}

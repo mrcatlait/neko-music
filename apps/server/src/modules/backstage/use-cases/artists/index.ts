@@ -1,5 +1,4 @@
 export * from './add-artist'
-export * from './generate-artist-upload-token'
 export * from './get-artist-by-id'
 export * from './list-artists'
 export * from './remove-artist'
