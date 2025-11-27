@@ -1,23 +1,23 @@
-import { NamingStrategy } from './naming.strategy'
+import { GenerateFileNameParameters, NamingStrategy } from './naming.strategy'
 
 export class DefaultNamingStrategy implements NamingStrategy {
-  generateFileName(fileName: string, prefix?: string): string {
-    if (!prefix) {
+  generateFileName({ fileName, format }: GenerateFileNameParameters): string {
+    if (!format) {
       return fileName
     }
 
-    return `${prefix}-${fileName}`
+    return `${fileName}.${format}`
   }
 
-  generateDashManifestName(prefix?: string): string {
-    return this.generateFileName('manifest.mpd', prefix)
+  generateDashManifestName(): string {
+    return this.generateFileName({ fileName: 'manifest.mpd', format: 'mpd' })
   }
 
-  generateDashInitSegmentName(segmentNumber: number | string, prefix?: string): string {
-    return this.generateFileName(`init_${segmentNumber}.m4s`, prefix)
+  generateDashInitSegmentName(segmentNumber: number | string): string {
+    return this.generateFileName({ fileName: `init_${segmentNumber}`, format: 'm4s' })
   }
 
-  generateDashMediaSegmentName(segmentNumber: number | string, chunkNumber: number | string, prefix?: string): string {
-    return this.generateFileName(`chunk_${segmentNumber}_${chunkNumber}.m4s`, prefix)
+  generateDashMediaSegmentName(segmentNumber: number | string, chunkNumber: number | string): string {
+    return this.generateFileName({ fileName: `chunk_${segmentNumber}_${chunkNumber}`, format: 'm4s' })
   }
 }

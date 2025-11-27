@@ -1,65 +1,137 @@
 import { Injectable } from '@nestjs/common'
-import { Sql } from 'postgres'
+import { Insertable, Selectable, Updateable } from 'kysely'
 
-import { PermissionEntity } from '../entities'
+import { Database, InjectDatabase, PermissionTable } from '@/modules/database'
 
-import { DatabaseService } from '@/modules/database'
-
+/**
+ * Repository for Permission entity operations
+ */
 @Injectable()
 export class PermissionRepository {
-  constructor(private readonly databaseService: DatabaseService) {}
+  private readonly table = 'auth.Permission' as const
 
-  create<Type extends PermissionEntity>(permission: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "auth"."Permission" (name, description)
-      VALUES (${permission.name}, ${permission.description})
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  constructor(@InjectDatabase() private readonly database: Database) {}
+
+  /**
+   * Save (insert) a new permission
+   */
+  save(data: Insertable<PermissionTable>) {
+    return this.database.insertInto(this.table).values(data).returningAll().executeTakeFirstOrThrow()
   }
 
-  createMany(permissions: Omit<PermissionEntity, 'id'>[], sql?: Sql): Promise<PermissionEntity[]> {
-    return (sql ?? this.databaseService.sql)<PermissionEntity[]>`
-      INSERT INTO "auth"."Permission" ${this.databaseService.sql(permissions)}
-      RETURNING *
-    `
+  /**
+   * Insert multiple permissions
+   */
+  insert(data: Insertable<PermissionTable>[]) {
+    return this.database.insertInto(this.table).values(data).returningAll().execute()
   }
 
-  delete(id: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "auth"."Permission" WHERE "id" = ${id}
-    `.then(() => undefined)
+  /**
+   * Find all permissions
+   */
+  find() {
+    return this.database.selectFrom(this.table).selectAll().execute()
   }
 
-  deleteMany(ids: string[]): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "auth"."Permission" WHERE "id" IN (${this.databaseService.sql(ids)})
-    `.then(() => undefined)
+  /**
+   * Find permissions by criteria
+   */
+  findBy(criteria: Partial<Selectable<PermissionTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .execute()
   }
 
-  findOne(id: string): Promise<PermissionEntity | undefined> {
-    return this.databaseService.sql<PermissionEntity[]>`
-      SELECT *
-      FROM "auth"."Permission"
-      WHERE "id" = ${id}
-      LIMIT 1
-    `.then((result) => result.at(0))
+  /**
+   * Find one permission by criteria
+   */
+  findOneBy(criteria: Partial<Selectable<PermissionTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirst()
   }
 
-  findByUserId(userId: string): Promise<PermissionEntity[]> {
-    return this.databaseService.sql<PermissionEntity[]>`
-      SELECT p.*
-      FROM "auth"."Permission" p
-        INNER JOIN "auth"."RolePermission" rp ON p."id" = rp."permissionId"
-        INNER JOIN "auth"."Role" r ON rp."roleId" = r."id"
-        INNER JOIN "auth"."UserAccount" ua ON r."id" = ua."roleId"  
-      WHERE ua."id" = ${userId}
-    `
+  /**
+   * Find one permission by criteria or throw
+   */
+  findOneByOrFail(criteria: Partial<Selectable<PermissionTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirstOrThrow()
   }
 
-  exists(id: string): Promise<boolean> {
-    return this.databaseService.sql`
-      SELECT 1
-      FROM "auth"."Permission" WHERE "id" = ${id}
-    `.then((result) => result.length > 0)
+  /**
+   * Update permissions by criteria
+   */
+  update(criteria: Partial<Selectable<PermissionTable>>, data: Updateable<PermissionTable>) {
+    return this.database
+      .updateTable(this.table)
+      .set(data)
+      .where((eb) => eb.and(criteria))
+      .returningAll()
+      .execute()
+  }
+
+  /**
+   * Delete permissions by criteria
+   */
+  delete(criteria: Partial<Selectable<PermissionTable>>) {
+    return this.database
+      .deleteFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .execute()
+      .then(() => undefined)
+  }
+
+  /**
+   * Count all permissions
+   */
+  async count() {
+    const result = await this.database
+      .selectFrom(this.table)
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  /**
+   * Count permissions by criteria
+   */
+  async countBy(criteria: Partial<Selectable<PermissionTable>>) {
+    const result = await this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  /**
+   * Check if permissions exist by criteria
+   */
+  async existsBy(criteria: Partial<Selectable<PermissionTable>>) {
+    const count = await this.countBy(criteria)
+    return count > 0
+  }
+
+  /**
+   * Find all permissions for a user by user ID
+   */
+  findByUserId(userId: string) {
+    return this.database
+      .selectFrom(this.table)
+      .innerJoin('auth.RolePermission', 'auth.RolePermission.permissionId', 'auth.Permission.id')
+      .innerJoin('auth.UserAccount', 'auth.UserAccount.roleId', 'auth.RolePermission.roleId')
+      .where('auth.UserAccount.id', '=', userId)
+      .select(['auth.Permission.id', 'auth.Permission.name', 'auth.Permission.description'])
+      .execute()
   }
 }

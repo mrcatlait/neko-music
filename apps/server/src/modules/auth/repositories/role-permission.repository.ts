@@ -1,38 +1,63 @@
 import { Injectable } from '@nestjs/common'
-import { Sql } from 'postgres'
+import { Insertable, Selectable } from 'kysely'
 
-import { RolePermissionEntity } from '../entities'
+import { Database, InjectDatabase, RolePermissionTable } from '@/modules/database'
 
-import { DatabaseService } from '@/modules/database'
-
+/**
+ * Repository for RolePermission entity operations
+ * Note: This is a join table without a traditional ID column
+ */
 @Injectable()
 export class RolePermissionRepository {
-  constructor(private readonly databaseService: DatabaseService) {}
+  private readonly table = 'auth.RolePermission' as const
 
-  create<Type extends RolePermissionEntity>(rolePermission: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO auth."RolePermission" (role_id, permission_id)
-      VALUES (${rolePermission.roleId}, ${rolePermission.permissionId})
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  constructor(@InjectDatabase() private readonly database: Database) {}
+
+  /**
+   * Save a single role-permission association
+   */
+  save(data: Insertable<RolePermissionTable>) {
+    return this.database.insertInto(this.table).values(data).returningAll().executeTakeFirstOrThrow()
   }
 
-  createMany(rolePermissions: RolePermissionEntity[], sql?: Sql): Promise<RolePermissionEntity[]> {
-    return (sql ?? this.databaseService.sql)<RolePermissionEntity[]>`
-      INSERT INTO auth."RolePermission" ${this.databaseService.sql(rolePermissions)}
-      RETURNING *
-    `
+  /**
+   * Insert multiple role-permission associations
+   */
+  insert(data: Insertable<RolePermissionTable>[]) {
+    return this.database.insertInto(this.table).values(data).returningAll().execute()
   }
 
-  deleteByRoleId(roleId: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM auth."RolePermission" WHERE roleId = ${roleId}
-    `.then(() => undefined)
+  /**
+   * Delete all permissions for a specific role
+   * @param roleId - The role ID
+   */
+  async deleteByRoleId(roleId: string): Promise<void> {
+    await this.database.deleteFrom(this.table).where('roleId', '=', roleId).execute()
   }
 
-  deleteByPermissionId(permissionId: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM auth."RolePermission" WHERE permissionId = ${permissionId}
-    `.then(() => undefined)
+  /**
+   * Delete all role associations for a specific permission
+   * @param permissionId - The permission ID
+   */
+  async deleteByPermissionId(permissionId: string): Promise<void> {
+    await this.database.deleteFrom(this.table).where('permissionId', '=', permissionId).execute()
+  }
+
+  /**
+   * Find all permissions for a specific role
+   * @param roleId - The role ID
+   * @returns Array of role-permission records
+   */
+  async findByRoleId(roleId: string): Promise<Selectable<RolePermissionTable>[]> {
+    return this.database.selectFrom(this.table).where('roleId', '=', roleId).selectAll().execute()
+  }
+
+  /**
+   * Find all roles for a specific permission
+   * @param permissionId - The permission ID
+   * @returns Array of role-permission records
+   */
+  async findByPermissionId(permissionId: string): Promise<Selectable<RolePermissionTable>[]> {
+    return this.database.selectFrom(this.table).where('permissionId', '=', permissionId).selectAll().execute()
   }
 }

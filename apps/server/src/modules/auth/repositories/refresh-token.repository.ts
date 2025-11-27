@@ -1,55 +1,123 @@
 import { Injectable } from '@nestjs/common'
-import { Sql } from 'postgres'
+import { Insertable, Selectable, Updateable } from 'kysely'
 
-import { RefreshTokenEntity } from '../entities'
+import { Database, InjectDatabase, RefreshTokenTable } from '@/modules/database'
 
-import { DatabaseService } from '@/modules/database'
-
+/**
+ * Repository for RefreshToken entity operations
+ */
 @Injectable()
 export class RefreshTokenRepository {
-  constructor(private readonly databaseService: DatabaseService) {}
+  private readonly table = 'auth.RefreshToken' as const
 
-  create<Type extends RefreshTokenEntity>(refreshToken: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO auth."RefreshToken" ("userId", "token", "expiresAt")
-      VALUES (${refreshToken.userId}, ${refreshToken.token}, ${refreshToken.expiresAt})
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  constructor(@InjectDatabase() private readonly database: Database) {}
+
+  save(data: Insertable<RefreshTokenTable>) {
+    return this.database.insertInto(this.table).values(data).returningAll().executeTakeFirstOrThrow()
   }
 
-  findOneByUserId(userId: string): Promise<RefreshTokenEntity | undefined> {
-    return this.databaseService.sql<RefreshTokenEntity[]>`
-      SELECT * FROM auth."RefreshToken" WHERE "userId" = ${userId}
-    `.then((result) => result.at(0))
+  insert(data: Insertable<RefreshTokenTable>[]) {
+    return this.database.insertInto(this.table).values(data).returningAll().execute()
   }
 
-  findOneByToken(token: string): Promise<RefreshTokenEntity | undefined> {
-    return this.databaseService.sql<RefreshTokenEntity[]>`
-      SELECT * FROM auth."RefreshToken" WHERE "token" = ${token}
-    `.then((result) => result.at(0))
+  find() {
+    return this.database.selectFrom(this.table).selectAll().execute()
   }
 
-  delete(id: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM auth."RefreshToken" WHERE id = ${id}
-    `.then(() => undefined)
+  findBy(criteria: Partial<Selectable<RefreshTokenTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .execute()
   }
 
-  deleteByToken(token: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM auth."RefreshToken" WHERE "token" = ${token}
-    `.then(() => undefined)
+  findOneBy(criteria: Partial<Selectable<RefreshTokenTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirst()
   }
 
-  deleteExpired(): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM auth."RefreshToken" WHERE "expiresAt" < NOW()
-    `.then(() => undefined)
+  findOneByOrFail(criteria: Partial<Selectable<RefreshTokenTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirstOrThrow()
   }
 
-  deleteByUserId(userId: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM auth."RefreshToken" WHERE "userId" = ${userId}
-    `.then(() => undefined)
+  update(criteria: Partial<Selectable<RefreshTokenTable>>, data: Updateable<RefreshTokenTable>) {
+    return this.database
+      .updateTable(this.table)
+      .set(data)
+      .where((eb) => eb.and(criteria))
+      .returningAll()
+      .execute()
+  }
+
+  delete(criteria: Partial<Selectable<RefreshTokenTable>>) {
+    return this.database
+      .deleteFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .execute()
+      .then(() => undefined)
+  }
+
+  async count() {
+    const result = await this.database
+      .selectFrom(this.table)
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  async countBy(criteria: Partial<Selectable<RefreshTokenTable>>) {
+    const result = await this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  async existsBy(criteria: Partial<Selectable<RefreshTokenTable>>) {
+    const count = await this.countBy(criteria)
+    return count > 0
+  }
+
+  /**
+   * Find a refresh token by token value
+   */
+  findByToken(token: string) {
+    return this.findOneBy({ token })
+  }
+
+  /**
+   * Delete a refresh token by token value
+   */
+  deleteByToken(token: string) {
+    return this.delete({ token })
+  }
+
+  /**
+   * Delete all expired refresh tokens
+   */
+  deleteExpired() {
+    return this.database
+      .deleteFrom(this.table)
+      .where('expiresAt', '<', new Date())
+      .execute()
+      .then(() => undefined)
+  }
+
+  /**
+   * Delete all refresh tokens for a specific user
+   */
+  deleteByUserId(userId: string) {
+    return this.delete({ userId })
   }
 }

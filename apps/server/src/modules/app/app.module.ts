@@ -44,65 +44,65 @@ import { AuthModule } from '@/modules/auth/auth.module'
     EventBusModule.forRoot({
       messagingStrategy: new ObservableMessagingStrategy(),
     }),
-    AuthModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
-        accessTokenSecret: configService.config.JWT_ACCESS_TOKEN_SECRET,
-        accessTokenExpiresIn: configService.config.JWT_ACCESS_TOKEN_EXPIRES_IN,
-        refreshTokenSecret: configService.config.JWT_REFRESH_TOKEN_SECRET,
-        refreshTokenExpiresIn: configService.config.JWT_REFRESH_TOKEN_EXPIRES_IN,
-        refreshTokenCookieName: configService.config.JWT_REFRESH_TOKEN_COOKIE_NAME,
-      }),
-      inject: [ConfigService],
-    }),
-    BackstageModule.forRoot({}),
-    CatalogModule,
-    MediaModule.forRoot({
-      storageStrategy: new LocalStorageStrategy({
-        directory: join(process.cwd(), 'media'),
-      }),
-      imageTransformStrategy: new SharpImageTransformStrategy(),
-      imageTransformPresets: [
-        {
-          width: 56,
-          height: 56,
-          format: 'webp',
-          mode: 'cover',
-        },
-        {
-          width: 256,
-          height: 256,
-          format: 'webp',
-          mode: 'cover',
-        },
-        {
-          width: 720,
-          height: 720,
-          format: 'webp',
-          mode: 'cover',
-        },
-      ],
-      imageAnalyzeStrategy: new SharpImageAnalyzeStrategy(),
-      audioTransformStrategy: new FfmpegAudioTransformStrategy(),
-      audioTransformPreset: {
-        bitrate: ['128k', '256k'],
-        channels: 2,
-        sampleRate: 44100,
-        codec: 'aac',
-        segmentDuration: 10,
-      },
-      namingStrategy: new DefaultNamingStrategy(),
-      temporaryDirectory: join(process.cwd(), 'temp'),
-      allowedImageMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
-      maxImageSize: 10485760, // 10MB
-    }),
-    UserModule,
+    // AuthModule.forRootAsync({
+    //   useFactory: (configService: ConfigService) => ({
+    //     accessTokenSecret: configService.config.JWT_ACCESS_TOKEN_SECRET,
+    //     accessTokenExpiresIn: configService.config.JWT_ACCESS_TOKEN_EXPIRES_IN,
+    //     refreshTokenSecret: configService.config.JWT_REFRESH_TOKEN_SECRET,
+    //     refreshTokenExpiresIn: configService.config.JWT_REFRESH_TOKEN_EXPIRES_IN,
+    //     refreshTokenCookieName: configService.config.JWT_REFRESH_TOKEN_COOKIE_NAME,
+    //   }),
+    //   inject: [ConfigService],
+    // }),
+    // BackstageModule.forRoot({}),
+    // CatalogModule,
+    // MediaModule.forRoot({
+    //   storageStrategy: new LocalStorageStrategy({
+    //     directory: join(process.cwd(), 'media'),
+    //   }),
+    //   imageTransformStrategy: new SharpImageTransformStrategy(),
+    //   imageTransformPresets: [
+    //     {
+    //       width: 56,
+    //       height: 56,
+    //       format: 'webp',
+    //       mode: 'cover',
+    //     },
+    //     {
+    //       width: 256,
+    //       height: 256,
+    //       format: 'webp',
+    //       mode: 'cover',
+    //     },
+    //     {
+    //       width: 720,
+    //       height: 720,
+    //       format: 'webp',
+    //       mode: 'cover',
+    //     },
+    //   ],
+    //   imageAnalyzeStrategy: new SharpImageAnalyzeStrategy(),
+    //   audioTransformStrategy: new FfmpegAudioTransformStrategy(),
+    //   audioTransformPreset: {
+    //     bitrate: ['128k', '256k'],
+    //     channels: 2,
+    //     sampleRate: 44100,
+    //     codec: 'aac',
+    //     segmentDuration: 10,
+    //   },
+    //   namingStrategy: new DefaultNamingStrategy(),
+    //   temporaryDirectory: join(process.cwd(), 'temp'),
+    //   allowedImageMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+    //   maxImageSize: 10485760, // 10MB
+    // }),
+    // UserModule,
   ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-  ],
+  // providers: [
+  //   {
+  //     provide: APP_GUARD,
+  //     useClass: AuthGuard,
+  //   },
+  // ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

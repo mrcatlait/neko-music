@@ -8,6 +8,7 @@ CREATE TABLE "catalog"."TrackArtist" (
 );
 
 COMMENT ON TABLE "catalog"."TrackArtist" IS 'A relationship between a track and an artist';
+
 COMMENT ON COLUMN "catalog"."TrackArtist"."trackId" IS 'Foreign key to the track';
 COMMENT ON COLUMN "catalog"."TrackArtist"."artistId" IS 'Foreign key to the artist';
 COMMENT ON COLUMN "catalog"."TrackArtist"."role" IS 'The role of the artist in the track';

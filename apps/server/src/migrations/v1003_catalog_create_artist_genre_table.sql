@@ -9,6 +9,7 @@ CREATE TABLE "catalog"."ArtistGenre" (
 );
 
 COMMENT ON TABLE "catalog"."ArtistGenre" IS 'A relationship between an artist and a genre';
-COMMENT ON COLUMN "catalog"."ArtistGenre"."position" IS 'The position of the genre in the artist''s genres';
+
 COMMENT ON COLUMN "catalog"."ArtistGenre"."artistId" IS 'Foreign key to the artist';
 COMMENT ON COLUMN "catalog"."ArtistGenre"."genreId" IS 'Foreign key to the genre';
+COMMENT ON COLUMN "catalog"."ArtistGenre"."position" IS 'The position of the genre in the artist''s genres';

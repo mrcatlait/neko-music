@@ -1,6 +1,6 @@
 import { Contracts } from '@neko/contracts'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsNotEmpty, IsString, IsUUID } from 'class-validator'
+import { IsArray, IsBoolean, IsNotEmpty, IsString, IsUUID } from 'class-validator'
 
 export class ArtistCreationRequest implements Contracts.Backstage.ArtistCreationRequest {
   @ApiProperty({
@@ -25,4 +25,11 @@ export class ArtistCreationRequest implements Contracts.Backstage.ArtistCreation
     format: 'binary',
   })
   artwork: string
+
+  @ApiProperty({
+    description: 'Whether the artist is verified',
+    example: true,
+  })
+  @IsBoolean()
+  verified: boolean
 }

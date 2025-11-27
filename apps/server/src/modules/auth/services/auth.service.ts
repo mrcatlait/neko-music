@@ -61,7 +61,7 @@ export class AuthService {
       userId,
     })
 
-    await this.refreshTokenRepository.create({
+    await this.refreshTokenRepository.save({
       userId,
       token,
       expiresAt,

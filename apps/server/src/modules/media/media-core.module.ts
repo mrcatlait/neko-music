@@ -5,6 +5,7 @@ import { MEDIA_MODULE_OPTIONS } from './tokens'
 import { StreamingController } from './controllers'
 import { DashUtilsService, FileUtilsService, StreamingService } from './services'
 import { MediaModuleOptions } from './types'
+import { UploadImageUseCase, UploadImageValidator } from './use-cases'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -17,8 +18,11 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     DashUtilsService,
     FileUtilsService,
     StreamingService,
+    // Use Cases
+    UploadImageUseCase,
+    UploadImageValidator,
   ]
-  static exports = []
+  static exports = [UploadImageUseCase]
   static controllers = [StreamingController]
 
   constructor(

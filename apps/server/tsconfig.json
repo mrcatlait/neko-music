@@ -36,11 +36,12 @@
     }
   ],
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "integration-tests/**/*",
+    "drizzle.config.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "**/*spec.ts"
+    "dist"
   ]
 }

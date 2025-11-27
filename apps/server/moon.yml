@@ -40,6 +40,7 @@ tasks:
       - '@group(sources)'
       - '@globs(configs)'
 
+
   test-unit:
     command: 'vitest'
     args:
@@ -51,19 +52,21 @@ tasks:
       - 'reports/unit'
 
   test-integration:
-    command: 'vitest --project integration'
+    command: 'vitest'
+    args:
+      - '--config vite.config.integration.ts'
     inputs:
       - '@globs(sources)'
       - '@globs(integration-tests)'
-      - 'vitest-integration.config.*'
+      - 'vite.config.*'
     outputs:
       - 'reports/integration'
 
   test-performance:
     command: 'k6 run performance-tests/test.js'
     local: true
-    # inputs:
-    #   - '@globs(performance-tests)'
+    inputs:
+      - '@globs(performance-tests)'
 
   test:
     local: true

@@ -1,81 +1,132 @@
 import { Injectable } from '@nestjs/common'
-import { Sql } from 'postgres'
+import { Insertable, Selectable, Updateable } from 'kysely'
 
-import { UserAccountEntity, WithCredentials } from '../entities'
+import { Database, InjectDatabase, UserAccountTable } from '@/modules/database'
 
-import { DatabaseService } from '@/modules/database'
+/**
+ * Type for user account with credentials
+ */
+export type UserAccountWithCredentials = Selectable<UserAccountTable> & {
+  passwordHash: string
+  passwordSalt: string
+}
 
+/**
+ * Repository for UserAccount entity operations
+ */
 @Injectable()
 export class UserAccountRepository {
-  constructor(private readonly databaseService: DatabaseService) {}
+  private readonly table = 'auth.UserAccount' as const
 
-  create<Type extends UserAccountEntity>(user: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "auth"."UserAccount" ("emailAddress", "roleId", "verified")
-      VALUES (${user.emailAddress}, ${user.roleId}, ${user.verified})
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  constructor(@InjectDatabase() private readonly database: Database) {}
+
+  save(data: Insertable<UserAccountTable>) {
+    return this.database.insertInto(this.table).values(data).returningAll().executeTakeFirstOrThrow()
   }
 
-  createMany(users: Omit<UserAccountEntity, 'id'>[], sql?: Sql): Promise<UserAccountEntity[]> {
-    return (sql ?? this.databaseService.sql)<UserAccountEntity[]>`
-      INSERT INTO "auth"."UserAccount" ${this.databaseService.sql(users)}
-      RETURNING *
-    `
+  insert(data: Insertable<UserAccountTable>[]) {
+    return this.database.insertInto(this.table).values(data).returningAll().execute()
   }
 
-  update<Type extends UserAccountEntity>(user: Type, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      UPDATE "auth"."UserAccount"
-      SET "emailAddress" = ${user.emailAddress}, "roleId" = ${user.roleId}, "verified" = ${user.verified}
-      WHERE id = ${user.id}
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  find() {
+    return this.database.selectFrom(this.table).selectAll().execute()
   }
 
-  updateMany(users: UserAccountEntity[], sql?: Sql): Promise<UserAccountEntity[]> {
-    return (sql ?? this.databaseService.sql)<UserAccountEntity[]>`
-      UPDATE "auth"."UserAccount"
-      SET ${this.databaseService.sql(users)}
-      RETURNING *
-    `
+  findBy(criteria: Partial<Selectable<UserAccountTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .execute()
   }
 
-  delete(id: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "auth"."UserAccount" WHERE id = ${id}
-    `.then(() => undefined)
+  findOneBy(criteria: Partial<Selectable<UserAccountTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirst()
   }
 
-  deleteMany(ids: string[]): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "auth"."UserAccount" WHERE id IN (${this.databaseService.sql(ids)})
-    `.then(() => undefined)
+  findOneByOrFail(criteria: Partial<Selectable<UserAccountTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirstOrThrow()
   }
 
-  findOne(id: string): Promise<UserAccountEntity | undefined> {
-    return this.databaseService.sql<UserAccountEntity[]>`
-      SELECT * FROM "auth"."UserAccount" WHERE id = ${id}
-      LIMIT 1
-    `.then((result) => result.at(0))
+  update(criteria: Partial<Selectable<UserAccountTable>>, data: Updateable<UserAccountTable>) {
+    return this.database
+      .updateTable(this.table)
+      .set(data)
+      .where((eb) => eb.and(criteria))
+      .returningAll()
+      .execute()
   }
 
-  findOneByEmail(email: string): Promise<WithCredentials<UserAccountEntity> | undefined> {
-    return this.databaseService.sql<WithCredentials<UserAccountEntity>[]>`
-      SELECT 
-        ua.*,
-        uc."passwordHash",
-        uc."passwordSalt"
-      FROM "auth"."UserAccount" ua
-        INNER JOIN "auth"."UserCredentials" uc ON ua.id = uc."userId"
-      WHERE ua."emailAddress" = ${email}
-      LIMIT 1
-    `.then((result) => result.at(0))
+  delete(criteria: Partial<Selectable<UserAccountTable>>) {
+    return this.database
+      .deleteFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .execute()
+      .then(() => undefined)
   }
 
-  existsByEmail(email: string): Promise<boolean> {
-    return this.databaseService.sql<{ exists: boolean }[]>`
-      SELECT EXISTS(SELECT 1 FROM "auth"."UserAccount" WHERE "emailAddress" = ${email})
-    `.then((result) => result.at(0)?.exists ?? false)
+  async count() {
+    const result = await this.database
+      .selectFrom(this.table)
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  async countBy(criteria: Partial<Selectable<UserAccountTable>>) {
+    const result = await this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  async existsBy(criteria: Partial<Selectable<UserAccountTable>>) {
+    const count = await this.countBy(criteria)
+    return count > 0
+  }
+
+  /**
+   * Find one user account by ID (alias for findOneBy)
+   */
+  findOne(id: string) {
+    return this.findOneBy({ id })
+  }
+
+  /**
+   * Find a user account by email with credentials (JOIN query)
+   */
+  findOneByEmail(email: string): Promise<UserAccountWithCredentials | undefined> {
+    return this.database
+      .selectFrom(this.table)
+      .innerJoin('auth.UserCredentials', 'auth.UserCredentials.userId', 'auth.UserAccount.id')
+      .where('auth.UserAccount.emailAddress', '=', email)
+      .select([
+        'auth.UserAccount.id',
+        'auth.UserAccount.emailAddress',
+        'auth.UserAccount.roleId',
+        'auth.UserAccount.verified',
+        'auth.UserCredentials.passwordHash',
+        'auth.UserCredentials.passwordSalt',
+      ])
+      .executeTakeFirst()
+  }
+
+  /**
+   * Check if a user account exists with the given email
+   */
+  existsByEmail(email: string) {
+    return this.existsBy({ emailAddress: email })
   }
 }

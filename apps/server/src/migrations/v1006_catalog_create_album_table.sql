@@ -4,11 +4,14 @@ CREATE TABLE "catalog"."Album" (
   "releaseDate" DATE NOT NULL,
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   "artwork" JSONB NOT NULL,
-  "type" "catalog"."AlbumType" NOT NULL DEFAULT 'ALBUM'
+  "type" "catalog"."AlbumType" NOT NULL
 );
 
 COMMENT ON TABLE "catalog"."Album" IS 'An album';
+
+COMMENT ON COLUMN "catalog"."Album"."id" IS 'The ID of the album';
 COMMENT ON COLUMN "catalog"."Album"."name" IS 'The name of the album';
 COMMENT ON COLUMN "catalog"."Album"."releaseDate" IS 'The release date of the album';
 COMMENT ON COLUMN "catalog"."Album"."explicit" IS 'Whether the album is explicit';
+COMMENT ON COLUMN "catalog"."Album"."artwork" IS 'The artwork of the album';
 COMMENT ON COLUMN "catalog"."Album"."type" IS 'The type of the album';

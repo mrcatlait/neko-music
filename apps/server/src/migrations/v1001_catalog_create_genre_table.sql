@@ -5,4 +5,5 @@ CREATE TABLE "catalog"."Genre" (
 );
 
 COMMENT ON TABLE "catalog"."Genre" IS 'A genre of music';
+
 COMMENT ON COLUMN "catalog"."Genre"."name" IS 'The name of the genre';

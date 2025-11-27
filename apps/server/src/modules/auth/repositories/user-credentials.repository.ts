@@ -1,55 +1,92 @@
 import { Injectable } from '@nestjs/common'
-import { Sql } from 'postgres'
+import { Insertable, Selectable, Updateable } from 'kysely'
 
-import { UserCredentialsEntity } from '../entities'
+import { Database, InjectDatabase, UserCredentialsTable } from '@/modules/database'
 
-import { DatabaseService } from '@/modules/database'
-
+/**
+ * Repository for UserCredentials entity operations
+ * Note: Uses userId as the primary key instead of id
+ */
 @Injectable()
 export class UserCredentialsRepository {
-  constructor(private readonly databaseService: DatabaseService) {}
+  private readonly table = 'auth.UserCredentials' as const
 
-  create<Type extends UserCredentialsEntity>(user: Type, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "auth"."UserCredentials" ("userId", "passwordHash", "passwordSalt")
-      VALUES (${user.userId}, ${user.passwordHash}, ${user.passwordSalt})
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  constructor(@InjectDatabase() private readonly database: Database) {}
+
+  save(data: Insertable<UserCredentialsTable>) {
+    return this.database.insertInto(this.table).values(data).returningAll().executeTakeFirstOrThrow()
   }
 
-  createMany(users: UserCredentialsEntity[], sql?: Sql): Promise<UserCredentialsEntity[]> {
-    return (sql ?? this.databaseService.sql)<UserCredentialsEntity[]>`
-      INSERT INTO "auth"."UserCredentials" ${this.databaseService.sql(users)}
-      RETURNING *
-    `
+  insert(data: Insertable<UserCredentialsTable>[]) {
+    return this.database.insertInto(this.table).values(data).returningAll().execute()
   }
 
-  update<Type extends UserCredentialsEntity>(user: Type, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      UPDATE "auth"."UserCredentials"
-      SET "passwordHash" = ${user.passwordHash}, "passwordSalt" = ${user.passwordSalt}
-      WHERE "userId" = ${user.userId}
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  find() {
+    return this.database.selectFrom(this.table).selectAll().execute()
   }
 
-  updateMany(users: UserCredentialsEntity[], sql?: Sql): Promise<UserCredentialsEntity[]> {
-    return (sql ?? this.databaseService.sql)<UserCredentialsEntity[]>`
-      UPDATE "auth"."UserCredentials"
-      SET ${this.databaseService.sql(users)}
-      RETURNING *
-    `
+  findBy(criteria: Partial<Selectable<UserCredentialsTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .execute()
   }
 
-  delete(id: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "auth"."UserCredentials" WHERE "userId" = ${id}
-    `.then(() => undefined)
+  findOneBy(criteria: Partial<Selectable<UserCredentialsTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirst()
   }
 
-  deleteMany(ids: string[]): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "auth"."UserCredentials" WHERE "userId" IN (${this.databaseService.sql(ids)})
-    `.then(() => undefined)
+  findOneByOrFail(criteria: Partial<Selectable<UserCredentialsTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirstOrThrow()
+  }
+
+  update(criteria: Partial<Selectable<UserCredentialsTable>>, data: Updateable<UserCredentialsTable>) {
+    return this.database
+      .updateTable(this.table)
+      .set(data)
+      .where((eb) => eb.and(criteria))
+      .returningAll()
+      .execute()
+  }
+
+  delete(criteria: Partial<Selectable<UserCredentialsTable>>) {
+    return this.database
+      .deleteFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .execute()
+      .then(() => undefined)
+  }
+
+  async count() {
+    const result = await this.database
+      .selectFrom(this.table)
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  async countBy(criteria: Partial<Selectable<UserCredentialsTable>>) {
+    const result = await this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  async existsBy(criteria: Partial<Selectable<UserCredentialsTable>>) {
+    const count = await this.countBy(criteria)
+    return count > 0
   }
 }

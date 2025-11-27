@@ -7,11 +7,13 @@ import { GetArtistByIdUseCase } from '../get-artist-by-id'
 import { DatabaseService } from '@/modules/database'
 import { UseCase } from '@/modules/shared/interfaces'
 import { ArtistEntity, ArtistGenreEntity } from '@/modules/catalog/entities'
+import { UploadImageUseCase } from '@/modules/media/use-cases'
 
 export interface AddArtistUseCaseParams {
   readonly name: string
   readonly genres: string[]
   readonly artwork: File
+  readonly verified: boolean
 }
 
 export type AddArtistUseCaseResult = ArtistEntity
@@ -22,6 +24,7 @@ export class AddArtistUseCase implements UseCase<AddArtistUseCaseParams, AddArti
     private readonly addArtistValidator: AddArtistValidator,
     private readonly databaseService: DatabaseService,
     private readonly getArtistByIdUseCase: GetArtistByIdUseCase,
+    private readonly uploadImageUseCase: UploadImageUseCase,
   ) {}
 
   async invoke(params: AddArtistUseCaseParams): Promise<AddArtistUseCaseResult> {
@@ -44,7 +47,7 @@ export class AddArtistUseCase implements UseCase<AddArtistUseCaseParams, AddArti
         RETURNING *
       `
 
-      
+      const assets = await this.uploadImageUseCase.invoke({ file: params.artwork.buffer! })
 
       return artist.id
     })

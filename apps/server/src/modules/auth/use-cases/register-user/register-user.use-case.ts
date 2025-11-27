@@ -10,9 +10,9 @@ import {
 } from '../../repositories'
 import { AuthService } from '../../services'
 
-import { DatabaseService } from '@/modules/database'
 import { CreateUserProfileUseCase } from '@/modules/user/use-cases'
 import { ConfigService } from '@/modules/config/services'
+import { Database, InjectDatabase } from '@/modules/database'
 
 export interface RegisterUserUseCaseParams {
   readonly email: string
@@ -35,9 +35,9 @@ export class RegisterUserUseCase {
   private readonly saltRounds: number
 
   constructor(
+    @InjectDatabase() private readonly database: Database,
     private readonly configService: ConfigService,
     private readonly registerValidator: RegisterUserValidator,
-    private readonly databaseService: DatabaseService,
     private readonly roleRepository: RoleRepository,
     private readonly userAccountRepository: UserAccountRepository,
     private readonly userCredentialsRepository: UserCredentialsRepository,
@@ -55,34 +55,36 @@ export class RegisterUserUseCase {
       throw new BadRequestException(validationResult.errors)
     }
 
-    const defaultRole = await this.roleRepository.findDefault()
+    const defaultRole = await this.roleRepository.findDefaultRole()
 
     if (!defaultRole) {
       this.logger.error('Default role not found')
       throw new InternalServerErrorException()
     }
 
-    const userAccount = await this.databaseService.sql.begin(async (transaction) => {
-      const account = await this.userAccountRepository.create(
-        {
+    // Create user account and credentials in a transaction
+    const userAccount = await this.database.transaction().execute(async (trx) => {
+      const account = await trx
+        .insertInto('auth.UserAccount')
+        .values({
           emailAddress: params.email,
           roleId: defaultRole.id,
           verified: false,
-        },
-        transaction,
-      )
+        })
+        .returningAll()
+        .executeTakeFirstOrThrow()
 
       const passwordSalt = genSaltSync(this.saltRounds)
       const passwordHash = hashSync(params.password, passwordSalt)
 
-      await this.userCredentialsRepository.create(
-        {
+      await trx
+        .insertInto('auth.UserCredentials')
+        .values({
           userId: account.id,
           passwordHash,
           passwordSalt,
-        },
-        transaction,
-      )
+        })
+        .execute()
 
       return account
     })

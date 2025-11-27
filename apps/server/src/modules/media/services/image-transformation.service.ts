@@ -36,7 +36,10 @@ export class ImageTransformationService {
           const transformedImage = await this.imageTransformStrategy.transform(image, preset)
 
           // Create custom method for image naming with size
-          const fileName = this.namingStrategy.generateFileName(`${preset.width}x${preset.height}.${preset.format}`, '')
+          const fileName = this.namingStrategy.generateFileName({
+            fileName: `${preset.width}x${preset.height}`,
+            format: preset.format,
+          })
 
           const storagePath = await this.storageStrategy.uploadFromBuffer(fileName, transformedImage)
           createdAssetPaths.push(storagePath)

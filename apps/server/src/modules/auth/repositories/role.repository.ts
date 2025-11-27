@@ -1,68 +1,98 @@
 import { Injectable } from '@nestjs/common'
-import { Sql } from 'postgres'
+import { Insertable, Selectable, Updateable } from 'kysely'
 
-import { RoleEntity } from '../entities'
+import { Database, InjectDatabase, RoleTable } from '@/modules/database'
 
-import { DatabaseService } from '@/modules/database'
-
+/**
+ * Repository for Role entity operations
+ */
 @Injectable()
 export class RoleRepository {
-  constructor(private readonly databaseService: DatabaseService) {}
+  private readonly table = 'auth.Role' as const
 
-  create<Type extends RoleEntity>(role: Omit<Type, 'id'>, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      INSERT INTO "auth"."Role" (name, description)
-      VALUES (${role.name}, ${role.description})
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  constructor(@InjectDatabase() private readonly database: Database) {}
+
+  save(data: Insertable<RoleTable>) {
+    return this.database.insertInto(this.table).values(data).returningAll().executeTakeFirstOrThrow()
   }
 
-  createMany(roles: Omit<RoleEntity, 'id'>[], sql?: Sql): Promise<RoleEntity[]> {
-    return (sql ?? this.databaseService.sql)<RoleEntity[]>`
-      INSERT INTO "auth"."Role" ${this.databaseService.sql(roles)}
-      RETURNING *
-    `
+  insert(data: Insertable<RoleTable>[]) {
+    return this.database.insertInto(this.table).values(data).returningAll().execute()
   }
 
-  update<Type extends RoleEntity>(role: Type, sql?: Sql): Promise<Type> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      UPDATE "auth"."Role"
-      SET name = ${role.name}, description = ${role.description}
-      WHERE "id" = ${role.id}
-      RETURNING *
-    `.then((result) => result.at(0)!)
+  find() {
+    return this.database.selectFrom(this.table).selectAll().execute()
   }
 
-  updateMany(roles: RoleEntity[], sql?: Sql): Promise<RoleEntity[]> {
-    return (sql ?? this.databaseService.sql)<RoleEntity[]>`
-      UPDATE "auth"."Role"
-      SET ${this.databaseService.sql(roles)}
-      RETURNING *
-    `
+  findBy(criteria: Partial<Selectable<RoleTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .execute()
   }
 
-  delete(id: string): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "auth"."Role" WHERE "id" = ${id}
-    `.then(() => undefined)
+  findOneBy(criteria: Partial<Selectable<RoleTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirst()
   }
 
-  deleteMany(ids: string[]): Promise<void> {
-    return this.databaseService.sql`
-      DELETE FROM "auth"."Role" WHERE "id" IN (${this.databaseService.sql(ids)})
-    `.then(() => undefined)
+  findOneByOrFail(criteria: Partial<Selectable<RoleTable>>) {
+    return this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .selectAll()
+      .executeTakeFirstOrThrow()
   }
 
-  exists(id: string): Promise<boolean> {
-    return this.databaseService.sql<{ exists: boolean }[]>`
-      SELECT EXISTS(SELECT 1 FROM "auth"."Role" WHERE id = ${id})
-    `.then((result) => result.at(0)?.exists ?? false)
+  update(criteria: Partial<Selectable<RoleTable>>, data: Updateable<RoleTable>) {
+    return this.database
+      .updateTable(this.table)
+      .set(data)
+      .where((eb) => eb.and(criteria))
+      .returningAll()
+      .execute()
   }
 
-  findDefault(): Promise<RoleEntity | undefined> {
-    return this.databaseService.sql<RoleEntity[]>`
-      SELECT * FROM "auth"."Role" WHERE "default" = TRUE
-      LIMIT 1
-    `.then((result) => result.at(0))
+  delete(criteria: Partial<Selectable<RoleTable>>) {
+    return this.database
+      .deleteFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .execute()
+      .then(() => undefined)
+  }
+
+  async count() {
+    const result = await this.database
+      .selectFrom(this.table)
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  async countBy(criteria: Partial<Selectable<RoleTable>>) {
+    const result = await this.database
+      .selectFrom(this.table)
+      .where((eb) => eb.and(criteria))
+      .select(({ fn }) => fn.countAll().as('count'))
+      .executeTakeFirst()
+
+    return Number(result?.count ?? 0)
+  }
+
+  async existsBy(criteria: Partial<Selectable<RoleTable>>) {
+    const count = await this.countBy(criteria)
+    return count > 0
+  }
+
+  /**
+   * Find the default role
+   */
+  findDefaultRole() {
+    return this.findOneBy({ default: true })
   }
 }

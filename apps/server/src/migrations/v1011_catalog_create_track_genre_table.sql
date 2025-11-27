@@ -9,6 +9,7 @@ CREATE TABLE "catalog"."TrackGenre" (
 );
 
 COMMENT ON TABLE "catalog"."TrackGenre" IS 'A relationship between a track and a genre';
+
 COMMENT ON COLUMN "catalog"."TrackGenre"."trackId" IS 'Foreign key to the track';
 COMMENT ON COLUMN "catalog"."TrackGenre"."genreId" IS 'Foreign key to the genre';
 COMMENT ON COLUMN "catalog"."TrackGenre"."position" IS 'The position of the genre in the track`s genres';

@@ -17,12 +17,12 @@ export class StreamingService {
 
   streamManifest(trackId: string): StreamableFile {
     const manifestFileName = this.namingStrategy.generateDashManifestName(trackId)
-    const filePath = this.namingStrategy.generateFileName(manifestFileName, trackId)
+    const filePath = this.namingStrategy.generateFileName({ fileName: manifestFileName, format: 'mpd' })
     return new StreamableFile(this.storageStrategy.downloadToStream(filePath))
   }
 
   streamSegment(trackId: string, segmentFileName: string): StreamableFile {
-    const filePath = this.namingStrategy.generateFileName(segmentFileName, trackId)
+    const filePath = this.namingStrategy.generateFileName({ fileName: segmentFileName, format: 'm4s' })
     return new StreamableFile(this.storageStrategy.downloadToStream(filePath))
   }
 }

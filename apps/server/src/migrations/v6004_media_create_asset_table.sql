@@ -10,6 +10,7 @@ CREATE TABLE "media"."Asset" (
 );
 
 COMMENT ON TABLE "media"."Asset" IS 'A media asset';
+
 COMMENT ON COLUMN "media"."Asset"."id" IS 'The ID of the media asset';
 COMMENT ON COLUMN "media"."Asset"."mediaType" IS 'The type of media';
 COMMENT ON COLUMN "media"."Asset"."storageProvider" IS 'The storage provider of the media asset';

@@ -1,34 +1,26 @@
 import { Inject, Injectable, OnApplicationBootstrap, Logger } from '@nestjs/common'
-import postgres from 'postgres'
 import { BehaviorSubject } from 'rxjs'
+import { CompiledQuery } from 'kysely'
 
 import { DATABASE_MODULE_OPTIONS } from '../database.tokens'
 import { DatabaseMigrationService } from './database-migration.service'
-import type { DatabaseModuleOptions } from '../types'
-import { DatabaseSeedService } from './database-seed.service'
+import type { Database, DatabaseModuleOptions } from '../types'
+import { InjectDatabase } from '../database.injector'
 
 @Injectable()
 export class DatabaseService implements OnApplicationBootstrap {
   private readonly RETRIES_INTERVAL = 3000
   private readonly MAX_RETRIES = 10
 
-  private readonly logger = new Logger(DatabaseService.name)
+  private readonly logger = new Logger(this.constructor.name)
 
   private readonly initializedSubject = new BehaviorSubject(false)
   readonly initialized$ = this.initializedSubject.asObservable()
 
-  readonly sql = postgres({
-    host: this.options.host,
-    port: this.options.port,
-    username: this.options.username,
-    password: this.options.password,
-    database: this.options.database,
-  })
-
   constructor(
+    @InjectDatabase() private readonly database: Database,
     @Inject(DATABASE_MODULE_OPTIONS) private readonly options: DatabaseModuleOptions,
     private readonly databaseMigrationService: DatabaseMigrationService,
-    private readonly databaseSeedService: DatabaseSeedService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -38,10 +30,6 @@ export class DatabaseService implements OnApplicationBootstrap {
 
       if (this.options.runMigrations) {
         await this.databaseMigrationService.executePendingScripts()
-      }
-
-      if (this.options.runSeeds) {
-        await this.databaseSeedService.executePendingScripts()
       }
     } catch (error) {
       this.logger.error('Failed to connect to database', error)
@@ -54,9 +42,8 @@ export class DatabaseService implements OnApplicationBootstrap {
 
     while (retries < this.MAX_RETRIES) {
       try {
-        await this.sql`
-          SELECT 1
-        `
+        await this.database.executeQuery<number>(CompiledQuery.raw('SELECT 1'))
+
         this.initializedSubject.next(true)
         return
       } catch {

@@ -1,4 +1,4 @@
-export * from './media-asset.entity'
+export * from './asset.entity'
 export * from './media-image-metadata.entity'
 export * from './media-audio-metadata.entity'
 export * from './media-source.entity'

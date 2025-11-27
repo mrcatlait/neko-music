@@ -25,7 +25,7 @@ export class RefreshTokenUseCase {
     try {
       await this.jwtService.verifyRefreshToken(params.token)
 
-      const refreshToken = await this.refreshTokenRepository.findOneByToken(params.token)
+      const refreshToken = await this.refreshTokenRepository.findByToken(params.token)
 
       if (!refreshToken) {
         throw new UnauthorizedException()
