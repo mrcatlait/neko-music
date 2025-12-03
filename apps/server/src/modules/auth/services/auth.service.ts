@@ -1,11 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { FastifyRequest, FastifyReply } from 'fastify'
+import { genSaltSync, hashSync } from 'bcrypt'
 
 import { AuthModuleOptions } from '../types'
 import { AUTH_MODULE_OPTIONS } from '../tokens'
 import { ACCESS_TOKEN_HEADER_NAME, REFRESH_TOKEN_COOKIE_NAME } from '../constants'
 import { AccessTokenPayload, JwtService } from './jwt.service'
-import { RefreshTokenRepository } from '../repositories'
+import { AuthRepository } from '../repositories'
 import { User } from '../interfaces'
 import { parseTimePeriod } from '../parse-time-period.util'
 
@@ -14,15 +15,17 @@ export class AuthService {
   private readonly accessTokenHeaderName: string
   private readonly refreshTokenCookieName: string
   private readonly refreshTokenExpiresIn: string
+  private readonly saltRounds: number
 
   constructor(
     @Inject(AUTH_MODULE_OPTIONS) private readonly options: AuthModuleOptions,
     private readonly jwtService: JwtService,
-    private readonly refreshTokenRepository: RefreshTokenRepository,
+    private readonly authRepository: AuthRepository,
   ) {
     this.accessTokenHeaderName = options.accessTokenHeaderName ?? ACCESS_TOKEN_HEADER_NAME
     this.refreshTokenCookieName = options.refreshTokenCookieName ?? REFRESH_TOKEN_COOKIE_NAME
     this.refreshTokenExpiresIn = options.refreshTokenExpiresIn
+    this.saltRounds = options.saltRounds
   }
 
   extractAccessTokenFromHeader(request: FastifyRequest): string | undefined {
@@ -56,12 +59,20 @@ export class AuthService {
     })
   }
 
+  generatePasswordSalt(): string {
+    return genSaltSync(this.saltRounds)
+  }
+
+  generatePasswordHash(password: string, salt: string): string {
+    return hashSync(password, salt)
+  }
+
   async generateRefreshToken(userId: string): Promise<string> {
     const { token, expiresAt } = await this.jwtService.signRefreshToken({
       userId,
     })
 
-    await this.refreshTokenRepository.save({
+    await this.authRepository.createRefreshToken({
       userId,
       token,
       expiresAt,
@@ -78,6 +89,6 @@ export class AuthService {
 
   logout(response: FastifyReply, user: User): Promise<void> {
     response.clearCookie(this.refreshTokenCookieName)
-    return this.refreshTokenRepository.deleteByUserId(user.id)
+    return this.authRepository.deleteRefreshTokenByUserId(user.id)
   }
 }

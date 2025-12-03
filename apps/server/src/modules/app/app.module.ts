@@ -44,16 +44,17 @@ import { AuthModule } from '@/modules/auth/auth.module'
     EventBusModule.forRoot({
       messagingStrategy: new ObservableMessagingStrategy(),
     }),
-    // AuthModule.forRootAsync({
-    //   useFactory: (configService: ConfigService) => ({
-    //     accessTokenSecret: configService.config.JWT_ACCESS_TOKEN_SECRET,
-    //     accessTokenExpiresIn: configService.config.JWT_ACCESS_TOKEN_EXPIRES_IN,
-    //     refreshTokenSecret: configService.config.JWT_REFRESH_TOKEN_SECRET,
-    //     refreshTokenExpiresIn: configService.config.JWT_REFRESH_TOKEN_EXPIRES_IN,
-    //     refreshTokenCookieName: configService.config.JWT_REFRESH_TOKEN_COOKIE_NAME,
-    //   }),
-    //   inject: [ConfigService],
-    // }),
+    AuthModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        accessTokenSecret: configService.config.JWT_ACCESS_TOKEN_SECRET,
+        accessTokenExpiresIn: configService.config.JWT_ACCESS_TOKEN_EXPIRES_IN,
+        refreshTokenSecret: configService.config.JWT_REFRESH_TOKEN_SECRET,
+        refreshTokenExpiresIn: configService.config.JWT_REFRESH_TOKEN_EXPIRES_IN,
+        refreshTokenCookieName: configService.config.JWT_REFRESH_TOKEN_COOKIE_NAME,
+        saltRounds: configService.config.SALT_ROUNDS,
+      }),
+      inject: [ConfigService],
+    }),
     // BackstageModule.forRoot({}),
     // CatalogModule,
     // MediaModule.forRoot({

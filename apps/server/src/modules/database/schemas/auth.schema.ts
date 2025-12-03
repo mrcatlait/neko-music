@@ -18,20 +18,22 @@ export interface RolePermissionTable {
   permissionId: string
 }
 
-export interface UserAccountTable {
+export interface AccountTable {
   id: Generated<string>
   emailAddress: string
   roleId: string
-  verified: boolean
 }
 
-export interface UserCredentialsTable {
+export interface CredentialsTable {
   userId: string
   passwordHash: string
   passwordSalt: string
 }
 
-export interface UserExternalProviderTable {
+/**
+ * @todo Use either combination of user id and provider as PK or add id field
+ */
+export interface ExternalProviderTable {
   userId: string
   provider: string
   providerUserId: string
@@ -48,8 +50,8 @@ export interface AuthSchema {
   'auth.Permission': PermissionTable
   'auth.Role': RoleTable
   'auth.RolePermission': RolePermissionTable
-  'auth.UserAccount': UserAccountTable
-  'auth.UserCredentials': UserCredentialsTable
-  'auth.UserExternalProvider': UserExternalProviderTable
+  'auth.Account': AccountTable
+  'auth.Credentials': CredentialsTable
+  'auth.ExternalProvider': ExternalProviderTable
   'auth.RefreshToken': RefreshTokenTable
 }

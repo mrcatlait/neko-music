@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 
-import { PermissionRepository, UserAccountRepository } from '../../repositories'
+import { AuthRepository } from '../../repositories'
 import { LoginValidator } from './login.validator'
 import { AuthService } from '../../services'
 
@@ -22,41 +22,41 @@ export interface LoginUseCaseResult {
 @Injectable()
 export class LoginUseCase {
   constructor(
-    private readonly userAccountRepository: UserAccountRepository,
+    private readonly authRepository: AuthRepository,
     private readonly loginValidator: LoginValidator,
     private readonly getUserProfileUseCase: GetUserProfileUseCase,
-    private readonly permissionRepository: PermissionRepository,
     private readonly authService: AuthService,
   ) {}
 
   async invoke(params: LoginUseCaseParams): Promise<LoginUseCaseResult> {
-    const userAccount = await this.userAccountRepository.findOneByEmail(params.email)
+    const account = await this.authRepository.findAccountWithCredentialsByEmail(params.email)
 
+    // Running the validator before checking if the account exists to avoid timing attacks
     const validationResult = this.loginValidator.validate({
       password: params.password,
-      passwordHash: userAccount?.passwordHash,
+      passwordHash: account?.passwordHash,
     })
 
-    if (!validationResult.isValid || !userAccount) {
+    if (!validationResult.isValid || !account) {
       throw new UnauthorizedException()
     }
 
     const [userProfile, permissions] = await Promise.all([
-      this.getUserProfileUseCase.invoke({ userId: userAccount.id }),
-      this.permissionRepository.findByUserId(userAccount.id),
+      this.getUserProfileUseCase.invoke({ userId: account.id }),
+      this.authRepository.findAccountPermissions(account.id),
     ])
 
     const scopes = permissions.map((permission) => permission.name)
 
     const { accessToken, refreshToken } = await this.authService.generateTokenPair({
-      userId: userAccount.id,
+      userId: account.id,
       scopes,
     })
 
     return {
       accessToken,
       refreshToken,
-      email: userAccount.emailAddress,
+      email: account.emailAddress,
       displayName: userProfile.displayName,
       permissions: scopes,
     }

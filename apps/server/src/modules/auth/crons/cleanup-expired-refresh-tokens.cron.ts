@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { CronExpression, Cron } from '@nestjs/schedule'
 
-import { RefreshTokenRepository } from '../repositories'
+import { AuthRepository } from '../repositories'
 
 @Injectable()
 export class CleanupExpiredRefreshTokensCron {
-  constructor(private readonly refreshTokenRepository: RefreshTokenRepository) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   @Cron(CronExpression.EVERY_MINUTE)
   handleCron(): Promise<void> {
-    return this.refreshTokenRepository.deleteExpired()
+    return this.authRepository.deleteExpiredRefreshTokens()
   }
 }

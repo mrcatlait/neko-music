@@ -25,4 +25,9 @@ export interface AuthModuleOptions {
    * @default 'n-refresh-token'
    */
   refreshTokenCookieName?: string
+  /**
+   * The number of salt rounds for the password hash.
+   * @default 10
+   */
+  saltRounds: number
 }

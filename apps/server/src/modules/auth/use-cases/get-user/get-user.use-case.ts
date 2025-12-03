@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 
-import { PermissionRepository, UserAccountRepository } from '../../repositories'
+import { AuthRepository } from '../../repositories'
 
 import { GetUserProfileUseCase } from '@/modules/user/use-cases'
 
@@ -17,25 +17,24 @@ export interface GetUserUseCaseResult {
 @Injectable()
 export class GetUserUseCase {
   constructor(
-    private readonly userAccountRepository: UserAccountRepository,
+    private readonly authRepository: AuthRepository,
     private readonly getUserProfileUseCase: GetUserProfileUseCase,
-    private readonly permissionRepository: PermissionRepository,
   ) {}
 
   async invoke(params: GetUserUseCaseParams): Promise<GetUserUseCaseResult> {
-    const userAccount = await this.userAccountRepository.findOne(params.userId)
+    const account = await this.authRepository.findAccountById(params.userId)
 
-    if (!userAccount) {
+    if (!account) {
       throw new UnauthorizedException()
     }
 
     const [userProfile, permissions] = await Promise.all([
-      this.getUserProfileUseCase.invoke({ userId: userAccount.id }),
-      this.permissionRepository.findByUserId(userAccount.id),
+      this.getUserProfileUseCase.invoke({ userId: account.id }),
+      this.authRepository.findAccountPermissions(account.id),
     ])
 
     return {
-      email: userAccount.emailAddress,
+      email: account.emailAddress,
       displayName: userProfile.displayName,
       permissions: permissions.map((permission) => permission.name),
     }

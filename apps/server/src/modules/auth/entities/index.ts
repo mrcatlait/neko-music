@@ -1,7 +1,0 @@
-export * from './permission.entity'
-export * from './refresh-token.entity'
-export * from './role.entity'
-export * from './role-permission.entity'
-export * from './user-account.entity'
-export * from './user-credentials.entity'
-export * from './user-external-provider.entity'

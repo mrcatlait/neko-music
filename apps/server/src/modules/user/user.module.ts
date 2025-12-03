@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 
-import { UserProfileRepository } from './repositories'
+import { UserRepository } from './repositories'
 import { CreateUserProfileUseCase, GetUserProfileUseCase } from './use-cases'
 
 @Global()
@@ -10,7 +10,7 @@ import { CreateUserProfileUseCase, GetUserProfileUseCase } from './use-cases'
     CreateUserProfileUseCase,
     GetUserProfileUseCase,
     // Repositories
-    UserProfileRepository,
+    UserRepository,
   ],
   exports: [CreateUserProfileUseCase, GetUserProfileUseCase],
 })

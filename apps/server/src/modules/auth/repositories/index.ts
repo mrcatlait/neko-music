@@ -1,6 +1,1 @@
-export * from './permission.repository'
-export * from './refresh-token.repository'
-export * from './role-permission.repository'
-export * from './role.repository'
-export * from './user-account.repository'
-export * from './user-credentials.repository'
+export * from './auth.repository'

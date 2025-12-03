@@ -1,18 +1,11 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
-import { genSaltSync, hashSync } from 'bcrypt'
 
 import { RegisterUserValidator } from './register-user.validator'
-import {
-  PermissionRepository,
-  RoleRepository,
-  UserAccountRepository,
-  UserCredentialsRepository,
-} from '../../repositories'
+import { AuthRepository } from '../../repositories'
 import { AuthService } from '../../services'
 
 import { CreateUserProfileUseCase } from '@/modules/user/use-cases'
 import { ConfigService } from '@/modules/config/services'
-import { Database, InjectDatabase } from '@/modules/database'
 
 export interface RegisterUserUseCaseParams {
   readonly email: string
@@ -35,15 +28,11 @@ export class RegisterUserUseCase {
   private readonly saltRounds: number
 
   constructor(
-    @InjectDatabase() private readonly database: Database,
+    private readonly authRepository: AuthRepository,
     private readonly configService: ConfigService,
     private readonly registerValidator: RegisterUserValidator,
-    private readonly roleRepository: RoleRepository,
-    private readonly userAccountRepository: UserAccountRepository,
-    private readonly userCredentialsRepository: UserCredentialsRepository,
     private readonly createUserProfileUseCase: CreateUserProfileUseCase,
     private readonly authService: AuthService,
-    private readonly permissionRepository: PermissionRepository,
   ) {
     this.saltRounds = this.configService.config.SALT_ROUNDS
   }
@@ -55,38 +44,21 @@ export class RegisterUserUseCase {
       throw new BadRequestException(validationResult.errors)
     }
 
-    const defaultRole = await this.roleRepository.findDefaultRole()
+    const defaultRole = await this.authRepository.findDefaultRole()
 
     if (!defaultRole) {
       this.logger.error('Default role not found')
       throw new InternalServerErrorException()
     }
 
-    // Create user account and credentials in a transaction
-    const userAccount = await this.database.transaction().execute(async (trx) => {
-      const account = await trx
-        .insertInto('auth.UserAccount')
-        .values({
-          emailAddress: params.email,
-          roleId: defaultRole.id,
-          verified: false,
-        })
-        .returningAll()
-        .executeTakeFirstOrThrow()
+    const passwordSalt = this.authService.generatePasswordSalt()
+    const passwordHash = this.authService.generatePasswordHash(params.password, passwordSalt)
 
-      const passwordSalt = genSaltSync(this.saltRounds)
-      const passwordHash = hashSync(params.password, passwordSalt)
-
-      await trx
-        .insertInto('auth.UserCredentials')
-        .values({
-          userId: account.id,
-          passwordHash,
-          passwordSalt,
-        })
-        .execute()
-
-      return account
+    const userAccount = await this.authRepository.createAccountWithCredentials({
+      email: params.email,
+      passwordHash,
+      passwordSalt,
+      roleId: defaultRole.id,
     })
 
     const [userProfile, permissions] = await Promise.all([
@@ -94,7 +66,7 @@ export class RegisterUserUseCase {
         userId: userAccount.id,
         displayName: params.displayName,
       }),
-      this.permissionRepository.findByUserId(userAccount.id),
+      this.authRepository.findAccountPermissions(userAccount.id),
     ])
 
     const scopes = permissions.map((permission) => permission.name)

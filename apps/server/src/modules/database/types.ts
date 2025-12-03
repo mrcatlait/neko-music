@@ -1,6 +1,6 @@
 import { Kysely, Selectable } from 'kysely'
 
-import { AuthSchema } from './schemas'
+import { AuthSchema, UserSchema } from './schemas'
 
 export interface DatabaseModuleOptions {
   // Database
@@ -16,7 +16,7 @@ export interface DatabaseModuleOptions {
   runMigrations?: boolean
 }
 
-export type DatabaseSchema = AuthSchema
+export type DatabaseSchema = AuthSchema & UserSchema
 
 export type Database = Kysely<DatabaseSchema>
 

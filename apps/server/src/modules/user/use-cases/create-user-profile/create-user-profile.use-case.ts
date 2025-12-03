@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common'
 
-import { UserProfileEntity } from '../../entities'
-import { UserProfileRepository } from '../../repositories'
+import { UserRepository } from '../../repositories'
 
 export interface CreateUserProfileUseCaseParams {
   readonly userId: string
   readonly displayName: string
 }
 
+export interface CreateUserProfileUseCaseResult {
+  readonly userId: string
+  readonly displayName: string
+}
+
 @Injectable()
 export class CreateUserProfileUseCase {
-  constructor(private readonly userProfileRepository: UserProfileRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  async invoke(params: CreateUserProfileUseCaseParams): Promise<UserProfileEntity> {
-    return this.userProfileRepository.create({
+  invoke(params: CreateUserProfileUseCaseParams): Promise<CreateUserProfileUseCaseResult> {
+    return this.userRepository.createProfile({
       userId: params.userId,
       displayName: params.displayName,
     })

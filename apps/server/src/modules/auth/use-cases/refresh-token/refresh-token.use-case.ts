@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 
-import { PermissionRepository, RefreshTokenRepository } from '../../repositories'
+import { AuthRepository } from '../../repositories'
 import { AuthService, JwtService } from '../../services'
 
 export interface RefreshTokenUseCaseParams {
@@ -17,21 +17,20 @@ export class RefreshTokenUseCase {
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
-    private readonly refreshTokenRepository: RefreshTokenRepository,
-    private readonly permissionRepository: PermissionRepository,
+    private readonly authRepository: AuthRepository,
   ) {}
 
   async invoke(params: RefreshTokenUseCaseParams): Promise<RefreshTokenUseCaseResult> {
     try {
       await this.jwtService.verifyRefreshToken(params.token)
 
-      const refreshToken = await this.refreshTokenRepository.findByToken(params.token)
+      const refreshToken = await this.authRepository.findRefreshTokenByToken(params.token)
 
       if (!refreshToken) {
         throw new UnauthorizedException()
       }
 
-      const permissions = await this.permissionRepository.findByUserId(refreshToken.userId)
+      const permissions = await this.authRepository.findAccountPermissions(refreshToken.userId)
 
       const scopes = permissions.map((permission) => permission.name)
 
@@ -47,7 +46,7 @@ export class RefreshTokenUseCase {
     } catch {
       throw new UnauthorizedException()
     } finally {
-      await this.refreshTokenRepository.deleteByToken(params.token)
+      await this.authRepository.deleteRefreshTokenByToken(params.token)
     }
   }
 }
