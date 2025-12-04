@@ -12,6 +12,7 @@ export default defineConfig(() => ({
     }),
   ],
   test: {
+    hookTimeout: 60000,
     globals: true,
     watch: false,
     reporters: ['default', 'junit'],

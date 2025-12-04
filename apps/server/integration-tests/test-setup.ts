@@ -54,5 +54,5 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await (app as NestFastifyApplication | undefined)?.close()
-  await postgresContainer.stop()
+  await (postgresContainer as StartedPostgreSqlContainer | undefined)?.stop()
 })
