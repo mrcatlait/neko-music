@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
+import { fastifyCookie } from '@fastify/cookie'
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql'
 
 import { AppModule } from '@/modules/app/app.module'
@@ -45,11 +46,13 @@ beforeAll(async () => {
   const moduleRef = await moduleBuilder.compile()
   app = moduleRef.createNestApplication(new FastifyAdapter())
 
+  await app.register(fastifyCookie)
+
   await app.init()
   await app.getHttpAdapter().getInstance().ready()
 })
 
 afterAll(async () => {
-  await app.close()
+  await (app as NestFastifyApplication | undefined)?.close()
   await postgresContainer.stop()
 })

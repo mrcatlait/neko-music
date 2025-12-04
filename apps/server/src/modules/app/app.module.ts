@@ -96,7 +96,7 @@ import { AuthModule } from '@/modules/auth/auth.module'
     //   allowedImageMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
     //   maxImageSize: 10485760, // 10MB
     // }),
-    // UserModule,
+    UserModule,
   ],
   // providers: [
   //   {

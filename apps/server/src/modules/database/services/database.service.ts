@@ -6,6 +6,7 @@ import { DATABASE_MODULE_OPTIONS } from '../database.tokens'
 import { DatabaseMigrationService } from './database-migration.service'
 import type { Database, DatabaseModuleOptions } from '../types'
 import { InjectDatabase } from '../database.injector'
+import { DatabaseSeedService } from './database-seed.service'
 
 @Injectable()
 export class DatabaseService implements OnApplicationBootstrap {
@@ -21,6 +22,7 @@ export class DatabaseService implements OnApplicationBootstrap {
     @InjectDatabase() private readonly database: Database,
     @Inject(DATABASE_MODULE_OPTIONS) private readonly options: DatabaseModuleOptions,
     private readonly databaseMigrationService: DatabaseMigrationService,
+    private readonly databaseSeedService: DatabaseSeedService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -30,6 +32,10 @@ export class DatabaseService implements OnApplicationBootstrap {
 
       if (this.options.runMigrations) {
         await this.databaseMigrationService.executePendingScripts()
+      }
+
+      if (this.options.runSeeds) {
+        await this.databaseSeedService.executePendingScripts()
       }
     } catch (error) {
       this.logger.error('Failed to connect to database', error)

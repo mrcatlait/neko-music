@@ -3,7 +3,7 @@ CREATE TABLE "auth"."RefreshToken" (
   "userId" UUID NOT NULL,
   "token" VARCHAR(255) NOT NULL,
   "expiresAt" TIMESTAMP NOT NULL,
-  CONSTRAINT "FK_RefreshToken_UserAccount" FOREIGN KEY ("userId") REFERENCES "auth"."UserAccount" ("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_RefreshToken_Account" FOREIGN KEY ("userId") REFERENCES "auth"."Account" ("id") ON DELETE CASCADE,
   CONSTRAINT "UQ_RefreshToken_Token" UNIQUE ("token")
 );
 

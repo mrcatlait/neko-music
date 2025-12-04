@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { hashSync, compareSync } from 'bcrypt'
+
+import { AuthService } from '../../services'
 
 import { ValidationResult, Validator } from '@/modules/shared/interfaces'
-import { ConfigService } from '@/modules/config/services'
 
 export interface LoginValidatorPayload {
   password: string
@@ -13,18 +13,16 @@ const INVALID_CREDENTIALS_ERROR = 'Invalid credentials'
 
 @Injectable()
 export class LoginValidator implements Validator<LoginValidatorPayload> {
-  private readonly saltRounds: number
   private readonly dummyHash: string
 
-  constructor(private readonly configService: ConfigService) {
-    this.saltRounds = configService.config.SALT_ROUNDS
-    this.dummyHash = hashSync('password', this.saltRounds)
+  constructor(private readonly authService: AuthService) {
+    this.dummyHash = authService.generatePasswordHash('password', authService.generatePasswordSalt())
   }
 
   validate(payload: LoginValidatorPayload): ValidationResult {
     if (!payload.passwordHash) {
       // Use constant-time comparison
-      compareSync(payload.password, this.dummyHash)
+      this.authService.comparePasswordHash(payload.password, this.dummyHash)
 
       return {
         isValid: false,
@@ -32,7 +30,7 @@ export class LoginValidator implements Validator<LoginValidatorPayload> {
       }
     }
 
-    const isValid = compareSync(payload.password, payload.passwordHash)
+    const isValid = this.authService.comparePasswordHash(payload.password, payload.passwordHash)
 
     return {
       isValid,

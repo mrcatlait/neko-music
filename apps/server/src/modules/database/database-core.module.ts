@@ -5,7 +5,7 @@ import postgres from 'postgres'
 
 import { DATABASE, DATABASE_MODULE_OPTIONS } from './database.tokens'
 import { DatabaseModuleOptions } from './types'
-import { DatabaseMigrationService, DatabaseService } from './services'
+import { DatabaseMigrationService, DatabaseSeedService, DatabaseService } from './services'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -31,6 +31,6 @@ export const kyselyProvider: Provider = {
 export class DatabaseCoreModule extends CoreModuleWithOptions {
   static module = DatabaseCoreModule
   static optionsToken = DATABASE_MODULE_OPTIONS
-  static providers = [kyselyProvider, DatabaseService, DatabaseMigrationService]
+  static providers = [kyselyProvider, DatabaseService, DatabaseMigrationService, DatabaseSeedService]
   static exports = [kyselyProvider]
 }

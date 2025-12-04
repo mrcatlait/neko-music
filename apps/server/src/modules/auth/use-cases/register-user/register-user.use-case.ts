@@ -5,7 +5,6 @@ import { AuthRepository } from '../../repositories'
 import { AuthService } from '../../services'
 
 import { CreateUserProfileUseCase } from '@/modules/user/use-cases'
-import { ConfigService } from '@/modules/config/services'
 
 export interface RegisterUserUseCaseParams {
   readonly email: string
@@ -25,17 +24,12 @@ export interface RegisterUserUseCaseResult {
 export class RegisterUserUseCase {
   private readonly logger = new Logger(this.constructor.name)
 
-  private readonly saltRounds: number
-
   constructor(
     private readonly authRepository: AuthRepository,
-    private readonly configService: ConfigService,
     private readonly registerValidator: RegisterUserValidator,
     private readonly createUserProfileUseCase: CreateUserProfileUseCase,
     private readonly authService: AuthService,
-  ) {
-    this.saltRounds = this.configService.config.SALT_ROUNDS
-  }
+  ) {}
 
   async invoke(params: RegisterUserUseCaseParams): Promise<RegisterUserUseCaseResult> {
     const validationResult = await this.registerValidator.validate(params)

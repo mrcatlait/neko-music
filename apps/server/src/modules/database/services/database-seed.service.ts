@@ -6,8 +6,8 @@ import { InjectDatabase } from '../database.injector'
 import { DatabasePropagationService } from './database-propagation.service'
 
 @Injectable()
-export class DatabaseMigrationService extends DatabasePropagationService {
-  protected readonly tableName: string = 'migrations'
+export class DatabaseSeedService extends DatabasePropagationService {
+  protected readonly tableName: string = 'seeds'
   protected readonly scriptsFolder: string
 
   constructor(
@@ -17,12 +17,12 @@ export class DatabaseMigrationService extends DatabasePropagationService {
   ) {
     super(database)
 
-    if (options.migrations) {
-      this.scriptsFolder = options.migrations
+    if (options.seeds) {
+      this.scriptsFolder = options.seeds
     }
 
-    if (options.migrationsTableName) {
-      this.tableName = options.migrationsTableName
+    if (options.seedsTableName) {
+      this.tableName = options.seedsTableName
     }
   }
 }

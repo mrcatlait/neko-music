@@ -1,18 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import { UserProfileEntity } from '../../entities'
-import { UserProfileRepository } from '../../repositories'
+import { UserRepository } from '../../repositories'
 
 export interface GetUserProfileUseCaseParams {
   readonly userId: string
 }
 
+export interface GetUserProfileUseCaseResult {
+  readonly userId: string
+  readonly displayName: string
+}
+
 @Injectable()
 export class GetUserProfileUseCase {
-  constructor(private readonly userProfileRepository: UserProfileRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  async invoke(params: GetUserProfileUseCaseParams): Promise<UserProfileEntity> {
-    const userProfile = await this.userProfileRepository.findOne(params.userId)
+  async invoke(params: GetUserProfileUseCaseParams): Promise<GetUserProfileUseCaseResult> {
+    const userProfile = await this.userRepository.findProfileByUserId(params.userId)
 
     if (!userProfile) {
       throw new NotFoundException('User profile not found')

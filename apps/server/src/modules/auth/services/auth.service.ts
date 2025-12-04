@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { genSaltSync, hashSync } from 'bcrypt'
+import { compareSync, genSaltSync, hashSync } from 'bcrypt'
 
 import { AuthModuleOptions } from '../types'
 import { AUTH_MODULE_OPTIONS } from '../tokens'
@@ -65,6 +65,10 @@ export class AuthService {
 
   generatePasswordHash(password: string, salt: string): string {
     return hashSync(password, salt)
+  }
+
+  comparePasswordHash(password: string, hash: string): boolean {
+    return compareSync(password, hash)
   }
 
   async generateRefreshToken(userId: string): Promise<string> {

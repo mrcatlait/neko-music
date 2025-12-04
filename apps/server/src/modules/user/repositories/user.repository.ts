@@ -10,4 +10,8 @@ export class UserRepository {
   createProfile(profile: Insertable<ProfileTable>): Promise<Selectable<ProfileTable>> {
     return this.database.insertInto('user.Profile').values(profile).returningAll().executeTakeFirstOrThrow()
   }
+
+  findProfileByUserId(userId: string): Promise<Selectable<ProfileTable> | undefined> {
+    return this.database.selectFrom('user.Profile').where('userId', '=', userId).selectAll().executeTakeFirst()
+  }
 }

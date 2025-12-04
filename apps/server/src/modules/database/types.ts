@@ -14,6 +14,11 @@ export interface DatabaseModuleOptions {
   migrations?: string
   migrationsTableName?: string
   runMigrations?: boolean
+
+  // Seeds
+  seeds?: string
+  seedsTableName?: string
+  runSeeds?: boolean
 }
 
 export type DatabaseSchema = AuthSchema & UserSchema

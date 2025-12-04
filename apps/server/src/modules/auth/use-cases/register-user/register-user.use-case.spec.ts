@@ -7,7 +7,6 @@ import { AuthRepository } from '../../repositories'
 import { AuthService } from '../../services'
 
 import { CreateUserProfileUseCase } from '@/modules/user/use-cases'
-import { ConfigService } from '@/modules/config/services'
 
 describe('RegisterUserUseCase', () => {
   let useCase: RegisterUserUseCase
@@ -19,6 +18,10 @@ describe('RegisterUserUseCase', () => {
   const mockPasswordSalt = 'mock-salt'
   const mockPasswordHash = 'mock-hash'
 
+  const mockRole = { id: 'role-1', name: 'user', description: 'Default user role', default: true }
+  const mockAccount = { id: 'user-1', emailAddress: 'test@example.com', roleId: 'role-1' }
+  const mockUserProfile = { userId: 'user-1', displayName: 'Test User' }
+
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
@@ -26,17 +29,9 @@ describe('RegisterUserUseCase', () => {
         {
           provide: AuthRepository,
           useValue: {
-            findDefaultRole: vi.fn(),
-            createAccountWithCredentials: vi.fn(),
+            findDefaultRole: vi.fn().mockResolvedValue(mockRole),
+            createAccountWithCredentials: vi.fn().mockResolvedValue(mockAccount),
             findAccountPermissions: vi.fn(),
-          },
-        },
-        {
-          provide: ConfigService,
-          useValue: {
-            config: {
-              SALT_ROUNDS: 10,
-            },
           },
         },
         {
@@ -79,9 +74,6 @@ describe('RegisterUserUseCase', () => {
     describe('when registration is successful', () => {
       it('should register user and return tokens with user data', async () => {
         // Arrange
-        const mockRole = { id: 'role-1', name: 'user', description: 'Default user role', default: true }
-        const mockAccount = { id: 'user-1', emailAddress: 'test@example.com', roleId: 'role-1' }
-        const mockUserProfile = { userId: 'user-1', displayName: 'Test User' }
         const mockPermissions = [
           { id: 'perm-1', name: 'read:profile', description: 'Read profile' },
           { id: 'perm-2', name: 'write:profile', description: 'Write profile' },
@@ -92,8 +84,7 @@ describe('RegisterUserUseCase', () => {
         }
 
         vi.mocked(registerValidator.validate).mockResolvedValue({ isValid: true })
-        vi.mocked(authRepository.findDefaultRole).mockResolvedValue(mockRole)
-        vi.mocked(authRepository.createAccountWithCredentials).mockResolvedValue(mockAccount)
+
         vi.mocked(createUserProfileUseCase.invoke).mockResolvedValue(mockUserProfile)
         vi.mocked(authRepository.findAccountPermissions).mockResolvedValue(mockPermissions)
         vi.mocked(authService.generateTokenPair).mockResolvedValue(mockTokenPair)
@@ -132,9 +123,6 @@ describe('RegisterUserUseCase', () => {
 
       it('should handle user with no permissions', async () => {
         // Arrange
-        const mockRole = { id: 'role-1', name: 'user', description: 'Default user role', default: true }
-        const mockAccount = { id: 'user-1', emailAddress: 'test@example.com', roleId: 'role-1' }
-        const mockUserProfile = { userId: 'user-1', displayName: 'Test User' }
         const mockPermissions: Array<{ id: string; name: string; description: string }> = []
         const mockTokenPair = {
           accessToken: 'mock-access-token',
@@ -142,8 +130,7 @@ describe('RegisterUserUseCase', () => {
         }
 
         vi.mocked(registerValidator.validate).mockResolvedValue({ isValid: true })
-        vi.mocked(authRepository.findDefaultRole).mockResolvedValue(mockRole)
-        vi.mocked(authRepository.createAccountWithCredentials).mockResolvedValue(mockAccount)
+
         vi.mocked(createUserProfileUseCase.invoke).mockResolvedValue(mockUserProfile)
         vi.mocked(authRepository.findAccountPermissions).mockResolvedValue(mockPermissions)
         vi.mocked(authService.generateTokenPair).mockResolvedValue(mockTokenPair)
@@ -205,11 +192,9 @@ describe('RegisterUserUseCase', () => {
     describe('when account creation fails', () => {
       it('should propagate the database error', async () => {
         // Arrange
-        const mockRole = { id: 'role-1', name: 'user', description: 'Default user role', default: true }
         const databaseError = new Error('Database connection failed')
 
         vi.mocked(registerValidator.validate).mockResolvedValue({ isValid: true })
-        vi.mocked(authRepository.findDefaultRole).mockResolvedValue(mockRole)
         vi.mocked(authRepository.createAccountWithCredentials).mockRejectedValue(databaseError)
 
         // Act & Assert
@@ -221,13 +206,9 @@ describe('RegisterUserUseCase', () => {
     describe('when user profile creation fails', () => {
       it('should propagate the error', async () => {
         // Arrange
-        const mockRole = { id: 'role-1', name: 'user', description: 'Default user role', default: true }
-        const mockAccount = { id: 'user-1', emailAddress: 'test@example.com', roleId: 'role-1' }
         const profileError = new Error('Profile creation failed')
 
         vi.mocked(registerValidator.validate).mockResolvedValue({ isValid: true })
-        vi.mocked(authRepository.findDefaultRole).mockResolvedValue(mockRole)
-        vi.mocked(authRepository.createAccountWithCredentials).mockResolvedValue(mockAccount)
         vi.mocked(createUserProfileUseCase.invoke).mockRejectedValue(profileError)
         vi.mocked(authRepository.findAccountPermissions).mockResolvedValue([])
 
@@ -243,14 +224,9 @@ describe('RegisterUserUseCase', () => {
     describe('when fetching permissions fails', () => {
       it('should propagate the error', async () => {
         // Arrange
-        const mockRole = { id: 'role-1', name: 'user', description: 'Default user role', default: true }
-        const mockAccount = { id: 'user-1', emailAddress: 'test@example.com', roleId: 'role-1' }
-        const mockUserProfile = { userId: 'user-1', displayName: 'Test User' }
         const permissionsError = new Error('Failed to fetch permissions')
 
         vi.mocked(registerValidator.validate).mockResolvedValue({ isValid: true })
-        vi.mocked(authRepository.findDefaultRole).mockResolvedValue(mockRole)
-        vi.mocked(authRepository.createAccountWithCredentials).mockResolvedValue(mockAccount)
         vi.mocked(createUserProfileUseCase.invoke).mockResolvedValue(mockUserProfile)
         vi.mocked(authRepository.findAccountPermissions).mockRejectedValue(permissionsError)
 
@@ -263,15 +239,10 @@ describe('RegisterUserUseCase', () => {
     describe('when token generation fails', () => {
       it('should propagate the error', async () => {
         // Arrange
-        const mockRole = { id: 'role-1', name: 'user', description: 'Default user role', default: true }
-        const mockAccount = { id: 'user-1', emailAddress: 'test@example.com', roleId: 'role-1' }
-        const mockUserProfile = { userId: 'user-1', displayName: 'Test User' }
         const mockPermissions = [{ id: 'perm-1', name: 'read:profile', description: 'Read profile' }]
         const tokenError = new Error('Token generation failed')
 
         vi.mocked(registerValidator.validate).mockResolvedValue({ isValid: true })
-        vi.mocked(authRepository.findDefaultRole).mockResolvedValue(mockRole)
-        vi.mocked(authRepository.createAccountWithCredentials).mockResolvedValue(mockAccount)
         vi.mocked(createUserProfileUseCase.invoke).mockResolvedValue(mockUserProfile)
         vi.mocked(authRepository.findAccountPermissions).mockResolvedValue(mockPermissions)
         vi.mocked(authService.generateTokenPair).mockRejectedValue(tokenError)
@@ -282,34 +253,6 @@ describe('RegisterUserUseCase', () => {
           userId: mockAccount.id,
           scopes: ['read:profile'],
         })
-      })
-    })
-
-    describe('parallel operations', () => {
-      it('should execute profile creation and permission fetching in parallel', async () => {
-        // Arrange
-        const mockRole = { id: 'role-1', name: 'user', description: 'Default user role', default: true }
-        const mockAccount = { id: 'user-1', emailAddress: 'test@example.com', roleId: 'role-1' }
-        const mockUserProfile = { userId: 'user-1', displayName: 'Test User' }
-        const mockPermissions = [{ id: 'perm-1', name: 'read:profile', description: 'Read profile' }]
-        const mockTokenPair = {
-          accessToken: 'mock-access-token',
-          refreshToken: 'mock-refresh-token',
-        }
-
-        vi.mocked(registerValidator.validate).mockResolvedValue({ isValid: true })
-        vi.mocked(authRepository.findDefaultRole).mockResolvedValue(mockRole)
-        vi.mocked(authRepository.createAccountWithCredentials).mockResolvedValue(mockAccount)
-        vi.mocked(createUserProfileUseCase.invoke).mockResolvedValue(mockUserProfile)
-        vi.mocked(authRepository.findAccountPermissions).mockResolvedValue(mockPermissions)
-        vi.mocked(authService.generateTokenPair).mockResolvedValue(mockTokenPair)
-
-        // Act
-        await useCase.invoke(mockParams)
-
-        // Assert - Both operations should be called (executed in parallel via Promise.all)
-        expect(createUserProfileUseCase.invoke).toHaveBeenCalled()
-        expect(authRepository.findAccountPermissions).toHaveBeenCalled()
       })
     })
   })
