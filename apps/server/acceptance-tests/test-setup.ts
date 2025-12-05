@@ -32,6 +32,7 @@ beforeAll(async () => {
     JWT_ACCESS_TOKEN_EXPIRES_IN: '1h',
     JWT_REFRESH_TOKEN_SECRET: 'test',
     JWT_REFRESH_TOKEN_EXPIRES_IN: '1h',
+    JWT_REFRESH_TOKEN_COOKIE_NAME: 'test',
   }
 
   const moduleBuilder = Test.createTestingModule({

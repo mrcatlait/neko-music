@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { JWTPayload as JoseJwtPayload, jwtVerify, SignJWT } from 'jose'
+import { randomUUID } from 'crypto'
 
 import { AuthModuleOptions } from '../types'
 import { AUTH_MODULE_OPTIONS } from '../tokens'
@@ -59,6 +60,7 @@ export class JwtService {
       .setProtectedHeader({ alg: this.alg })
       .setIssuedAt()
       .setSubject(payload.userId)
+      .setJti(randomUUID())
       .setExpirationTime(this.refreshTokenExpiresIn)
       .sign(this.refreshTokenSecret)
       .then((token) => ({ token, expiresAt }))

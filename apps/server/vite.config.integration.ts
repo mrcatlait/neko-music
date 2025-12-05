@@ -12,13 +12,13 @@ export default defineConfig(() => ({
     }),
   ],
   test: {
-    hookTimeout: 60000,
     globals: true,
     watch: false,
     reporters: ['default', 'junit'],
     include: ['integration-tests/**/*.spec.ts'],
     setupFiles: ['./integration-tests/test-setup.ts'],
     testTimeout: 60000,
+    hookTimeout: 60000,
     outputFile: {
       junit: './reports/integration/junit-report.xml',
     }

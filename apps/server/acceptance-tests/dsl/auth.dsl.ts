@@ -8,6 +8,11 @@ interface RegisterOptions {
   password?: string
 }
 
+interface LoginOptions {
+  email?: string
+  password?: string
+}
+
 export class AuthDSL {
   constructor(private readonly context: Context) {}
 
@@ -37,6 +42,33 @@ export class AuthDSL {
         expect(response.status).toBe(400)
         expect(response.body).toMatchObject({
           message: ['emailTaken'],
+        })
+      },
+    }
+  }
+
+  async login(options: LoginOptions = {}) {
+    const params = new Params<LoginOptions>(this.context, options)
+
+    const email = params.alias('email', 'test@example.com')
+    const password = params.optional('password', 'password123')
+
+    const response = await request(app.getHttpServer()).post('/auth/login').send({
+      email,
+      password,
+    })
+
+    return {
+      assertSuccess: () => {
+        expect(response.status).toBe(200)
+        expect(response.body).toMatchObject({
+          accessToken: expect.any(String),
+        })
+      },
+      assertFailure: () => {
+        expect(response.status).toBe(401)
+        expect(response.body).toMatchObject({
+          message: 'Unauthorized',
         })
       },
     }
