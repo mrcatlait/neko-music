@@ -24,7 +24,7 @@
     "@neko/eslint-config": "*",
     "angular-eslint": "^19.8.1",
     "esbuild-visualizer": "^0.7.0",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.2.0",
     "typescript": "~5.9.2"
   },
   "prettier": "@neko/eslint-config/prettier"
