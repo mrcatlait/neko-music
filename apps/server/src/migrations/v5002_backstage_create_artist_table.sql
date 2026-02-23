@@ -1,7 +1,7 @@
 CREATE TABLE "catalog"."Artist" (
   "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   "name" VARCHAR(255) NOT NULL UNIQUE,
-  "catalogArtistId" UUID NOT NULL,
+  "catalogArtistId" UUID,
   "verified" BOOLEAN NOT NULL DEFAULT FALSE,
   "status" "backstage"."PublishingStatus" NOT NULL DEFAULT 'DRAFT',
   "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -9,7 +9,11 @@ CREATE TABLE "catalog"."Artist" (
   "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updatedBy" UUID NOT NULL,
   CONSTRAINT "UK_Artist_Name" UNIQUE (name),
-  CONSTRAINT "FK_Artist_CatalogArtist" FOREIGN KEY ("catalogArtistId") REFERENCES "catalog"."Artist" ("id") ON DELETE CASCADE
+  CONSTRAINT "FK_Artist_CatalogArtist" FOREIGN KEY ("catalogArtistId") REFERENCES "catalog"."Artist" ("id") ON DELETE CASCADE,
+  CONSTRAINT "CHK_Artist_CatalogArtistId" CHECK (
+    ("catalogArtistId" IS NOT NULL AND "status" = 'PUBLISHED') OR
+    ("catalogArtistId" IS NULL AND "status" IN ('DRAFT', 'PROCESSING', 'REJECTED'))
+  )
 );
 
 COMMENT ON TABLE "backstage"."Artist" IS 'An artist';

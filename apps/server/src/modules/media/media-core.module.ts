@@ -5,7 +5,13 @@ import { MEDIA_MODULE_OPTIONS } from './tokens'
 import { MediaController, StreamingController } from './controllers'
 import { FileService, ImageService, ProcessingPipelineService, StreamingService, UploadTokenService } from './services'
 import { MediaModuleOptions } from './types'
-import { GenerateUploadTokenUseCase, UploadMediaUseCase, UploadAudioValidator, UploadImageValidator } from './use-cases'
+import {
+  GenerateUploadTokenUseCase,
+  UploadMediaUseCase,
+  UploadAudioValidator,
+  UploadImageValidator,
+  GetMediaReadinessUseCase,
+} from './use-cases'
 import { MediaRepository } from './repositories'
 import { TriggerMediaProcessingCron, UploadTokenCleanupCron } from './crons'
 
@@ -29,11 +35,12 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     MediaRepository,
     // Use Cases
     GenerateUploadTokenUseCase,
+    GetMediaReadinessUseCase,
     UploadMediaUseCase,
     UploadAudioValidator,
     UploadImageValidator,
   ]
-  static exports = [GenerateUploadTokenUseCase]
+  static exports = [GenerateUploadTokenUseCase, GetMediaReadinessUseCase]
   static controllers = [MediaController, StreamingController]
 
   constructor(

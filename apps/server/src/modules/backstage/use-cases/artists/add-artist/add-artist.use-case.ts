@@ -4,8 +4,10 @@ import { Selectable } from 'kysely'
 import { AddArtistValidator } from './add-artist.validator'
 import { ArtistRepository } from '../../../repositories'
 
-import { ArtistTable } from '@/modules/database'
 import { UseCase } from '@/modules/shared/interfaces'
+import { PublishingStatus } from '@/modules/backstage/enums'
+import { BackstageArtistTable } from '@/modules/database'
+import { SYSTEM_USER } from '@/modules/backstage/constants'
 
 export interface AddArtistUseCaseParams {
   readonly name: string
@@ -13,7 +15,7 @@ export interface AddArtistUseCaseParams {
   readonly verified: boolean
 }
 
-export type AddArtistUseCaseResult = Selectable<ArtistTable>
+export type AddArtistUseCaseResult = Selectable<BackstageArtistTable>
 
 @Injectable()
 export class AddArtistUseCase implements UseCase<AddArtistUseCaseParams, AddArtistUseCaseResult> {
@@ -32,10 +34,12 @@ export class AddArtistUseCase implements UseCase<AddArtistUseCaseParams, AddArti
     return await this.artistRepository.createArtist({
       artist: {
         name: params.name,
-        // https://wanago.io/2023/10/09/api-nestjs-postgresql-kysely-json/
-        artwork: {},
-        published: false,
+        status: PublishingStatus.DRAFT,
         verified: params.verified,
+        createdAt: new Date(),
+        createdBy: SYSTEM_USER,
+        updatedAt: new Date(),
+        updatedBy: SYSTEM_USER,
       },
       genres: params.genres,
     })

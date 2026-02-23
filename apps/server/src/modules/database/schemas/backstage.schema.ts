@@ -10,21 +10,21 @@ interface AuditTrail {
   updatedBy: string
 }
 
-export interface ArtistTable extends AuditTrail {
+export interface BackstageArtistTable extends AuditTrail {
   id: Generated<string>
   name: string
-  catalogArtistId: string
+  catalogArtistId: string | null
   verified: boolean
   status: PublishingStatus
 }
 
-export interface ArtistGenreTable {
+export interface BackstageArtistGenreTable {
   artistId: string
   genreId: string
   position: number
 }
 
-export interface AlbumTable extends AuditTrail {
+export interface BackstageAlbumTable extends AuditTrail {
   id: Generated<string>
   name: string
   catalogAlbumId: string
@@ -34,19 +34,19 @@ export interface AlbumTable extends AuditTrail {
   status: PublishingStatus
 }
 
-export interface AlbumGenreTable {
+export interface BackstageAlbumGenreTable {
   albumId: string
   genreId: string
   position: number
 }
 
-export interface AlbumArtistTable {
+export interface BackstageAlbumArtistTable {
   albumId: string
   artistId: string
   role: ArtistRole
 }
 
-export interface TrackTable extends AuditTrail {
+export interface BackstageTrackTable extends AuditTrail {
   id: Generated<string>
   name: string
   catalogTrackId: string
@@ -60,25 +60,25 @@ export interface TrackTable extends AuditTrail {
   status: PublishingStatus
 }
 
-export interface TrackGenreTable {
+export interface BackstageTrackGenreTable {
   trackId: string
   genreId: string
   position: number
 }
 
-export interface TrackArtistTable {
+export interface BackstageTrackArtistTable {
   trackId: string
   artistId: string
   role: ArtistRole
 }
 
 export interface BackstageSchema {
-  'backstage.Artist': ArtistTable
-  'backstage.ArtistGenre': ArtistGenreTable
-  'backstage.Album': AlbumTable
-  'backstage.AlbumGenre': AlbumGenreTable
-  'backstage.AlbumArtist': AlbumArtistTable
-  'backstage.Track': TrackTable
-  'backstage.TrackGenre': TrackGenreTable
-  'backstage.TrackArtist': TrackArtistTable
+  'backstage.Artist': BackstageArtistTable
+  'backstage.ArtistGenre': BackstageArtistGenreTable
+  'backstage.Album': BackstageAlbumTable
+  'backstage.AlbumGenre': BackstageAlbumGenreTable
+  'backstage.AlbumArtist': BackstageAlbumArtistTable
+  'backstage.Track': BackstageTrackTable
+  'backstage.TrackGenre': BackstageTrackGenreTable
+  'backstage.TrackArtist': BackstageTrackArtistTable
 }

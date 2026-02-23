@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { Insertable, Selectable } from 'kysely'
 
-import { ProcessingStatus, ProcessingStep } from '../enums'
+import { EntityType, ProcessingStatus, ProcessingStep } from '../enums'
 
 import {
   AssetTable,
@@ -141,8 +141,28 @@ export class MediaRepository {
       .then(() => undefined)
   }
 
+  findProcessingJobBySourceAssetId(sourceAssetId: string): Promise<Selectable<ProcessingJobTable> | undefined> {
+    return this.database
+      .selectFrom('media.ProcessingJob')
+      .where('sourceAssetId', '=', sourceAssetId)
+      .selectAll()
+      .executeTakeFirst()
+  }
+
   findSourceAssetById(id: string): Promise<Selectable<SourceAssetTable> | undefined> {
     return this.database.selectFrom('media.SourceAsset').where('id', '=', id).selectAll().executeTakeFirst()
+  }
+
+  findSourceAssetByEntityTypeAndEntityId(
+    entityType: EntityType,
+    entityId: string,
+  ): Promise<Selectable<SourceAssetTable> | undefined> {
+    return this.database
+      .selectFrom('media.SourceAsset')
+      .where('entityType', '=', entityType)
+      .where('entityId', '=', entityId)
+      .selectAll()
+      .executeTakeFirst()
   }
 
   createImageAsset(parameters: CreateImageAssetParameters): Promise<Selectable<AssetTable>> {

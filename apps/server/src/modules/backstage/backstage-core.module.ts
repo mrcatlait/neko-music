@@ -1,7 +1,14 @@
 import { Module } from '@nestjs/common'
 
 import { BACKSTAGE_MODULE_OPTIONS } from './tokens'
-import { AddArtistValidator, AddArtistUseCase, AddGenreValidator, AddGenreUseCase } from './use-cases'
+import {
+  AddArtistValidator,
+  AddArtistUseCase,
+  AddGenreValidator,
+  AddGenreUseCase,
+  PublishArtistValidator,
+  PublishArtistUseCase,
+} from './use-cases'
 import { ArtistController, GenreController } from './controllers'
 import { ArtistRepository, GenreRepository } from './repositories'
 
@@ -17,6 +24,8 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     AddArtistValidator,
     AddGenreUseCase,
     AddGenreValidator,
+    PublishArtistUseCase,
+    PublishArtistValidator,
     // Repositories
     ArtistRepository,
     GenreRepository,

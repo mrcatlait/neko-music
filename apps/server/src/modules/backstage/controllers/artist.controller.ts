@@ -1,7 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Param, Post, Put } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation } from '@nestjs/swagger'
 
-import { AddArtistUseCase } from '../use-cases'
+import { AddArtistUseCase, PublishArtistUseCase } from '../use-cases'
 import { ArtistCreationRequest, ArtistCreationResponse } from '../dtos'
 
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
@@ -16,6 +16,7 @@ export class ArtistController {
   constructor(
     private readonly addArtistUseCase: AddArtistUseCase,
     private readonly generateUploadTokenUseCase: GenerateUploadTokenUseCase,
+    private readonly publishArtistUseCase: PublishArtistUseCase,
   ) {}
 
   @Post('')
@@ -41,5 +42,17 @@ export class ArtistController {
       artistId: artist.id,
       uploadToken: uploadToken.uploadToken,
     }
+  }
+
+  @Put(':artistId/publish')
+  @ApiOperation({
+    summary: 'Publish an artist',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The artist has been successfully published',
+  })
+  publishArtist(@Param('artistId') artistId: string): Promise<void> {
+    return this.publishArtistUseCase.invoke({ artistId })
   }
 }

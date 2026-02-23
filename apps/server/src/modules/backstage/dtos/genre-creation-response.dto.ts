@@ -13,10 +13,4 @@ export class GenreCreationResponse implements Contracts.Backstage.GenreCreationR
     example: 'Rock',
   })
   name: string
-
-  @ApiProperty({
-    description: 'Whether the genre is published',
-    example: false,
-  })
-  published: boolean
 }
