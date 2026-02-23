@@ -2,10 +2,12 @@ import { Inject, Module } from '@nestjs/common'
 import { ModuleRef } from '@nestjs/core'
 
 import { MEDIA_MODULE_OPTIONS } from './tokens'
-import { StreamingController } from './controllers'
-import { DashUtilsService, FileUtilsService, StreamingService } from './services'
+import { MediaController, StreamingController } from './controllers'
+import { FileService, ImageService, ProcessingPipelineService, StreamingService, UploadTokenService } from './services'
 import { MediaModuleOptions } from './types'
-import { UploadImageUseCase, UploadImageValidator } from './use-cases'
+import { GenerateUploadTokenUseCase, UploadMediaUseCase, UploadAudioValidator, UploadImageValidator } from './use-cases'
+import { MediaRepository } from './repositories'
+import { TriggerMediaProcessingCron, UploadTokenCleanupCron } from './crons'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -14,16 +16,25 @@ export class MediaCoreModule extends CoreModuleWithOptions {
   static module = MediaCoreModule
   static optionsToken = MEDIA_MODULE_OPTIONS
   static providers = [
+    // Crons
+    UploadTokenCleanupCron,
+    TriggerMediaProcessingCron,
     // Services
-    DashUtilsService,
-    FileUtilsService,
+    FileService,
+    ImageService,
+    ProcessingPipelineService,
     StreamingService,
+    UploadTokenService,
+    // Repositories
+    MediaRepository,
     // Use Cases
-    UploadImageUseCase,
+    GenerateUploadTokenUseCase,
+    UploadMediaUseCase,
+    UploadAudioValidator,
     UploadImageValidator,
   ]
-  static exports = [UploadImageUseCase]
-  static controllers = [StreamingController]
+  static exports = [GenerateUploadTokenUseCase]
+  static controllers = [MediaController, StreamingController]
 
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,

@@ -5,19 +5,18 @@ export interface GenerateFileNameParameters {
 
 export interface NamingStrategy {
   /**
-   * Generate a file name for the given file and prefix
-   * @param fileName The file name
-   * @param prefix The prefix
-   * @returns The generated file name
-   */
-  // generateFileNameOld(fileName: string, prefix?: string): string
-
-  /**
    * Generate a file name for the given file and format
    * @param parameters The parameters
    * @returns The generated file name
    */
   generateFileName(parameters: GenerateFileNameParameters): string
+
+  /**
+   * Generate a random file name for the given format
+   * @param format The format
+   * @returns The generated file name
+   */
+  generateRandomFileName(format: string): string
 
   /**
    * Generate a name for the DASH manifest file

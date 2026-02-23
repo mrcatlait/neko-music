@@ -1,1 +1,2 @@
-export * from './upload-image'
+export * from './generate-upload-token'
+export * from './upload-media'

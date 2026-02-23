@@ -1,22 +1,21 @@
 import { Injectable } from '@nestjs/common'
 
 import { AddArtistUseCaseParams } from './add-artist.use-case'
+import { ArtistRepository, GenreRepository } from '../../../repositories'
 
 import { ValidationResult, Validator } from '@/modules/shared/interfaces'
-import { DatabaseService } from '@/modules/database'
 
 @Injectable()
 export class AddArtistValidator implements Validator<AddArtistUseCaseParams> {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(
+    private readonly artistRepository: ArtistRepository,
+    private readonly genreRepository: GenreRepository,
+  ) {}
 
   async validate(params: AddArtistUseCaseParams): Promise<ValidationResult> {
     const [nameTaken, genresExist] = await Promise.all([
-      this.databaseService.sql<{ exists: boolean }[]>`
-        SELECT EXISTS(SELECT 1 FROM "catalog"."Artist" WHERE "name" = ${params.name})
-      `.then((result) => result.at(0)?.exists ?? false),
-      this.databaseService.sql<{ exists: boolean }[]>`
-        SELECT EXISTS(SELECT 1 FROM "catalog"."Genre" WHERE "id" IN ${this.databaseService.sql(params.genres)})
-      `.then((result) => result.at(0)?.exists ?? false),
+      this.artistRepository.findArtistByName(params.name),
+      this.genreRepository.findGenresByIds(params.genres),
     ])
 
     const errors: string[] = []
@@ -25,7 +24,7 @@ export class AddArtistValidator implements Validator<AddArtistUseCaseParams> {
       errors.push('Artist name already taken')
     }
 
-    if (!genresExist) {
+    if (genresExist.length !== params.genres.length) {
       errors.push('Genres not found')
     }
 

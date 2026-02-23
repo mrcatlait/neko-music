@@ -1,68 +1,28 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import { ApiOperation, ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'
 
-import { GenreCreationRequest, GenreUpdateRequest, Genre, GenresResponse } from '../dtos'
-import { AddGenreUseCase, ListGenresUseCase, RemoveGenreUseCase, UpdateGenreUseCase } from '../use-cases'
+import { GenreCreationRequest, GenreCreationResponse } from '../dtos'
+import { AddGenreUseCase } from '../use-cases'
+
+import { AuthGuard } from '@/modules/auth/guards'
 
 @Controller('backstage/genres')
 @ApiTags('Backstage Genres')
 @ApiBearerAuth()
+@UseGuards(AuthGuard)
 export class GenreController {
-  constructor(
-    private readonly addGenreUseCase: AddGenreUseCase,
-    private readonly listGenresUseCase: ListGenresUseCase,
-    private readonly removeGenreUseCase: RemoveGenreUseCase,
-    private readonly updateGenreUseCase: UpdateGenreUseCase,
-  ) {}
-
-  @Get('')
-  @ApiOperation({
-    summary: 'Get all genres',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The genres have been successfully retrieved',
-    type: GenresResponse,
-  })
-  getGenres(): Promise<GenresResponse> {
-    return this.listGenresUseCase.invoke()
-  }
+  constructor(private readonly addGenreUseCase: AddGenreUseCase) {}
 
   @Post('')
   @ApiOperation({
-    summary: 'Create a new genre',
+    summary: 'Create a genre',
   })
   @ApiResponse({
     status: 201,
-    description: 'The genre has been successfully created',
-    type: Genre,
+    description: 'The genre has been successfully created.',
+    type: GenreCreationResponse,
   })
-  createGenre(@Body() body: GenreCreationRequest): Promise<Genre> {
+  createGenre(@Body() body: GenreCreationRequest): Promise<GenreCreationResponse> {
     return this.addGenreUseCase.invoke({ name: body.name })
-  }
-
-  @Put(':genreId')
-  @ApiOperation({
-    summary: 'Update a genre',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The genre has been successfully updated',
-    type: Genre,
-  })
-  updateGenre(@Param('genreId') genreId: string, @Body() body: GenreUpdateRequest): Promise<Genre> {
-    return this.updateGenreUseCase.invoke({ id: genreId, name: body.name })
-  }
-
-  @Delete(':genreId')
-  @ApiOperation({
-    summary: 'Delete a genre',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The genre has been successfully deleted',
-  })
-  deleteGenre(@Param('genreId') genreId: string): Promise<void> {
-    return this.removeGenreUseCase.invoke({ id: genreId })
   }
 }

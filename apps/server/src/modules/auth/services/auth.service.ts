@@ -8,12 +8,13 @@ import { ACCESS_TOKEN_HEADER_NAME, REFRESH_TOKEN_COOKIE_NAME } from '../constant
 import { AccessTokenPayload, JwtService } from './jwt.service'
 import { AuthRepository } from '../repositories'
 import { User } from '../interfaces'
-import { parseTimePeriod } from '../parse-time-period.util'
+
+import { parseTimePeriod } from '@/modules/shared/utils'
 
 @Injectable()
 export class AuthService {
-  private readonly accessTokenHeaderName: string
-  private readonly refreshTokenCookieName: string
+  private readonly accessTokenHeaderName = ACCESS_TOKEN_HEADER_NAME
+  private readonly refreshTokenCookieName = REFRESH_TOKEN_COOKIE_NAME
   private readonly refreshTokenExpiresIn: string
   private readonly saltRounds: number
 
@@ -22,8 +23,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly authRepository: AuthRepository,
   ) {
-    this.accessTokenHeaderName = options.accessTokenHeaderName ?? ACCESS_TOKEN_HEADER_NAME
-    this.refreshTokenCookieName = options.refreshTokenCookieName ?? REFRESH_TOKEN_COOKIE_NAME
     this.refreshTokenExpiresIn = options.refreshTokenExpiresIn
     this.saltRounds = options.saltRounds
   }

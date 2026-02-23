@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import { readdirSync, rmSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'fs'
 import { ModuleRef } from '@nestjs/core'
 import { join } from 'path'
 import { Logger } from '@nestjs/common'
@@ -8,18 +8,22 @@ import { AudioTransformParameters, AudioTransformResult, AudioTransformStrategy 
 import { NamingStrategy } from '../naming/naming.strategy'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
-import { FileUtilsService } from '../../services'
+import { FileService } from '../../services'
 
 import { InjectableStrategy } from '@/modules/shared/interfaces'
 
+/**
+ * Audio transform strategy that uses ffmpeg to transform audio files to MPEG-DASH format.
+ */
 export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, InjectableStrategy {
   private readonly logger = new Logger(this.constructor.name)
+
   private namingStrategy: NamingStrategy
-  private fileUtilsService: FileUtilsService
+  private fileService: FileService
 
   onInit(moduleRef: ModuleRef): void {
     this.namingStrategy = moduleRef.get<MediaModuleOptions>(MEDIA_MODULE_OPTIONS).namingStrategy
-    this.fileUtilsService = moduleRef.get(FileUtilsService)
+    this.fileService = moduleRef.get(FileService)
   }
 
   async transform(
@@ -31,15 +35,19 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, Inj
     // https://stackoverflow.com/questions/40046444/how-should-i-use-the-dash-not-webm-dash-manifest-format-in-ffmpeg
     const manifestPath = `${targetDirectory}/${manifestName}`
 
-    const format = await this.fileUtilsService.getFileTypeFromBuffer(audio)
+    const format = await this.fileService.getFileTypeFromBuffer(audio)
 
     if (!format) {
       throw new Error('Failed to get file type from buffer')
     }
 
     const sourceFilePath = join(targetDirectory, `${crypto.randomUUID()}.${format}`)
-    this.fileUtilsService.createDirectory(targetDirectory)
-    this.fileUtilsService.createFile(sourceFilePath, audio)
+
+    if (!existsSync(targetDirectory)) {
+      mkdirSync(targetDirectory, { recursive: true })
+    }
+
+    writeFileSync(sourceFilePath, audio)
 
     const bitrateArgs = parameters.bitrate.map((b, index) =>
       [
@@ -80,7 +88,7 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, Inj
       const files = readdirSync(targetDirectory)
 
       const segmentNames = files.filter((fileName) => fileName !== manifestName)
-      const totalSize = this.fileUtilsService.getDirectorySize(targetDirectory)
+      const totalSize = this.fileService.getDirectorySize(targetDirectory)
 
       return Promise.resolve({
         manifestName,

@@ -1,24 +1,9 @@
 import { Module } from '@nestjs/common'
 
 import { BACKSTAGE_MODULE_OPTIONS } from './tokens'
-import {
-  AddGenreUseCase,
-  AddGenreValidator,
-  ListGenresUseCase,
-  UpdateGenreUseCase,
-  UpdateGenreValidator,
-  RemoveGenreValidator,
-  RemoveGenreUseCase,
-  ListArtistsUseCase,
-  AddArtistValidator,
-  AddArtistUseCase,
-  GetArtistByIdUseCase,
-  UpdateArtistUseCase,
-  UpdateArtistValidator,
-  RemoveArtistUseCase,
-  RemoveArtistValidator,
-} from './use-cases'
+import { AddArtistValidator, AddArtistUseCase, AddGenreValidator, AddGenreUseCase } from './use-cases'
 import { ArtistController, GenreController } from './controllers'
+import { ArtistRepository, GenreRepository } from './repositories'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -29,21 +14,12 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
   static providers = [
     // Use cases
     AddArtistUseCase,
-    AddGenreUseCase,
-    GetArtistByIdUseCase,
-    ListArtistsUseCase,
-    ListGenresUseCase,
-    RemoveArtistUseCase,
-    RemoveGenreUseCase,
-    UpdateArtistUseCase,
-    UpdateGenreUseCase,
-    // Use case validators
     AddArtistValidator,
+    AddGenreUseCase,
     AddGenreValidator,
-    RemoveArtistValidator,
-    RemoveGenreValidator,
-    UpdateArtistValidator,
-    UpdateGenreValidator,
+    // Repositories
+    ArtistRepository,
+    GenreRepository,
   ]
   static controllers = [ArtistController, GenreController]
 }

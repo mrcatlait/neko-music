@@ -20,13 +20,6 @@ export class ArtistCreationRequest implements Contracts.Backstage.ArtistCreation
   genres: string[]
 
   @ApiProperty({
-    description: 'The artwork of the artist',
-    type: 'string',
-    format: 'binary',
-  })
-  artwork: string
-
-  @ApiProperty({
     description: 'Whether the artist is verified',
     example: true,
   })

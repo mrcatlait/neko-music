@@ -9,8 +9,12 @@ export class DefaultNamingStrategy implements NamingStrategy {
     return `${fileName}.${format}`
   }
 
+  generateRandomFileName(format: string): string {
+    return `${crypto.randomUUID()}.${format}`
+  }
+
   generateDashManifestName(): string {
-    return this.generateFileName({ fileName: 'manifest.mpd', format: 'mpd' })
+    return this.generateFileName({ fileName: 'manifest', format: 'mpd' })
   }
 
   generateDashInitSegmentName(segmentNumber: number | string): string {

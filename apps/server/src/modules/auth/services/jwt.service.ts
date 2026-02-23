@@ -5,7 +5,8 @@ import { randomUUID } from 'crypto'
 import { AuthModuleOptions } from '../types'
 import { AUTH_MODULE_OPTIONS } from '../tokens'
 import { JwtClaims, JwtPayload } from '../interfaces'
-import { parseTimePeriod } from '../parse-time-period.util'
+
+import { parseTimePeriod } from '@/modules/shared/utils'
 
 export interface AccessTokenPayload extends JwtClaims {
   userId: string

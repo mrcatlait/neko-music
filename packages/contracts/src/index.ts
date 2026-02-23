@@ -7,16 +7,18 @@ import {
 } from './auth'
 import {
   ArtistCreationRequestDto,
+  ArtistCreationResponseDto,
   ArtistDto,
   ArtistsResponseDto,
   ArtistUpdateRequestDto,
   GenreCreationRequestDto,
+  GenreCreationResponseDto,
   GenreDto,
   GenresResponseDto,
   GenreUpdateRequestDto,
 } from './backstage'
 import { BadRequestDto } from './error'
-import { UploadTokenResponseDto } from './media'
+import { UploadMediaResponseDto, UploadTokenResponseDto } from './media'
 import { ArtworkDto } from './shared'
 
 export namespace Contracts {
@@ -31,11 +33,13 @@ export namespace Contracts {
   export namespace Backstage {
     // Genres
     export type GenreCreationRequest = GenreCreationRequestDto
+    export type GenreCreationResponse = GenreCreationResponseDto
     export type GenreUpdateRequest = GenreUpdateRequestDto
     export type Genre = GenreDto
     export type GenresResponse = GenresResponseDto
     // Artists
     export type ArtistCreationRequest = ArtistCreationRequestDto
+    export type ArtistCreationResponse = ArtistCreationResponseDto
     export type ArtistUpdateRequest = ArtistUpdateRequestDto
     export type ArtistsResponse = ArtistsResponseDto
     export type Artist = ArtistDto
@@ -43,6 +47,7 @@ export namespace Contracts {
 
   export namespace Media {
     export type UploadTokenResponse = UploadTokenResponseDto
+    export type UploadMediaResponse = UploadMediaResponseDto
   }
 
   export namespace Error {
