@@ -41,4 +41,23 @@ export interface NamingStrategy {
    * @returns The generated file name
    */
   generateDashMediaSegmentName(segmentNumber: number | string, chunkNumber: number | string, prefix?: string): string
+
+  /**
+   * Generate an artwork filename for storage (e.g. {entityId}_small.webp).
+   * Used by ImageService when creating processed assets and by artwork serving when resolving files.
+   * @param entityId The entity ID
+   * @param presetName The preset name
+   * @param format The format
+   * @returns The generated file name
+   */
+  generateArtworkFilename(entityId: string, presetName: string, format: string): string
+
+  /**
+   * Generate the artwork filename template for URL construction (e.g. {size}.webp).
+   * The client replaces {size} with the preset name (small, medium, large).
+   * @param entityId The entity ID
+   * @param format The format
+   * @returns The generated file name
+   */
+  generateArtworkFilenameTemplate(entityId: string, format: string): string
 }

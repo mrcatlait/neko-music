@@ -1,3 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS "catalog";
+CREATE SCHEMA IF NOT EXISTS "backstage";
 
-COMMENT ON SCHEMA "catalog" IS 'Music catalog data (artists, albums, tracks)';
+COMMENT ON SCHEMA "backstage" IS 'Backstage data (artists, albums, tracks)';

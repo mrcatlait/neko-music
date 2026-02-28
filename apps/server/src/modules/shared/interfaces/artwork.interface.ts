@@ -1,5 +1,12 @@
 export interface Artwork {
-  readonly url: string
-  readonly size: number
-  readonly contentType: string
+  /**
+   * The template URL with {size} placeholder; use preset names: small, medium, large
+   * @example 'https://example.com/artwork/{size}.webp'
+   */
+  url: string
+  /**
+   * The dominant color of the artwork
+   * @example #000000
+   */
+  dominantColor: string
 }

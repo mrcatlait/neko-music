@@ -8,7 +8,6 @@ import { BackstageModule } from '../backstage/backstage.module'
 
 import { AuthGuard } from '@/modules/auth/guards'
 import { DatabaseModule } from '@/modules/database/database.module'
-import { EventBusModule, ObservableMessagingStrategy } from '@/modules/event-bus'
 import { CatalogModule } from '@/modules/catalog/catalog.module'
 import { ConfigService } from '@/modules/config/services'
 import { ConfigModule } from '@/modules/config/config.module'
@@ -41,9 +40,6 @@ import { AuthModule } from '@/modules/auth/auth.module'
       inject: [ConfigService],
     }),
     ScheduleModule.forRoot(),
-    EventBusModule.forRoot({
-      messagingStrategy: new ObservableMessagingStrategy(),
-    }),
     AuthModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         accessTokenSecret: configService.config.JWT_ACCESS_TOKEN_SECRET,
@@ -55,29 +51,27 @@ import { AuthModule } from '@/modules/auth/auth.module'
       inject: [ConfigService],
     }),
     BackstageModule.forRoot({}),
-    // CatalogModule,
+    CatalogModule.forRoot({}),
     MediaModule.forRoot({
       storageStrategy: new LocalStorageStrategy({
         directory: join(process.cwd(), 'media'),
       }),
       imageTransformStrategy: new SharpImageTransformStrategy(),
       imageTransformPresets: {
+        format: 'webp',
         small: {
           width: 56,
           height: 56,
-          format: 'webp',
           mode: 'cover',
         },
         medium: {
           width: 256,
           height: 256,
-          format: 'webp',
           mode: 'cover',
         },
         large: {
           width: 720,
           height: 720,
-          format: 'webp',
           mode: 'cover',
         },
       },

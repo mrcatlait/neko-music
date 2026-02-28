@@ -7,7 +7,7 @@ import { AddGenreUseCase } from '../use-cases'
 import { AuthGuard } from '@/modules/auth/guards'
 
 @Controller('backstage/genres')
-@ApiTags('Backstage Genres')
+@ApiTags('Backstage')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 export class GenreController {

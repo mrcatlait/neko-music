@@ -1,3 +1,5 @@
+import { ImageSize } from '../../enums'
+
 export type ImageTransformFormat = 'jpg' | 'jpeg' | 'png' | 'webp' | 'avif'
 
 export type ImageTransformMode = 'cover' | 'fill'
@@ -16,10 +18,6 @@ export interface ImageTransformParameters {
    */
   quality?: number
   /**
-   * The format of the image
-   */
-  format: ImageTransformFormat
-  /**
    * The mode of the image transformation
    */
   mode?: ImageTransformMode
@@ -27,17 +25,21 @@ export interface ImageTransformParameters {
 
 export interface ImageTransformPresets {
   /**
+   * The format of the image
+   */
+  format: ImageTransformFormat
+  /**
    * The small images used for avatars, thumbnails, etc.
    */
-  small: ImageTransformParameters
+  [ImageSize.SMALL]: ImageTransformParameters
   /**
    * The medium images used for medium-size images, medium-size thumbnails, etc.
    */
-  medium: ImageTransformParameters
+  [ImageSize.MEDIUM]: ImageTransformParameters
   /**
    * The large images used for full-size images, full-size thumbnails, etc.
    */
-  large: ImageTransformParameters
+  [ImageSize.LARGE]: ImageTransformParameters
 }
 
 /**

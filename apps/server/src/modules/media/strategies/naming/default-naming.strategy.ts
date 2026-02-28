@@ -24,4 +24,12 @@ export class DefaultNamingStrategy implements NamingStrategy {
   generateDashMediaSegmentName(segmentNumber: number | string, chunkNumber: number | string): string {
     return this.generateFileName({ fileName: `chunk_${segmentNumber}_${chunkNumber}`, format: 'm4s' })
   }
+
+  generateArtworkFilename(entityId: string, presetName: string, format: string): string {
+    return this.generateFileName({ fileName: `${entityId}_${presetName}`, format })
+  }
+
+  generateArtworkFilenameTemplate(entityId: string, format: string): string {
+    return this.generateArtworkFilename(entityId, '{size}', format)
+  }
 }

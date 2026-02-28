@@ -28,12 +28,10 @@ export class AlbumBuilder {
       ),
       genres: faker.helpers.multiple(() => faker.music.genre()),
       artwork: {
-        url: faker.image.url({
-          width: 256,
-          height: 256,
-        }),
-        backgroundColor: faker.color.rgb(),
-        textColor: faker.color.rgb(),
+        url: faker.image.url({ width: 256, height: 256 }),
+        sizes: ['small', 'medium', 'large'],
+        bgColor: faker.color.rgb().replace('#', ''),
+        textColor1: faker.color.rgb().replace('#', ''),
       },
     }
   }

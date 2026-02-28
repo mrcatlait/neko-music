@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { Insertable, Selectable } from 'kysely'
 
 import { PublishingStatus } from '../enums'
-import { SYSTEM_USER } from '../constants'
 
 import { BackstageArtistTable, Database, InjectDatabase } from '@/modules/database'
 
@@ -38,10 +37,15 @@ export class ArtistRepository {
     })
   }
 
-  publishArtist(artistId: string): Promise<void> {
+  publishArtist(artistId: string, catalogArtistId: string, userId: string): Promise<void> {
     return this.database
       .updateTable('backstage.Artist')
-      .set({ status: PublishingStatus.PUBLISHED, updatedAt: new Date(), updatedBy: SYSTEM_USER })
+      .set({
+        catalogArtistId,
+        status: PublishingStatus.PUBLISHED,
+        updatedAt: new Date(),
+        updatedBy: userId,
+      })
       .where('id', '=', artistId)
       .execute()
       .then(() => undefined)
@@ -53,5 +57,24 @@ export class ArtistRepository {
 
   findArtistById(id: string): Promise<Selectable<BackstageArtistTable> | undefined> {
     return this.database.selectFrom('backstage.Artist').where('id', '=', id).selectAll().executeTakeFirst()
+  }
+
+  async findArtistWithGenresById(
+    id: string,
+  ): Promise<(Selectable<BackstageArtistTable> & { genres: string[] }) | undefined> {
+    const artist = await this.findArtistById(id)
+    if (!artist) return undefined
+
+    const artistGenres = await this.database
+      .selectFrom('backstage.ArtistGenre')
+      .where('artistId', '=', id)
+      .orderBy('position', 'asc')
+      .select('genreId')
+      .execute()
+
+    return {
+      ...artist,
+      genres: artistGenres.map((ag) => ag.genreId),
+    }
   }
 }

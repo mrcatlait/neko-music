@@ -17,6 +17,8 @@ CREATE TABLE "backstage"."Track" (
   CONSTRAINT "UK_Track_Name" UNIQUE (name),
   CONSTRAINT "FK_Track_CatalogTrack" FOREIGN KEY ("catalogTrackId") REFERENCES "catalog"."Track" ("id") ON DELETE CASCADE,
   CONSTRAINT "FK_Track_Album" FOREIGN KEY ("albumId") REFERENCES "backstage"."Album" ("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_Track_CreatedBy_Account" FOREIGN KEY ("createdBy") REFERENCES "auth"."Account" ("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_Track_UpdatedBy_Account" FOREIGN KEY ("updatedBy") REFERENCES "auth"."Account" ("id") ON DELETE CASCADE,
   CONSTRAINT "CHK_Track_Duration" CHECK ("duration" > 0 AND "duration" < 36000),
   CONSTRAINT "CHK_Track_Positioning" CHECK (
     ("albumId" IS NULL AND "trackNumber" IS NULL AND "diskNumber" IS NULL) OR

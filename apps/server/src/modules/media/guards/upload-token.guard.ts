@@ -2,13 +2,13 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { FastifyRequest } from 'fastify'
 
 import { UploadTokenService } from '../services'
-import { MediaRepository } from '../repositories'
+import { UploadTokenRepository } from '../repositories'
 
 @Injectable()
 export class UploadTokenGuard implements CanActivate {
   constructor(
     private readonly uploadTokenService: UploadTokenService,
-    private readonly mediaRepository: MediaRepository,
+    private readonly uploadTokenRepository: UploadTokenRepository,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -20,7 +20,7 @@ export class UploadTokenGuard implements CanActivate {
       throw new UnauthorizedException()
     }
 
-    const token = await this.mediaRepository.findUploadTokenById(uploadToken)
+    const token = await this.uploadTokenRepository.findById(uploadToken)
 
     if (!token) {
       throw new UnauthorizedException()

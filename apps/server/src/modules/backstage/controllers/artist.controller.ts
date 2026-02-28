@@ -1,7 +1,7 @@
 import { Body, Controller, Param, Post, Put } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation } from '@nestjs/swagger'
 
-import { AddArtistUseCase, PublishArtistUseCase } from '../use-cases'
+import { CreateBackstageArtistUseCase, PublishArtistUseCase } from '../use-cases'
 import { ArtistCreationRequest, ArtistCreationResponse } from '../dtos'
 
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
@@ -10,11 +10,11 @@ import { UserSession } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
 
 @Controller('backstage/artists')
-@ApiTags('Backstage Artists')
+@ApiTags('Backstage')
 @ApiBearerAuth()
 export class ArtistController {
   constructor(
-    private readonly addArtistUseCase: AddArtistUseCase,
+    private readonly createBackstageArtistUseCase: CreateBackstageArtistUseCase,
     private readonly generateUploadTokenUseCase: GenerateUploadTokenUseCase,
     private readonly publishArtistUseCase: PublishArtistUseCase,
   ) {}
@@ -29,7 +29,12 @@ export class ArtistController {
     type: ArtistCreationResponse,
   })
   async createArtist(@Body() body: ArtistCreationRequest, @UserSession() user: User): Promise<ArtistCreationResponse> {
-    const artist = await this.addArtistUseCase.invoke({ name: body.name, genres: body.genres, verified: body.verified })
+    const artist = await this.createBackstageArtistUseCase.invoke({
+      userId: user.id,
+      name: body.name,
+      genres: body.genres,
+      verified: body.verified,
+    })
 
     const uploadToken = await this.generateUploadTokenUseCase.invoke({
       userId: user.id,
@@ -52,7 +57,7 @@ export class ArtistController {
     status: 200,
     description: 'The artist has been successfully published',
   })
-  publishArtist(@Param('artistId') artistId: string): Promise<void> {
-    return this.publishArtistUseCase.invoke({ artistId })
+  publishArtist(@Param('artistId') artistId: string, @UserSession() user: User): Promise<void> {
+    return this.publishArtistUseCase.invoke({ userId: user.id, artistId })
   }
 }

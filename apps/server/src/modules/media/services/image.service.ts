@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { MediaRepository } from '../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../tokens'
 import { MediaModuleOptions } from '../types'
+import { ImageSize } from '../enums'
 import {
   ImageAnalyzeStrategy,
   ImageTransformPresets,
@@ -43,15 +44,15 @@ export class ImageService {
 
     const created: Record<string, { storagePath: string; assetId?: string }> = {}
 
-    try {
-      for (const presetName of Object.keys(this.imageTransformPresets)) {
-        const preset = this.imageTransformPresets[presetName as keyof ImageTransformPresets]
-        const transformedImage = await this.imageTransformStrategy.transform(sourceImage, preset)
+    const format = this.imageTransformPresets.format
 
-        const fileName = this.namingStrategy.generateFileName({
-          fileName: `${source.entityId}_${presetName}`,
-          format: source.format,
-        })
+    try {
+      for (const presetName of Object.values(ImageSize)) {
+        const preset = this.imageTransformPresets[presetName]
+        const params = { ...preset, format }
+        const transformedImage = await this.imageTransformStrategy.transform(sourceImage, params)
+
+        const fileName = this.namingStrategy.generateArtworkFilename(source.entityId, presetName, format)
 
         const fileSize = transformedImage.length
         const storagePath = await this.storageStrategy.uploadFromBuffer(fileName, transformedImage)
@@ -67,7 +68,7 @@ export class ImageService {
             storageProvider: this.storageStrategy.name,
             storagePath,
             fileSize,
-            format: preset.format,
+            format,
           },
           metadata: {
             width: preset.width,

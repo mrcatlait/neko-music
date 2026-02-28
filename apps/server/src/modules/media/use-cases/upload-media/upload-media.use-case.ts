@@ -4,7 +4,7 @@ import { File } from '@nest-lab/fastify-multer'
 import { UploadImageValidator } from './upload-image.validator'
 import { UploadAudioValidator } from './upload-audio.validator'
 import { MediaType, ProcessingStep } from '../../enums'
-import { MediaRepository } from '../../repositories'
+import { MediaRepository, UploadTokenRepository } from '../../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
 import { NamingStrategy, StorageStrategy } from '../../strategies'
@@ -29,6 +29,7 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
     private readonly mediaRepository: MediaRepository,
+    private readonly uploadTokenRepository: UploadTokenRepository,
     private readonly fileService: FileService,
     private readonly uploadImageValidator: UploadImageValidator,
     private readonly uploadAudioValidator: UploadAudioValidator,
@@ -38,7 +39,7 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
   }
 
   async invoke(params: UploadMediaUseCaseParams): Promise<UploadMediaUseCaseResult> {
-    const uploadToken = await this.mediaRepository.findUploadTokenById(params.token)
+    const uploadToken = await this.uploadTokenRepository.findById(params.token)
 
     if (!uploadToken) {
       throw new ForbiddenException()

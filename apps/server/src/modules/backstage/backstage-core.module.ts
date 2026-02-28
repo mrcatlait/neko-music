@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common'
 
 import { BACKSTAGE_MODULE_OPTIONS } from './tokens'
 import {
-  AddArtistValidator,
-  AddArtistUseCase,
   AddGenreValidator,
   AddGenreUseCase,
+  CreateBackstageArtistValidator,
+  CreateBackstageArtistUseCase,
   PublishArtistValidator,
   PublishArtistUseCase,
 } from './use-cases'
@@ -20,10 +20,10 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
   static optionsToken = BACKSTAGE_MODULE_OPTIONS
   static providers = [
     // Use cases
-    AddArtistUseCase,
-    AddArtistValidator,
     AddGenreUseCase,
     AddGenreValidator,
+    CreateBackstageArtistUseCase,
+    CreateBackstageArtistValidator,
     PublishArtistUseCase,
     PublishArtistValidator,
     // Repositories

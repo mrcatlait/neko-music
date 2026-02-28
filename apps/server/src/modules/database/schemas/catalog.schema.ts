@@ -8,20 +8,20 @@ export interface GenreTable {
   name: string
 }
 
-export interface ArtistTable {
+export interface CatalogArtistTable {
   id: Generated<string>
   name: string
   artwork: Artwork
   verified: boolean
 }
 
-export interface ArtistGenreTable {
+export interface CatalogArtistGenreTable {
   artistId: string
   genreId: string
   position: number
 }
 
-export interface AlbumTable {
+export interface CatalogAlbumTable {
   id: Generated<string>
   name: string
   releaseDate: Date
@@ -30,19 +30,19 @@ export interface AlbumTable {
   type: AlbumType
 }
 
-export interface AlbumGenreTable {
+export interface CatalogAlbumGenreTable {
   albumId: string
   genreId: string
   position: number
 }
 
-export interface AlbumArtistTable {
+export interface CatalogAlbumArtistTable {
   albumId: string
   artistId: string
   role: ArtistRole
 }
 
-export interface TrackTable {
+export interface CatalogTrackTable {
   id: Generated<string>
   name: string
   albumId: string
@@ -56,13 +56,13 @@ export interface TrackTable {
   explicit: boolean
 }
 
-export interface TrackGenreTable {
+export interface CatalogTrackGenreTable {
   trackId: string
   genreId: string
   position: number
 }
 
-export interface TrackArtistTable {
+export interface CatalogTrackArtistTable {
   trackId: string
   artistId: string
   role: ArtistRole
@@ -76,13 +76,13 @@ export interface LyricsTable {
 
 export interface CatalogSchema {
   'catalog.Genre': GenreTable
-  'catalog.Artist': ArtistTable
-  'catalog.ArtistGenre': ArtistGenreTable
-  'catalog.Album': AlbumTable
-  'catalog.AlbumGenre': AlbumGenreTable
-  'catalog.AlbumArtist': AlbumArtistTable
-  'catalog.Track': TrackTable
-  'catalog.TrackGenre': TrackGenreTable
-  'catalog.TrackArtist': TrackArtistTable
+  'catalog.Artist': CatalogArtistTable
+  'catalog.ArtistGenre': CatalogArtistGenreTable
+  'catalog.Album': CatalogAlbumTable
+  'catalog.AlbumGenre': CatalogAlbumGenreTable
+  'catalog.AlbumArtist': CatalogAlbumArtistTable
+  'catalog.Track': CatalogTrackTable
+  'catalog.TrackGenre': CatalogTrackGenreTable
+  'catalog.TrackArtist': CatalogTrackArtistTable
   'catalog.Lyrics': LyricsTable
 }

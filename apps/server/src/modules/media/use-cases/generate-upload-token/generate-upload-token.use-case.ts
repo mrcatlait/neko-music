@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common'
 
 import { EntityType, MediaType } from '../../enums'
-import { MediaRepository } from '../../repositories'
+import { UploadTokenRepository } from '../../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
 
@@ -28,19 +28,19 @@ export class GenerateUploadTokenUseCase implements UseCase<
 
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
-    private readonly mediaRepository: MediaRepository,
+    private readonly uploadTokenRepository: UploadTokenRepository,
   ) {
     this.uploadTokenExpiresIn = parseTimePeriod(options.uploadTokenExpiresIn) * 1000
   }
 
   async invoke(params: GenerateUploadTokenUseCaseParams): Promise<{ uploadToken: string }> {
-    const token = await this.mediaRepository.findUploadTokenById(params.userId)
+    const token = await this.uploadTokenRepository.findById(params.userId)
 
     if (token) {
-      await this.mediaRepository.deleteUploadTokenById(token.id)
+      await this.uploadTokenRepository.deleteById(token.id)
     }
 
-    const newToken = await this.mediaRepository.createUploadToken({
+    const newToken = await this.uploadTokenRepository.create({
       userId: params.userId,
       mediaType: params.mediaType,
       expiresAt: new Date(Date.now() + this.uploadTokenExpiresIn),

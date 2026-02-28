@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { Insertable, Selectable } from 'kysely'
+import { Insertable, Selectable, sql } from 'kysely'
 
-import { EntityType, ProcessingStatus, ProcessingStep } from '../enums'
+import { EntityType, MediaType, ProcessingStatus, ProcessingStep } from '../enums'
 
 import {
   AssetTable,
@@ -11,8 +11,12 @@ import {
   ProcessingJobTable,
   ProcessingStepTable,
   SourceAssetTable,
-  UploadTokenTable,
 } from '@/modules/database'
+
+export interface ImageAssetWithMetadata {
+  asset: Selectable<AssetTable>
+  metadata: Omit<Selectable<ImageMetadataTable>, 'assetId'>
+}
 
 export interface CreateImageAssetParameters {
   image: Insertable<AssetTable>
@@ -22,42 +26,6 @@ export interface CreateImageAssetParameters {
 @Injectable()
 export class MediaRepository {
   constructor(@InjectDatabase() private readonly database: Database) {}
-
-  /**
-   * Find upload token by ID
-   */
-  findUploadTokenById(id: string): Promise<Selectable<UploadTokenTable> | undefined> {
-    return this.database.selectFrom('media.UploadToken').where('id', '=', id).selectAll().executeTakeFirst()
-  }
-
-  /**
-   * Create upload token
-   */
-  createUploadToken(uploadToken: Insertable<UploadTokenTable>): Promise<Selectable<UploadTokenTable>> {
-    return this.database.insertInto('media.UploadToken').values(uploadToken).returningAll().executeTakeFirstOrThrow()
-  }
-
-  /**
-   * Delete upload token by ID
-   */
-  deleteUploadTokenById(id: string): Promise<void> {
-    return this.database
-      .deleteFrom('media.UploadToken')
-      .where('id', '=', id)
-      .execute()
-      .then(() => undefined)
-  }
-
-  /**
-   * Delete expired upload tokens
-   */
-  deleteExpiredUploadTokens(): Promise<void> {
-    return this.database
-      .deleteFrom('media.UploadToken')
-      .where('expiresAt', '<', new Date())
-      .execute()
-      .then(() => undefined)
-  }
 
   /**
    * Create source asset and processing job in a single transaction
@@ -163,6 +131,51 @@ export class MediaRepository {
       .where('entityId', '=', entityId)
       .selectAll()
       .executeTakeFirst()
+  }
+
+  /**
+   * Returns image assets with metadata for an entity in a single round-trip using JSONB aggregation.
+   */
+  async findImageAssetsByEntityTypeAndEntityId(
+    entityType: EntityType,
+    entityId: string,
+  ): Promise<ImageAssetWithMetadata[]> {
+    interface Row {
+      assets: ImageAssetWithMetadata[]
+    }
+
+    const compiled = sql<Row>`SELECT COALESCE(
+      (
+        SELECT jsonb_agg(
+          jsonb_build_object(
+            'asset', jsonb_build_object(
+              'id', a.id,
+              'storagePath', a."storagePath",
+              'format', a.format,
+              'fileSize', a."fileSize"
+            ),
+            'metadata', jsonb_build_object(
+              'width', m.width,
+              'height', m.height,
+              'dominantColor', m."dominantColor"
+            )
+          )
+          ORDER BY m.width, m.height
+        )
+        FROM "media"."Asset" a
+        INNER JOIN "media"."ImageMetadata" m ON m."assetId" = a.id
+        WHERE a."entityType" = ${entityType}
+          AND a."entityId" = ${entityId}
+          AND a."mediaType" = ${MediaType.IMAGE}
+      ),
+      '[]'::jsonb
+    ) AS assets`.compile(this.database)
+
+    const { rows } = await this.database.executeQuery<Row>(compiled)
+    const row = rows[0]
+    if (!row?.assets) return []
+
+    return row.assets
   }
 
   createImageAsset(parameters: CreateImageAssetParameters): Promise<Selectable<AssetTable>> {

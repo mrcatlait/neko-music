@@ -1,7 +1,7 @@
 CREATE TABLE "backstage"."Album" (
   "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   "name" VARCHAR(255) NOT NULL,
-  "catalogAlbumId" UUID NOT NULL,
+  "catalogAlbumId" UUID,
   "releaseDate" DATE NOT NULL,
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   "type" "catalog"."AlbumType" NOT NULL,
@@ -11,7 +11,13 @@ CREATE TABLE "backstage"."Album" (
   "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updatedBy" UUID NOT NULL,
   CONSTRAINT "UK_Album_Name" UNIQUE (name),
-  CONSTRAINT "FK_Album_CatalogAlbum" FOREIGN KEY ("catalogAlbumId") REFERENCES "catalog"."Album" ("id") ON DELETE CASCADE
+  CONSTRAINT "FK_Album_CatalogAlbum" FOREIGN KEY ("catalogAlbumId") REFERENCES "catalog"."Album" ("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_Album_CreatedBy_Account" FOREIGN KEY ("createdBy") REFERENCES "auth"."Account" ("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_Album_UpdatedBy_Account" FOREIGN KEY ("updatedBy") REFERENCES "auth"."Account" ("id") ON DELETE CASCADE,
+  CONSTRAINT "CHK_Album_CatalogAlbumId" CHECK (
+    ("catalogAlbumId" IS NOT NULL AND "status" = 'PUBLISHED') OR
+    ("catalogAlbumId" IS NULL AND "status" IN ('DRAFT', 'PROCESSING', 'REJECTED'))
+  )
 );
 
 COMMENT ON TABLE "backstage"."Album" IS 'An album';

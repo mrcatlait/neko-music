@@ -4,7 +4,7 @@ CREATE TABLE "backstage"."AlbumArtist" (
   "role" "catalog"."ArtistRole" NOT NULL DEFAULT 'PRIMARY',
   PRIMARY KEY ("albumId", "artistId"),
   CONSTRAINT "FK_AlbumArtist_Album" FOREIGN KEY ("albumId") REFERENCES "backstage"."Album" ("id") ON DELETE CASCADE,
-  CONSTRAINT "FK_AlbumArtist_Artist" FOREIGN KEY ("artistId") REFERENCES "backstage"."Artist" ("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_AlbumArtist_Artist" FOREIGN KEY ("artistId") REFERENCES "backstage"."Artist" ("id") ON DELETE CASCADE
 );
 
 COMMENT ON TABLE "backstage"."AlbumArtist" IS 'A relationship between an album and an artist';

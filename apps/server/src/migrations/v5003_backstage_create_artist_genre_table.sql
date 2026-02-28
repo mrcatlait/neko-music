@@ -1,4 +1,4 @@
-CREATE TABLE "catalog"."ArtistGenre" (
+CREATE TABLE "backstage"."ArtistGenre" (
   "artistId" UUID NOT NULL,
   "genreId" UUID NOT NULL,
   "position" SMALLINT NOT NULL DEFAULT 0,

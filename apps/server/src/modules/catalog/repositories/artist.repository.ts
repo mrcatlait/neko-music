@@ -1,38 +1,41 @@
 import { Injectable } from '@nestjs/common'
-import { Sql } from 'postgres'
+import { Insertable, Selectable } from 'kysely'
 
-import { ArtistEntity } from '../entities'
+import { CatalogArtistTable, Database, InjectDatabase } from '@/modules/database'
 
-import { DatabaseService } from '@/modules/database'
+interface CreateArtistParams {
+  readonly artist: Insertable<CatalogArtistTable>
+  readonly genres: string[]
+}
 
 @Injectable()
 export class ArtistRepository {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(@InjectDatabase() private readonly database: Database) {}
 
-  find<Type extends ArtistEntity>(id: string, sql?: Sql): Promise<Type | undefined> {
-    return (sql ?? this.databaseService.sql)<Type[]>`
-      SELECT *
-      FROM "catalog"."Artist" 
-      WHERE id = ${id}
-      LIMIT 1
-    `.then((result) => result.at(0))
+  createArtist(params: CreateArtistParams): Promise<Selectable<CatalogArtistTable>> {
+    return this.database.transaction().execute(async (trx) => {
+      const artist = await trx
+        .insertInto('catalog.Artist')
+        .values(params.artist)
+        .returningAll()
+        .executeTakeFirstOrThrow()
+
+      await trx
+        .insertInto('catalog.ArtistGenre')
+        .values(
+          params.genres.map((genre, index) => ({
+            artistId: artist.id,
+            genreId: genre,
+            position: index,
+          })),
+        )
+        .execute()
+
+      return artist
+    })
   }
 
-  exists(id: string): Promise<boolean> {
-    return this.databaseService.sql<{ exists: boolean }[]>`
-      SELECT EXISTS(SELECT 1 FROM "catalog"."Artist" WHERE id = ${id})
-    `.then((result) => result.at(0)?.exists ?? false)
-  }
-
-  existsByName(name: string): Promise<boolean> {
-    return this.databaseService.sql<{ exists: boolean }[]>`
-      SELECT EXISTS(SELECT 1 FROM "catalog"."Artist" WHERE name = ${name})
-    `.then((result) => result.at(0)?.exists ?? false)
-  }
-
-  existsMany(ids: string[]): Promise<boolean> {
-    return this.databaseService.sql<{ exists: boolean }[]>`
-      SELECT EXISTS(SELECT 1 FROM "catalog"."Artist" WHERE id IN ${this.databaseService.sql(ids)})
-    `.then((result) => result.at(0)?.exists ?? false)
+  findArtistByName(name: string): Promise<Selectable<CatalogArtistTable> | undefined> {
+    return this.database.selectFrom('catalog.Artist').where('name', '=', name).selectAll().executeTakeFirst()
   }
 }

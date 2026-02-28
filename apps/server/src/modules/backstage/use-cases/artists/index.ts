@@ -1,2 +1,2 @@
-export * from './add-artist'
+export * from './create-backstage-artist'
 export * from './publish-artist'

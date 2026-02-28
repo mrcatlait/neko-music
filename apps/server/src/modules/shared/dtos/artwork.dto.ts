@@ -3,20 +3,35 @@ import { ApiProperty } from '@nestjs/swagger'
 
 export class ArtworkDto implements Contracts.Shared.Artwork {
   @ApiProperty({
-    description: 'The sizes of the artwork',
+    description: 'Template URL with {size} placeholder; use preset names (small, medium, large)',
+    example: 'https://example.com/artwork/{size}.webp',
+  })
+  readonly url: string
+
+  @ApiProperty({
+    description: 'Available preset names matching image transform presets',
     example: ['small', 'medium', 'large'],
   })
   readonly sizes: string[]
 
   @ApiProperty({
-    description: 'The URL of the artwork with placeholder for size',
-    example: 'https://example.com/_{size}.jpg',
+    description: 'Background color as hex',
+    example: '000000',
   })
-  readonly url: string
+  readonly bgColor: string
 
   @ApiProperty({
-    description: 'The dominant color of the artwork',
-    example: '#000000',
+    description: 'Primary text color for contrast (hex)',
+    required: false,
   })
-  readonly dominantColor: string
+  readonly textColor1?: string
+
+  @ApiProperty({ required: false })
+  readonly textColor2?: string
+
+  @ApiProperty({ required: false })
+  readonly textColor3?: string
+
+  @ApiProperty({ required: false })
+  readonly textColor4?: string
 }

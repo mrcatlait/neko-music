@@ -1,14 +1,17 @@
+/**
+ * Artwork format aligned with Apple Music API, using preset names for sizes.
+ * @see https://developer.apple.com/documentation/applemusicapi/artwork
+ */
 export interface Artwork {
-  /**
-   * The URL pointing to the artwork. Preceded by `{size}` in the filename as placeholder for image size.
-   */
+  /** Template URL with {size} placeholder; use preset names (small, medium, large) */
   url: string
-  /**
-   * The average background color of the artwork.
-   */
-  backgroundColor: string
-  /**
-   * The text color used if the {@link backgroundColor} is used as a background.
-   */
-  textColor: string
+  /** Available preset names matching image transform presets */
+  sizes: string[]
+  /** Background color as hex (e.g. "000000") */
+  bgColor: string
+  /** Primary text color for contrast (hex) */
+  textColor1?: string
+  textColor2?: string
+  textColor3?: string
+  textColor4?: string
 }
