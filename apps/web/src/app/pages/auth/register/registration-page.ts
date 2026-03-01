@@ -9,6 +9,7 @@ import { emailValidator } from '@/shared/validators'
 import { AuthRepository } from '@/core/repositories'
 import { AuthStore } from '@/core/stores'
 import { SessionCookie } from '@/core/services'
+import { RegistrationAuthStrategy } from '@/core/strategies'
 
 @Component({
   selector: 'n-registration-page',
@@ -20,6 +21,7 @@ import { SessionCookie } from '@/core/services'
 export class RegistrationPage {
   private readonly authRepository = inject(AuthRepository)
   private readonly authStore = inject(AuthStore)
+  private readonly registrationAuthStrategy = inject(RegistrationAuthStrategy)
   private readonly sessionCookie = inject(SessionCookie)
 
   protected readonly form = new FormGroup({
@@ -58,9 +60,7 @@ export class RegistrationPage {
     this.authRepository.register({ email, password, displayName }).subscribe({
       next: (response) => {
         this.loading.set(false)
-        this.authStore.updateSession(response)
-        this.authStore.updateAccessToken(response.accessToken)
-        this.sessionCookie.set()
+        this.registrationAuthStrategy.authenticate({ accessToken: response.accessToken, session: response })
       },
       error: (payload) => {
         this.loading.set(false)
@@ -73,13 +73,13 @@ export class RegistrationPage {
     this.loading.set(false)
 
     if (payload instanceof HttpErrorResponse) {
-      if (payload.status !== 400 || !payload.error) {
+      if (payload.status === 400 && payload.error) {
+        const error = payload.error as Contracts.Error.BadRequest
+        this.emailTaken.set(error.message.includes('emailTaken'))
         return
       }
-
-      const error = payload.error as Contracts.Error.BadRequest
-
-      this.emailTaken.set(error.message.includes('emailTaken'))
+      this.authStore.clearSession()
+      this.sessionCookie.delete()
     }
   }
 

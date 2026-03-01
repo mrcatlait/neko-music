@@ -3,7 +3,9 @@
     <router-outlet />
   </main>
 
-  <n-player data-layout-area="player" />
+  @defer (when showPlayer()) {
+    <n-player data-layout-area="player" />
+  }
 
   <nav
     aria-label="Main Menu"
@@ -86,7 +88,7 @@
       <li [aria-current]="test.isActive ? 'page' : undefined">
         <a
           #test="routerLinkActive"
-          routerLink="/catalog-management/genres"
+          routerLink="/backstage/genres"
           routerLinkActive="active"
           [class.active]="test.isActive"
         >
@@ -97,7 +99,7 @@
             experiment
           </i>
 
-          <span>Test</span>
+          <span>Backstage</span>
         </a>
       </li>
     </ul>

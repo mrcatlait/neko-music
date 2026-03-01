@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, resource, signal } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { HttpClient } from '@angular/common/http'
-import { firstValueFrom, startWith } from 'rxjs'
+import { firstValueFrom, map, startWith } from 'rxjs'
 import { Contracts } from '@neko/contracts'
 import { toSignal } from '@angular/core/rxjs-interop'
 
 import { Autocomplete, AutocompleteOption, AutocompleteTrigger } from '@/shared/autocomplete'
 import { LoadingIndicator, Textfield, Button, InputChip } from '@/shared/components'
 import { ENVIRONMENT } from '@/core/providers'
-import { RECORD_STATUSES } from '@/domains/catalog-management/shared/enums'
-import { PictureUpload } from '@/domains/catalog-management/shared/components'
+import { RECORD_STATUSES } from '@/domains/backstage/shared/enums'
+import { PictureUpload } from '@/domains/backstage/shared/components'
 
 interface Genre {
   value: string
@@ -46,9 +46,11 @@ export class ArtistForm {
   protected readonly genresResource = resource({
     loader: () =>
       firstValueFrom(
-        this.http.get<Contracts.CatalogManagement.GenreResponse[]>(
-          `${this.environment.apiUrl}/catalog-management/genres?status=${RECORD_STATUSES.Published}`,
-        ),
+        this.http
+          .get<Contracts.Backstage.GenresResponse>(
+            `${this.environment.apiUrl}/catalog-management/genres?status=${RECORD_STATUSES.Published}`,
+          )
+          .pipe(map((response) => response.data)),
       ),
   })
 

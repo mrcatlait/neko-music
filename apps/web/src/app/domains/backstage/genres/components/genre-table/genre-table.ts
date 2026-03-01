@@ -1,15 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core'
 import { AgGridModule } from 'ag-grid-angular'
-import { ColDef, ModuleRegistry, AllCommunityModule } from 'ag-grid-community'
+import { ColDef, AllCommunityModule } from 'ag-grid-community'
 import { HttpClient } from '@angular/common/http'
 import { firstValueFrom } from 'rxjs'
 import { Contracts } from '@neko/contracts'
 
 import { GRID_OPTIONS } from '@/core/injectors'
-import { RecordStatusCellRenderer } from '@/domains/catalog-management/shared/components'
 import { ENVIRONMENT } from '@/core/providers'
-
-ModuleRegistry.registerModules([AllCommunityModule])
 
 @Component({
   selector: 'n-genre-table',
@@ -23,18 +20,14 @@ export class GenreTable {
   private readonly environment = inject(ENVIRONMENT)
 
   protected readonly gridOptions = inject(GRID_OPTIONS)
-  protected readonly columnDefs: ColDef[] = [
-    { field: 'status', headerName: 'Status', width: 160, cellRenderer: RecordStatusCellRenderer },
-    { field: 'name', headerName: 'Name', flex: 1 },
-  ]
+  protected readonly modules = [AllCommunityModule]
+  protected readonly columnDefs: ColDef[] = [{ field: 'name', headerName: 'Name', flex: 1 }]
   protected readonly rowData: unknown[] = []
 
   protected readonly genresResource = resource({
     loader: () =>
       firstValueFrom(
-        this.http.get<Contracts.CatalogManagement.GenreResponse[]>(
-          `${this.environment.apiUrl}/catalog-management/genres`,
-        ),
+        this.http.get<Contracts.Backstage.GenresResponse[]>(`${this.environment.apiUrl}/catalog-management/genres`),
       ),
   })
 }

@@ -12,7 +12,7 @@
       <li [aria-current]="home.isActive ? 'page' : undefined">
         <a
           #home="routerLinkActive"
-          routerLink="/catalog-management"
+          routerLink="/backstage"
           routerLinkActive="active"
           [class.active]="home.isActive"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -28,12 +28,10 @@
         </a>
       </li>
 
-      <span class="label-small">Catalog</span>
-
       <li [aria-current]="artists.isActive ? 'page' : undefined">
         <a
           #artists="routerLinkActive"
-          routerLink="/catalog-management/artists"
+          routerLink="/backstage/artists"
           routerLinkActive="active"
           [class.active]="artists.isActive"
         >
@@ -51,7 +49,7 @@
       <li [aria-current]="genres.isActive ? 'page' : undefined">
         <a
           #genres="routerLinkActive"
-          routerLink="/catalog-management/genres"
+          routerLink="/backstage/genres"
           routerLinkActive="active"
           [class.active]="genres.isActive"
         >

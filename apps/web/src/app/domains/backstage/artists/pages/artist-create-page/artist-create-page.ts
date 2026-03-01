@@ -32,7 +32,7 @@ export class ArtistCreatePage {
       .post(`${this.environment.apiUrl}/catalog-management/artists`, artist)
       .pipe(
         switchMap((artistResponse) => {
-          const artistId = (artistResponse as unknown as Contracts.CatalogManagement.ArtistResponse).id
+          const artistId = (artistResponse as unknown as Contracts.Backstage.ArtistCreationResponse).artistId
           return this.http.get(`${this.environment.apiUrl}/catalog-management/artists/${artistId}/upload-token`)
         }),
         switchMap((uploadTokenResponse) => {

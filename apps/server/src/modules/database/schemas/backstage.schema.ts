@@ -27,7 +27,7 @@ export interface BackstageArtistGenreTable {
 export interface BackstageAlbumTable extends AuditTrail {
   id: Generated<string>
   name: string
-  catalogAlbumId: string
+  catalogAlbumId: string | null
   releaseDate: Date
   explicit: boolean
   type: AlbumType
@@ -50,9 +50,9 @@ export interface BackstageTrackTable extends AuditTrail {
   id: Generated<string>
   name: string
   catalogTrackId: string
-  albumId: string
-  trackNumber: number
-  diskNumber: number
+  albumId: string | null
+  trackNumber: number | null
+  diskNumber: number | null
   releaseDate: Date
   type: TrackType
   duration: number

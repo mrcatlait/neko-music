@@ -16,10 +16,10 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'catalog-management',
+    path: 'backstage',
     canActivate: [canActivateAuthorized],
     loadComponent: () => import('./layouts/admin-layout').then((c) => c.AdminLayout),
-    loadChildren: () => import('./domains/catalog-management/catalog-management.routes').then((c) => c.routes),
+    loadChildren: () => import('./domains/backstage/backstage.routes').then((c) => c.routes),
   },
   {
     path: '',

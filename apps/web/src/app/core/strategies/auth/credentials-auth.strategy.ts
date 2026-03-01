@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { catchError, Observable, of, shareReplay, tap, throwError } from 'rxjs'
+import { catchError, Observable, shareReplay, tap, throwError } from 'rxjs'
 import { Router } from '@angular/router'
 
 import { AuthStrategy } from './auth.strategy'

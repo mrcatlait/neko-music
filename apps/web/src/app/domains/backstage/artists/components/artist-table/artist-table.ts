@@ -1,15 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core'
 import { AgGridModule } from 'ag-grid-angular'
-import { ColDef, ModuleRegistry, AllCommunityModule } from 'ag-grid-community'
+import { ColDef, AllCommunityModule } from 'ag-grid-community'
 import { HttpClient } from '@angular/common/http'
 import { firstValueFrom } from 'rxjs'
 import { Contracts } from '@neko/contracts'
 
 import { GRID_OPTIONS } from '@/core/injectors'
 import { ENVIRONMENT } from '@/core/providers'
-import { RecordStatusCellRenderer } from '@/domains/catalog-management/shared/components'
-
-ModuleRegistry.registerModules([AllCommunityModule])
+import { RecordStatusCellRenderer } from '@/domains/backstage/shared/components'
 
 @Component({
   selector: 'n-artist-table',
@@ -23,6 +21,7 @@ export class ArtistTable {
   private readonly environment = inject(ENVIRONMENT)
 
   protected readonly gridOptions = inject(GRID_OPTIONS)
+  protected readonly modules = [AllCommunityModule]
   protected readonly columnDefs: ColDef[] = [
     { field: 'status', headerName: 'Status', width: 160, cellRenderer: RecordStatusCellRenderer },
     { field: 'name', headerName: 'Name', flex: 1 },
@@ -33,9 +32,7 @@ export class ArtistTable {
   protected readonly artistsResource = resource({
     loader: () =>
       firstValueFrom(
-        this.http.get<Contracts.CatalogManagement.ArtistResponse[]>(
-          `${this.environment.apiUrl}/catalog-management/artists`,
-        ),
+        this.http.get<Contracts.Backstage.ArtistsResponse[]>(`${this.environment.apiUrl}/catalog-management/artists`),
       ),
   })
 }

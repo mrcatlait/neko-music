@@ -8,9 +8,11 @@ import {
   CreateBackstageArtistUseCase,
   PublishArtistValidator,
   PublishArtistUseCase,
+  PublishAlbumValidator,
+  PublishAlbumUseCase,
 } from './use-cases'
-import { ArtistController, GenreController } from './controllers'
-import { ArtistRepository, GenreRepository } from './repositories'
+import { AlbumController, ArtistController, GenreController } from './controllers'
+import { AlbumRepository, ArtistRepository, GenreRepository, TrackRepository } from './repositories'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -26,9 +28,13 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     CreateBackstageArtistValidator,
     PublishArtistUseCase,
     PublishArtistValidator,
+    PublishAlbumUseCase,
+    PublishAlbumValidator,
     // Repositories
+    AlbumRepository,
     ArtistRepository,
     GenreRepository,
+    TrackRepository,
   ]
-  static controllers = [ArtistController, GenreController]
+  static controllers = [AlbumController, ArtistController, GenreController]
 }

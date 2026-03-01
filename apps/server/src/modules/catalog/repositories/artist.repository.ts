@@ -38,4 +38,8 @@ export class ArtistRepository {
   findArtistByName(name: string): Promise<Selectable<CatalogArtistTable> | undefined> {
     return this.database.selectFrom('catalog.Artist').where('name', '=', name).selectAll().executeTakeFirst()
   }
+
+  findArtistById(id: string): Promise<Selectable<CatalogArtistTable> | undefined> {
+    return this.database.selectFrom('catalog.Artist').where('id', '=', id).selectAll().executeTakeFirst()
+  }
 }
