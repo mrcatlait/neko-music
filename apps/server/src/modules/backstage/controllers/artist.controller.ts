@@ -1,17 +1,19 @@
 import { Body, Controller, Param, Post, Put } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation } from '@nestjs/swagger'
+import { Permissions } from '@neko/permissions'
 
 import { CreateBackstageArtistUseCase, PublishArtistUseCase } from '../use-cases'
 import { ArtistCreationRequest, ArtistCreationResponse } from '../dtos'
 
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 import { EntityType, MediaType } from '@/modules/media/enums'
-import { UserSession } from '@/modules/auth/decorators'
+import { RequirePermissions, UserSession } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
 
 @Controller('backstage/artists')
 @ApiTags('Backstage')
 @ApiBearerAuth()
+@RequirePermissions(Permissions.Artist.Write)
 export class ArtistController {
   constructor(
     private readonly createBackstageArtistUseCase: CreateBackstageArtistUseCase,

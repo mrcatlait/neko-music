@@ -5,30 +5,24 @@ import {
   ParseFilePipe,
   Post,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiBody, ApiConsumes, ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { File, FileInterceptor } from '@nest-lab/fastify-multer'
 
-import { UploadTokenGuard } from '../guards'
 import { UploadMediaUseCase } from '../use-cases'
 import { UPLOAD_TOKEN_HEADER_NAME } from '../constants'
 import { UploadMediaDto } from '../dtos'
-
-import { AuthGuard } from '@/modules/auth/guards'
 
 const DEFAULT_MAX_FILE_SIZE = 1024 * 1024 * 50 // 50MB
 
 @Controller('media')
 @ApiTags('Media')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
 export class MediaController {
   constructor(private readonly uploadMediaUseCase: UploadMediaUseCase) {}
 
   @Post('/upload')
-  @UseGuards(UploadTokenGuard)
   @ApiBody({
     required: true,
     schema: {

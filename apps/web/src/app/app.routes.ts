@@ -25,13 +25,7 @@ export const routes: Routes = [
     path: '',
     canActivate: [canActivateGuest],
     loadComponent: () => import('./layouts/auth-layout').then((c) => c.AuthLayout),
-    children: [
-      { path: 'login', loadComponent: () => import('./pages/auth/login/login-page').then((c) => c.LoginPage) },
-      {
-        path: 'registration',
-        loadComponent: () => import('./pages/auth/register/registration-page').then((c) => c.RegistrationPage),
-      },
-    ],
+    loadChildren: () => import('./domains/auth/auth.routes').then((c) => c.routes),
   },
   {
     path: '404',

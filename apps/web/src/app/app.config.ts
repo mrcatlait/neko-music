@@ -9,8 +9,9 @@ import { PreloadAllModules, provideRouter, withPreloading } from '@angular/route
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http'
 
 import { routes } from './app.routes'
-import { SilentAuthStrategy } from './core/strategies'
 
+import { SilentAuthStrategy } from '@/core/strategies'
+import { provideDialogs } from '@/shared/dialog'
 import { provideEnvironment } from '@/core/providers'
 import { jwtInterceptor } from '@/core/interceptors'
 import { environment } from '@/environment'
@@ -23,5 +24,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideEnvironment(environment),
     provideAppInitializer(() => inject(SilentAuthStrategy).authenticate()),
+    provideDialogs(),
   ],
 }

@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 0;
+  flex: 1;
+}
+
+header {
+  display: flex;
+  grid-template-columns: auto 1fr;
+  align-items: end;
+  gap: 16px;
+}

@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, DOCUMENT, inject, OnInit, ViewContainerRef } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 
+import { DialogOutlet } from '@/shared/dialog'
 import { SnackbarOutlet } from '@/shared/snackbar'
 import { Portal } from '@/shared/portal'
 
 @Component({
   selector: 'n-root',
-  imports: [RouterOutlet, SnackbarOutlet],
-  template: `<router-outlet /><n-snackbar-outlet />`,
+  imports: [RouterOutlet, SnackbarOutlet, DialogOutlet],
+  template: `<router-outlet /><n-snackbar-outlet /><n-dialog-outlet />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {

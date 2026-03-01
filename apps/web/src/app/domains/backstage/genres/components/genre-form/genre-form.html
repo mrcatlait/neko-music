@@ -1,0 +1,37 @@
+<form
+  autocomplete="off"
+  class="genre-form"
+  [formGroup]="form"
+>
+  <n-textfield>
+    <label for="name">Name</label>
+
+    <input
+      formControlName="name"
+      id="name"
+      type="text"
+    />
+
+    <span slot="error">
+      @if (name.invalid && name.touched) {
+        @if (name.hasError('required')) {
+          <span>Name is required</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  <button
+    class="genre-form__submit"
+    nButton
+    type="submit"
+    [disabled]="saving()"
+    (click)="submit()"
+  >
+    @if (saving()) {
+      <n-loading-indicator [size]="12" />
+    } @else {
+      Submit
+    }
+  </button>
+</form>

@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { AgGridModule } from 'ag-grid-angular'
 import { ColDef, AllCommunityModule } from 'ag-grid-community'
-import { HttpClient } from '@angular/common/http'
-import { firstValueFrom } from 'rxjs'
+import { httpResource } from '@angular/common/http'
 import { Contracts } from '@neko/contracts'
 
 import { GRID_OPTIONS } from '@/core/injectors'
@@ -16,18 +15,31 @@ import { ENVIRONMENT } from '@/core/providers'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenreTable {
-  private readonly http = inject(HttpClient)
   private readonly environment = inject(ENVIRONMENT)
 
   protected readonly gridOptions = inject(GRID_OPTIONS)
   protected readonly modules = [AllCommunityModule]
-  protected readonly columnDefs: ColDef[] = [{ field: 'name', headerName: 'Name', flex: 1 }]
+  protected readonly columnDefs: ColDef<Contracts.Backstage.GenreStatistics>[] = [
+    { field: 'name', headerName: 'Name', flex: 1 },
+    {
+      field: 'totalArtists',
+      headerName: 'Total Artists',
+      flex: 1,
+    },
+    {
+      field: 'totalAlbums',
+      headerName: 'Total Albums',
+      flex: 1,
+    },
+    {
+      field: 'totalTracks',
+      headerName: 'Total Tracks',
+      flex: 1,
+    },
+  ]
   protected readonly rowData: unknown[] = []
 
-  protected readonly genresResource = resource({
-    loader: () =>
-      firstValueFrom(
-        this.http.get<Contracts.Backstage.GenresResponse[]>(`${this.environment.apiUrl}/catalog-management/genres`),
-      ),
-  })
+  protected readonly genreStatisticsResource = httpResource<Contracts.Backstage.GenreStatisticsResponse>(
+    () => `${this.environment.apiUrl}/backstage/genres/statistics`,
+  )
 }

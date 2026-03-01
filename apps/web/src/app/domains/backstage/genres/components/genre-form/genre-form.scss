@@ -1,0 +1,16 @@
+:host {
+  margin: 0 auto;
+  max-width: 720px;
+  width: 100%;
+}
+
+.genre-form {
+  display: flex;
+  flex-direction: column;
+
+  &__submit {
+    align-self: flex-end;
+    margin-top: 24px;
+    width: fit-content;
+  }
+}

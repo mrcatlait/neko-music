@@ -6,12 +6,12 @@ import { canActivateWithPermissions } from '@/core/guards'
 export const routes: Routes = [
   {
     path: 'genres',
-    // canActivate: [canActivateWithPermissions([Permissions.Genre.Write])],
+    canActivate: [canActivateWithPermissions([Permissions.Genre.Write])],
     loadChildren: () => import('./genres/genres.routes').then((c) => c.routes),
   },
   {
     path: 'artists',
-    // canActivate: [canActivateWithPermissions([Permissions.Artist.Write])],
+    canActivate: [canActivateWithPermissions([Permissions.Artist.Write])],
     loadChildren: () => import('./artists/artists.routes').then((c) => c.routes),
   },
 ]

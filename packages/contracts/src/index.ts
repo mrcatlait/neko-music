@@ -15,6 +15,8 @@ import {
   GenreCreationResponseDto,
   GenreDto,
   GenresResponseDto,
+  GenreStatisticsDto,
+  GenreStatisticsResponseDto,
   GenreUpdateRequestDto,
 } from './backstage'
 import { BadRequestDto } from './error'
@@ -34,6 +36,8 @@ export namespace Contracts {
     // Genres
     export type GenreCreationRequest = GenreCreationRequestDto
     export type GenreCreationResponse = GenreCreationResponseDto
+    export type GenreStatisticsResponse = GenreStatisticsResponseDto
+    export type GenreStatistics = GenreStatisticsDto
     export type GenreUpdateRequest = GenreUpdateRequestDto
     export type Genre = GenreDto
     export type GenresResponse = GenresResponseDto

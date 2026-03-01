@@ -14,6 +14,7 @@ export const kyselyProvider: Provider = {
   inject: [DATABASE_MODULE_OPTIONS],
   useFactory: (options: DatabaseModuleOptions) => {
     return new Kysely({
+      log: ['query', 'error'],
       dialect: new PostgresJSDialect({
         postgres: postgres({
           database: options.database,

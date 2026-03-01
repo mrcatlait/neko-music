@@ -1,0 +1,19 @@
+h1 {
+  margin-bottom: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 24px;
+}
+
+p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-page__error-banner {
+  color: var(--color-error);
+}
