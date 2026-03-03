@@ -8,6 +8,6 @@ projects:
   - 'infra/*'
   - 'tools/*'
 vcs:
-  manager: 'git'
+  client: 'git'
   defaultBranch: 'master'
   provider: 'github'

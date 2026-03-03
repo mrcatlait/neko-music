@@ -1,31 +1,25 @@
 import { Routes } from '@angular/router'
 
-import { canActivateAuthorized, canActivateGuest } from './core/guards'
+import { authorizedGuard, guestGuard } from '@/core/auth/guards'
 
 export const routes: Routes = [
   {
     path: '',
-    canActivate: [canActivateAuthorized],
-    loadComponent: () => import('./layouts/main-layout').then((c) => c.MainLayout),
-    children: [
-      {
-        path: '',
-        loadComponent: () => import('./pages/home/home-page').then((c) => c.HomePage),
-        pathMatch: 'full',
-      },
-    ],
+    canActivate: [authorizedGuard],
+    loadComponent: () => import('./modules/catalog/catalog-layout').then((c) => c.CatalogLayout),
+    loadChildren: () => import('./modules/catalog/catalog.routes').then((c) => c.routes),
   },
   {
     path: 'backstage',
-    canActivate: [canActivateAuthorized],
-    loadComponent: () => import('./layouts/admin-layout').then((c) => c.AdminLayout),
-    loadChildren: () => import('./domains/backstage/backstage.routes').then((c) => c.routes),
+    canActivate: [authorizedGuard],
+    loadComponent: () => import('./modules/backstage/backstage-layout').then((c) => c.BackstageLayout),
+    loadChildren: () => import('./modules/backstage/backstage.routes').then((c) => c.routes),
   },
   {
     path: '',
-    canActivate: [canActivateGuest],
-    loadComponent: () => import('./layouts/auth-layout').then((c) => c.AuthLayout),
-    loadChildren: () => import('./domains/auth/auth.routes').then((c) => c.routes),
+    canActivate: [guestGuard],
+    loadComponent: () => import('./core/auth/auth-layout').then((c) => c.AuthLayout),
+    loadChildren: () => import('./core/auth/auth.routes').then((c) => c.routes),
   },
   {
     path: '404',

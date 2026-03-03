@@ -1,6 +1,6 @@
 $schema: 'https://moonrepo.dev/schemas/project.json'
 
-type: 'library'
+layer: 'library'
 language: 'typescript'
 
 dependsOn:
@@ -13,7 +13,7 @@ tasks:
     args:
       - '--build'
       - '--pretty'
-      - '--verbose'
+      # - '--verbose'
       - 'tsconfig.build.json'
     inputs:
       - '@globs(sources)'

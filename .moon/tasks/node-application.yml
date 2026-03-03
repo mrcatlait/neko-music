@@ -38,7 +38,8 @@ tasks:
 
   test-contract:
     command: 'vitest --config vitest-contract.config.mts'
-    local: true
+    options:
+      runInCI: false
     inputs:
       - '@group(sources)'
       - '@group(contract-tests)'
@@ -58,18 +59,19 @@ tasks:
     command:
       - 'eslint'
       - '--fix'
-    local: true
+    options:
+      runInCI: false
     inputs:
       - '@group(sources)'
       - '@group(configs)'
 
-  sonar:
-    command: 'sonar-scanner'
-    args:
-      - 'Dsonar.token=${SONAR_TOKEN}'
-    inputs:
-      - '@group(sources)'
-      - '@group(unit-tests)'
-      - 'sonar-project.properties'
-    deps:
-      - 'test-unit'
+  # sonar:
+  #   command: 'sonar-scanner'
+  #   args:
+  #     - 'Dsonar.token=${SONAR_TOKEN}'
+  #   inputs:
+  #     - '@group(sources)'
+  #     - '@group(unit-tests)'
+  #     - 'sonar-project.properties'
+  #   deps:
+  #     - 'test-unit'

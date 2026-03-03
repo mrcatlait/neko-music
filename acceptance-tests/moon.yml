@@ -1,6 +1,6 @@
 $schema: 'https://moonrepo.dev/schemas/project.json'
 
-type: 'automation'
+layer: 'automation'
 language: 'typescript'
 
 dependsOn:

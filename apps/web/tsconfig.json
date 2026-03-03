@@ -21,8 +21,8 @@
       "@/shared/*": [
         "src/app/shared/*"
       ],
-      "@/domains/*": [
-        "src/app/domains/*"
+      "@/modules/*": [
+        "src/app/modules/*"
       ],
       "@/environment": [
         "src/environments/environment"

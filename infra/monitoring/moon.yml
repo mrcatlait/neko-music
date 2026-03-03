@@ -1,21 +1,23 @@
 $schema: 'https://moonrepo.dev/schemas/project.json'
 
 stack: 'infrastructure'
-type: 'configuration'
-platform: 'system'
+layer: 'configuration'
 
 tasks:
   watch:
     description: 'Docker compose up'
     command: 'docker-compose up'
-    local: true
+    options:
+      runInCI: false
 
   start:
     description: 'Docker compose up detached'
     command: 'docker-compose up -d'
-    local: true
+    options:
+      runInCI: false
 
   stop:
     description: 'Docker compose down'
     command: 'docker-compose down'
-    local: true
+    options:
+      runInCI: false

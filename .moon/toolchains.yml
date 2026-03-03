@@ -1,0 +1,22 @@
+$schema: 'https://moonrepo.dev/schemas/toolchain.json'
+
+javascript:
+  dependencyVersionFormat: 'star'
+  packageManager: 'npm'
+
+node:
+  version: '22'
+
+npm:
+  version: '11'
+
+typescript:
+  projectConfigFileName: 'tsconfig.json'
+  rootConfigFileName: 'tsconfig.json'
+  rootOptionsConfigFileName: 'tsconfig.options.json'
+  # changed
+  routeOutDirToCache: false 
+  includeProjectReferenceSources: false
+  syncProjectReferencesToPaths: false
+  syncProjectReferences: true
+  createMissingConfig: true

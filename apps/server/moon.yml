@@ -1,7 +1,7 @@
 $schema: 'https://moonrepo.dev/schemas/project.json'
 
 stack: 'backend'
-type: 'application'
+layer: 'application'
 language: 'typescript'
 
 dependsOn:
@@ -21,7 +21,7 @@ fileGroups:
 tasks:
   start:
     command: 'nest start -w'
-    local: true
+    preset: 'server'
 
   build:
     command: 'nest build'
@@ -64,12 +64,14 @@ tasks:
 
   test-performance:
     command: 'k6 run performance-tests/test.js'
-    local: true
+    options:
+      runInCI: false
     inputs:
       - '@globs(performance-tests)'
 
   test:
-    local: true
+    options:
+      runInCI: false
     deps:
       - 'test-unit'
       - 'test-integration'
