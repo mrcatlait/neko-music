@@ -44,7 +44,8 @@ tasks:
   test-unit:
     command: 'vitest'
     args:
-      - '--config vite.config.unit.ts'
+      - '--config'
+      - 'vite.config.unit.ts'
     inputs:
       - '@globs(sources)'
       - 'vitest.config.*'
@@ -54,7 +55,8 @@ tasks:
   test-integration:
     command: 'vitest'
     args:
-      - '--config vite.config.integration.ts'
+      - '--config'
+      - 'vite.config.integration.ts'
     inputs:
       - '@globs(sources)'
       - '@globs(integration-tests)'

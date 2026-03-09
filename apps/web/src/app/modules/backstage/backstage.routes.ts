@@ -7,11 +7,11 @@ export const routes: Routes = [
   {
     path: 'genres',
     canActivate: [withPermissionsGuard([Permissions.Genre.Write])],
-    loadChildren: () => import('./genres/genres.routes').then((c) => c.routes),
+    loadChildren: () => import('./genre/genre.routes').then((c) => c.routes),
   },
   {
     path: 'artists',
     canActivate: [withPermissionsGuard([Permissions.Artist.Write])],
-    loadChildren: () => import('./artists/artists.routes').then((c) => c.routes),
+    loadChildren: () => import('./artist/artist.routes').then((c) => c.routes),
   },
 ]

@@ -1,0 +1,13 @@
+@if (!error()) {
+  <ag-grid-angular
+    class="genre-table__table"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [modules]="modules"
+    [rowData]="rowData()"
+  />
+} @else {
+  <div class="genre-table__error">
+    <p class="body-medium">An error occurred while fetching genres. Please try again later.</p>
+  </div>
+}

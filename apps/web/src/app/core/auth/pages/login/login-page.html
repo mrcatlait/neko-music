@@ -19,8 +19,20 @@
       type="email"
     />
 
+    @let emailTouched = email.touched;
+
+    @if (email.invalid && emailTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
     <span slot="error">
-      @if (email.invalid && email.touched) {
+      @if (email.invalid && emailTouched) {
         @if (email.hasError('required')) {
           <span>Email is required</span>
         }
@@ -41,6 +53,8 @@
       [type]="hidePassword ? 'password' : 'text'"
     />
 
+    @let passwordTouched = password.touched;
+
     <button
       aria-label="Show password"
       nIconButton
@@ -53,8 +67,18 @@
       <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
     </button>
 
+    @if (password.invalid && passwordTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
     <span slot="error">
-      @if (password.invalid && password.touched) {
+      @if (password.invalid && passwordTouched) {
         @if (password.hasError('required')) {
           <span>Password is required</span>
         }

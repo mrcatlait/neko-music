@@ -3,13 +3,15 @@ import { Injectable } from '@nestjs/common'
 import { GenreRepository } from '../../../repositories'
 import { GenreStatisticsEntity } from '../../../entities'
 
+import { UseCase } from '@/modules/shared/interfaces'
+
 export type GetGenreStatisticsUseCaseResult = GenreStatisticsEntity[]
 
 @Injectable()
-export class GetGenreStatisticsUseCase {
+export class GetGenreStatisticsUseCase implements UseCase<void, GetGenreStatisticsUseCaseResult> {
   constructor(private readonly genreRepository: GenreRepository) {}
 
-  async invoke(): Promise<GenreStatisticsEntity[]> {
+  invoke(): Promise<GenreStatisticsEntity[]> {
     return this.genreRepository.getGenreStatistics()
   }
 }

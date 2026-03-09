@@ -2,6 +2,8 @@ import { Test } from '@nestjs/testing'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { fastifyCookie } from '@fastify/cookie'
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql'
+import { Reflector } from '@nestjs/core'
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 
 import { AppModule } from '@/modules/app/app.module'
 import { ConfigService } from '@/modules/config/services'
@@ -44,6 +46,14 @@ beforeAll(async () => {
 
   const moduleRef = await moduleBuilder.compile()
   app = moduleRef.createNestApplication(new FastifyAdapter())
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  )
+  const reflector = app.get(Reflector)
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector))
 
   await app.register(fastifyCookie)
 

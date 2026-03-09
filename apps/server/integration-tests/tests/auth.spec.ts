@@ -50,6 +50,46 @@ describe('Auth', () => {
     /**
      * @todo Test email and password validation
      */
+    it('should fail to register a user if email is invalid', async () => {
+      // Arrange
+      const payload = {
+        email: 'invalid-email',
+        password: 'password123',
+        displayName: 'Test User',
+      }
+
+      // Act
+      const response = await request(app.getHttpServer()).post('/auth/register').send(payload)
+
+      // Assert
+      expect(response.status).toBe(400)
+      expect(response.body).toMatchObject({
+        message: ['email must be an email'],
+        error: 'Bad Request',
+      })
+    })
+
+    it('should fail to register a user if password is invalid', async () => {
+      // Arrange
+      const payload = {
+        email: 'invali-password@example.com',
+        password: 'invalid',
+        displayName: 'Test User',
+      }
+
+      // Act
+      const response = await request(app.getHttpServer()).post('/auth/register').send(payload)
+
+      // Assert
+      expect(response.status).toBe(400)
+      expect(response.body).toMatchObject({
+        message: [
+          'password must match /[^a-zA-Z]/ regular expression',
+          'password must be longer than or equal to 8 characters',
+        ],
+        error: 'Bad Request',
+      })
+    })
   })
 
   describe('POST /auth/login', () => {

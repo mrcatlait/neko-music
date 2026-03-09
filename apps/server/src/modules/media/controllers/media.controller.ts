@@ -5,6 +5,7 @@ import {
   ParseFilePipe,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiBody, ApiConsumes, ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger'
@@ -13,6 +14,7 @@ import { File, FileInterceptor } from '@nest-lab/fastify-multer'
 import { UploadMediaUseCase } from '../use-cases'
 import { UPLOAD_TOKEN_HEADER_NAME } from '../constants'
 import { UploadMediaDto } from '../dtos'
+import { UploadTokenGuard } from '../guards'
 
 const DEFAULT_MAX_FILE_SIZE = 1024 * 1024 * 50 // 50MB
 
@@ -42,6 +44,7 @@ export class MediaController {
     type: UploadMediaDto,
   })
   @UseInterceptors(FileInterceptor('file'))
+  @UseGuards(UploadTokenGuard)
   uploadMedia(
     @Headers(UPLOAD_TOKEN_HEADER_NAME) token: string,
     @UploadedFile(

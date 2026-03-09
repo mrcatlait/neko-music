@@ -17,6 +17,16 @@
     @let emailControl = form.controls.email;
     @let emailTouched = emailControl.touched;
 
+    @if (emailControl.invalid && emailTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
     <span slot="error">
       @if (emailControl.invalid && emailTouched) {
         @if (emailControl.hasError('required')) {
@@ -44,6 +54,9 @@
       [type]="hidePassword() ? 'password' : 'text'"
     />
 
+    @let passwordControl = form.controls.password;
+    @let passwordTouched = passwordControl.touched;
+
     <button
       aria-label="Show password"
       nIconButton
@@ -55,14 +68,22 @@
     >
       <i>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</i>
     </button>
+
+    @if (passwordControl.invalid && passwordTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
   </n-textfield>
 
   <div class="registration-page__password-requirements">
     <span class="label-large">Your password must contain at least</span>
 
     <ul class="body-small">
-      @let passwordControl = form.controls.password;
-      @let passwordTouched = passwordControl.touched;
       @let pristine = passwordControl.pristine;
       @let requiredError = passwordControl.hasError('required');
 
@@ -112,6 +133,16 @@
 
     @let displayNameControl = form.controls.displayName;
     @let displayNameTouched = displayNameControl.touched;
+
+    @if (displayNameControl.invalid && displayNameTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
 
     <span slot="error">
       @if (displayNameControl.invalid && displayNameTouched) {

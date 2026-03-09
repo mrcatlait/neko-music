@@ -11,6 +11,7 @@ import {
   PublishAlbumValidator,
   PublishAlbumUseCase,
   GetGenreStatisticsUseCase,
+  GetGenresUseCase,
 } from './use-cases'
 import { AlbumController, ArtistController, GenreController } from './controllers'
 import { AlbumRepository, ArtistRepository, GenreRepository, TrackRepository } from './repositories'
@@ -28,6 +29,7 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     CreateBackstageArtistUseCase,
     CreateBackstageArtistValidator,
     GetGenreStatisticsUseCase,
+    GetGenresUseCase,
     PublishArtistUseCase,
     PublishArtistValidator,
     PublishAlbumUseCase,

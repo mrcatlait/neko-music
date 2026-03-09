@@ -1,0 +1,20 @@
+<header class="artist-create-page__header">
+  <button
+    color="standard"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="navigateToArtistList()"
+  >
+    <i>arrow_back</i>
+  </button>
+
+  <h2>Create Artist</h2>
+</header>
+
+<n-artist-form
+  submitLabel="Create artist"
+  [saving]="saving()"
+  (formCancel)="cancel()"
+  (formSubmit)="createArtist($event)"
+/>

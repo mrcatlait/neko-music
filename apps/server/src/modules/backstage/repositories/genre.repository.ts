@@ -21,6 +21,10 @@ export class GenreRepository {
     return this.database.insertInto('catalog.Genre').values(genre).returningAll().executeTakeFirstOrThrow()
   }
 
+  findAllGenres(): Promise<Selectable<GenreTable>[]> {
+    return this.database.selectFrom('catalog.Genre').selectAll().execute()
+  }
+
   getGenreStatistics(): Promise<GenreStatisticsEntity[]> {
     return this.database
       .selectFrom('catalog.Genre')

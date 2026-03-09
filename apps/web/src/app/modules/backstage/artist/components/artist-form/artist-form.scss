@@ -1,0 +1,30 @@
+:host {
+  margin: 0 auto;
+  max-width: 720px;
+  width: 100%;
+}
+
+.artist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+
+  &__profile-picture {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__genres {
+    display: flex;
+    flex-direction: row;
+    margin-top: -8px;
+    gap: 8px;
+  }
+
+  &__submit {
+    margin-top: 24px;
+    width: fit-content;
+  }
+}

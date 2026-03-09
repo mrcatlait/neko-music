@@ -1,0 +1,38 @@
+@if (loading()) {
+  <n-loading-indicator />
+} @else {
+  <n-textfield>
+    <label for="genres">Genres</label>
+
+    <input
+      id="genres"
+      placeholder="Type genre name"
+      type="text"
+      [formField]="filterForm"
+      [nAutocompleteTrigger]="autocomplete"
+      (optionSelected)="addGenre($event)"
+    />
+
+    <ng-template #autocomplete>
+      <n-autocomplete>
+        @if (availableGenres().length > 0) {
+          @for (genre of availableGenres(); track genre.id) {
+            <n-autocomplete-option [value]="genre.id">
+              {{ genre.name }}
+            </n-autocomplete-option>
+          }
+        } @else {
+          <n-autocomplete-option disabled> No genres found </n-autocomplete-option>
+        }
+      </n-autocomplete>
+    </ng-template>
+  </n-textfield>
+
+  @if (selectedGenres().length > 0) {
+    <div class="genre-picker__selected-genres">
+      @for (genre of selectedGenres(); track genre) {
+        <n-input-chip (remove)="removeGenre(genre.id)"> {{ genre.name }} </n-input-chip>
+      }
+    </div>
+  }
+}

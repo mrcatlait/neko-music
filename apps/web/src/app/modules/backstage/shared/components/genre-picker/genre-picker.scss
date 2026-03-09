@@ -1,0 +1,7 @@
+.genre-picker {
+  &__selected-genres {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+}

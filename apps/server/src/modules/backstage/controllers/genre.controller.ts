@@ -2,8 +2,8 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
 import { ApiOperation, ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'
 import { Permissions } from '@neko/permissions'
 
-import { GenreCreationRequest, GenreCreationResponse, GenreStatisticsResponse } from '../dtos'
-import { AddGenreUseCase, GetGenreStatisticsUseCase } from '../use-cases'
+import { GenreCreationRequest, GenreCreationResponse, GenresResponse, GenreStatisticsResponse } from '../dtos'
+import { AddGenreUseCase, GetGenreStatisticsUseCase, GetGenresUseCase } from '../use-cases'
 
 import { RequirePermissions } from '@/modules/auth/decorators'
 
@@ -15,7 +15,21 @@ export class GenreController {
   constructor(
     private readonly addGenreUseCase: AddGenreUseCase,
     private readonly getGenreStatisticsUseCase: GetGenreStatisticsUseCase,
+    private readonly getGenresUseCase: GetGenresUseCase,
   ) {}
+
+  @Get('')
+  @ApiOperation({
+    summary: 'Get all genres',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The genres have been successfully retrieved.',
+    type: GenresResponse,
+  })
+  getGenres(): Promise<GenresResponse> {
+    return this.getGenresUseCase.invoke().then((result) => ({ data: result }))
+  }
 
   @Post('')
   @ApiOperation({
