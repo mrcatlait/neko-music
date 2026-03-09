@@ -18,7 +18,7 @@
     "class-validator": "^0.14.1",
     "dotenv": "^17.2.3",
     "file-type": "^21.0.0",
-    "jose": "^6.0.13",
+    "jose": "^6.2.1",
     "kysely": "^0.28.8",
     "kysely-postgres-js": "^3.0.0",
     "postgres": "^3.4.7",
