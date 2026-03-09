@@ -2,7 +2,7 @@
   "name": "@neko/stylelint-config",
   "private": true,
   "dependencies": {
-    "stylelint": "^16.14.1",
+    "stylelint": "^17.4.0",
     "stylelint-config-recommended": "^15.0.0",
     "stylelint-config-recommended-scss": "^14.1.0"
   }
