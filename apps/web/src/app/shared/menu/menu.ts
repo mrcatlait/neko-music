@@ -11,8 +11,6 @@ import {
 import { PORTAL_CONTEXT, PortalPosition } from '../portal'
 import { MenuContext } from './menu-context'
 
-import { VIEWPORT } from '@/core/injectors'
-
 type Directions = 'top' | 'bottom'
 type Aligns = 'left' | 'right' | 'center'
 

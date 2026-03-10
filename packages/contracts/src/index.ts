@@ -8,6 +8,8 @@ import {
 import {
   ArtistCreationRequestDto,
   ArtistCreationResponseDto,
+  ArtistStatisticsDto,
+  ArtistStatisticsResponseDto,
   ArtistDto,
   ArtistsResponseDto,
   ArtistUpdateRequestDto,
@@ -44,6 +46,8 @@ export namespace Contracts {
     // Artists
     export type ArtistCreationRequest = ArtistCreationRequestDto
     export type ArtistCreationResponse = ArtistCreationResponseDto
+    export type ArtistStatistics = ArtistStatisticsDto
+    export type ArtistStatisticsResponse = ArtistStatisticsResponseDto
     export type ArtistUpdateRequest = ArtistUpdateRequestDto
     export type ArtistsResponse = ArtistsResponseDto
     export type Artist = ArtistDto

@@ -1,0 +1,39 @@
+---
+alwaysApply: true
+---
+# One-Sentence Guiding Principle
+Build a modern, web-based, self-hosted music streaming system that respects user ownership, favors clarity over automation, and grows from manual → assisted → automated workflows without breaking trust.
+
+# Project Purpose & Positioning
+
+* The system is a self-hosted, web-first music streaming platform
+* All music is stored locally (user-owned files)
+* No dependency on Spotify, YouTube, or external catalogs
+* Target users:
+  * self-hosters / homelab users
+  * privacy-focused users
+  * audiophiles
+  * developers
+  * Success = best open-source option in this niche, not mass-market dominance
+
+# Open-Source Mindset Rules
+## Favor:
+* clarity over cleverness
+* extensibility over completeness
+* good defaults over too many options
+
+## Make decisions that:
+* reduce contributor friction
+* avoid future migrations
+* keep the system hackable
+
+# Success Criteria (Guiding Compass)
+
+At every decision point, ask:
+* Does this preserve ownership of user data?
+* Does this keep source media safe?
+* Does this reduce friction for first-time users?
+* Does this avoid locking us into assumptions?
+* Does this help us compete on UX + correctness, not feature count?
+
+If the answer is “no” → rethink.

@@ -1,20 +1,20 @@
 <form
   autocomplete="off"
   class="genre-form"
-  [formGroup]="form"
+  (submit)="$event.preventDefault(); submit()"
 >
   <n-textfield>
     <label for="name">Name</label>
 
     <input
-      formControlName="name"
       id="name"
       type="text"
+      [formField]="genreForm"
     />
 
-    @let nameTouched = name.touched;
+    @let nameTouched = name.touched();
 
-    @if (name.invalid && nameTouched) {
+    @if (name.invalid() && nameTouched) {
       <i
         aria-hidden="true"
         class="color-error"
@@ -25,8 +25,8 @@
     }
 
     <span slot="error">
-      @if (name.invalid && nameTouched) {
-        @if (name.hasError('required')) {
+      @if (name.invalid() && nameTouched) {
+        @if (hasRequiredError()) {
           <span>Name is required</span>
         }
       }
@@ -38,7 +38,6 @@
     nButton
     type="submit"
     [disabled]="saving()"
-    (click)="submit()"
   >
     @if (saving()) {
       <n-loading-indicator [size]="12" />

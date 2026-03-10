@@ -7,7 +7,7 @@ import { CRYPTO } from '@/core/injectors'
 
 type Items = WritableSignal<PopoverContext<unknown, unknown>[]>
 
-@Injectable()
+// @Injectable()
 export abstract class Popover<Context> {
   private readonly crypto = inject(CRYPTO)
 

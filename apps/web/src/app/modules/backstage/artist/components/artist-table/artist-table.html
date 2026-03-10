@@ -1,13 +1,13 @@
-@if (!artistsResource.error()) {
+@if (!error()) {
   <ag-grid-angular
     class="artist-table__table"
     [columnDefs]="columnDefs"
     [gridOptions]="gridOptions"
     [modules]="modules"
-    [rowData]="artistsResource.value()"
+    [rowData]="rowData()"
   />
 } @else {
   <div class="artist-table__error">
-    <p class="body-medium">An error occurred while fetching genres. Please try again later.</p>
+    <p class="body-medium">{{ error() }}</p>
   </div>
 }

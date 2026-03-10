@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core'
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
+import { Contracts } from '@neko/contracts'
+import { form, required, FormField } from '@angular/forms/signals'
 
 import { Button, LoadingIndicator, Textfield } from '@/shared/components'
 
@@ -7,31 +9,34 @@ import { Button, LoadingIndicator, Textfield } from '@/shared/components'
   selector: 'n-genre-form',
   templateUrl: './genre-form.html',
   styleUrl: './genre-form.scss',
-  imports: [Button, LoadingIndicator, ReactiveFormsModule, Textfield],
+  imports: [Button, LoadingIndicator, ReactiveFormsModule, Textfield, FormField],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenreForm {
   readonly submitLabel = input.required<string>()
   readonly saving = input.required<boolean>()
 
+  readonly genre = input<Contracts.Backstage.Genre | null>(null)
   readonly formSubmit = output<{ name: string }>()
   readonly formCancel = output<void>()
 
-  protected readonly form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
+  private readonly genreName = linkedSignal<string>(() => this.genre()?.name ?? '')
+  protected readonly genreForm = form(this.genreName, (schemaPath) => {
+    required(schemaPath)
   })
+  protected readonly hasRequiredError = computed(() => this.name.errors().some((error) => error.kind === 'required'))
 
-  protected get name(): FormControl {
-    return this.form.controls.name
+  protected get name() {
+    return this.genreForm()
   }
 
   protected submit(): void {
-    if (this.form.invalid || this.saving()) {
-      this.form.markAllAsTouched()
+    if (this.name.invalid() || this.saving()) {
+      this.name.markAsTouched()
       return
     }
 
-    const name = this.name.value
+    const name = this.name.value()
 
     if (name) {
       this.formSubmit.emit({ name })

@@ -1,0 +1,21 @@
+<header class="genres-management-page__header">
+  <button
+    color="standard"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="cancel()"
+  >
+    <i>arrow_back</i>
+  </button>
+
+  <h2>Edit Genre</h2>
+</header>
+
+<n-genre-form
+  submitLabel="Save genre"
+  [genre]="genre()"
+  [saving]="saving()"
+  (formCancel)="cancel()"
+  (formSubmit)="editGenre($event)"
+/>

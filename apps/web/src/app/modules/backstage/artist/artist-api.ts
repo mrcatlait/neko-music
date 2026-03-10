@@ -13,4 +13,8 @@ export class ArtistApi {
   create(payload: Contracts.Backstage.ArtistCreationRequest): Observable<Contracts.Backstage.ArtistCreationResponse> {
     return this.http.post<Contracts.Backstage.ArtistCreationResponse>(`${this.apiUrl}/backstage/artists`, payload)
   }
+
+  getStatistics(): Observable<Contracts.Backstage.ArtistStatisticsResponse> {
+    return this.http.get<Contracts.Backstage.ArtistStatisticsResponse>(`${this.apiUrl}/backstage/artists/statistics`)
+  }
 }

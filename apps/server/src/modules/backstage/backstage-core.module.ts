@@ -6,12 +6,16 @@ import {
   AddGenreUseCase,
   CreateBackstageArtistValidator,
   CreateBackstageArtistUseCase,
+  GetArtistStatisticsUseCase,
   PublishArtistValidator,
   PublishArtistUseCase,
   PublishAlbumValidator,
   PublishAlbumUseCase,
   GetGenreStatisticsUseCase,
   GetGenresUseCase,
+  GetGenreUseCase,
+  UpdateGenreValidator,
+  UpdateGenreUseCase,
 } from './use-cases'
 import { AlbumController, ArtistController, GenreController } from './controllers'
 import { AlbumRepository, ArtistRepository, GenreRepository, TrackRepository } from './repositories'
@@ -28,12 +32,16 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     AddGenreValidator,
     CreateBackstageArtistUseCase,
     CreateBackstageArtistValidator,
+    GetArtistStatisticsUseCase,
     GetGenreStatisticsUseCase,
     GetGenresUseCase,
+    GetGenreUseCase,
     PublishArtistUseCase,
     PublishArtistValidator,
     PublishAlbumUseCase,
     PublishAlbumValidator,
+    UpdateGenreUseCase,
+    UpdateGenreValidator,
     // Repositories
     AlbumRepository,
     ArtistRepository,

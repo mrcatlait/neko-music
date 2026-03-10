@@ -1,9 +1,12 @@
 import neko from '@neko/eslint-config'
+import { config } from 'typescript-eslint'
 
-export default [
-  ...neko,
+export default config(
   {
     ignores: ['**/*', '!src/**', '!contract-tests/**', '!integration-tests/**'],
+    extends: [
+      ...neko,
+    ],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -25,4 +28,4 @@ export default [
       '@typescript-eslint/unbound-method': 'off',
     },
   },
-]
+)

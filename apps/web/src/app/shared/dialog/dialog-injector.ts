@@ -2,6 +2,7 @@ import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, signal,
 
 import { DialogRef } from './dialog'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Dialogs = WritableSignal<DialogRef<any, any>[]>
 
 export const DIALOGS = new InjectionToken<Dialogs>('DIALOGS')

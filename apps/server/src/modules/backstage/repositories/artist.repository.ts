@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Insertable, Selectable } from 'kysely'
 
 import { PublishingStatus } from '../enums'
+import { ArtistStatisticsEntity } from '../entities'
 
 import { BackstageArtistTable, Database, InjectDatabase } from '@/modules/database'
 
@@ -57,6 +58,36 @@ export class ArtistRepository {
 
   findArtistById(id: string): Promise<Selectable<BackstageArtistTable> | undefined> {
     return this.database.selectFrom('backstage.Artist').where('id', '=', id).selectAll().executeTakeFirst()
+  }
+
+  getArtistStatistics(): Promise<ArtistStatisticsEntity[]> {
+    return this.database
+      .selectFrom('backstage.Artist')
+      .select((builder) => [
+        builder.ref('backstage.Artist.id').as('id'),
+        builder.ref('backstage.Artist.name').as('name'),
+        builder.ref('backstage.Artist.status').as('status'),
+        builder
+          .selectFrom('backstage.AlbumArtist')
+          .whereRef('backstage.AlbumArtist.artistId', '=', 'backstage.Artist.id')
+          .select((eb) => eb.fn.countAll().as('totalAlbums'))
+          .as('totalAlbums'),
+        builder
+          .selectFrom('backstage.TrackArtist')
+          .whereRef('backstage.TrackArtist.artistId', '=', 'backstage.Artist.id')
+          .select((eb) => eb.fn.countAll().as('totalTracks'))
+          .as('totalTracks'),
+      ])
+      .execute()
+      .then((rows) =>
+        rows.map((row) => ({
+          id: row.id,
+          name: row.name,
+          status: row.status,
+          totalAlbums: Number(row.totalAlbums ?? 0),
+          totalTracks: Number(row.totalTracks ?? 0),
+        })),
+      )
   }
 
   async findArtistWithGenresById(

@@ -16,8 +16,7 @@ export class AlbumRepository {
   async findAlbumWithGenresAndArtistsById(
     id: string,
   ): Promise<
-    | (Selectable<BackstageAlbumTable> & { genres: string[]; artists: { artistId: string; role: string }[] })
-    | undefined
+    (Selectable<BackstageAlbumTable> & { genres: string[]; artists: { artistId: string; role: string }[] }) | undefined
   > {
     const album = await this.findAlbumById(id)
     if (!album) return undefined

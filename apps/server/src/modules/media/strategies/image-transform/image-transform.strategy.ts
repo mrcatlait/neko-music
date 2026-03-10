@@ -49,8 +49,9 @@ export interface ImageTransformStrategy {
   /**
    * Transforms an image
    * @param image - The image to transform
+   * @param format - The format of the image
    * @param parameters - The parameters for the image transformation
    * @returns The transformed image
    */
-  transform(image: Buffer, parameters: ImageTransformParameters): Promise<Buffer>
+  transform(image: Buffer, format: ImageTransformFormat, parameters: ImageTransformParameters): Promise<Buffer>
 }

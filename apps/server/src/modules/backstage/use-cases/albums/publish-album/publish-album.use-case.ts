@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { PublishAlbumValidator } from './publish-album.validator'
 
 import { UseCase } from '@/modules/shared/interfaces'
-import { AlbumRepository, ArtistRepository, TrackRepository } from '@/modules/backstage/repositories'
+import { AlbumRepository, ArtistRepository } from '@/modules/backstage/repositories'
 import { CreateCatalogAlbumUseCase } from '@/modules/catalog/use-cases'
 import { GetArtworkUseCase } from '@/modules/media/use-cases'
 import { EntityType } from '@/modules/media/enums'

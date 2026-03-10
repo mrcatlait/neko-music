@@ -1,12 +1,4 @@
-import {
-  ComponentRef,
-  EmbeddedViewRef,
-  inject,
-  Injectable,
-  INJECTOR,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core'
+import { ComponentRef, EmbeddedViewRef, inject, Injectable, INJECTOR, ViewContainerRef } from '@angular/core'
 
 import { ComponentPortal } from './component-portal'
 import { TemplatePortal } from './template-portal'

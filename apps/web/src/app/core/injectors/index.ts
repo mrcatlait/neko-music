@@ -1,5 +1,4 @@
 export * from './crypto-injector'
-export * from './grid-options-injector'
 export * from './local-storage-injector'
 export * from './viewport-injector'
 export * from './window-injector'

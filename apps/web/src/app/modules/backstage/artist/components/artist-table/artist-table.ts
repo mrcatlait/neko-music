@@ -1,39 +1,57 @@
-import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core'
 import { AgGridModule } from 'ag-grid-angular'
-import { ColDef, AllCommunityModule } from 'ag-grid-community'
-import { HttpClient } from '@angular/common/http'
-import { firstValueFrom } from 'rxjs'
+import { ColDef, AllCommunityModule, GridOptions } from 'ag-grid-community'
+import { HttpErrorResponse } from '@angular/common/http'
 import { Contracts } from '@neko/contracts'
+import { Router } from '@angular/router'
 
-// import { GRID_OPTIONS } from '@/core/injectors'
-import { ENVIRONMENT } from '@/core/providers'
+import { ArtistApi } from '../../artist-api'
+
 import { RecordStatusCellRenderer } from '@/modules/backstage/shared/components'
+import { GRID_OPTIONS, provideGridOptions } from '@/modules/backstage/shared/providers'
 
 @Component({
   selector: 'n-artist-table',
   imports: [AgGridModule],
   templateUrl: './artist-table.html',
   styleUrl: './artist-table.scss',
+  providers: [ArtistApi, provideGridOptions()],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ArtistTable {
-  private readonly http = inject(HttpClient)
-  private readonly environment = inject(ENVIRONMENT)
+export class ArtistTable implements OnInit {
+  private readonly router = inject(Router)
+  private readonly artistApi = inject(ArtistApi)
+  private readonly defaultGridOptions = inject(GRID_OPTIONS)
 
-  // protected readonly gridOptions = inject(GRID_OPTIONS)
-  protected readonly gridOptions = {}
+  protected readonly gridOptions: GridOptions = {
+    ...this.defaultGridOptions,
+    onRowClicked: (event) => {
+      this.router.navigate([`/backstage/artists/${event.data.id}`])
+    },
+  }
   protected readonly modules = [AllCommunityModule]
-  protected readonly columnDefs: ColDef[] = [
+  protected readonly columnDefs: ColDef<Contracts.Backstage.ArtistStatistics>[] = [
     { field: 'status', headerName: 'Status', width: 160, cellRenderer: RecordStatusCellRenderer },
     { field: 'name', headerName: 'Name', flex: 1 },
-    { field: 'verified', headerName: 'Verified', width: 160, cellRenderer: 'agCheckboxCellRenderer' },
+    { field: 'totalAlbums', headerName: 'Total Albums', width: 160 },
+    { field: 'totalTracks', headerName: 'Total Tracks', width: 160 },
   ]
-  protected readonly rowData: unknown[] = []
 
-  protected readonly artistsResource = resource({
-    loader: () =>
-      firstValueFrom(
-        this.http.get<Contracts.Backstage.ArtistsResponse[]>(`${this.environment.apiUrl}/backstage/artists`),
-      ),
-  })
+  protected readonly rowData = signal<Contracts.Backstage.ArtistStatistics[]>([])
+  protected readonly error = signal<string | null>(null)
+
+  ngOnInit(): void {
+    this.artistApi.getStatistics().subscribe({
+      next: (response) => {
+        this.rowData.set(response.data)
+      },
+      error: (err) => {
+        if (err instanceof HttpErrorResponse) {
+          this.error.set(err.error.message)
+        } else {
+          this.error.set('An error occurred while fetching artists. Please try again later.')
+        }
+      },
+    })
+  }
 }

@@ -5,7 +5,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core'
-import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router'
+import { PreloadAllModules, provideRouter, withComponentInputBinding, withPreloading } from '@angular/router'
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http'
 
 import { routes } from './app.routes'
@@ -21,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withFetch(), withInterceptors([jwtInterceptor])),
     provideZonelessChangeDetection(),
-    provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
     provideEnvironment(environment),
     provideAppInitializer(() => inject(SilentAuthStrategy).authenticate()),
     provideDialogs(),

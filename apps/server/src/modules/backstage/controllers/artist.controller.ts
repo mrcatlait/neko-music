@@ -1,9 +1,9 @@
-import { Body, Controller, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation } from '@nestjs/swagger'
 import { Permissions } from '@neko/permissions'
 
-import { CreateBackstageArtistUseCase, PublishArtistUseCase } from '../use-cases'
-import { ArtistCreationRequest, ArtistCreationResponse } from '../dtos'
+import { CreateBackstageArtistUseCase, GetArtistStatisticsUseCase, PublishArtistUseCase } from '../use-cases'
+import { ArtistCreationRequest, ArtistCreationResponse, ArtistStatisticsResponse } from '../dtos'
 
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 import { EntityType, MediaType } from '@/modules/media/enums'
@@ -18,6 +18,7 @@ export class ArtistController {
   constructor(
     private readonly createBackstageArtistUseCase: CreateBackstageArtistUseCase,
     private readonly generateUploadTokenUseCase: GenerateUploadTokenUseCase,
+    private readonly getArtistStatisticsUseCase: GetArtistStatisticsUseCase,
     private readonly publishArtistUseCase: PublishArtistUseCase,
   ) {}
 
@@ -49,6 +50,19 @@ export class ArtistController {
       artistId: artist.id,
       uploadToken: uploadToken.uploadToken,
     }
+  }
+
+  @Get('/statistics')
+  @ApiOperation({
+    summary: 'Get artist statistics',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The artist statistics have been successfully retrieved.',
+    type: ArtistStatisticsResponse,
+  })
+  getArtistStatistics(): Promise<ArtistStatisticsResponse> {
+    return this.getArtistStatisticsUseCase.invoke().then((result) => ({ data: result }))
   }
 
   @Put(':artistId/publish')

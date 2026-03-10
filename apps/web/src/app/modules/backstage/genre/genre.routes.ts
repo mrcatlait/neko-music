@@ -10,4 +10,8 @@ export const routes: Routes = [
     path: 'new',
     loadComponent: () => import('./pages').then((c) => c.GenreCreationPage),
   },
+  {
+    path: ':genreId',
+    loadComponent: () => import('./pages').then((c) => c.GenreEditPage),
+  },
 ]

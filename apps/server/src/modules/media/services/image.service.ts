@@ -49,8 +49,7 @@ export class ImageService {
     try {
       for (const presetName of Object.values(ImageSize)) {
         const preset = this.imageTransformPresets[presetName]
-        const params = { ...preset, format }
-        const transformedImage = await this.imageTransformStrategy.transform(sourceImage, params)
+        const transformedImage = await this.imageTransformStrategy.transform(sourceImage, format, preset)
 
         const fileName = this.namingStrategy.generateArtworkFilename(source.entityId, presetName, format)
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Insertable, Selectable } from 'kysely'
+import { Insertable, Selectable, Updateable } from 'kysely'
 
 import { GenreStatisticsEntity } from '../entities'
 
@@ -13,12 +13,27 @@ export class GenreRepository {
     return this.database.selectFrom('catalog.Genre').where('id', 'in', ids).selectAll().execute()
   }
 
+  findGenreById(id: string): Promise<Selectable<GenreTable> | undefined> {
+    return this.database.selectFrom('catalog.Genre').where('id', '=', id).selectAll().executeTakeFirst()
+  }
+
   findGenreByName(name: string): Promise<Selectable<GenreTable> | undefined> {
     return this.database.selectFrom('catalog.Genre').where('name', '=', name).selectAll().executeTakeFirst()
   }
 
   createGenre(genre: Insertable<GenreTable>): Promise<Selectable<GenreTable>> {
     return this.database.insertInto('catalog.Genre').values(genre).returningAll().executeTakeFirstOrThrow()
+  }
+
+  updateGenre(genre: Updateable<GenreTable>): Promise<Selectable<GenreTable>> {
+    return this.database
+      .updateTable('catalog.Genre')
+      .set({
+        name: genre.name,
+      })
+      .where('id', '=', genre.id!)
+      .returningAll()
+      .executeTakeFirstOrThrow()
   }
 
   findAllGenres(): Promise<Selectable<GenreTable>[]> {

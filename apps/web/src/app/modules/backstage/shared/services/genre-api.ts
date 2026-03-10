@@ -21,4 +21,12 @@ export class GenreApi {
   getGenres(): Observable<Contracts.Backstage.GenresResponse> {
     return this.http.get<Contracts.Backstage.GenresResponse>(`${this.apiUrl}/backstage/genres`)
   }
+
+  getGenre(id: string): Observable<Contracts.Backstage.Genre> {
+    return this.http.get<Contracts.Backstage.Genre>(`${this.apiUrl}/backstage/genres/${id}`)
+  }
+
+  updateGenre(id: string, payload: Contracts.Backstage.GenreUpdateRequest): Observable<Contracts.Backstage.Genre> {
+    return this.http.put<Contracts.Backstage.Genre>(`${this.apiUrl}/backstage/genres/${id}`, payload)
+  }
 }
