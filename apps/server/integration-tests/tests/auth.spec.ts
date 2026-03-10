@@ -1,19 +1,48 @@
 import request from 'supertest'
+import { Contracts } from '@neko/contracts'
 
 import { app } from '../test-setup'
 
-import { LoginResponse } from '@/modules/auth/dtos'
 import { ACCESS_TOKEN_HEADER_NAME } from '@/modules/auth/constants'
+import { Context, Params } from 'integration-tests/utils'
+
+type RegistrationOptions = Partial<Contracts.Auth.RegistrationRequest>
+
+const getRegistrationPayload = (
+  context: Context,
+  options: RegistrationOptions = {},
+): Contracts.Auth.RegistrationRequest => {
+  const params = new Params<RegistrationOptions>(context, options)
+
+  return {
+    email: params.alias('email', 'test@example.com'),
+    password: params.optional('password', 'password123'),
+    displayName: params.optional('displayName', 'Test User'),
+  }
+}
+
+type LoginOptions = Partial<Contracts.Auth.LoginRequest>
+
+const getLoginPayload = (context: Context, options: LoginOptions = {}): Contracts.Auth.LoginRequest => {
+  const params = new Params<LoginOptions>(context, options)
+
+  return {
+    email: params.alias('email', 'test@example.com'),
+    password: params.optional('password', 'password123'),
+  }
+}
 
 describe('Auth', () => {
   describe('POST /auth/register', () => {
+    let context: Context
+
+    beforeEach(() => {
+      context = new Context()
+    })
+
     it('should successfully register a user', async () => {
       // Arrange
-      const payload = {
-        email: 'test@example.com',
-        password: 'password123',
-        displayName: 'Test User',
-      }
+      const payload = getRegistrationPayload(context)
 
       // Act
       const response = await request(app.getHttpServer()).post('/auth/register').send(payload)
@@ -30,11 +59,7 @@ describe('Auth', () => {
 
     it('should fail to register a user if email is already in use', async () => {
       // Arrange
-      const payload = {
-        email: 'existing@example.com',
-        password: 'password123',
-        displayName: 'Test User',
-      }
+      const payload = getRegistrationPayload(context)
       await request(app.getHttpServer()).post('/auth/register').send(payload)
 
       // Act
@@ -47,16 +72,11 @@ describe('Auth', () => {
       })
     })
 
-    /**
-     * @todo Test email and password validation
-     */
     it('should fail to register a user if email is invalid', async () => {
       // Arrange
-      const payload = {
+      const payload = getRegistrationPayload(context, {
         email: 'invalid-email',
-        password: 'password123',
-        displayName: 'Test User',
-      }
+      })
 
       // Act
       const response = await request(app.getHttpServer()).post('/auth/register').send(payload)
@@ -71,11 +91,9 @@ describe('Auth', () => {
 
     it('should fail to register a user if password is invalid', async () => {
       // Arrange
-      const payload = {
-        email: 'invali-password@example.com',
+      const payload = getRegistrationPayload(context, {
         password: 'invalid',
-        displayName: 'Test User',
-      }
+      })
 
       // Act
       const response = await request(app.getHttpServer()).post('/auth/register').send(payload)
@@ -93,29 +111,28 @@ describe('Auth', () => {
   })
 
   describe('POST /auth/login', () => {
-    const credentials = {
-      email: 'login-test@example.com',
-      password: 'password123',
-    }
+    const context = new Context()
 
     beforeAll(async () => {
-      await request(app.getHttpServer())
-        .post('/auth/register')
-        .send({
-          ...credentials,
-          displayName: 'Test User',
-        })
+      const payload = getRegistrationPayload(context)
+      await request(app.getHttpServer()).post('/auth/register').send(payload)
     })
 
     it('should successfully login a user', async () => {
       // Act
-      const response = await request(app.getHttpServer()).post('/auth/login').send(credentials)
+      const payload = getLoginPayload(context)
+      const response = await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({
+          email: payload.email,
+          password: payload.password,
+        } as Contracts.Auth.LoginRequest)
 
       // Assert
       expect(response.status).toBe(201)
       expect(response.body).toMatchObject({
+        email: payload.email,
         accessToken: expect.any(String),
-        email: credentials.email,
         displayName: expect.any(String),
         permissions: expect.any(Array),
       })
@@ -123,12 +140,10 @@ describe('Auth', () => {
 
     it('should fail to login a user if email is incorrect', async () => {
       // Act
-      const response = await request(app.getHttpServer())
-        .post('/auth/login')
-        .send({
-          ...credentials,
-          email: 'incorrect@example.com',
-        })
+      const payload = getLoginPayload(context, {
+        email: 'incorrect@example.com',
+      })
+      const response = await request(app.getHttpServer()).post('/auth/login').send(payload)
 
       // Assert
       expect(response.status).toBe(401)
@@ -139,12 +154,10 @@ describe('Auth', () => {
 
     it('should fail to login a user if password is incorrect', async () => {
       // Act
-      const response = await request(app.getHttpServer())
-        .post('/auth/login')
-        .send({
-          ...credentials,
-          password: 'incorrect',
-        })
+      const payload = getLoginPayload(context, {
+        password: 'incorrect',
+      })
+      const response = await request(app.getHttpServer()).post('/auth/login').send(payload)
 
       // Assert
       expect(response.status).toBe(401)
@@ -156,17 +169,11 @@ describe('Auth', () => {
 
   describe('GET /auth/refresh', () => {
     it('should successfully refresh a user', async () => {
-      const credentials = {
-        email: 'refresh-test@example.com',
-        password: 'password123',
-      }
-
-      const registerResponse = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send({
-          ...credentials,
-          displayName: 'Test User',
-        })
+      const payload = getRegistrationPayload(new Context())
+      const registerResponse = await request(app.getHttpServer()).post('/auth/register').send(payload)
+      expect(registerResponse.body).toMatchObject({
+        accessToken: expect.any(String),
+      })
 
       const cookies = registerResponse.headers['set-cookie'][0]
 
@@ -195,19 +202,10 @@ describe('Auth', () => {
   describe('GET /auth/whoami', () => {
     it('should successfully get the current user', async () => {
       // Arrange
-      const credentials = {
-        email: 'whoami-test@example.com',
-        password: 'password123',
-      }
+      const payload = getRegistrationPayload(new Context())
+      const registerResponse = await request(app.getHttpServer()).post('/auth/register').send(payload)
 
-      const registerResponse = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send({
-          ...credentials,
-          displayName: 'Test User',
-        })
-
-      const accessToken = (registerResponse.body as LoginResponse).accessToken
+      const accessToken = (registerResponse.body as Contracts.Auth.LoginResponse).accessToken
 
       // Act
       const response = await request(app.getHttpServer())
@@ -217,8 +215,8 @@ describe('Auth', () => {
       // Assert
       expect(response.status).toBe(200)
       expect(response.body).toMatchObject({
-        email: credentials.email,
-        displayName: 'Test User',
+        email: payload.email,
+        displayName: payload.displayName,
         permissions: expect.any(Array),
       })
     })

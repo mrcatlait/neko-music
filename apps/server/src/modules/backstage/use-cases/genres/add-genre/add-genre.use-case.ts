@@ -12,6 +12,7 @@ export interface AddGenreUseCaseParams {
 
 export type AddGenreUseCaseResult = Selectable<GenreTable>
 
+// todo rename to CreateGenreUseCase
 @Injectable()
 export class AddGenreUseCase {
   constructor(
