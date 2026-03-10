@@ -19,7 +19,8 @@ export class PortalPosition {
   private readonly viewport = inject(VIEWPORT)
 
   getPosition({ direction, align, width, height, hostElement, offset = 4 }: PortalPositionOptions): {
-    top: number
+    top: number | null
+    bottom: number | null
     left: number
   } {
     const viewportRect = this.viewport.getClientRect()
@@ -27,7 +28,7 @@ export class PortalPosition {
 
     const minHeight = height ?? 80
     const dropdownSidedOffset = 48
-    let previous: keyof typeof position = 'bottom'
+    let previous: 'top' | 'bottom' = 'bottom'
 
     const viewport = {
       top: viewportRect.top - offset,
@@ -44,8 +45,8 @@ export class PortalPosition {
     const right = Math.max(hostRect.right - width, offset)
     const left = hostRect.left + width < viewport.right ? hostRect.left : right
     const position = {
-      top: hostRect.top - offset - height,
-      bottom: hostRect.bottom + offset,
+      top: { top: null, bottom: viewportRect.bottom - hostRect.top + offset },
+      bottom: { top: hostRect.bottom + offset, bottom: null },
       right: Math.max(viewport.left, right),
       center:
         hostRect.left + hostRect.width / 2 + width / 2 < viewport.right
@@ -57,17 +58,11 @@ export class PortalPosition {
     const better = available.top > available.bottom ? 'top' : 'bottom'
 
     if ((available[previous] > minHeight && direction) || available[previous] > height) {
-      return {
-        top: position[previous],
-        left: position[align],
-      }
+      return { ...position[previous], left: position[align] }
     }
 
     previous = better
 
-    return {
-      top: position[better],
-      left: position[align],
-    }
+    return { ...position[better], left: position[align] }
   }
 }

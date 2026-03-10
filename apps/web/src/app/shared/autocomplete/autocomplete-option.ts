@@ -16,6 +16,7 @@ import { PORTAL_CONTEXT } from '../portal'
 
       cursor: pointer;
       height: var(--n-autocomplete-option-height);
+      min-height: var(--n-autocomplete-option-height);
       display: flex;
       gap: 12px;
       align-items: center;

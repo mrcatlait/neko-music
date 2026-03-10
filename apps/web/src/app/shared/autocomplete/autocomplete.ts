@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, ViewE
 import { AutocompleteContext } from './autocomplete-context'
 import { PORTAL_CONTEXT, PortalPosition } from '../portal'
 
+const MAX_HEIGHT = 248
+
 @Component({
   selector: 'n-autocomplete',
   template: ` <ng-content /> `,
@@ -14,6 +16,7 @@ import { PORTAL_CONTEXT, PortalPosition } from '../portal'
       --n-autocomplete-color: var(--color-text-high-emphasis);
       --n-autocomplete-border-radius: var(--shape-corner-extra-small);
       --n-autocomplete-min-width: 112px;
+      --n-autocomplete-max-height: 248px;
       --n-autocomplete-padding: 4px 0;
 
       position: fixed;
@@ -24,6 +27,8 @@ import { PORTAL_CONTEXT, PortalPosition } from '../portal'
       border-radius: var(--n-autocomplete-border-radius);
       min-width: var(--n-autocomplete-min-width);
       padding: var(--n-autocomplete-padding);
+      max-height: var(--n-autocomplete-max-height);
+      overflow-y: scroll;
 
       @include abstracts.elevation(4);
     }
@@ -31,6 +36,7 @@ import { PORTAL_CONTEXT, PortalPosition } from '../portal'
   host: {
     '[style.left.px]': 'styles().left',
     '[style.top.px]': 'styles().top',
+    '[style.bottom.px]': 'styles().bottom',
     '[style.width.px]': 'styles().width',
   },
   encapsulation: ViewEncapsulation.None,
@@ -43,15 +49,17 @@ export class Autocomplete {
 
   protected readonly styles = computed(() => this.getStyles())
 
-  private getStyles(): { top: number; left: number; width: number } {
+  private getStyles(): { top: number | null; bottom: number | null; left: number; width: number } {
     const { width, height } = this.autocompleteRef.nativeElement.getBoundingClientRect()
     const hostWidth = this.safeHost.getBoundingClientRect().width
+
+    const contentHeight = Math.min(height, MAX_HEIGHT)
 
     const position = this.portalPosition.getPosition({
       direction: 'bottom',
       align: 'left',
       width,
-      height,
+      height: contentHeight,
       hostElement: this.safeHost,
       offset: 0,
     })
@@ -61,6 +69,7 @@ export class Autocomplete {
       width: hostWidth,
     }
   }
+
   private get safeHost(): HTMLElement {
     if (!this.context.host) {
       throw new Error('Host not initialized')

@@ -61,7 +61,10 @@ export class InfoSnackbar {
   protected readonly snackbar = inject(Snackbar)
   protected readonly context = inject<PortalContext<SnackbarContext>>(PORTAL_CONTEXT)
 
+  private readonly timer = setTimeout(() => this.close(), 5000)
+
   protected close(): void {
+    clearTimeout(this.timer)
     this.snackbar.close(this.context.id)
   }
 }

@@ -44,6 +44,7 @@ type Aligns = 'left' | 'right' | 'center'
   host: {
     '[style.left.px]': 'styles().left',
     '[style.top.px]': 'styles().top',
+    '[style.bottom.px]': 'styles().bottom',
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +59,7 @@ export class Menu {
 
   protected readonly styles = computed(() => this.getStyles())
 
-  private getStyles(): { top: number; left: number } {
+  private getStyles(): { top: number | null; bottom: number | null; left: number } {
     const { width, height } = this.menuRef.nativeElement.getBoundingClientRect()
 
     return this.portalPosition.getPosition({
