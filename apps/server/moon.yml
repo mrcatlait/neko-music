@@ -26,6 +26,7 @@ tasks:
   build:
     command: 'nest build'
     inputs:
+      - '@group(configs)'
       - '@group(app)'
       - '@group(sources)'
     outputs:
@@ -40,12 +41,11 @@ tasks:
       - '@group(sources)'
       - '@globs(configs)'
 
-
   test-unit:
     command: 'vitest'
     args:
       - '--config'
-      - 'vite.config.unit.ts'
+      - 'vite-unit.config.ts'
     inputs:
       - '@globs(sources)'
       - 'vitest.config.*'
@@ -56,7 +56,7 @@ tasks:
     command: 'vitest'
     args:
       - '--config'
-      - 'vite.config.integration.ts'
+      - 'vite-integration.config.ts'
     inputs:
       - '@globs(sources)'
       - '@globs(integration-tests)'
@@ -68,7 +68,7 @@ tasks:
     command: 'vitest'
     args:
       - '--config'
-      - 'vite.config.contract.ts'
+      - 'vite-contract.config.ts'
     inputs:
       - '@globs(sources)'
       - '@globs(contract-tests)'

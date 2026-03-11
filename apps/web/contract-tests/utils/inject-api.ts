@@ -5,7 +5,7 @@ import { ProviderToken } from '@angular/core'
 
 import { ENVIRONMENT } from '@/core/providers'
 
-export const ACCESS_TOKEN = '00000000-0000-0000-0000-000000000000'
+export const ACCESS_TOKEN = 'test-access-token'
 
 const stubbedJwtInterceptor: HttpInterceptorFn = (request, next) => {
   const patchedRequest = request.clone({

@@ -1,22 +1,12 @@
-import { provideHttpClient } from '@angular/common/http'
-import { TestBed } from '@angular/core/testing'
-import { Matchers, V3MockServer } from '@pact-foundation/pact'
+import { Matchers } from '@pact-foundation/pact'
 import { firstValueFrom } from 'rxjs'
 import { Contracts } from '@neko/contracts'
 
 import { provider } from '../provider'
 import { PactMatcher } from '../types'
+import { injectApi } from '../utils'
 
 import { AuthApi } from '@/core/auth/auth-api'
-import { ENVIRONMENT } from '@/core/providers'
-
-const injectApi = (mockServer: V3MockServer) => {
-  TestBed.configureTestingModule({
-    providers: [AuthApi, provideHttpClient(), { provide: ENVIRONMENT, useValue: { apiUrl: mockServer.url } }],
-  })
-
-  return TestBed.inject(AuthApi)
-}
 
 describe('Auth', () => {
   describe('POST /auth/login', () => {
@@ -40,7 +30,7 @@ describe('Auth', () => {
           } as PactMatcher<Contracts.Auth.LoginResponse>)
         })
         .executeTest(async (mockServer) => {
-          const api = injectApi(mockServer)
+          const api = injectApi(mockServer, AuthApi)
           const response = await firstValueFrom(api.login({ email: 'test@example.com', password: 'password123' }))
           expect(response.accessToken).toBe('test-access-token')
 

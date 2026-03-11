@@ -9,7 +9,8 @@ implicitInputs:
 fileGroups:
   app: []
   configs:
-    - '*.{js,json,yml,yaml}'
+    - '*.config.{js,cjs,mjs}'
+    - '*.json'
     - 'eslint.config.{js,mjs}'
     - '.prettierignore'
     - '.prettierrc'
@@ -19,7 +20,7 @@ fileGroups:
     - 'src/**/*.spec.*'
   contract-tests:
     - 'contract-tests/**/*'
-    - '$workspaceRoot/contracts/*'
+    - '/contracts/*'
   integration-tests:
     - 'integration-tests/**/*'
   performance-tests:

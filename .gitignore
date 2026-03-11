@@ -7,8 +7,6 @@
 
 # Temporary files
 /server
-/demo
-/tmp
 
 # Node
 /node_modules
