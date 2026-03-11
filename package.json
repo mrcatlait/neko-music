@@ -1,6 +1,5 @@
 {
   "name": "neko-music",
-  "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "workspaces": [
@@ -9,7 +8,7 @@
     "tools/*"
   ],
   "devDependencies": {
-    "sonarqube-scanner": "^4.3.2"
+    "@sonar/scan": "^4.3.5"
   },
   "engines": {
     "node": "~22"
