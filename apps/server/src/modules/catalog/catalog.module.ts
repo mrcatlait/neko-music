@@ -8,8 +8,8 @@ import { AsyncModuleOptions } from '@/modules/shared/interfaces'
 
 @Module({})
 export class CatalogModule extends ModuleWithOptions {
-  static module = CatalogModule
-  static coreModule = CatalogCoreModule
+  static readonly module = CatalogModule
+  static readonly coreModule = CatalogCoreModule
 
   static forRoot(options: CatalogModuleOptions) {
     return super.forRoot(options)

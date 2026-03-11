@@ -20,7 +20,7 @@ export const parseTimePeriod = (str: string): number => {
     throw new TypeError('Invalid time period format')
   }
 
-  const value = parseFloat(matched[2])
+  const value = Number.parseFloat(matched[2])
   const unit = matched[3].toLowerCase()
 
   let numericDate: number

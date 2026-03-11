@@ -13,10 +13,8 @@ export interface PublishAlbumUseCaseParams {
   readonly albumId: string
 }
 
-export type PublishAlbumUseCaseResult = void
-
 @Injectable()
-export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, PublishAlbumUseCaseResult> {
+export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, void> {
   constructor(
     private readonly publishAlbumValidator: PublishAlbumValidator,
     private readonly albumRepository: AlbumRepository,
@@ -25,7 +23,7 @@ export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, P
     private readonly getArtworkUseCase: GetArtworkUseCase,
   ) {}
 
-  async invoke(params: PublishAlbumUseCaseParams): Promise<PublishAlbumUseCaseResult> {
+  async invoke(params: PublishAlbumUseCaseParams): Promise<void> {
     const validationResult = await this.publishAlbumValidator.validate(params)
 
     if (!validationResult.isValid) {

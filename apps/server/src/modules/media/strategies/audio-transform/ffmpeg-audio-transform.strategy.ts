@@ -1,7 +1,7 @@
 import { execSync } from 'child_process'
-import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { ModuleRef } from '@nestjs/core'
-import { join } from 'path'
+import { join } from 'node:path'
 import { Logger } from '@nestjs/common'
 
 import { AudioTransformParameters, AudioTransformResult, AudioTransformStrategy } from './audio-transform.strategy'

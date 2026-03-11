@@ -21,9 +21,9 @@ import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
 @Module({})
 export class AuthCoreModule extends CoreModuleWithOptions {
-  static module = AuthCoreModule
-  static optionsToken = AUTH_MODULE_OPTIONS
-  static providers = [
+  static readonly module = AuthCoreModule
+  static readonly optionsToken = AUTH_MODULE_OPTIONS
+  static readonly providers = [
     // Crons
     CleanupExpiredRefreshTokensCron,
     // Guards
@@ -43,6 +43,6 @@ export class AuthCoreModule extends CoreModuleWithOptions {
     RegisterUserValidator,
     UpdateRoleUseCase,
   ]
-  static controllers = [AuthController]
-  static exports = [AuthService, JwtService]
+  static readonly controllers = [AuthController]
+  static readonly exports = [AuthService, JwtService]
 }

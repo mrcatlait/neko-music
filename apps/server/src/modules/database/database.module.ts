@@ -8,8 +8,8 @@ import { AsyncModuleOptions } from '@/modules/shared/interfaces'
 
 @Module({})
 export class DatabaseModule extends ModuleWithOptions {
-  static module = DatabaseModule
-  static coreModule = DatabaseCoreModule
+  static readonly module = DatabaseModule
+  static readonly coreModule = DatabaseCoreModule
 
   static forRoot(options: DatabaseModuleOptions) {
     return super.forRoot(options)

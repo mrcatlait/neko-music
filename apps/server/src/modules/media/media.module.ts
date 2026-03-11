@@ -8,8 +8,8 @@ import { AsyncModuleOptions } from '@/modules/shared/interfaces'
 
 @Module({})
 export class MediaModule extends ModuleWithOptions {
-  static module = MediaModule
-  static coreModule = MediaCoreModule
+  static readonly module = MediaModule
+  static readonly coreModule = MediaCoreModule
 
   static forRoot(options: MediaModuleOptions) {
     return super.forRoot(options)

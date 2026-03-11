@@ -92,8 +92,8 @@ tasks:
 
   sonar:
     command: 'sonar'
-    args:
-      - '-Dsonar.token=${SONAR_TOKEN}'
+    options:
+      envFile: true
     inputs:
       - '@group(sources)'
       - '@group(unit-tests)'

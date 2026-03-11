@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { JWTPayload as JoseJwtPayload, jwtVerify, SignJWT } from 'jose'
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
 
 import { AuthModuleOptions } from '../types'
 import { AUTH_MODULE_OPTIONS } from '../tokens'

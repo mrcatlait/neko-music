@@ -8,8 +8,8 @@ import { AsyncModuleOptions } from '@/modules/shared/interfaces'
 
 @Module({})
 export class EventBusModule extends ModuleWithOptions {
-  static module = EventBusModule
-  static coreModule = EventBusCoreModule
+  static readonly module = EventBusModule
+  static readonly coreModule = EventBusCoreModule
 
   static forRoot(options: EventBusModuleOptions) {
     return super.forRoot(options)

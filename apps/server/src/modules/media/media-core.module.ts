@@ -20,9 +20,9 @@ import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
 @Module({})
 export class MediaCoreModule extends CoreModuleWithOptions {
-  static module = MediaCoreModule
-  static optionsToken = MEDIA_MODULE_OPTIONS
-  static providers = [
+  static readonly module = MediaCoreModule
+  static readonly optionsToken = MEDIA_MODULE_OPTIONS
+  static readonly providers = [
     // Crons
     UploadTokenCleanupCron,
     TriggerMediaProcessingCron,
@@ -43,8 +43,8 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     UploadAudioValidator,
     UploadImageValidator,
   ]
-  static exports = [GenerateUploadTokenUseCase, GetArtworkUseCase, GetMediaReadinessUseCase]
-  static controllers = [MediaController, StreamingController]
+  static readonly exports = [GenerateUploadTokenUseCase, GetArtworkUseCase, GetMediaReadinessUseCase]
+  static readonly controllers = [MediaController, StreamingController]
 
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,

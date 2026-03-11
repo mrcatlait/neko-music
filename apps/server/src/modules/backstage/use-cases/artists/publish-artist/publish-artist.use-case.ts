@@ -13,10 +13,8 @@ export interface PublishArtistUseCaseParams {
   readonly artistId: string
 }
 
-export type PublishArtistUseCaseResult = void
-
 @Injectable()
-export class PublishArtistUseCase implements UseCase<PublishArtistUseCaseParams, PublishArtistUseCaseResult> {
+export class PublishArtistUseCase implements UseCase<PublishArtistUseCaseParams, void> {
   constructor(
     private readonly publishArtistValidator: PublishArtistValidator,
     private readonly artistRepository: ArtistRepository,
@@ -24,7 +22,7 @@ export class PublishArtistUseCase implements UseCase<PublishArtistUseCaseParams,
     private readonly getArtworkUseCase: GetArtworkUseCase,
   ) {}
 
-  async invoke(params: PublishArtistUseCaseParams): Promise<PublishArtistUseCaseResult> {
+  async invoke(params: PublishArtistUseCaseParams): Promise<void> {
     const validationResult = await this.publishArtistValidator.validate(params)
 
     if (!validationResult.isValid) {

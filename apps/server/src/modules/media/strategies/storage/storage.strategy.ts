@@ -1,4 +1,4 @@
-import Stream, { Readable } from 'stream'
+import Stream, { Readable } from 'node:stream'
 
 import { StorageProvider } from '../../enums'
 

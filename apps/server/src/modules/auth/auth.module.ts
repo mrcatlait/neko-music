@@ -8,8 +8,8 @@ import { AsyncModuleOptions } from '@/modules/shared/interfaces'
 
 @Module({})
 export class AuthModule extends ModuleWithOptions {
-  static module = AuthModule
-  static coreModule = AuthCoreModule
+  static readonly module = AuthModule
+  static readonly coreModule = AuthCoreModule
 
   static forRoot(options: AuthModuleOptions) {
     return super.forRoot(options)

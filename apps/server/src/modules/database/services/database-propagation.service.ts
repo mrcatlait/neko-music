@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common'
-import { readdirSync, readFileSync } from 'fs'
-import { join } from 'path'
+import { readdirSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { CompiledQuery } from 'kysely'
 
 import type { Database } from '../types'

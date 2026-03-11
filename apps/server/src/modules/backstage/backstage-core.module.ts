@@ -24,9 +24,9 @@ import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
 @Module({})
 export class BackstageCoreModule extends CoreModuleWithOptions {
-  static module = BackstageCoreModule
-  static optionsToken = BACKSTAGE_MODULE_OPTIONS
-  static providers = [
+  static readonly module = BackstageCoreModule
+  static readonly optionsToken = BACKSTAGE_MODULE_OPTIONS
+  static readonly providers = [
     // Use cases
     AddGenreUseCase,
     AddGenreValidator,
@@ -48,5 +48,5 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     GenreRepository,
     TrackRepository,
   ]
-  static controllers = [AlbumController, ArtistController, GenreController]
+  static readonly controllers = [AlbumController, ArtistController, GenreController]
 }

@@ -8,9 +8,9 @@ import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
 @Module({})
 export class EventBusCoreModule extends CoreModuleWithOptions {
-  static module = EventBusCoreModule
-  static optionsToken = EVENT_BUS_MODULE_OPTIONS
-  static imports = [DiscoveryModule]
-  static providers = [EventBusService]
-  static exports = [EventBusService]
+  static readonly module = EventBusCoreModule
+  static readonly optionsToken = EVENT_BUS_MODULE_OPTIONS
+  static readonly imports = [DiscoveryModule]
+  static readonly providers = [EventBusService]
+  static readonly exports = [EventBusService]
 }

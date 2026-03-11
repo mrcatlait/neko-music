@@ -55,7 +55,7 @@ export class AuthRepository {
       .where('emailAddress', '=', email)
       .selectAll()
       .executeTakeFirst()
-      .then((result) => Boolean(result))
+      .then(Boolean)
   }
 
   /**

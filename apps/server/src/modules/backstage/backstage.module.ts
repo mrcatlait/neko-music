@@ -8,8 +8,8 @@ import { AsyncModuleOptions } from '@/modules/shared/interfaces'
 
 @Module({})
 export class BackstageModule extends ModuleWithOptions {
-  static module = BackstageModule
-  static coreModule = BackstageCoreModule
+  static readonly module = BackstageModule
+  static readonly coreModule = BackstageCoreModule
 
   static forRoot(options: BackstageModuleOptions) {
     return super.forRoot(options)

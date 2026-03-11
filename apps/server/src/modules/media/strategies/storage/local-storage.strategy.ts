@@ -7,10 +7,10 @@ import {
   readFile,
   unlink,
   writeFile,
-} from 'fs'
-import { dirname, join } from 'path'
-import { promisify } from 'util'
-import { Readable, Stream } from 'stream'
+} from 'node:fs'
+import { dirname, join } from 'node:path'
+import { promisify } from 'node:util'
+import { Readable, Stream } from 'node:stream'
 
 import { StorageStrategy } from './storage.strategy'
 import { StorageProvider } from '../../enums'

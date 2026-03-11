@@ -30,8 +30,8 @@ export const kyselyProvider: Provider = {
 
 @Module({})
 export class DatabaseCoreModule extends CoreModuleWithOptions {
-  static module = DatabaseCoreModule
-  static optionsToken = DATABASE_MODULE_OPTIONS
-  static providers = [kyselyProvider, DatabaseService, DatabaseMigrationService, DatabaseSeedService]
-  static exports = [kyselyProvider]
+  static readonly module = DatabaseCoreModule
+  static readonly optionsToken = DATABASE_MODULE_OPTIONS
+  static readonly providers = [kyselyProvider, DatabaseService, DatabaseMigrationService, DatabaseSeedService]
+  static readonly exports = [kyselyProvider]
 }
