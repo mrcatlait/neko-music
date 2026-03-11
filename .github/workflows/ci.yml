@@ -32,3 +32,16 @@ jobs:
         if: success() || failure()
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
+
+  sonar:
+    needs: ci
+    strategy:
+      matrix:
+        path: ['apps/web', 'apps/server']
+    steps:
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: ${{ matrix.path }}

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core'
 import { catchError, Observable, shareReplay, tap, throwError } from 'rxjs'
 import { Router } from '@angular/router'
+import { Role, RolePermissions } from '@neko/permissions'
 
 import { AuthStrategy } from './auth.strategy'
 import { AuthApi } from '../auth-api'
@@ -23,9 +24,9 @@ export class CredentialsAuthStrategy extends AuthStrategy {
 
   authenticate(credentials: Credentials): Observable<Session | null> {
     return this.authApi.login(credentials).pipe(
-      tap((session) => {
-        this.authStore.updateSession(session)
-        this.authStore.updateAccessToken(session.accessToken)
+      tap((response) => {
+        this.authStore.updateSession(response)
+        this.authStore.updateAccessToken(response.accessToken)
         this.sessionCookie.set()
         this.router.navigate(['/'])
       }),

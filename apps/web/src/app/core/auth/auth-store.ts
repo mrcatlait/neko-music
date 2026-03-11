@@ -1,5 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
 import { Router } from '@angular/router'
+import { Role, RolePermissions } from '@neko/permissions'
 
 import { Session } from './session.model'
 
@@ -11,7 +12,7 @@ export class AuthStore {
 
   readonly accessToken = signal<string | null>(null)
 
-  readonly permissions = computed(() => this.session()?.permissions ?? [])
+  readonly permissions = computed(() => RolePermissions[this.session()?.role as Role])
 
   readonly isAuthenticated = computed(() => Boolean(this.session()))
 
