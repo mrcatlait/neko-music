@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UnauthorizedException } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UnauthorizedException } from '@nestjs/common'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
@@ -27,6 +27,7 @@ export class AuthController {
   @ApiOkResponse({
     type: LoginResponse,
   })
+  @HttpCode(HttpStatus.OK)
   async login(@Body() body: LoginRequest, @Res({ passthrough: true }) response: FastifyReply): Promise<LoginResponse> {
     const session = await this.loginUseCase.invoke({
       email: body.email,
@@ -39,7 +40,7 @@ export class AuthController {
       accessToken: session.accessToken,
       email: session.email,
       displayName: session.displayName,
-      permissions: session.permissions,
+      role: session.role,
     }
   }
 
@@ -67,7 +68,7 @@ export class AuthController {
       accessToken: session.accessToken,
       email: session.email,
       displayName: session.displayName,
-      permissions: session.permissions,
+      role: session.role,
     }
   }
 

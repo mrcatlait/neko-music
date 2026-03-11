@@ -4,7 +4,7 @@ import { Selectable } from 'kysely'
 import { UpdateGenreValidator } from './update-genre.validator'
 
 import { GenreRepository } from '@/modules/backstage/repositories'
-import { GenreTable } from '@/modules/database'
+import { GenreTable } from '@/modules/catalog/catalog.schema'
 import { UseCase } from '@/modules/shared/interfaces'
 
 export interface UpdateGenreUseCaseParams {

@@ -11,7 +11,7 @@ export abstract class DatabasePropagationService {
   protected abstract readonly tableName: string
   protected abstract readonly scriptsFolder: string
 
-  constructor(protected readonly database: Database) {}
+  constructor(protected readonly database: Database<unknown>) {}
 
   async executePendingScripts() {
     if (!this.scriptsFolder) {

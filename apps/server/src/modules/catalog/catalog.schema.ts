@@ -1,6 +1,7 @@
 import { Generated } from 'kysely'
 
-import { AlbumType } from '@/modules/catalog/enums'
+import { AlbumType } from './enums'
+
 import { Artwork } from '@/modules/shared/interfaces'
 
 export interface GenreTable {

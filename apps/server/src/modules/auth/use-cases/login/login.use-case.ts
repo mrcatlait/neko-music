@@ -1,10 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Role } from '@neko/permissions'
 
 import { AuthRepository } from '../../repositories'
 import { LoginValidator } from './login.validator'
 import { AuthService } from '../../services'
 
 import { GetUserProfileUseCase } from '@/modules/user/use-cases'
+import { UseCase } from '@/modules/shared/interfaces'
 
 export interface LoginUseCaseParams {
   readonly email: string
@@ -16,11 +18,11 @@ export interface LoginUseCaseResult {
   readonly refreshToken: string
   readonly email: string
   readonly displayName: string
-  readonly permissions: string[]
+  readonly role: string
 }
 
 @Injectable()
-export class LoginUseCase {
+export class LoginUseCase implements UseCase<LoginUseCaseParams, LoginUseCaseResult> {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly loginValidator: LoginValidator,
@@ -41,16 +43,11 @@ export class LoginUseCase {
       throw new UnauthorizedException()
     }
 
-    const [userProfile, permissions] = await Promise.all([
-      this.getUserProfileUseCase.invoke({ userId: account.id }),
-      this.authRepository.findAccountPermissions(account.id),
-    ])
-
-    const scopes = permissions.map((permission) => permission.name)
+    const userProfile = await this.getUserProfileUseCase.invoke({ userId: account.id })
 
     const { accessToken, refreshToken } = await this.authService.generateTokenPair({
       userId: account.id,
-      scopes,
+      role: account.role as Role,
     })
 
     return {
@@ -58,7 +55,7 @@ export class LoginUseCase {
       refreshToken,
       email: account.emailAddress,
       displayName: userProfile.displayName,
-      permissions: scopes,
+      role: account.role,
     }
   }
 }

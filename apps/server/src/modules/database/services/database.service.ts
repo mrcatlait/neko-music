@@ -1,5 +1,4 @@
 import { Inject, Injectable, OnApplicationBootstrap, Logger } from '@nestjs/common'
-import { BehaviorSubject } from 'rxjs'
 import { CompiledQuery } from 'kysely'
 
 import { DATABASE_MODULE_OPTIONS } from '../database.tokens'
@@ -15,11 +14,8 @@ export class DatabaseService implements OnApplicationBootstrap {
 
   private readonly logger = new Logger(this.constructor.name)
 
-  private readonly initializedSubject = new BehaviorSubject(false)
-  readonly initialized$ = this.initializedSubject.asObservable()
-
   constructor(
-    @InjectDatabase() private readonly database: Database,
+    @InjectDatabase() private readonly database: Database<unknown>,
     @Inject(DATABASE_MODULE_OPTIONS) private readonly options: DatabaseModuleOptions,
     private readonly databaseMigrationService: DatabaseMigrationService,
     private readonly databaseSeedService: DatabaseSeedService,
@@ -49,8 +45,6 @@ export class DatabaseService implements OnApplicationBootstrap {
     while (retries < this.MAX_RETRIES) {
       try {
         await this.database.executeQuery<number>(CompiledQuery.raw('SELECT 1'))
-
-        this.initializedSubject.next(true)
         return
       } catch {
         retries = retries + 1

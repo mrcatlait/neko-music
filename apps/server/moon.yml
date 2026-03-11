@@ -64,6 +64,18 @@ tasks:
     outputs:
       - 'reports/integration'
 
+  test-contract:
+    command: 'vitest'
+    args:
+      - '--config'
+      - 'vite.config.contract.ts'
+    inputs:
+      - '@globs(sources)'
+      - '@globs(contract-tests)'
+      - 'vite.config.contract.*'
+    outputs:
+      - 'reports/contract'
+
   test-performance:
     command: 'k6 run performance-tests/test.js'
     options:

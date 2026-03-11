@@ -1,6 +1,3 @@
-// @todo move to setup-test
-import '../src/polyfill'
-
 import { DynamicModule, INestApplication, Inject, Injectable, Module, ValueProvider } from '@nestjs/common'
 import { Verifier, VerifierOptions } from '@pact-foundation/pact'
 import { resolve } from 'path'
@@ -30,7 +27,7 @@ export class PactModule {
       provide: PACT_OPTIONS,
       useValue: {
         ...options,
-        provider: 'music-library-api',
+        provider: 'neko-music-api',
         pactUrls: [resolve(process.cwd(), '..', '..', 'contracts')],
       },
     }

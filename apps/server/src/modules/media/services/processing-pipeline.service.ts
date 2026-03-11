@@ -6,8 +6,7 @@ import { MediaModuleOptions } from '../types'
 import { MediaRepository } from '../repositories'
 import { ProcessingStatus, ProcessingStep } from '../enums'
 import { ImageService } from './image.service'
-
-import { ProcessingJobTable, ProcessingStepTable } from '@/modules/database/schemas/media.schema'
+import { ProcessingJobTable, ProcessingStepTable } from '../media.schema'
 
 interface Job extends Selectable<ProcessingJobTable> {
   steps: Selectable<ProcessingStepTable>[]

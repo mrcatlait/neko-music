@@ -1,0 +1,17 @@
+export const databaseMock = {
+  selectFrom: vi.fn().mockReturnThis(),
+  insertInto: vi.fn().mockReturnThis(),
+  updateTable: vi.fn().mockReturnThis(),
+  deleteFrom: vi.fn().mockReturnThis(),
+  where: vi.fn().mockReturnThis(),
+  values: vi.fn().mockReturnThis(),
+  set: vi.fn().mockReturnThis(),
+  returning: vi.fn().mockReturnThis(),
+  returningAll: vi.fn().mockReturnThis(),
+  select: vi.fn().mockReturnThis(),
+  selectAll: vi.fn().mockReturnThis(),
+  executeTakeFirst: vi.fn().mockResolvedValue(undefined),
+  executeTakeFirstOrThrow: vi.fn().mockResolvedValue(undefined),
+  execute: vi.fn().mockResolvedValue([]),
+  executeQuery: vi.fn().mockResolvedValue({ rows: [] }),
+}

@@ -22,4 +22,8 @@ export interface EnvironmentVariables {
   JWT_ACCESS_TOKEN_EXPIRES_IN: string
   JWT_REFRESH_TOKEN_SECRET: string
   JWT_REFRESH_TOKEN_EXPIRES_IN: string
+
+  // Administrator
+  ADMINISTRATOR_EMAIL: string
+  ADMINISTRATOR_PASSWORD: string
 }

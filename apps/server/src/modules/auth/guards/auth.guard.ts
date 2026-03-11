@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
 import { Reflector } from '@nestjs/core'
+import { RolePermissions } from '@neko/permissions'
 
 import { AuthService, JwtService } from '../services'
 import { PERMISSIONS_METADATA_KEY, PUBLIC_METADATA_KEY } from '../decorators'
@@ -35,7 +36,7 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAccessToken(accessToken)
       req.user = {
         id: payload.sub,
-        permissions: payload.scopes,
+        role: payload.role,
       }
     } catch {
       throw new UnauthorizedException()
@@ -47,7 +48,8 @@ export class AuthGuard implements CanActivate {
     ])
 
     if (requiredPermissions?.length) {
-      const hasPermission = requiredPermissions.some((permission) => req.user?.permissions.includes(permission))
+      const userPermissions = RolePermissions[req.user.role]
+      const hasPermission = requiredPermissions.some((permission) => userPermissions.includes(permission))
 
       if (!hasPermission) {
         throw new ForbiddenException()

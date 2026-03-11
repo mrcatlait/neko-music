@@ -15,8 +15,8 @@ export class WhoamiResponse implements Contracts.Auth.WhoamiResponse {
   displayName: string
 
   @ApiProperty({
-    description: 'The permissions of the user',
-    example: ['user.read', 'user.write'],
+    description: 'The role of the user',
+    example: 'user',
   })
-  permissions: string[]
+  role: string
 }

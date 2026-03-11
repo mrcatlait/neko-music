@@ -23,7 +23,6 @@ describe('LoginUseCase', () => {
           provide: AuthRepository,
           useValue: {
             findAccountWithCredentialsByEmail: vi.fn(),
-            findAccountPermissions: vi.fn(),
           },
         },
         {
@@ -76,7 +75,7 @@ describe('LoginUseCase', () => {
         emailAddress: 'test@example.com',
         passwordHash: 'correct-hash',
         passwordSalt: 'salt',
-        roleId: 'role-1',
+        role: 'role-1',
       })
       vi.mocked(loginValidator.validate).mockReturnValue({ isValid: false, errors: ['Invalid credentials'] })
 
@@ -86,23 +85,20 @@ describe('LoginUseCase', () => {
       )
     })
 
-    it('should return the user profile and permissions if the email and password are correct', async () => {
+    it('should return the user profile and roles if the email and password are correct', async () => {
       // Arrange
       vi.mocked(authRepository.findAccountWithCredentialsByEmail).mockResolvedValue({
         id: 'user-1',
         emailAddress: 'test@example.com',
         passwordHash: 'correct-hash',
         passwordSalt: 'salt',
-        roleId: 'role-1',
+        role: 'role-1',
       })
       vi.mocked(loginValidator.validate).mockReturnValue({ isValid: true })
       vi.mocked(getUserProfileUseCase.invoke).mockResolvedValue({
         userId: 'user-1',
         displayName: 'Test User',
       })
-      vi.mocked(authRepository.findAccountPermissions).mockResolvedValue([
-        { id: 'perm-1', name: 'read:profile', description: 'Read profile' },
-      ])
       vi.mocked(authService.generateTokenPair).mockResolvedValue({
         accessToken: 'mock-access-token',
         refreshToken: 'mock-refresh-token',
@@ -117,7 +113,7 @@ describe('LoginUseCase', () => {
         refreshToken: 'mock-refresh-token',
         email: 'test@example.com',
         displayName: 'Test User',
-        permissions: ['read:profile'],
+        role: 'role-1',
       })
     })
   })

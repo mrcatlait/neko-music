@@ -19,6 +19,7 @@ import {
 } from '../use-cases'
 
 import { RequirePermissions } from '@/modules/auth/decorators'
+import { FindOneParams } from '@/modules/shared/dtos'
 
 @Controller('backstage/genres')
 @ApiTags('Backstage')
@@ -59,7 +60,7 @@ export class GenreController {
     return this.addGenreUseCase.invoke({ name: body.name })
   }
 
-  @Get(':genreId')
+  @Get(':id')
   @ApiOperation({
     summary: 'Get a genre',
   })
@@ -68,11 +69,11 @@ export class GenreController {
     description: 'The genre has been successfully retrieved.',
     type: Genre,
   })
-  getGenre(@Param('genreId') genreId: string): Promise<Genre> {
-    return this.getGenreUseCase.invoke(genreId)
+  getGenre(@Param() params: FindOneParams): Promise<Genre> {
+    return this.getGenreUseCase.invoke(params.id)
   }
 
-  @Put(':genreId')
+  @Put(':id')
   @ApiOperation({
     summary: 'Update a genre',
   })
@@ -81,8 +82,8 @@ export class GenreController {
     description: 'The genre has been successfully updated.',
     type: Genre,
   })
-  updateGenre(@Param('genreId') genreId: string, @Body() body: GenreUpdateRequest): Promise<Genre> {
-    return this.updateGenreUseCase.invoke({ id: genreId, name: body.name })
+  updateGenre(@Param() params: FindOneParams, @Body() body: GenreUpdateRequest): Promise<Genre> {
+    return this.updateGenreUseCase.invoke({ id: params.id, name: body.name })
   }
 
   @Get('/statistics')

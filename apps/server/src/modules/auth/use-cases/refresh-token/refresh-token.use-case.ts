@@ -3,6 +3,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { AuthRepository } from '../../repositories'
 import { AuthService, JwtService } from '../../services'
 
+import { UseCase } from '@/modules/shared/interfaces'
+
 export interface RefreshTokenUseCaseParams {
   readonly token: string
 }
@@ -13,7 +15,7 @@ export interface RefreshTokenUseCaseResult {
 }
 
 @Injectable()
-export class RefreshTokenUseCase {
+export class RefreshTokenUseCase implements UseCase<RefreshTokenUseCaseParams, RefreshTokenUseCaseResult> {
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
@@ -30,13 +32,15 @@ export class RefreshTokenUseCase {
         throw new UnauthorizedException()
       }
 
-      const permissions = await this.authRepository.findAccountPermissions(refreshToken.userId)
+      const account = await this.authRepository.findAccountById(refreshToken.userId)
 
-      const scopes = permissions.map((permission) => permission.name)
+      if (!account) {
+        throw new UnauthorizedException()
+      }
 
       const { accessToken, refreshToken: newRefreshToken } = await this.authService.generateTokenPair({
         userId: refreshToken.userId,
-        scopes,
+        role: account.role,
       })
 
       return {

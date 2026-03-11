@@ -1,3 +1,5 @@
+import { Role } from '@neko/permissions'
+
 export interface JwtClaims {
-  scopes: string[]
+  role: Role
 }

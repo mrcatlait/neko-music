@@ -5,7 +5,7 @@ import { CreateCatalogArtistValidator } from './create-catalog-artist.validator'
 import { ArtistRepository } from '../../../repositories'
 
 import { Artwork, UseCase } from '@/modules/shared/interfaces'
-import { CatalogArtistTable } from '@/modules/database'
+import { CatalogArtistTable } from '@/modules/catalog/catalog.schema'
 
 export interface CreateCatalogArtistUseCaseParams {
   readonly name: string

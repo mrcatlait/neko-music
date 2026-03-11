@@ -3,8 +3,9 @@ import { Insertable, Selectable } from 'kysely'
 
 import { PublishingStatus } from '../enums'
 import { ArtistStatisticsEntity } from '../entities'
+import { BackstageArtistTable, BackstageSchema } from '../backstage.schema'
 
-import { BackstageArtistTable, Database, InjectDatabase } from '@/modules/database'
+import { Database, InjectDatabase } from '@/modules/database'
 
 interface CreateArtistParams {
   readonly artist: Insertable<BackstageArtistTable>
@@ -13,7 +14,7 @@ interface CreateArtistParams {
 
 @Injectable()
 export class ArtistRepository {
-  constructor(@InjectDatabase() private readonly database: Database) {}
+  constructor(@InjectDatabase() private readonly database: Database<BackstageSchema>) {}
 
   createArtist(params: CreateArtistParams): Promise<Selectable<BackstageArtistTable>> {
     return this.database.transaction().execute(async (trx) => {

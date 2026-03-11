@@ -26,4 +26,8 @@ export const environmentSchema = z.object({
   JWT_ACCESS_TOKEN_EXPIRES_IN: z.string(),
   JWT_REFRESH_TOKEN_SECRET: z.string(),
   JWT_REFRESH_TOKEN_EXPIRES_IN: z.string(),
+
+  // Administrator
+  ADMINISTRATOR_EMAIL: z.string(),
+  ADMINISTRATOR_PASSWORD: z.string(),
 }) satisfies ZodType<EnvironmentVariables>

@@ -11,7 +11,7 @@ export interface GetUserUseCaseParams {
 export interface GetUserUseCaseResult {
   readonly email: string
   readonly displayName: string
-  readonly permissions: string[]
+  readonly role: string
 }
 
 @Injectable()
@@ -28,15 +28,12 @@ export class GetUserUseCase {
       throw new UnauthorizedException()
     }
 
-    const [userProfile, permissions] = await Promise.all([
-      this.getUserProfileUseCase.invoke({ userId: account.id }),
-      this.authRepository.findAccountPermissions(account.id),
-    ])
+    const userProfile = await this.getUserProfileUseCase.invoke({ userId: account.id })
 
     return {
       email: account.emailAddress,
       displayName: userProfile.displayName,
-      permissions: permissions.map((permission) => permission.name),
+      role: account.role,
     }
   }
 }

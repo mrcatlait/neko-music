@@ -53,8 +53,8 @@ describe('Auth', () => {
         email: payload.email,
         displayName: payload.displayName,
         accessToken: expect.any(String),
-        permissions: expect.any(Array),
-      })
+        role: expect.any(String),
+      } as Contracts.Auth.LoginResponse)
     })
 
     it('should fail to register a user if email is already in use', async () => {
@@ -129,13 +129,13 @@ describe('Auth', () => {
         } as Contracts.Auth.LoginRequest)
 
       // Assert
-      expect(response.status).toBe(201)
+      expect(response.status).toBe(200)
       expect(response.body).toMatchObject({
         email: payload.email,
         accessToken: expect.any(String),
         displayName: expect.any(String),
-        permissions: expect.any(Array),
-      })
+        role: expect.any(String),
+      } as Contracts.Auth.LoginResponse)
     })
 
     it('should fail to login a user if email is incorrect', async () => {
@@ -217,8 +217,8 @@ describe('Auth', () => {
       expect(response.body).toMatchObject({
         email: payload.email,
         displayName: payload.displayName,
-        permissions: expect.any(Array),
-      })
+        role: expect.any(String),
+      } as Contracts.Auth.WhoamiResponse)
     })
 
     it('should fail to get the current user if access token is invalid', async () => {

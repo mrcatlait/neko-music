@@ -5,7 +5,7 @@ import { CreateCatalogAlbumValidator } from './create-catalog-album.validator'
 import { AlbumRepository } from '../../../repositories'
 
 import { Artwork, UseCase } from '@/modules/shared/interfaces'
-import { CatalogAlbumTable } from '@/modules/database'
+import { CatalogAlbumTable } from '@/modules/catalog/catalog.schema'
 import { AlbumType } from '@/modules/catalog/enums'
 
 export interface CreateCatalogAlbumUseCaseParams {

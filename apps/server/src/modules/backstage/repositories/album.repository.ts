@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common'
 import { Selectable } from 'kysely'
 
 import { PublishingStatus } from '../enums'
+import { BackstageAlbumTable, BackstageSchema } from '../backstage.schema'
 
-import { BackstageAlbumTable, Database, InjectDatabase } from '@/modules/database'
+import { Database, InjectDatabase } from '@/modules/database'
 
 @Injectable()
 export class AlbumRepository {
-  constructor(@InjectDatabase() private readonly database: Database) {}
+  constructor(@InjectDatabase() private readonly database: Database<BackstageSchema>) {}
 
   findAlbumById(id: string): Promise<Selectable<BackstageAlbumTable> | undefined> {
     return this.database.selectFrom('backstage.Album').where('id', '=', id).selectAll().executeTakeFirst()

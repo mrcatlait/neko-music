@@ -47,6 +47,10 @@ import { AuthModule } from '@/modules/auth/auth.module'
         refreshTokenSecret: configService.config.JWT_REFRESH_TOKEN_SECRET,
         refreshTokenExpiresIn: configService.config.JWT_REFRESH_TOKEN_EXPIRES_IN,
         saltRounds: configService.config.SALT_ROUNDS,
+        administratorCredentials: {
+          email: configService.config.ADMINISTRATOR_EMAIL,
+          password: configService.config.ADMINISTRATOR_PASSWORD,
+        },
       }),
       inject: [ConfigService],
     }),

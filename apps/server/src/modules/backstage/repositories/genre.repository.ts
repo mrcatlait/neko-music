@@ -3,11 +3,12 @@ import { Insertable, Selectable, Updateable } from 'kysely'
 
 import { GenreStatisticsEntity } from '../entities'
 
-import { InjectDatabase, Database, GenreTable } from '@/modules/database'
+import { InjectDatabase, Database } from '@/modules/database'
+import { CatalogSchema, GenreTable } from '@/modules/catalog/catalog.schema'
 
 @Injectable()
 export class GenreRepository {
-  constructor(@InjectDatabase() private readonly database: Database) {}
+  constructor(@InjectDatabase() private readonly database: Database<CatalogSchema>) {}
 
   findGenresByIds(ids: string[]): Promise<Selectable<GenreTable>[]> {
     return this.database.selectFrom('catalog.Genre').where('id', 'in', ids).selectAll().execute()
@@ -31,7 +32,7 @@ export class GenreRepository {
       .set({
         name: genre.name,
       })
-      .where('id', '=', genre.id!)
+      .where('id', '=', genre.id)
       .returningAll()
       .executeTakeFirstOrThrow()
   }

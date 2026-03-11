@@ -36,17 +36,6 @@ tasks:
   #     - 'coverage'
   #     - 'reports/unit'
 
-  test-contract:
-    command: 'vitest --config vitest-contract.config.mts'
-    options:
-      runInCI: false
-    inputs:
-      - '@group(sources)'
-      - '@group(contract-tests)'
-      - 'vitest-contract.config.*'
-    outputs:
-      - 'reports/contract'
-
   lint:
     command:
       - 'eslint'

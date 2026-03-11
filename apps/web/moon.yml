@@ -66,6 +66,18 @@ tasks:
       - 'cypress.config.ts'
     outputs:
       - 'reports/integration'
+  
+  test-contract:
+    command: 'vitest'
+    args:
+      - '--config'
+      - 'vite.config.contract.ts'
+    inputs:
+      - '@group(sources)'
+      - '@group(contract-tests)'
+      - 'vite.config.contract.*'
+    outputs:
+      - 'reports/contract'
 
   test-integration-ui:
     command: 'cypress open'

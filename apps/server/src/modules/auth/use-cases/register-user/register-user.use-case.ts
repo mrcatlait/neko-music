@@ -1,10 +1,12 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { Role, Roles } from '@neko/permissions'
 
 import { RegisterUserValidator } from './register-user.validator'
 import { AuthRepository } from '../../repositories'
 import { AuthService } from '../../services'
 
 import { CreateUserProfileUseCase } from '@/modules/user/use-cases'
+import { UseCase } from '@/modules/shared/interfaces'
 
 export interface RegisterUserUseCaseParams {
   readonly email: string
@@ -17,13 +19,12 @@ export interface RegisterUserUseCaseResult {
   readonly refreshToken: string
   readonly email: string
   readonly displayName: string
-  readonly permissions: string[]
+  readonly role: string
+  readonly id: string
 }
 
 @Injectable()
-export class RegisterUserUseCase {
-  private readonly logger = new Logger(this.constructor.name)
-
+export class RegisterUserUseCase implements UseCase<RegisterUserUseCaseParams, RegisterUserUseCaseResult> {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly registerValidator: RegisterUserValidator,
@@ -38,13 +39,6 @@ export class RegisterUserUseCase {
       throw new BadRequestException(validationResult.errors)
     }
 
-    const defaultRole = await this.authRepository.findDefaultRole()
-
-    if (!defaultRole) {
-      this.logger.error('Default role not found')
-      throw new InternalServerErrorException()
-    }
-
     const passwordSalt = this.authService.generatePasswordSalt()
     const passwordHash = this.authService.generatePasswordHash(params.password, passwordSalt)
 
@@ -52,22 +46,17 @@ export class RegisterUserUseCase {
       email: params.email,
       passwordHash,
       passwordSalt,
-      roleId: defaultRole.id,
+      role: Roles.User,
     })
 
-    const [userProfile, permissions] = await Promise.all([
-      this.createUserProfileUseCase.invoke({
-        userId: userAccount.id,
-        displayName: params.displayName,
-      }),
-      this.authRepository.findAccountPermissions(userAccount.id),
-    ])
-
-    const scopes = permissions.map((permission) => permission.name)
+    const userProfile = await this.createUserProfileUseCase.invoke({
+      userId: userAccount.id,
+      displayName: params.displayName,
+    })
 
     const { accessToken, refreshToken } = await this.authService.generateTokenPair({
       userId: userAccount.id,
-      scopes,
+      role: userAccount.role as Role,
     })
 
     return {
@@ -75,7 +64,8 @@ export class RegisterUserUseCase {
       refreshToken,
       email: userAccount.emailAddress,
       displayName: userProfile.displayName,
-      permissions: scopes,
+      role: userAccount.role,
+      id: userAccount.id,
     }
   }
 }

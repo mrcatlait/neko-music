@@ -20,7 +20,7 @@ export class UploadAudioValidator implements Validator<UploadMediaUseCaseParams>
     this.maxAudioSize = options.maxAudioSize
   }
 
-  async validate(params: Partial<UploadMediaUseCaseParams>): Promise<ValidationResult> {
+  validate(params: Partial<UploadMediaUseCaseParams>): ValidationResult {
     if (!params.file) {
       return {
         isValid: false,

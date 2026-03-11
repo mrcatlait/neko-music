@@ -16,12 +16,15 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.3.1",
+    "@analogjs/vitest-angular": "^2.3.1",
     "@angular/build": "^21.2.0",
     "@angular/cli": "^21.2.0",
     "@angular/compiler-cli": "^21.2.0",
     "@faker-js/faker": "^10.3.0",
     "@neko/contracts": "*",
     "@neko/eslint-config": "*",
+    "@pact-foundation/pact": "^16.3.0",
     "angular-eslint": "^21.1.0",
     "esbuild-visualizer": "^0.7.0",
     "jsdom": "^28.1.0",

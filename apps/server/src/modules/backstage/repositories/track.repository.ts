@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common'
 
+import { BackstageSchema } from '../backstage.schema'
+
 import { Database, InjectDatabase } from '@/modules/database'
 
 @Injectable()
 export class TrackRepository {
-  constructor(@InjectDatabase() private readonly database: Database) {}
+  constructor(@InjectDatabase() private readonly database: Database<BackstageSchema>) {}
 
   countTracksByAlbumId(albumId: string): Promise<number> {
     return this.database

@@ -1,6 +1,6 @@
 import { Generated } from 'kysely'
 
-import { EntityType, MediaType, ProcessingStatus, ProcessingStep, StorageProvider } from '@/modules/media/enums'
+import { EntityType, MediaType, ProcessingStatus, ProcessingStep, StorageProvider } from './enums'
 
 export interface UploadTokenTable {
   id: Generated<string>

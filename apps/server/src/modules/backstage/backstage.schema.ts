@@ -1,7 +1,6 @@
 import { Generated } from 'kysely'
 
-import { PublishingStatus } from '@/modules/backstage/enums'
-import { AlbumType } from '@/modules/catalog/enums'
+import { PublishingStatus, AlbumType } from './enums'
 
 interface AuditTrail {
   createdAt: Date

@@ -39,7 +39,7 @@ export class JwtService {
 
   signAccessToken(payload: AccessTokenPayload): Promise<string> {
     const claims: JoseJwtPayload = {
-      scopes: payload.scopes,
+      role: payload.role,
     }
 
     return new SignJWT(claims as unknown as JoseJwtPayload)

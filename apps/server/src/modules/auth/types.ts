@@ -1,3 +1,8 @@
+export interface AdministratorCredentials {
+  email: string
+  password: string
+}
+
 export interface AuthModuleOptions {
   /**
    * The secret key for the JWT access token.
@@ -20,4 +25,8 @@ export interface AuthModuleOptions {
    * @default 10
    */
   saltRounds: number
+  /**
+   * The credentials for the administrator user.
+   */
+  administratorCredentials: AdministratorCredentials
 }

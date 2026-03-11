@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { Insertable, Selectable } from 'kysely'
 
-import { Database, InjectDatabase, UploadTokenTable } from '@/modules/database'
+import { MediaSchema, UploadTokenTable } from '../media.schema'
+
+import { Database, InjectDatabase } from '@/modules/database'
 
 @Injectable()
 export class UploadTokenRepository {
-  constructor(@InjectDatabase() private readonly database: Database) {}
+  constructor(@InjectDatabase() private readonly database: Database<MediaSchema>) {}
 
   /**
    * Find upload token by ID

@@ -8,12 +8,14 @@ import {
   RefreshTokenUseCase,
   RegisterUserUseCase,
   RegisterUserValidator,
+  UpdateRoleUseCase,
 } from './use-cases'
 import { AuthRepository } from './repositories'
 import { AuthGuard } from './guards'
 import { AuthController } from './controllers'
 import { AuthService, JwtService } from './services'
 import { CleanupExpiredRefreshTokensCron } from './crons'
+import { AdministratorService } from './services/administrator.service'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -29,6 +31,7 @@ export class AuthCoreModule extends CoreModuleWithOptions {
     // Repositories
     AuthRepository,
     // Services
+    AdministratorService,
     AuthService,
     JwtService,
     // Use cases
@@ -38,6 +41,7 @@ export class AuthCoreModule extends CoreModuleWithOptions {
     RefreshTokenUseCase,
     RegisterUserUseCase,
     RegisterUserValidator,
+    UpdateRoleUseCase,
   ]
   static controllers = [AuthController]
   static exports = [AuthService, JwtService]

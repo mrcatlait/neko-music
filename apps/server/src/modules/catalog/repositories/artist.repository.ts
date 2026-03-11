@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { Insertable, Selectable } from 'kysely'
 
-import { CatalogArtistTable, Database, InjectDatabase } from '@/modules/database'
+import { CatalogArtistTable, CatalogSchema } from '../catalog.schema'
+
+import { Database, InjectDatabase } from '@/modules/database'
 
 interface CreateArtistParams {
   readonly artist: Insertable<CatalogArtistTable>
@@ -10,7 +12,7 @@ interface CreateArtistParams {
 
 @Injectable()
 export class ArtistRepository {
-  constructor(@InjectDatabase() private readonly database: Database) {}
+  constructor(@InjectDatabase() private readonly database: Database<CatalogSchema>) {}
 
   createArtist(params: CreateArtistParams): Promise<Selectable<CatalogArtistTable>> {
     return this.database.transaction().execute(async (trx) => {

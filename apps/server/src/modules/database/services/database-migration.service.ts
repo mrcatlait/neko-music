@@ -11,7 +11,7 @@ export class DatabaseMigrationService extends DatabasePropagationService {
   protected readonly scriptsFolder: string
 
   constructor(
-    @InjectDatabase() protected readonly database: Database,
+    @InjectDatabase() protected readonly database: Database<unknown>,
     @Inject(DATABASE_MODULE_OPTIONS)
     private readonly options: DatabaseModuleOptions,
   ) {

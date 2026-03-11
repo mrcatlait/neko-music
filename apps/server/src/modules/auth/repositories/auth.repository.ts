@@ -1,28 +1,23 @@
 import { Injectable } from '@nestjs/common'
 import { Insertable, Selectable } from 'kysely'
+import { Role } from '@neko/permissions'
 
-import {
-  Database,
-  InjectDatabase,
-  AccountTable,
-  RoleTable,
-  PermissionTable,
-  CredentialsTable,
-  RefreshTokenTable,
-} from '@/modules/database'
+import { AccountTable, AuthSchema, CredentialsTable, RefreshTokenTable } from '../auth.schema'
+
+import { Database, InjectDatabase } from '@/modules/database'
 
 interface CreateAccountWithCredentialsParams {
   readonly email: string
+  readonly role: string
   readonly passwordHash: string
   readonly passwordSalt: string
-  readonly roleId: string
 }
 
 type AccountWithCredentials = Selectable<AccountTable & Omit<CredentialsTable, 'userId'>>
 
 @Injectable()
 export class AuthRepository {
-  constructor(@InjectDatabase() private readonly database: Database) {}
+  constructor(@InjectDatabase() private readonly database: Database<AuthSchema>) {}
 
   /**
    * Create account with credentials in a single transaction
@@ -33,7 +28,7 @@ export class AuthRepository {
         .insertInto('auth.Account')
         .values({
           emailAddress: params.email,
-          roleId: params.roleId,
+          role: params.role,
         })
         .returningAll()
         .executeTakeFirstOrThrow()
@@ -64,19 +59,6 @@ export class AuthRepository {
   }
 
   /**
-   * Get account's permissions (via their role)
-   */
-  findAccountPermissions(accountId: string): Promise<Selectable<PermissionTable>[]> {
-    return this.database
-      .selectFrom('auth.Permission')
-      .innerJoin('auth.RolePermission', 'auth.RolePermission.permissionId', 'auth.Permission.id')
-      .innerJoin('auth.Account', 'auth.Account.roleId', 'auth.RolePermission.roleId')
-      .where('auth.Account.id', '=', accountId)
-      .select(['auth.Permission.id', 'auth.Permission.name', 'auth.Permission.description'])
-      .execute()
-  }
-
-  /**
    * Find account with credentials by email
    */
   findAccountWithCredentialsByEmail(email: string): Promise<AccountWithCredentials | undefined> {
@@ -87,7 +69,7 @@ export class AuthRepository {
       .select([
         'auth.Account.id',
         'auth.Account.emailAddress',
-        'auth.Account.roleId',
+        'auth.Account.role',
         'auth.Credentials.passwordHash',
         'auth.Credentials.passwordSalt',
       ])
@@ -102,10 +84,10 @@ export class AuthRepository {
   }
 
   /**
-   * Find default role for new accounts
+   * Find account by email
    */
-  findDefaultRole(): Promise<Selectable<RoleTable> | undefined> {
-    return this.database.selectFrom('auth.Role').where('default', '=', true).selectAll().executeTakeFirst()
+  findAccountByEmail(email: string): Promise<Selectable<AccountTable> | undefined> {
+    return this.database.selectFrom('auth.Account').where('emailAddress', '=', email).selectAll().executeTakeFirst()
   }
 
   /**
@@ -120,6 +102,18 @@ export class AuthRepository {
    */
   findRefreshTokenByToken(token: string): Promise<Selectable<RefreshTokenTable> | undefined> {
     return this.database.selectFrom('auth.RefreshToken').where('token', '=', token).selectAll().executeTakeFirst()
+  }
+
+  /**
+   * Update role by user ID
+   */
+  updateRoleByUserId(userId: string, role: Role): Promise<void> {
+    return this.database
+      .updateTable('auth.Account')
+      .set({ role })
+      .where('id', '=', userId)
+      .execute()
+      .then(() => undefined)
   }
 
   /**

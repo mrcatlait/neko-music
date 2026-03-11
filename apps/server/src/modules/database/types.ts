@@ -1,7 +1,5 @@
 import { Kysely, Selectable } from 'kysely'
 
-import { AuthSchema, BackstageSchema, CatalogSchema, MediaSchema, UserSchema } from './schemas'
-
 export interface DatabaseModuleOptions {
   // Database
   host: string
@@ -21,8 +19,6 @@ export interface DatabaseModuleOptions {
   runSeeds?: boolean
 }
 
-export type DatabaseSchema = AuthSchema & BackstageSchema & CatalogSchema & MediaSchema & UserSchema
-
-export type Database = Kysely<DatabaseSchema>
+export type Database<Schema> = Kysely<Schema>
 
 export type FindOptions<T> = Partial<Selectable<T>>

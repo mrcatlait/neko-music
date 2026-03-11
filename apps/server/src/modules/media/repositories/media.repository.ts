@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common'
 import { Insertable, Selectable, sql } from 'kysely'
 
 import { EntityType, MediaType, ProcessingStatus, ProcessingStep } from '../enums'
-
 import {
   AssetTable,
-  Database,
   ImageMetadataTable,
-  InjectDatabase,
+  MediaSchema,
   ProcessingJobTable,
   ProcessingStepTable,
   SourceAssetTable,
-} from '@/modules/database'
+} from '../media.schema'
+
+import { Database, InjectDatabase } from '@/modules/database'
 
 export interface ImageAssetWithMetadata {
   asset: Selectable<AssetTable>
@@ -25,7 +25,7 @@ export interface CreateImageAssetParameters {
 
 @Injectable()
 export class MediaRepository {
-  constructor(@InjectDatabase() private readonly database: Database) {}
+  constructor(@InjectDatabase() private readonly database: Database<MediaSchema>) {}
 
   /**
    * Create source asset and processing job in a single transaction
@@ -173,7 +173,6 @@ export class MediaRepository {
 
     const { rows } = await this.database.executeQuery<Row>(compiled)
     const row = rows[0]
-    if (!row?.assets) return []
 
     return row.assets
   }

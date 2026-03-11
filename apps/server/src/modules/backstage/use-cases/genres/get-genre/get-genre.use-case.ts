@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { Selectable } from 'kysely'
 
-import { GenreTable } from '@/modules/database'
+import { GenreTable } from '@/modules/catalog/catalog.schema'
 import { UseCase } from '@/modules/shared/interfaces'
 import { GenreRepository } from '@/modules/backstage/repositories'
 

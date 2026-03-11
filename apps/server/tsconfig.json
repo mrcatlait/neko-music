@@ -37,7 +37,8 @@
   ],
   "include": [
     "src/**/*",
-    "integration-tests/**/*"
+    "integration-tests/**/*",
+    "contract-tests/**/*"
   ],
   "exclude": [
     "node_modules",
