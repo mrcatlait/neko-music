@@ -1,3 +1,5 @@
+export * from './auth-guard.mock'
 export * from './auth-repository.mock'
 export * from './database.mock'
+export * from './genre-repository.mock'
 export * from './user-repository.mock'

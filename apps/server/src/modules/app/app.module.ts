@@ -111,8 +111,9 @@ import { AuthModule } from '@/modules/auth/auth.module'
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useExisting: AuthGuard,
     },
+    AuthGuard,
   ],
 })
 export class AppModule implements NestModule {

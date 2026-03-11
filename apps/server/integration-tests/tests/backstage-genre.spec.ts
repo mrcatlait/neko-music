@@ -325,4 +325,43 @@ describe('Backstage Genre', () => {
       expect(response.body).toMatchObject({ error: 'Bad Request' })
     })
   })
+
+  describe('GET /backstage/genres/statistics', () => {
+    it('should successfully get genre statistics', async () => {
+      // Arrange & Act
+      const response = await request(app.getHttpServer())
+        .get('/backstage/genres/statistics')
+        .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${administratorAccessToken}`)
+
+      // Assert
+      expect(response.status).toBe(200)
+      expect(response.body).toMatchObject({
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+          }),
+        ]),
+      } as Contracts.Backstage.GenreStatisticsResponse)
+    })
+
+    it('should fail to get genre statistics if the user is not authenticated', async () => {
+      // Arrange & Act
+      const response = await request(app.getHttpServer()).get('/backstage/genres/statistics')
+
+      // Assert
+      expect(response.status).toBe(401)
+      expect(response.body).toMatchObject({ message: 'Unauthorized', statusCode: 401 })
+    })
+
+    it('should fail to get genre statistics if the user does not have the required permissions', async () => {
+      // Arrange & Act
+      const response = await request(app.getHttpServer())
+        .get('/backstage/genres/statistics')
+        .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${userAccessToken}`)
+
+      // Assert
+      expect(response.status).toBe(403)
+    })
+  })
 })

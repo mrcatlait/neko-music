@@ -6,17 +6,19 @@ import { Reflector } from '@nestjs/core'
 import fastifyCookie from '@fastify/cookie'
 
 import { testEnvConfig } from './test-env'
-import { authStateHandler } from './state-handlers'
-import { authRepositoryMock, databaseMock, jwtServiceMock, userRepositoryMock } from './mocks'
+import { authStateHandler, genreStateHandler } from './state-handlers'
+import { authGuardMock, authRepositoryMock, databaseMock, genreRepositoryMock, userRepositoryMock } from './mocks'
 
 import { PactModule, PactVerifierService } from 'contract-tests/pact.module'
 import { AppModule } from '@/modules/app/app.module'
 import { ConfigService } from '@/modules/config/services'
-import { JwtService } from '@/modules/auth/services'
 import { DatabaseService } from '@/modules/database/services'
 import { DATABASE } from '@/modules/database/database.tokens'
 import { AuthRepository } from '@/modules/auth/repositories'
 import { UserRepository } from '@/modules/user/repositories'
+import { GenreRepository } from '@/modules/backstage/repositories'
+import { AdministratorService } from '@/modules/auth/services/administrator.service'
+import { AuthGuard } from '@/modules/auth/guards'
 
 describe('Pact Verification', () => {
   let verifierService: PactVerifierService
@@ -25,6 +27,7 @@ describe('Pact Verification', () => {
   beforeAll(async () => {
     const stateHandlers: MessageStateHandlers = {
       ...authStateHandler,
+      ...genreStateHandler,
     }
 
     const requestFilter = (req: Request, res: Response, next: () => void) => {
@@ -44,12 +47,18 @@ describe('Pact Verification', () => {
       .useValue({ config: testEnvConfig })
       .overrideProvider(DatabaseService)
       .useValue({})
+      .overrideProvider(AuthGuard)
+      .useValue(authGuardMock)
       .overrideProvider(DATABASE)
       .useValue(databaseMock)
+      .overrideProvider(AdministratorService)
+      .useValue({})
       .overrideProvider(AuthRepository)
       .useValue(authRepositoryMock)
       .overrideProvider(UserRepository)
       .useValue(userRepositoryMock)
+      .overrideProvider(GenreRepository)
+      .useValue(genreRepositoryMock)
 
     const moduleRef = await moduleBuilder.compile()
 

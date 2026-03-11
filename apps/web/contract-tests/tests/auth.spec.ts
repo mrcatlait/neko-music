@@ -5,10 +5,10 @@ import { firstValueFrom } from 'rxjs'
 import { Contracts } from '@neko/contracts'
 
 import { provider } from '../provider'
+import { PactMatcher } from '../types'
 
 import { AuthApi } from '@/core/auth/auth-api'
 import { ENVIRONMENT } from '@/core/providers'
-import { PactMatcher } from 'contract-tests/types'
 
 const injectApi = (mockServer: V3MockServer) => {
   TestBed.configureTestingModule({
@@ -34,9 +34,9 @@ describe('Auth', () => {
         .willRespondWith(200, (builder) => {
           builder.jsonBody({
             accessToken: Matchers.string('test-access-token'),
-            email: 'test@example.com',
-            displayName: 'John Doe',
-            role: 'user',
+            email: Matchers.string('test@example.com'),
+            displayName: Matchers.string('John Doe'),
+            role: Matchers.string('user'),
           } as PactMatcher<Contracts.Auth.LoginResponse>)
         })
         .executeTest(async (mockServer) => {
