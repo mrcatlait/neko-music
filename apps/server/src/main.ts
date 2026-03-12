@@ -1,8 +1,11 @@
+import { join } from 'path'
+
 import { NestFactory, Reflector } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { fastifyCookie } from '@fastify/cookie'
 import { fastifyMultipart } from '@fastify/multipart'
+import fastifyStatic from '@fastify/static'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 import { ConfigService } from './modules/config/services'
@@ -16,6 +19,11 @@ async function bootstrap() {
 
   const PORT = configService.config.PORT
   const UI_URL = configService.config.UI_URL
+
+  await app.register(fastifyStatic, {
+    root: join(process.cwd(), 'media'),
+    prefix: '/media/',
+  })
 
   app.useGlobalPipes(
     new ValidationPipe({

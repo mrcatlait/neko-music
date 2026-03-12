@@ -14,6 +14,17 @@ export class ArtistApi {
     return this.http.post<Contracts.Backstage.ArtistCreationResponse>(`${this.apiUrl}/backstage/artists`, payload)
   }
 
+  getArtist(id: string): Observable<Contracts.Backstage.BackstageArtist> {
+    return this.http.get<Contracts.Backstage.BackstageArtist>(`${this.apiUrl}/backstage/artists/${id}`)
+  }
+
+  updateArtist(
+    id: string,
+    payload: Contracts.Backstage.ArtistUpdateRequest,
+  ): Observable<Contracts.Backstage.ArtistUpdateResponse> {
+    return this.http.put<Contracts.Backstage.ArtistUpdateResponse>(`${this.apiUrl}/backstage/artists/${id}`, payload)
+  }
+
   getStatistics(): Observable<Contracts.Backstage.ArtistStatisticsResponse> {
     return this.http.get<Contracts.Backstage.ArtistStatisticsResponse>(`${this.apiUrl}/backstage/artists/statistics`)
   }

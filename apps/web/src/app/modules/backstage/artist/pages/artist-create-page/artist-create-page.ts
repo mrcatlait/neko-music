@@ -27,7 +27,9 @@ export class ArtistCreatePage {
   protected readonly isDragging = signal(false)
   protected readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput')
 
-  protected createArtist(artist: { name: string; genres: string[]; image: File }): void {
+  protected createArtist(artist: { name: string; genres: string[]; image: File | null }): void {
+    if (!artist.image) return
+
     this.artistApi
       .create({
         name: artist.name,
@@ -36,7 +38,7 @@ export class ArtistCreatePage {
       })
       .pipe(
         switchMap(({ uploadToken }) => {
-          return this.mediaApi.upload(artist.image, uploadToken)
+          return this.mediaApi.upload(artist.image!, uploadToken)
         }),
       )
       .subscribe({

@@ -1,0 +1,27 @@
+<header class="artist-detail-page__header">
+  <button
+    color="standard"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="navigateToArtistList()"
+  >
+    <i>arrow_back</i>
+  </button>
+
+  <h2>Edit Artist</h2>
+</header>
+
+@if (loading()) {
+  <div class="artist-detail-page__loading">
+    <n-loading-indicator [size]="32" />
+  </div>
+} @else if (artist()) {
+  <n-artist-form
+    submitLabel="Save changes"
+    [artist]="artist()"
+    [saving]="saving()"
+    (formCancel)="navigateToArtistList()"
+    (formSubmit)="updateArtist($event)"
+  />
+}

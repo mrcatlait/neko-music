@@ -2,6 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { join } from 'path'
 import { ScheduleModule } from '@nestjs/schedule'
 import { APP_GUARD } from '@nestjs/core'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 
 import { SecurityHeadersMiddleware } from './middlewares'
 import { BackstageModule } from '../backstage/backstage.module'
@@ -25,6 +26,7 @@ import { AuthModule } from '@/modules/auth/auth.module'
 @Module({
   imports: [
     ConfigModule.forRoot({}),
+    EventEmitterModule.forRoot(),
     DatabaseModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         migrations: join(process.cwd(), 'src', 'migrations'),

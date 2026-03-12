@@ -1,14 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, output, signal, viewChild } from '@angular/core'
+import { NgOptimizedImage } from '@angular/common'
+import { ChangeDetectionStrategy, Component, effect, ElementRef, input, output, signal, viewChild } from '@angular/core'
 
 @Component({
   selector: 'n-picture-upload',
   templateUrl: './picture-upload.html',
   styleUrl: './picture-upload.scss',
+  imports: [NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PictureUpload {
   private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput')
 
+  readonly src = input<string>()
   readonly selectedFile = output<File>()
 
   protected readonly maxFileSize = 10 * 1024 * 1024 // 10MB
@@ -17,6 +20,18 @@ export class PictureUpload {
   protected readonly dragging = signal(false)
   protected readonly previewUrl = signal<string | null>(null)
   protected readonly error = signal<string | null>(null)
+
+  constructor() {
+    effect(() => {
+      const src = this.src()
+
+      if (!src) {
+        return
+      }
+
+      this.previewUrl.set(src)
+    })
+  }
 
   protected onBrowseFiles(): void {
     this.fileInput()?.nativeElement.click()

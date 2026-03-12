@@ -15,8 +15,8 @@
 
     <ng-template #autocomplete>
       <n-autocomplete>
-        @if (availableGenres().length > 0) {
-          @for (genre of availableGenres(); track genre.id) {
+        @if (filteredGenres().length > 0) {
+          @for (genre of filteredGenres(); track genre.id) {
             <n-autocomplete-option [value]="genre.id">
               {{ genre.name }}
             </n-autocomplete-option>

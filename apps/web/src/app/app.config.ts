@@ -7,6 +7,7 @@ import {
 } from '@angular/core'
 import { PreloadAllModules, provideRouter, withComponentInputBinding, withPreloading } from '@angular/router'
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http'
+import { provideImgixLoader } from '@angular/common'
 
 import { routes } from './app.routes'
 
@@ -25,5 +26,6 @@ export const appConfig: ApplicationConfig = {
     provideEnvironment(environment),
     provideAppInitializer(() => inject(SilentAuthStrategy).authenticate()),
     provideDialogs(),
+    provideImgixLoader(`${environment.apiUrl}/media`),
   ],
 }

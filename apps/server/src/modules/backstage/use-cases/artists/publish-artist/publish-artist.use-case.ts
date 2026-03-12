@@ -9,7 +9,6 @@ import { GetArtworkUseCase } from '@/modules/media/use-cases'
 import { EntityType } from '@/modules/media/enums'
 
 export interface PublishArtistUseCaseParams {
-  readonly userId: string
   readonly artistId: string
 }
 
@@ -46,6 +45,6 @@ export class PublishArtistUseCase implements UseCase<PublishArtistUseCaseParams,
       artwork,
     })
 
-    await this.artistRepository.publishArtist(params.artistId, catalogArtist.id, params.userId)
+    await this.artistRepository.publishArtist(params.artistId, catalogArtist.id)
   }
 }

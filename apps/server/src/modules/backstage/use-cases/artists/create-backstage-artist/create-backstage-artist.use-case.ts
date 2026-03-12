@@ -6,10 +6,9 @@ import { ArtistRepository } from '../../../repositories'
 
 import { UseCase } from '@/modules/shared/interfaces'
 import { PublishingStatus } from '@/modules/backstage/enums'
-import { BackstageArtistTable } from '@/modules/database'
+import { BackstageArtistTable } from '@/modules/backstage/backstage.schema'
 
 export interface CreateBackstageArtistUseCaseParams {
-  readonly userId: string
   readonly name: string
   readonly genres: string[]
   readonly verified: boolean
@@ -39,10 +38,6 @@ export class CreateBackstageArtistUseCase implements UseCase<
         name: params.name,
         status: PublishingStatus.DRAFT,
         verified: params.verified,
-        createdAt: new Date(),
-        createdBy: params.userId,
-        updatedAt: new Date(),
-        updatedBy: params.userId,
       },
       genres: params.genres,
     })

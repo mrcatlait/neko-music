@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, output, signal } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core'
 import { Contracts } from '@neko/contracts'
 import { form, FormField } from '@angular/forms/signals'
 import { HttpErrorResponse } from '@angular/common/http'
@@ -19,24 +29,38 @@ import { InputChip, LoadingIndicator, Textfield } from '@/shared/components'
 export class GenrePicker implements OnInit {
   private readonly genreApi = inject(GenreApi)
 
+  readonly genres = input<string[]>()
   readonly selectionChange = output<string[]>()
 
   private readonly filterValue = signal<string>('')
   protected readonly filterForm = form(this.filterValue)
 
-  private readonly genres = signal<Contracts.Backstage.Genre[]>([])
+  private readonly availableGenres = signal<Contracts.Backstage.Genre[]>([])
 
   protected readonly loading = signal(false)
   protected readonly error = signal<string | null>(null)
   protected readonly selectedGenres = signal<Contracts.Backstage.Genre[]>([])
-  protected readonly availableGenres = computed(() => {
+  protected readonly filteredGenres = computed(() => {
     const filterValue = this.filterValue()?.toLowerCase() ?? ''
-    const notSelectedGenres = this.genres().filter(
+    const notSelectedGenres = this.availableGenres().filter(
       (genre) => !this.selectedGenres().some((selectedGenre) => selectedGenre.id === genre.id),
     )
 
     return notSelectedGenres?.filter((genre) => genre.name.toLowerCase().includes(filterValue)) ?? []
   })
+
+  constructor() {
+    effect(() => {
+      const genres = this.genres()
+
+      if (!genres) {
+        return
+      }
+
+      const genresToSelect = this.availableGenres().filter((g) => genres.includes(g.id))
+      this.selectedGenres.set(genresToSelect)
+    })
+  }
 
   ngOnInit(): void {
     this.loadGenres()
@@ -47,7 +71,7 @@ export class GenrePicker implements OnInit {
 
     this.genreApi.getGenres().subscribe({
       next: (response) => {
-        this.genres.set(response.data)
+        this.availableGenres.set(response.data)
         this.loading.set(false)
       },
       error: (error) => {
@@ -63,7 +87,7 @@ export class GenrePicker implements OnInit {
   }
 
   protected addGenre(genre: unknown): void {
-    const newGenre = this.genres().find((g) => g.id === (genre as string))
+    const newGenre = this.availableGenres().find((g) => g.id === (genre as string))
 
     if (newGenre) {
       this.selectedGenres.update((genres) => [...genres, newGenre])

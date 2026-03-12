@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 0;
+  flex: 1;
+}
+
+header {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+}
+
+.artist-detail-page__loading {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}

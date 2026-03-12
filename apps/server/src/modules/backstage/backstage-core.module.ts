@@ -7,6 +7,7 @@ import {
   CreateBackstageArtistValidator,
   CreateBackstageArtistUseCase,
   GetArtistStatisticsUseCase,
+  GetBackstageArtistUseCase,
   PublishArtistValidator,
   PublishArtistUseCase,
   PublishAlbumValidator,
@@ -14,11 +15,16 @@ import {
   GetGenreStatisticsUseCase,
   GetGenresUseCase,
   GetGenreUseCase,
+  UpdateArtistStatusUseCase,
+  UpdateArtistStatusValidator,
+  UpdateBackstageArtistUseCase,
+  UpdateBackstageArtistValidator,
   UpdateGenreValidator,
   UpdateGenreUseCase,
 } from './use-cases'
 import { AlbumController, ArtistController, GenreController } from './controllers'
 import { AlbumRepository, ArtistRepository, GenreRepository, TrackRepository } from './repositories'
+import { ArtistListener } from './listeners'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -33,6 +39,7 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     CreateBackstageArtistUseCase,
     CreateBackstageArtistValidator,
     GetArtistStatisticsUseCase,
+    GetBackstageArtistUseCase,
     GetGenreStatisticsUseCase,
     GetGenresUseCase,
     GetGenreUseCase,
@@ -40,6 +47,10 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     PublishArtistValidator,
     PublishAlbumUseCase,
     PublishAlbumValidator,
+    UpdateArtistStatusUseCase,
+    UpdateArtistStatusValidator,
+    UpdateBackstageArtistUseCase,
+    UpdateBackstageArtistValidator,
     UpdateGenreUseCase,
     UpdateGenreValidator,
     // Repositories
@@ -47,6 +58,8 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     ArtistRepository,
     GenreRepository,
     TrackRepository,
+    // Listeners
+    ArtistListener,
   ]
   static readonly controllers = [AlbumController, ArtistController, GenreController]
 }

@@ -10,15 +10,9 @@ CREATE TABLE "backstage"."Track" (
   "duration" SMALLINT NOT NULL,
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   "status" "backstage"."PublishingStatus" NOT NULL DEFAULT 'DRAFT',
-  "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "createdBy" UUID NOT NULL,
-  "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updatedBy" UUID NOT NULL,
   CONSTRAINT "UK_Track_Name" UNIQUE (name),
   CONSTRAINT "FK_Track_CatalogTrack" FOREIGN KEY ("catalogTrackId") REFERENCES "catalog"."Track" ("id") ON DELETE CASCADE,
   CONSTRAINT "FK_Track_Album" FOREIGN KEY ("albumId") REFERENCES "backstage"."Album" ("id") ON DELETE CASCADE,
-  CONSTRAINT "FK_Track_CreatedBy_Account" FOREIGN KEY ("createdBy") REFERENCES "auth"."Account" ("id") ON DELETE CASCADE,
-  CONSTRAINT "FK_Track_UpdatedBy_Account" FOREIGN KEY ("updatedBy") REFERENCES "auth"."Account" ("id") ON DELETE CASCADE,
   CONSTRAINT "CHK_Track_Duration" CHECK ("duration" > 0 AND "duration" < 36000),
   CONSTRAINT "CHK_Track_Positioning" CHECK (
     ("albumId" IS NULL AND "trackNumber" IS NULL AND "diskNumber" IS NULL) OR
@@ -39,7 +33,3 @@ COMMENT ON COLUMN "backstage"."Track"."type" IS 'The type of the track';
 COMMENT ON COLUMN "backstage"."Track"."duration" IS 'The duration of the track';
 COMMENT ON COLUMN "backstage"."Track"."explicit" IS 'Whether the track is explicit';
 COMMENT ON COLUMN "backstage"."Track"."status" IS 'The status of the publishing process';
-COMMENT ON COLUMN "backstage"."Track"."createdAt" IS 'The date and time the track was created';
-COMMENT ON COLUMN "backstage"."Track"."createdBy" IS 'The user who created the track';
-COMMENT ON COLUMN "backstage"."Track"."updatedAt" IS 'The date and time the track was updated';
-COMMENT ON COLUMN "backstage"."Track"."updatedBy" IS 'The user who updated the track';

@@ -1,12 +1,14 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, computed, effect, input, output, signal } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { Contracts } from '@neko/contracts'
 
 import { LoadingIndicator, Textfield, Button } from '@/shared/components'
 import { GenrePicker, PictureUpload } from '@/modules/backstage/shared/components'
+import { ArtworkPipe } from '@/shared/pipes'
 
 @Component({
   selector: 'n-artist-form',
-  imports: [Button, LoadingIndicator, PictureUpload, ReactiveFormsModule, Textfield, GenrePicker],
+  imports: [ArtworkPipe, Button, LoadingIndicator, PictureUpload, ReactiveFormsModule, Textfield, GenrePicker],
   templateUrl: './artist-form.html',
   styleUrl: './artist-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,9 +16,12 @@ import { GenrePicker, PictureUpload } from '@/modules/backstage/shared/component
 export class ArtistForm {
   readonly submitLabel = input.required<string>()
   readonly saving = input.required<boolean>()
+  readonly artist = input<Contracts.Backstage.BackstageArtist>()
 
-  readonly formSubmit = output<{ name: string; genres: string[]; image: File }>()
+  readonly formSubmit = output<{ name: string; genres: string[]; image: File | null }>()
   readonly formCancel = output<void>()
+
+  protected readonly artworkUrl = computed(() => this.artist()?.artwork?.url ?? '')
 
   protected readonly form = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -25,6 +30,19 @@ export class ArtistForm {
   protected readonly selectedGenreIds = signal<string[]>([])
 
   private image: File | null = null
+
+  constructor() {
+    effect(() => {
+      const artist = this.artist()
+
+      if (!artist) {
+        return
+      }
+
+      this.form.patchValue({ name: artist.name })
+      this.selectedGenreIds.set(artist.genres)
+    })
+  }
 
   protected get name(): FormControl {
     return this.form.controls.name

@@ -1,5 +1,5 @@
 import { Module, Provider } from '@nestjs/common'
-import { Kysely } from 'kysely'
+import { Kysely, LogEvent } from 'kysely'
 import { PostgresJSDialect } from 'kysely-postgres-js'
 import postgres from 'postgres'
 
@@ -15,6 +15,11 @@ export const kyselyProvider: Provider = {
   useFactory: (options: DatabaseModuleOptions) => {
     return new Kysely({
       log: ['error'], // 'query', 'error'
+      // log(event: LogEvent): void {
+      //   if (event.level === 'error') {
+      //     throw event.error
+      //   }
+      // },
       dialect: new PostgresJSDialect({
         postgres: postgres({
           database: options.database,

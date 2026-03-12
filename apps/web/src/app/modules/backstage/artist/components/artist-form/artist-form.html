@@ -6,7 +6,10 @@
   <div class="artist-form__profile-picture">
     <span class="body-large">Profile Picture</span>
 
-    <n-picture-upload (selectedFile)="onSelectedFile($event)" />
+    <n-picture-upload
+      [src]="artworkUrl() | artwork: 'large'"
+      (selectedFile)="onSelectedFile($event)"
+    />
   </div>
 
   <n-textfield>
@@ -40,7 +43,10 @@
     </span>
   </n-textfield>
 
-  <n-genre-picker (selectionChange)="onGenreSelectionChange($event)" />
+  <n-genre-picker
+    [genres]="artist()?.genres"
+    (selectionChange)="onGenreSelectionChange($event)"
+  />
 
   <button
     class="artist-form__submit"

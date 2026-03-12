@@ -3,13 +3,17 @@
     @if (previewUrl()) {
       <img
         alt="Picture Preview"
-        [src]="previewUrl()!"
+        height="256"
+        width="256"
+        [ngSrc]="previewUrl()!"
         (error)="error.set('Failed to load image')"
       />
     } @else {
       <img
         alt=""
-        src="assets/images/placeholders/1x1.gif"
+        height="256"
+        ngSrc="assets/images/placeholders/1x1.gif"
+        width="256"
       />
     }
   </picture>

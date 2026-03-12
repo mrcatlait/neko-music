@@ -2,7 +2,12 @@ import { Module } from '@nestjs/common'
 
 import { CATALOG_MODULE_OPTIONS } from './tokens'
 import { CreateCatalogAlbumUseCase, CreateCatalogAlbumValidator } from './use-cases/albums'
-import { CreateCatalogArtistUseCase, CreateCatalogArtistValidator } from './use-cases/artists'
+import {
+  CreateCatalogArtistUseCase,
+  CreateCatalogArtistValidator,
+  UpdateCatalogArtistUseCase,
+  UpdateCatalogArtistValidator,
+} from './use-cases/artists'
 import { AlbumRepository, ArtistRepository, GenreRepository } from './repositories'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
@@ -21,6 +26,8 @@ export class CatalogCoreModule extends CoreModuleWithOptions {
     CreateCatalogAlbumValidator,
     CreateCatalogArtistUseCase,
     CreateCatalogArtistValidator,
+    UpdateCatalogArtistUseCase,
+    UpdateCatalogArtistValidator,
   ]
   static readonly controllers = []
   static readonly exports = [
@@ -28,5 +35,7 @@ export class CatalogCoreModule extends CoreModuleWithOptions {
     CreateCatalogAlbumValidator,
     CreateCatalogArtistUseCase,
     CreateCatalogArtistValidator,
+    UpdateCatalogArtistUseCase,
+    UpdateCatalogArtistValidator,
   ]
 }

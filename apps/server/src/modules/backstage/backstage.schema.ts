@@ -2,14 +2,7 @@ import { Generated } from 'kysely'
 
 import { PublishingStatus, AlbumType } from './enums'
 
-interface AuditTrail {
-  createdAt: Date
-  createdBy: string
-  updatedAt: Date
-  updatedBy: string
-}
-
-export interface BackstageArtistTable extends AuditTrail {
+export interface BackstageArtistTable {
   id: Generated<string>
   name: string
   catalogArtistId: string | null
@@ -23,7 +16,7 @@ export interface BackstageArtistGenreTable {
   position: number
 }
 
-export interface BackstageAlbumTable extends AuditTrail {
+export interface BackstageAlbumTable {
   id: Generated<string>
   name: string
   catalogAlbumId: string | null
@@ -45,7 +38,7 @@ export interface BackstageAlbumArtistTable {
   role: ArtistRole
 }
 
-export interface BackstageTrackTable extends AuditTrail {
+export interface BackstageTrackTable {
   id: Generated<string>
   name: string
   catalogTrackId: string

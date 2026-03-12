@@ -39,18 +39,56 @@ export class ArtistRepository {
     })
   }
 
-  publishArtist(artistId: string, catalogArtistId: string, userId: string): Promise<void> {
+  publishArtist(artistId: string, catalogArtistId: string): Promise<void> {
     return this.database
       .updateTable('backstage.Artist')
       .set({
         catalogArtistId,
         status: PublishingStatus.PUBLISHED,
-        updatedAt: new Date(),
-        updatedBy: userId,
       })
       .where('id', '=', artistId)
       .execute()
       .then(() => undefined)
+  }
+
+  updateArtistStatus(artistId: string, status: PublishingStatus): Promise<void> {
+    return this.database
+      .updateTable('backstage.Artist')
+      .set({ status })
+      .where('id', '=', artistId)
+      .execute()
+      .then(() => undefined)
+  }
+
+  updateArtist(params: { artistId: string; name: string; genres: string[] }): Promise<void> {
+    return this.database
+      .transaction()
+      .execute(async (trx) => {
+        await trx.updateTable('backstage.Artist').set({ name: params.name }).where('id', '=', params.artistId).execute()
+
+        await trx.deleteFrom('backstage.ArtistGenre').where('artistId', '=', params.artistId).execute()
+
+        await trx
+          .insertInto('backstage.ArtistGenre')
+          .values(
+            params.genres.map((genreId, index) => ({
+              artistId: params.artistId,
+              genreId,
+              position: index,
+            })),
+          )
+          .execute()
+      })
+      .then(() => undefined)
+  }
+
+  findArtistByNameExcluding(name: string, excludeId: string): Promise<Selectable<BackstageArtistTable> | undefined> {
+    return this.database
+      .selectFrom('backstage.Artist')
+      .where('name', '=', name)
+      .where('id', '!=', excludeId)
+      .selectAll()
+      .executeTakeFirst()
   }
 
   findArtistByName(name: string): Promise<Selectable<BackstageArtistTable> | undefined> {

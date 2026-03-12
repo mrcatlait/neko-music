@@ -9,12 +9,8 @@ export const routes: Routes = [
     path: 'create',
     loadComponent: () => import('./pages').then((c) => c.ArtistCreatePage),
   },
-  // {
-  //   path: ':id/edit',
-  //   loadComponent: () => import('./pages/artist-edit-page').then(c => c.ArtistEditPage)
-  // },
-  // {
-  //   path: ':id',
-  //   loadComponent: () => import('./pages/artist-detail-page').then(c => c.ArtistDetailPage)
-  // }
+  {
+    path: ':id',
+    loadComponent: () => import('./pages').then((c) => c.ArtistDetailPage),
+  },
 ]

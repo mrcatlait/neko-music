@@ -13,6 +13,8 @@ import {
   ArtistDto,
   ArtistsResponseDto,
   ArtistUpdateRequestDto,
+  ArtistUpdateResponseDto,
+  BackstageArtistDto,
   GenreCreationRequestDto,
   GenreCreationResponseDto,
   GenreDto,
@@ -49,6 +51,8 @@ export namespace Contracts {
     export type ArtistStatistics = ArtistStatisticsDto
     export type ArtistStatisticsResponse = ArtistStatisticsResponseDto
     export type ArtistUpdateRequest = ArtistUpdateRequestDto
+    export type ArtistUpdateResponse = ArtistUpdateResponseDto
+    export type BackstageArtist = BackstageArtistDto
     export type ArtistsResponse = ArtistsResponseDto
     export type Artist = ArtistDto
   }

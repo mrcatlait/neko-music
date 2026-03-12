@@ -1,5 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Selectable } from 'kysely'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 
 import { MEDIA_MODULE_OPTIONS } from '../tokens'
 import { MediaModuleOptions } from '../types'
@@ -7,6 +8,12 @@ import { MediaRepository } from '../repositories'
 import { ProcessingStatus, ProcessingStep } from '../enums'
 import { ImageService } from './image.service'
 import { ProcessingJobTable, ProcessingStepTable } from '../media.schema'
+
+import {
+  MediaProcessingCompletedEvent,
+  MediaProcessingFailedEvent,
+  MediaProcessingStartedEvent,
+} from '@/modules/shared/events'
 
 interface Job extends Selectable<ProcessingJobTable> {
   steps: Selectable<ProcessingStepTable>[]
@@ -21,6 +28,7 @@ export class ProcessingPipelineService {
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
     private readonly mediaRepository: MediaRepository,
     private readonly imageService: ImageService,
+    private readonly eventEmitter: EventEmitter2,
   ) {
     this.maxConcurrentProcessingJobs = options.maxConcurrentProcessingJobs
   }
@@ -56,6 +64,20 @@ export class ProcessingPipelineService {
 
     await this.mediaRepository.updateProcessingJob(job)
 
+    const sourceAsset = await this.mediaRepository.findSourceAssetById(job.sourceAssetId)
+
+    if (!sourceAsset) {
+      throw new Error('Source asset not found')
+    }
+
+    this.eventEmitter.emit(
+      MediaProcessingStartedEvent.event,
+      new MediaProcessingStartedEvent({
+        entityType: sourceAsset.entityType,
+        entityId: sourceAsset.entityId,
+      }),
+    )
+
     try {
       for (const step of job.steps) {
         if (step.status !== ProcessingStatus.PENDING) {
@@ -69,11 +91,27 @@ export class ProcessingPipelineService {
       job.completedAt = new Date()
 
       await this.mediaRepository.updateProcessingJob(job)
+
+      this.eventEmitter.emit(
+        MediaProcessingCompletedEvent.event,
+        new MediaProcessingCompletedEvent({
+          entityType: sourceAsset.entityType,
+          entityId: sourceAsset.entityId,
+        }),
+      )
     } catch {
       job.status = ProcessingStatus.FAILED
       job.completedAt = new Date()
 
       await this.mediaRepository.updateProcessingJob(job)
+
+      this.eventEmitter.emit(
+        MediaProcessingFailedEvent.event,
+        new MediaProcessingFailedEvent({
+          entityType: sourceAsset.entityType,
+          entityId: sourceAsset.entityId,
+        }),
+      )
     }
   }
 
