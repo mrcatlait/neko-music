@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common'
 
-import { PublishArtistUseCaseParams } from './publish-artist.use-case'
+import { SyncArtistUseCaseParams } from './sync-artist.use-case'
 
 import { ArtistRepository } from '@/modules/backstage/repositories'
 import { ValidationResult, Validator } from '@/modules/shared/interfaces'
-import { PublishingStatus } from '@/modules/backstage/enums'
 import { GetMediaReadinessUseCase } from '@/modules/media/use-cases'
 import { EntityType } from '@/modules/media/enums'
+import { PublishingStatus } from '@/modules/backstage/enums'
 
 @Injectable()
-export class PublishArtistValidator implements Validator<PublishArtistUseCaseParams> {
+export class SyncArtistValidator implements Validator<SyncArtistUseCaseParams> {
   constructor(
     private readonly artistRepository: ArtistRepository,
     private readonly getMediaReadinessUseCase: GetMediaReadinessUseCase,
   ) {}
 
-  async validate(params: PublishArtistUseCaseParams): Promise<ValidationResult> {
+  async validate(params: SyncArtistUseCaseParams): Promise<ValidationResult> {
     const artist = await this.artistRepository.findArtistById(params.artistId)
 
     if (!artist) {
@@ -25,10 +25,10 @@ export class PublishArtistValidator implements Validator<PublishArtistUseCasePar
       }
     }
 
-    if (artist.status === PublishingStatus.PUBLISHED) {
+    if (artist.status === PublishingStatus.Processing) {
       return {
         isValid: false,
-        error: `Artist ${params.artistId} is already published`,
+        error: `Artist ${params.artistId} is processing`,
       }
     }
 
@@ -44,8 +44,6 @@ export class PublishArtistValidator implements Validator<PublishArtistUseCasePar
       }
     }
 
-    return {
-      isValid: true,
-    }
+    return { isValid: true }
   }
 }

@@ -8,8 +8,6 @@ import {
   CreateBackstageArtistUseCase,
   GetArtistStatisticsUseCase,
   GetBackstageArtistUseCase,
-  PublishArtistValidator,
-  PublishArtistUseCase,
   PublishAlbumValidator,
   PublishAlbumUseCase,
   GetGenreStatisticsUseCase,
@@ -21,6 +19,8 @@ import {
   UpdateBackstageArtistValidator,
   UpdateGenreValidator,
   UpdateGenreUseCase,
+  SyncArtistValidator,
+  SyncArtistUseCase,
 } from './use-cases'
 import { AlbumController, ArtistController, GenreController } from './controllers'
 import { AlbumRepository, ArtistRepository, GenreRepository, TrackRepository } from './repositories'
@@ -43,8 +43,6 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     GetGenreStatisticsUseCase,
     GetGenresUseCase,
     GetGenreUseCase,
-    PublishArtistUseCase,
-    PublishArtistValidator,
     PublishAlbumUseCase,
     PublishAlbumValidator,
     UpdateArtistStatusUseCase,
@@ -53,6 +51,8 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     UpdateBackstageArtistValidator,
     UpdateGenreUseCase,
     UpdateGenreValidator,
+    SyncArtistUseCase,
+    SyncArtistValidator,
     // Repositories
     AlbumRepository,
     ArtistRepository,

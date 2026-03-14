@@ -42,27 +42,32 @@ export class ArtistRepository {
     })
   }
 
-  updateArtist(params: UpdateArtistParams): Promise<void> {
-    return this.database
-      .transaction()
-      .execute(async (trx) => {
-        const artistId = params.artist.id
+  updateArtist(params: UpdateArtistParams): Promise<Selectable<CatalogArtistTable>> {
+    return this.database.transaction().execute(async (trx) => {
+      const artistId = params.artist.id
 
-        await trx.updateTable('catalog.Artist').set(params.artist).where('id', '=', artistId).execute()
-        await trx.deleteFrom('catalog.ArtistGenre').where('artistId', '=', artistId).execute()
+      const artist = await trx
+        .updateTable('catalog.Artist')
+        .set(params.artist)
+        .where('id', '=', artistId)
+        .returningAll()
+        .executeTakeFirstOrThrow()
 
-        await trx
-          .insertInto('catalog.ArtistGenre')
-          .values(
-            params.genres.map((genreId, index) => ({
-              artistId,
-              genreId,
-              position: index,
-            })),
-          )
-          .execute()
-      })
-      .then(() => undefined)
+      await trx.deleteFrom('catalog.ArtistGenre').where('artistId', '=', artistId).execute()
+
+      await trx
+        .insertInto('catalog.ArtistGenre')
+        .values(
+          params.genres.map((genreId, index) => ({
+            artistId,
+            genreId,
+            position: index,
+          })),
+        )
+        .execute()
+
+      return artist
+    })
   }
 
   findArtistByName(name: string): Promise<Selectable<CatalogArtistTable> | undefined> {

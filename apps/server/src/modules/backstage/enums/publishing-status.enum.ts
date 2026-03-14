@@ -1,6 +1,6 @@
 export enum PublishingStatus {
-  DRAFT = 'DRAFT',
-  PROCESSING = 'PROCESSING',
-  PUBLISHED = 'PUBLISHED',
-  REJECTED = 'REJECTED',
+  Draft = 'DRAFT',
+  Processing = 'PROCESSING',
+  Published = 'PUBLISHED',
+  Failed = 'FAILED',
 }

@@ -7,6 +7,7 @@ import { AlbumRepository, ArtistRepository } from '@/modules/backstage/repositor
 import { CreateCatalogAlbumUseCase } from '@/modules/catalog/use-cases'
 import { GetArtworkUseCase } from '@/modules/media/use-cases'
 import { EntityType } from '@/modules/media/enums'
+import { AlbumType } from '@/modules/catalog/enums'
 
 export interface PublishAlbumUseCaseParams {
   readonly userId: string
@@ -53,12 +54,12 @@ export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, v
       name: album.name,
       releaseDate: album.releaseDate,
       explicit: album.explicit,
-      type: album.type,
+      type: AlbumType.ALBUM,
       artwork,
       genres: album.genres,
       artists: catalogArtistIds,
     })
 
-    await this.albumRepository.publishAlbum(params.albumId, catalogAlbum.id, params.userId)
+    await this.albumRepository.publishAlbum(params.albumId, catalogAlbum.id)
   }
 }

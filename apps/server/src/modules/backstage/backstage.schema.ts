@@ -1,6 +1,6 @@
 import { Generated } from 'kysely'
 
-import { PublishingStatus, AlbumType } from './enums'
+import { PublishingStatus } from './enums'
 
 export interface BackstageArtistTable {
   id: Generated<string>
@@ -22,7 +22,7 @@ export interface BackstageAlbumTable {
   catalogAlbumId: string | null
   releaseDate: Date
   explicit: boolean
-  type: AlbumType
+  type: string
   status: PublishingStatus
 }
 
@@ -35,7 +35,7 @@ export interface BackstageAlbumGenreTable {
 export interface BackstageAlbumArtistTable {
   albumId: string
   artistId: string
-  role: ArtistRole
+  role: string
 }
 
 export interface BackstageTrackTable {
@@ -46,7 +46,7 @@ export interface BackstageTrackTable {
   trackNumber: number | null
   diskNumber: number | null
   releaseDate: Date
-  type: TrackType
+  type: string
   duration: number
   explicit: boolean
   status: PublishingStatus
@@ -61,7 +61,7 @@ export interface BackstageTrackGenreTable {
 export interface BackstageTrackArtistTable {
   trackId: string
   artistId: string
-  role: ArtistRole
+  role: string
 }
 
 export interface BackstageSchema {

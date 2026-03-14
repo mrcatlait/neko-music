@@ -1,19 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Contracts } from '@neko/contracts'
 
-class ArtworkDto {
-  @ApiProperty({
-    description: 'Template URL with {size} placeholder',
-    example: 'https://example.com/artwork/{size}.webp',
-  })
-  url: string
+import { PublishingStatus } from '../enums'
 
-  @ApiProperty({
-    description: 'Dominant color of the artwork',
-    example: '#1a1a2e',
-  })
-  dominantColor: string
-}
+import { ArtworkDto } from '@/modules/shared/dtos'
 
 export class BackstageArtist implements Contracts.Backstage.BackstageArtist {
   @ApiProperty({
@@ -36,10 +26,10 @@ export class BackstageArtist implements Contracts.Backstage.BackstageArtist {
 
   @ApiProperty({
     description: 'The publishing status',
-    example: 'DRAFT',
-    enum: ['DRAFT', 'PROCESSING', 'PUBLISHED', 'REJECTED'],
+    example: PublishingStatus.Draft,
+    enum: PublishingStatus,
   })
-  status: 'DRAFT' | 'PROCESSING' | 'PUBLISHED' | 'REJECTED'
+  status: PublishingStatus
 
   @ApiProperty({
     description: 'The IDs of the genres of the artist',

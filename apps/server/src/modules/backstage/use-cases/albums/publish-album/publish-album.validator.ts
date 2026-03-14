@@ -26,7 +26,7 @@ export class PublishAlbumValidator implements Validator<PublishAlbumUseCaseParam
       }
     }
 
-    if (album.status === PublishingStatus.PUBLISHED) {
+    if (album.status === PublishingStatus.Published) {
       return {
         isValid: false,
         error: 'Album is already published',

@@ -57,7 +57,7 @@ export class ArtistForm {
   }
 
   protected submit(): void {
-    if (this.form.invalid || !this.image) {
+    if (this.form.invalid) {
       this.form.markAllAsTouched()
       return
     }

@@ -33,10 +33,10 @@ export class CreateBackstageArtistUseCase implements UseCase<
       throw new Error(validationResult.error)
     }
 
-    return await this.artistRepository.createArtist({
+    return await this.artistRepository.createArtistWithGenres({
       artist: {
         name: params.name,
-        status: PublishingStatus.DRAFT,
+        status: PublishingStatus.Draft,
         verified: params.verified,
       },
       genres: params.genres,

@@ -8,7 +8,7 @@ import { GetArtworkUseCase } from '@/modules/media/use-cases'
 import { EntityType } from '@/modules/media/enums'
 
 export interface GetBackstageArtistUseCaseParams {
-  readonly artistId: string
+  readonly id: string
 }
 
 export interface GetBackstageArtistUseCaseResult {
@@ -31,7 +31,7 @@ export class GetBackstageArtistUseCase implements UseCase<
   ) {}
 
   async invoke(params: GetBackstageArtistUseCaseParams): Promise<GetBackstageArtistUseCaseResult> {
-    const artist = await this.artistRepository.findArtistWithGenresById(params.artistId)
+    const artist = await this.artistRepository.findArtistWithGenresById(params.id)
 
     if (!artist) {
       throw new NotFoundException('Artist not found')
@@ -42,7 +42,7 @@ export class GetBackstageArtistUseCase implements UseCase<
     try {
       artwork = await this.getArtworkUseCase.invoke({
         entityType: EntityType.Artist,
-        entityId: params.artistId,
+        entityId: params.id,
       })
     } catch {
       // artwork not yet uploaded — return null

@@ -1,11 +1,9 @@
-import { NgOptimizedImage } from '@angular/common'
 import { ChangeDetectionStrategy, Component, effect, ElementRef, input, output, signal, viewChild } from '@angular/core'
 
 @Component({
   selector: 'n-picture-upload',
   templateUrl: './picture-upload.html',
   styleUrl: './picture-upload.scss',
-  imports: [NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PictureUpload {
@@ -34,7 +32,7 @@ export class PictureUpload {
   }
 
   protected onBrowseFiles(): void {
-    this.fileInput()?.nativeElement.click()
+    this.safeFileInput.click()
   }
 
   protected onFileSelected(event: Event): void {

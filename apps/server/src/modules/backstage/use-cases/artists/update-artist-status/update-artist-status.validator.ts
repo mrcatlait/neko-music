@@ -20,13 +20,6 @@ export class UpdateArtistStatusValidator implements Validator<UpdateArtistStatus
       }
     }
 
-    if (artist.status === PublishingStatus.PUBLISHED) {
-      return {
-        isValid: false,
-        error: `Cannot update status of a published artist ${params.artistId}`,
-      }
-    }
-
     return { isValid: true }
   }
 }

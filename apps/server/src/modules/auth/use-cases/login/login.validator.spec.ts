@@ -32,7 +32,7 @@ describe('LoginValidator', () => {
       const result = validator.validate({ password: 'password123' })
 
       // Assert
-      expect(result).toEqual({ isValid: false, errors: ['Invalid credentials'] })
+      expect(result).toEqual({ isValid: false, error: 'Invalid credentials' })
     })
 
     it('should return false if password is incorrect', () => {
@@ -43,7 +43,7 @@ describe('LoginValidator', () => {
       const result = validator.validate({ password: 'password123', passwordHash: 'correct-hash' })
 
       // Assert
-      expect(result).toEqual({ isValid: false, errors: ['Invalid credentials'] })
+      expect(result).toEqual({ isValid: false, error: 'Invalid credentials' })
     })
 
     it('should return true if password is correct', () => {
@@ -54,7 +54,7 @@ describe('LoginValidator', () => {
       const result = validator.validate({ password: 'password123', passwordHash: 'correct-hash' })
 
       // Assert
-      expect(result).toEqual({ isValid: true, errors: [] })
+      expect(result).toEqual({ isValid: true, error: undefined })
     })
   })
 })

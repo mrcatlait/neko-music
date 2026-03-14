@@ -27,7 +27,7 @@ export interface CatalogAlbumTable {
   name: string
   releaseDate: Date
   explicit: boolean
-  artwork: JSON
+  artwork: Artwork
   type: AlbumType
 }
 
@@ -40,7 +40,7 @@ export interface CatalogAlbumGenreTable {
 export interface CatalogAlbumArtistTable {
   albumId: string
   artistId: string
-  role: ArtistRole
+  role: string
 }
 
 export interface CatalogTrackTable {
@@ -50,7 +50,7 @@ export interface CatalogTrackTable {
   trackNumber: number
   diskNumber: number
   releaseDate: Date
-  type: TrackType
+  type: string
   duration: number
   artwork: JSON
   playback: JSON
@@ -66,7 +66,7 @@ export interface CatalogTrackGenreTable {
 export interface CatalogTrackArtistTable {
   trackId: string
   artistId: string
-  role: ArtistRole
+  role: string
 }
 
 export interface LyricsTable {

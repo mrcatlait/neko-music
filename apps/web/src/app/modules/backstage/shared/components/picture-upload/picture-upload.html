@@ -2,9 +2,10 @@
   <picture class="picture-upload__preview">
     <img
       alt="Picture Preview"
+      fetchpriority="high"
       height="256"
       width="256"
-      [ngSrc]="previewUrl()!"
+      [src]="previewUrl()!"
       (error)="error.set('Failed to load image')"
     />
   </picture>

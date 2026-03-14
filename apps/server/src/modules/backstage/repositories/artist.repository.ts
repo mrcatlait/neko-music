@@ -1,22 +1,30 @@
 import { Injectable } from '@nestjs/common'
-import { Insertable, Selectable } from 'kysely'
+import { Insertable, Selectable, Updateable } from 'kysely'
 
-import { PublishingStatus } from '../enums'
 import { ArtistStatisticsEntity } from '../entities'
 import { BackstageArtistTable, BackstageSchema } from '../backstage.schema'
 
 import { Database, InjectDatabase } from '@/modules/database'
 
-interface CreateArtistParams {
+interface CreateArtistWithGenresParams {
   readonly artist: Insertable<BackstageArtistTable>
   readonly genres: string[]
+}
+
+interface UpdateArtistWithGenresParams {
+  readonly artist: Omit<Selectable<BackstageArtistTable>, 'status' | 'catalogArtistId'>
+  readonly genres: string[]
+}
+
+interface UpdateArtistParams extends Updateable<BackstageArtistTable> {
+  readonly id: string
 }
 
 @Injectable()
 export class ArtistRepository {
   constructor(@InjectDatabase() private readonly database: Database<BackstageSchema>) {}
 
-  createArtist(params: CreateArtistParams): Promise<Selectable<BackstageArtistTable>> {
+  createArtistWithGenres(params: CreateArtistWithGenresParams): Promise<Selectable<BackstageArtistTable>> {
     return this.database.transaction().execute(async (trx) => {
       const artist = await trx
         .insertInto('backstage.Artist')
@@ -39,47 +47,39 @@ export class ArtistRepository {
     })
   }
 
-  publishArtist(artistId: string, catalogArtistId: string): Promise<void> {
+  update(params: UpdateArtistParams): Promise<Selectable<BackstageArtistTable>> {
     return this.database
       .updateTable('backstage.Artist')
-      .set({
-        catalogArtistId,
-        status: PublishingStatus.PUBLISHED,
-      })
-      .where('id', '=', artistId)
-      .execute()
-      .then(() => undefined)
+      .set(params)
+      .where('id', '=', params.id)
+      .returningAll()
+      .executeTakeFirstOrThrow()
   }
 
-  updateArtistStatus(artistId: string, status: PublishingStatus): Promise<void> {
-    return this.database
-      .updateTable('backstage.Artist')
-      .set({ status })
-      .where('id', '=', artistId)
-      .execute()
-      .then(() => undefined)
-  }
+  updateArtistWithGenres(params: UpdateArtistWithGenresParams): Promise<Selectable<BackstageArtistTable>> {
+    return this.database.transaction().execute(async (trx) => {
+      const artist = await trx
+        .updateTable('backstage.Artist')
+        .set(params.artist)
+        .where('id', '=', params.artist.id)
+        .returningAll()
+        .executeTakeFirstOrThrow()
 
-  updateArtist(params: { artistId: string; name: string; genres: string[] }): Promise<void> {
-    return this.database
-      .transaction()
-      .execute(async (trx) => {
-        await trx.updateTable('backstage.Artist').set({ name: params.name }).where('id', '=', params.artistId).execute()
+      await trx.deleteFrom('backstage.ArtistGenre').where('artistId', '=', params.artist.id).execute()
 
-        await trx.deleteFrom('backstage.ArtistGenre').where('artistId', '=', params.artistId).execute()
+      await trx
+        .insertInto('backstage.ArtistGenre')
+        .values(
+          params.genres.map((genreId, index) => ({
+            artistId: params.artist.id,
+            genreId,
+            position: index,
+          })),
+        )
+        .execute()
 
-        await trx
-          .insertInto('backstage.ArtistGenre')
-          .values(
-            params.genres.map((genreId, index) => ({
-              artistId: params.artistId,
-              genreId,
-              position: index,
-            })),
-          )
-          .execute()
-      })
-      .then(() => undefined)
+      return artist
+    })
   }
 
   findArtistByNameExcluding(name: string, excludeId: string): Promise<Selectable<BackstageArtistTable> | undefined> {

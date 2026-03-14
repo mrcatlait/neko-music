@@ -36,7 +36,6 @@ export class GenreEditPage implements OnInit {
   }
 
   protected editGenre(data: { name: string }): void {
-    console.log(data)
     this.saving.set(true)
 
     this.genreApi.updateGenre(this.genreId(), { name: data.name }).subscribe({

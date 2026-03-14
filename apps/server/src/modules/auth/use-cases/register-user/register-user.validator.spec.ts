@@ -40,7 +40,7 @@ describe('RegisterUserUseCase', () => {
       const result = await validator.validate(params)
 
       // Assert
-      expect(result).toEqual({ isValid: true, errors: [] })
+      expect(result).toEqual({ isValid: true, error: undefined })
     })
 
     it('should return false if email exists', async () => {
@@ -51,7 +51,7 @@ describe('RegisterUserUseCase', () => {
       const result = await validator.validate(params)
 
       // Assert
-      expect(result).toEqual({ isValid: false, errors: ['emailTaken'] })
+      expect(result).toEqual({ isValid: false, error: 'emailTaken' })
     })
   })
 })

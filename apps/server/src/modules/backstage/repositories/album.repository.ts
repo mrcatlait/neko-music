@@ -48,7 +48,7 @@ export class AlbumRepository {
       .updateTable('backstage.Album')
       .set({
         catalogAlbumId,
-        status: PublishingStatus.PUBLISHED,
+        status: PublishingStatus.Published,
       })
       .where('id', '=', albumId)
       .execute()

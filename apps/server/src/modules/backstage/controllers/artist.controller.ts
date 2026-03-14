@@ -6,7 +6,6 @@ import {
   CreateBackstageArtistUseCase,
   GetArtistStatisticsUseCase,
   GetBackstageArtistUseCase,
-  PublishArtistUseCase,
   UpdateBackstageArtistUseCase,
 } from '../use-cases'
 import {
@@ -22,6 +21,7 @@ import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 import { EntityType, MediaType } from '@/modules/media/enums'
 import { RequirePermissions, UserSession } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
+import { FindOneParams } from '@/modules/shared/dtos'
 
 @Controller('backstage/artists')
 @ApiTags('Backstage')
@@ -33,7 +33,6 @@ export class ArtistController {
     private readonly generateUploadTokenUseCase: GenerateUploadTokenUseCase,
     private readonly getArtistStatisticsUseCase: GetArtistStatisticsUseCase,
     private readonly getBackstageArtistUseCase: GetBackstageArtistUseCase,
-    private readonly publishArtistUseCase: PublishArtistUseCase,
     private readonly updateBackstageArtistUseCase: UpdateBackstageArtistUseCase,
   ) {}
 
@@ -66,7 +65,7 @@ export class ArtistController {
     }
   }
 
-  @Get(':artistId')
+  @Get(':id')
   @ApiOperation({
     summary: 'Get a backstage artist with artwork',
   })
@@ -75,8 +74,39 @@ export class ArtistController {
     description: 'The artist has been successfully retrieved',
     type: BackstageArtist,
   })
-  getArtist(@Param('artistId') artistId: string): Promise<BackstageArtist> {
-    return this.getBackstageArtistUseCase.invoke({ artistId })
+  getArtist(@Param() params: FindOneParams): Promise<BackstageArtist> {
+    return this.getBackstageArtistUseCase.invoke({ id: params.id })
+  }
+
+  @Put(':id')
+  @ApiOperation({
+    summary: 'Update an artist',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The artist has been successfully updated',
+    type: ArtistUpdateResponse,
+  })
+  async updateArtist(
+    @Param() params: FindOneParams,
+    @Body() body: ArtistUpdateRequest,
+    @UserSession() user: User,
+  ): Promise<ArtistUpdateResponse> {
+    await this.updateBackstageArtistUseCase.invoke({
+      id: params.id,
+      name: body.name,
+      genres: body.genres,
+      verified: body.verified,
+    })
+
+    const uploadToken = await this.generateUploadTokenUseCase.invoke({
+      userId: user.id,
+      mediaType: MediaType.Image,
+      entityType: EntityType.Artist,
+      entityId: params.id,
+    })
+
+    return { uploadToken: uploadToken.uploadToken }
   }
 
   @Get('/statistics')
@@ -90,48 +120,5 @@ export class ArtistController {
   })
   getArtistStatistics(): Promise<ArtistStatisticsResponse> {
     return this.getArtistStatisticsUseCase.invoke().then((result) => ({ data: result }))
-  }
-
-  @Put(':artistId')
-  @ApiOperation({
-    summary: 'Update an artist',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The artist has been successfully updated',
-    type: ArtistUpdateResponse,
-  })
-  async updateArtist(
-    @Param('artistId') artistId: string,
-    @Body() body: ArtistUpdateRequest,
-    @UserSession() user: User,
-  ): Promise<ArtistUpdateResponse> {
-    await this.updateBackstageArtistUseCase.invoke({
-      artistId,
-      name: body.name,
-      genres: body.genres,
-      verified: body.verified,
-    })
-
-    const uploadToken = await this.generateUploadTokenUseCase.invoke({
-      userId: user.id,
-      mediaType: MediaType.Image,
-      entityType: EntityType.Artist,
-      entityId: artistId,
-    })
-
-    return { uploadToken: uploadToken.uploadToken }
-  }
-
-  @Put(':artistId/publish')
-  @ApiOperation({
-    summary: 'Publish an artist',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The artist has been successfully published',
-  })
-  publishArtist(@Param('artistId') artistId: string): Promise<void> {
-    return this.publishArtistUseCase.invoke({ artistId })
   }
 }

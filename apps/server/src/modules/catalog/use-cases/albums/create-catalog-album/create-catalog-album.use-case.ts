@@ -15,7 +15,7 @@ export interface CreateCatalogAlbumUseCaseParams {
   readonly type: AlbumType
   readonly artwork: Artwork
   readonly genres: string[]
-  readonly artists: { artistId: string; role: ArtistRole }[]
+  readonly artists: { artistId: string; role: string }[]
 }
 
 export type CreateCatalogAlbumUseCaseResult = Selectable<CatalogAlbumTable>

@@ -14,9 +14,9 @@ export class UpdateBackstageArtistValidator implements Validator<UpdateBackstage
 
   async validate(params: UpdateBackstageArtistUseCaseParams): Promise<ValidationResult> {
     const [artistExists, genresExist, nameTaken] = await Promise.all([
-      this.artistRepository.findArtistById(params.artistId),
+      this.artistRepository.findArtistById(params.id),
       this.genreRepository.findGenresByIds(params.genres),
-      this.artistRepository.findArtistByNameExcluding(params.name, params.artistId),
+      this.artistRepository.findArtistByNameExcluding(params.name, params.id),
     ])
 
     if (!artistExists) {

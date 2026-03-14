@@ -32,7 +32,7 @@ export class GenreRepository {
       .set({
         name: genre.name,
       })
-      .where('id', '=', genre.id)
+      .where('id', '=', genre.id!)
       .returningAll()
       .executeTakeFirstOrThrow()
   }

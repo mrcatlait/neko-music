@@ -2,15 +2,12 @@ import { Injectable } from '@nestjs/common'
 
 import { UpdateBackstageArtistValidator } from './update-backstage-artist.validator'
 import { ArtistRepository } from '../../../repositories'
+import { SyncArtistUseCase } from '../sync-artist'
 
 import { UseCase } from '@/modules/shared/interfaces'
-import { PublishingStatus } from '@/modules/backstage/enums'
-import { UpdateCatalogArtistUseCase } from '@/modules/catalog/use-cases'
-import { GetArtworkUseCase } from '@/modules/media/use-cases'
-import { EntityType } from '@/modules/media/enums'
 
 export interface UpdateBackstageArtistUseCaseParams {
-  readonly artistId: string
+  readonly id: string
   readonly name: string
   readonly genres: string[]
   readonly verified: boolean
@@ -21,8 +18,7 @@ export class UpdateBackstageArtistUseCase implements UseCase<UpdateBackstageArti
   constructor(
     private readonly updateBackstageArtistValidator: UpdateBackstageArtistValidator,
     private readonly artistRepository: ArtistRepository,
-    private readonly updateCatalogArtistUseCase: UpdateCatalogArtistUseCase,
-    private readonly getArtworkUseCase: GetArtworkUseCase,
+    private readonly syncArtistUseCase: SyncArtistUseCase,
   ) {}
 
   async invoke(params: UpdateBackstageArtistUseCaseParams): Promise<void> {
@@ -32,27 +28,17 @@ export class UpdateBackstageArtistUseCase implements UseCase<UpdateBackstageArti
       throw new Error(validationResult.error)
     }
 
-    const artist = (await this.artistRepository.findArtistById(params.artistId))!
-
-    await this.artistRepository.updateArtist({
-      artistId: params.artistId,
-      name: params.name,
+    const artist = await this.artistRepository.updateArtistWithGenres({
+      artist: {
+        id: params.id,
+        name: params.name,
+        verified: params.verified,
+      },
       genres: params.genres,
     })
 
-    if (artist.status === PublishingStatus.PUBLISHED && artist.catalogArtistId) {
-      const artwork = await this.getArtworkUseCase.invoke({
-        entityType: EntityType.Artist,
-        entityId: params.artistId,
-      })
-
-      await this.updateCatalogArtistUseCase.invoke({
-        id: artist.catalogArtistId,
-        name: params.name,
-        genres: params.genres,
-        verified: params.verified,
-        artwork,
-      })
-    }
+    await this.syncArtistUseCase.invoke({
+      artistId: artist.id,
+    })
   }
 }
