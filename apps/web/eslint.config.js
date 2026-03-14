@@ -65,6 +65,9 @@ export default config(
           'style': 'kebab-case'
         }
       ],
+      // Ensures ngSrc is used instead of src for img elements
+      // https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/docs/rules/prefer-ngsrc.md
+      '@angular-eslint/template/prefer-ngsrc': 'off'
     }
   },
   {

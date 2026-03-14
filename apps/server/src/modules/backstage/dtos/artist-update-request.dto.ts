@@ -1,8 +1,8 @@
 import { Contracts } from '@neko/contracts'
 import { ApiProperty } from '@nestjs/swagger'
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString, IsUUID } from 'class-validator'
+import { ArrayNotEmpty, IsArray, IsBoolean, IsNotEmpty, IsString, IsUUID } from 'class-validator'
 
-export class ArtistUpdateRequest implements Contracts.Backstage.ArtistUpdateRequestDto {
+export class ArtistUpdateRequest implements Contracts.Backstage.ArtistUpdateRequest {
   @ApiProperty({
     description: 'The name of the artist',
     example: 'John Doe',
@@ -19,4 +19,11 @@ export class ArtistUpdateRequest implements Contracts.Backstage.ArtistUpdateRequ
   @ArrayNotEmpty()
   @IsUUID('4', { each: true })
   genres: string[]
+
+  @ApiProperty({
+    description: 'Whether the artist is verified',
+    example: true,
+  })
+  @IsBoolean()
+  verified: boolean
 }

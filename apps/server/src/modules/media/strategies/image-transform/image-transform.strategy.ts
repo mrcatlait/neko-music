@@ -31,15 +31,15 @@ export interface ImageTransformPresets {
   /**
    * The small images used for avatars, thumbnails, etc.
    */
-  [ImageSize.SMALL]: ImageTransformParameters
+  [ImageSize.Small]: ImageTransformParameters
   /**
    * The medium images used for medium-size images, medium-size thumbnails, etc.
    */
-  [ImageSize.MEDIUM]: ImageTransformParameters
+  [ImageSize.Medium]: ImageTransformParameters
   /**
    * The large images used for full-size images, full-size thumbnails, etc.
    */
-  [ImageSize.LARGE]: ImageTransformParameters
+  [ImageSize.Large]: ImageTransformParameters
 }
 
 /**

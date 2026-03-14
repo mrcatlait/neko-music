@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Selectable } from 'kysely'
 
 import { UpdateGenreValidator } from './update-genre.validator'
@@ -25,7 +25,7 @@ export class UpdateGenreUseCase implements UseCase<UpdateGenreUseCaseParams, Upd
     const validationResult = await this.updateGenreValidator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.errors)
+      throw new Error(validationResult.error)
     }
 
     return this.genreRepository.updateGenre({

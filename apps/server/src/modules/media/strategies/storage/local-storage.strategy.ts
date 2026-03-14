@@ -5,10 +5,11 @@ import {
   existsSync,
   mkdirSync,
   readFile,
+  rmdir,
   unlink,
   writeFile,
 } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, join, relative, resolve, sep } from 'node:path'
 import { promisify } from 'node:util'
 import { Readable, Stream } from 'node:stream'
 
@@ -18,6 +19,7 @@ import { StorageProvider } from '../../enums'
 const writeFileAsync = promisify(writeFile)
 const unlinkAsync = promisify(unlink)
 const readFileAsync = promisify(readFile)
+const rmdirAsync = promisify(rmdir)
 
 export interface LocalStorageStrategyOptions {
   /**
@@ -32,7 +34,7 @@ export interface LocalStorageStrategyOptions {
 export class LocalStorageStrategy implements StorageStrategy {
   private readonly directory: string
 
-  readonly name = StorageProvider.LOCAL
+  readonly name = StorageProvider.Local
 
   constructor(private readonly options: LocalStorageStrategyOptions) {
     this.directory = options.directory
@@ -53,9 +55,9 @@ export class LocalStorageStrategy implements StorageStrategy {
 
     const writeStream = createWriteStream(filePath, 'binary')
 
-    return new Promise<string>((resolve, reject) => {
+    return new Promise<string>((resolvePromise, reject) => {
       stream.pipe(writeStream)
-      writeStream.on('close', () => resolve(filePath))
+      writeStream.on('close', () => resolvePromise(filePath))
       writeStream.on('error', reject)
     })
   }
@@ -77,13 +79,41 @@ export class LocalStorageStrategy implements StorageStrategy {
   async delete(storagePath: string): Promise<void> {
     try {
       await unlinkAsync(storagePath)
+      await this.removeEmptyParentDirectories(storagePath)
     } catch (error) {
+      // File not found
       if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
         return
       }
 
       throw error
     }
+  }
+
+  /**
+   * Removes empty parent directories after a file is deleted.
+   * Stops at the storage root directory.
+   * Uses rmdir directly (no readdir) to avoid issues with hidden files (.DS_Store, Thumbs.db).
+   */
+  private async removeEmptyParentDirectories(filePath: string): Promise<void> {
+    const root = resolve(this.directory)
+    let dir = resolve(dirname(filePath))
+
+    while (this.isWithinRoot(root, dir)) {
+      try {
+        await rmdirAsync(dir)
+      } catch (error) {
+        const code = (error as NodeJS.ErrnoException).code
+        if (code === 'ENOTEMPTY' || code === 'ENOENT') break
+        throw error
+      }
+      dir = resolve(dirname(dir))
+    }
+  }
+
+  private isWithinRoot(root: string, dir: string): boolean {
+    const rel = relative(root, dir)
+    return rel.length > 0 && !rel.startsWith('..') && !rel.includes('..' + sep)
   }
 
   /**

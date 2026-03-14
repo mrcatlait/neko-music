@@ -1,21 +1,12 @@
 <div class="picture-upload">
   <picture class="picture-upload__preview">
-    @if (previewUrl()) {
-      <img
-        alt="Picture Preview"
-        height="256"
-        width="256"
-        [ngSrc]="previewUrl()!"
-        (error)="error.set('Failed to load image')"
-      />
-    } @else {
-      <img
-        alt=""
-        height="256"
-        ngSrc="assets/images/placeholders/1x1.gif"
-        width="256"
-      />
-    }
+    <img
+      alt="Picture Preview"
+      height="256"
+      width="256"
+      [ngSrc]="previewUrl()!"
+      (error)="error.set('Failed to load image')"
+    />
   </picture>
 
   <input

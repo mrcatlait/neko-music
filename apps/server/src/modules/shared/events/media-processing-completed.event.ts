@@ -3,6 +3,7 @@ import { AbstractEvent } from '../classes'
 import { EntityType } from '@/modules/media/enums'
 
 interface MediaProcessingCompletedEventPayload {
+  sourceAssetId: string
   entityType: EntityType
   entityId: string
 }

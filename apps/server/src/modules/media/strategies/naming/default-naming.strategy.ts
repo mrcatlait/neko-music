@@ -25,11 +25,11 @@ export class DefaultNamingStrategy implements NamingStrategy {
     return this.generateFileName({ fileName: `chunk_${segmentNumber}_${chunkNumber}`, format: 'm4s' })
   }
 
-  generateArtworkFilename(entityId: string, presetName: string, format: string): string {
-    return this.generateFileName({ fileName: `${entityId}_${presetName}`, format })
+  generateArtworkFilename(sourceAssetFilename: string, presetName: string, format: string): string {
+    return `artwork/${sourceAssetFilename}/${this.generateFileName({ fileName: presetName, format })}`
   }
 
-  generateArtworkFilenameTemplate(entityId: string, format: string): string {
-    return this.generateArtworkFilename(entityId, '{size}', format)
+  generateArtworkFilenameTemplate(sourceAssetFilename: string, format: string): string {
+    return this.generateArtworkFilename(sourceAssetFilename, '{size}', format)
   }
 }

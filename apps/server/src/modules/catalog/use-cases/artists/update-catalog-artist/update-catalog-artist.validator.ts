@@ -14,25 +14,34 @@ export class UpdateCatalogArtistValidator implements Validator<UpdateCatalogArti
 
   async validate(params: UpdateCatalogArtistUseCaseParams): Promise<ValidationResult> {
     const [artistExists, genresExist, nameTaken] = await Promise.all([
-      this.artistRepository.findArtistById(params.catalogArtistId),
+      this.artistRepository.findArtistById(params.id),
       this.genreRepository.findGenresByIds(params.genres),
-      this.artistRepository.findArtistByNameExcluding(params.name, params.catalogArtistId),
+      this.artistRepository.findArtistByNameExcluding(params.name, params.id),
     ])
 
-    const errors: string[] = []
-
     if (!artistExists) {
-      errors.push('Catalog artist not found')
+      return {
+        isValid: false,
+        error: 'Catalog artist not found',
+      }
     }
 
     if (genresExist.length !== params.genres.length) {
-      errors.push('Genres not found')
+      return {
+        isValid: false,
+        error: 'Genres not found',
+      }
     }
 
     if (nameTaken) {
-      errors.push('Artist name already taken')
+      return {
+        isValid: false,
+        error: 'Artist name already taken',
+      }
     }
 
-    return errors.length > 0 ? { isValid: false, errors } : { isValid: true }
+    return {
+      isValid: true,
+    }
   }
 }

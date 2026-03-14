@@ -7,13 +7,12 @@ import {
 } from '@angular/core'
 import { PreloadAllModules, provideRouter, withComponentInputBinding, withPreloading } from '@angular/router'
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http'
-import { provideImgixLoader } from '@angular/common'
 
 import { routes } from './app.routes'
 
 import { SilentAuthStrategy } from '@/core/auth/strategies'
 import { provideDialogs } from '@/shared/dialog'
-import { provideEnvironment } from '@/core/providers'
+import { provideEnvironment, provideArtworkLoader } from '@/core/providers'
 import { jwtInterceptor } from '@/core/auth/interceptors'
 import { environment } from '@/environment'
 
@@ -24,8 +23,8 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
     provideEnvironment(environment),
+    provideArtworkLoader(environment.mediaUrl),
     provideAppInitializer(() => inject(SilentAuthStrategy).authenticate()),
     provideDialogs(),
-    provideImgixLoader(`${environment.apiUrl}/media`),
   ],
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Selectable } from 'kysely'
 
 import { CreateBackstageArtistValidator } from './create-backstage-artist.validator'
@@ -30,7 +30,7 @@ export class CreateBackstageArtistUseCase implements UseCase<
     const validationResult = await this.createBackstageArtistValidator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.errors)
+      throw new Error(validationResult.error)
     }
 
     return await this.artistRepository.createArtist({

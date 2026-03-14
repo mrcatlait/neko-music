@@ -26,7 +26,9 @@ import { AuthModule } from '@/modules/auth/auth.module'
 @Module({
   imports: [
     ConfigModule.forRoot({}),
-    EventEmitterModule.forRoot(),
+    EventEmitterModule.forRoot({
+      ignoreErrors: true,
+    }),
     DatabaseModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         migrations: join(process.cwd(), 'src', 'migrations'),

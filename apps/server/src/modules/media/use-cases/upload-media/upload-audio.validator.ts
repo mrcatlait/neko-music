@@ -24,7 +24,7 @@ export class UploadAudioValidator implements Validator<UploadMediaUseCaseParams>
     if (!params.file) {
       return {
         isValid: false,
-        errors: ['File buffer is required'],
+        error: 'File buffer is required',
       }
     }
 
@@ -33,21 +33,21 @@ export class UploadAudioValidator implements Validator<UploadMediaUseCaseParams>
     if (!mimetype || !this.allowedAudioMimeTypes.includes(mimetype)) {
       return {
         isValid: false,
-        errors: ['Invalid audio mime type'],
+        error: 'Invalid audio mime type',
       }
     }
 
     if (!params.file.size) {
       return {
         isValid: false,
-        errors: ['Audio size is required'],
+        error: 'Audio size is required',
       }
     }
 
     if (params.file.size > this.maxAudioSize) {
       return {
         isValid: false,
-        errors: ['Audio size is too large'],
+        error: 'Audio size is too large',
       }
     }
 

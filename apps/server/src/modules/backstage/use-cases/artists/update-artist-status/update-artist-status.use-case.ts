@@ -22,7 +22,7 @@ export class UpdateArtistStatusUseCase implements UseCase<UpdateArtistStatusUseC
     const validationResult = await this.updateArtistStatusValidator.validate(params)
 
     if (!validationResult.isValid) {
-      return
+      throw new Error(validationResult.error)
     }
 
     await this.artistRepository.updateArtistStatus(params.artistId, params.status)

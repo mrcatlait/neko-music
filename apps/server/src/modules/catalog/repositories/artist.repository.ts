@@ -3,7 +3,6 @@ import { Insertable, Selectable } from 'kysely'
 
 import { CatalogArtistTable, CatalogSchema } from '../catalog.schema'
 
-import { Artwork } from '@/modules/shared/interfaces'
 import { Database, InjectDatabase } from '@/modules/database'
 
 interface CreateArtistParams {
@@ -12,10 +11,7 @@ interface CreateArtistParams {
 }
 
 interface UpdateArtistParams {
-  readonly catalogArtistId: string
-  readonly name: string
-  readonly verified: boolean
-  readonly artwork: Artwork
+  readonly artist: Selectable<CatalogArtistTable>
   readonly genres: string[]
 }
 
@@ -50,23 +46,16 @@ export class ArtistRepository {
     return this.database
       .transaction()
       .execute(async (trx) => {
-        await trx
-          .updateTable('catalog.Artist')
-          .set({
-            name: params.name,
-            verified: params.verified,
-            artwork: params.artwork,
-          })
-          .where('id', '=', params.catalogArtistId)
-          .execute()
+        const artistId = params.artist.id
 
-        await trx.deleteFrom('catalog.ArtistGenre').where('artistId', '=', params.catalogArtistId).execute()
+        await trx.updateTable('catalog.Artist').set(params.artist).where('id', '=', artistId).execute()
+        await trx.deleteFrom('catalog.ArtistGenre').where('artistId', '=', artistId).execute()
 
         await trx
           .insertInto('catalog.ArtistGenre')
           .values(
             params.genres.map((genreId, index) => ({
-              artistId: params.catalogArtistId,
+              artistId,
               genreId,
               position: index,
             })),

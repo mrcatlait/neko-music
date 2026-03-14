@@ -1,14 +1,17 @@
 import { BadRequestException, ForbiddenException, Inject, Injectable } from '@nestjs/common'
 import { File } from '@nest-lab/fastify-multer'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { join } from 'node:path'
 
 import { UploadImageValidator } from './upload-image.validator'
 import { UploadAudioValidator } from './upload-audio.validator'
-import { MediaType, ProcessingStep } from '../../enums'
-import { MediaRepository, UploadTokenRepository } from '../../repositories'
+import { MediaType, ProcessingStatus, ProcessingStep } from '../../enums'
+import { MediaRepository, SourceAssetRepository, UploadTokenRepository } from '../../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
 import { NamingStrategy, StorageStrategy } from '../../strategies'
 import { FileService } from '../../services'
+import { MediaUploadedEvent } from '../../events'
 
 import { UseCase, Validator } from '@/modules/shared/interfaces'
 
@@ -25,12 +28,15 @@ export interface UploadMediaUseCaseResult {
 export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, UploadMediaUseCaseResult> {
   private readonly storageStrategy: StorageStrategy
   private readonly namingStrategy: NamingStrategy
+  private readonly sourceFolder = 'source'
 
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
+    private readonly eventEmitter: EventEmitter2,
     private readonly mediaRepository: MediaRepository,
     private readonly uploadTokenRepository: UploadTokenRepository,
     private readonly fileService: FileService,
+    private readonly sourceAssetRepository: SourceAssetRepository,
     private readonly uploadImageValidator: UploadImageValidator,
     private readonly uploadAudioValidator: UploadAudioValidator,
   ) {
@@ -48,10 +54,10 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
     let validator: Validator<UploadMediaUseCaseParams>
 
     switch (uploadToken.mediaType) {
-      case MediaType.IMAGE:
+      case MediaType.Image:
         validator = this.uploadImageValidator
         break
-      case MediaType.AUDIO:
+      case MediaType.Audio:
         validator = this.uploadAudioValidator
         break
       default:
@@ -66,43 +72,65 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
     const validationResult = await validator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.errors)
+      throw new Error(validationResult.error)
     }
 
     const format = await this.fileService.getFileTypeFromBuffer(params.file.buffer!)
     const fileName = this.namingStrategy.generateRandomFileName(format)
-    const storagePath = await this.storageStrategy.uploadFromBuffer(fileName, params.file.buffer!)
+    const storagePath = await this.storageStrategy.uploadFromBuffer(
+      join(this.sourceFolder, fileName),
+      params.file.buffer!,
+    )
 
     let processingSteps: ProcessingStep[] = []
 
     // @todo Think of a better way to determine the processing steps based on the media type and entity type
     // Maybe create empty pipeline and add the steps to it later in separate use cases
     switch (uploadToken.mediaType) {
-      case MediaType.IMAGE:
-        processingSteps = [ProcessingStep.IMAGE_TRANSFORMATION]
+      case MediaType.Image:
+        processingSteps = [ProcessingStep.ImageTransformation]
         break
-      case MediaType.AUDIO:
-        processingSteps = [ProcessingStep.AUDIO_TRANSFORMATION]
+      case MediaType.Audio:
+        processingSteps = [ProcessingStep.AudioTransformation]
         break
     }
 
     try {
-      const processingJobId = await this.mediaRepository.createSourceAssetAndProcessingJob(
-        {
-          mediaType: uploadToken.mediaType,
-          entityType: uploadToken.entityType,
-          entityId: uploadToken.entityId,
-          fileSize: params.file.size ?? 0,
-          storageProvider: this.storageStrategy.name,
-          checksum: this.fileService.computeChecksumFromBuffer(params.file.buffer!),
-          createdBy: uploadToken.userId,
-          format,
-          storagePath,
-        },
-        processingSteps,
+      const sourceAsset = await this.sourceAssetRepository.create({
+        mediaType: uploadToken.mediaType,
+        entityType: uploadToken.entityType,
+        entityId: uploadToken.entityId,
+        fileSize: params.file.size ?? 0,
+        storageProvider: this.storageStrategy.name,
+        checksum: this.fileService.computeChecksumFromBuffer(params.file.buffer!),
+        createdBy: uploadToken.userId,
+        format,
+        storagePath,
+      })
+
+      const processingJobId = await this.mediaRepository.createProcessingJob({
+        sourceAssetId: sourceAsset.id,
+        status: ProcessingStatus.Pending,
+      })
+
+      await this.mediaRepository.createProcessingSteps(
+        processingSteps.map((step) => ({
+          status: ProcessingStatus.Pending,
+          jobId: processingJobId,
+          name: step,
+          order: processingSteps.indexOf(step) + 1,
+        })),
       )
 
-      // @todo remove upload token
+      await this.uploadTokenRepository.deleteById(uploadToken.id)
+
+      this.eventEmitter.emit(
+        MediaUploadedEvent.event,
+        new MediaUploadedEvent({
+          entityType: uploadToken.entityType,
+          entityId: uploadToken.entityId,
+        }),
+      )
 
       return { processingJobId }
     } catch (error) {

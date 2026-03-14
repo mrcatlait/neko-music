@@ -12,16 +12,15 @@ export class RegisterUserValidator implements Validator<RegisterUserUseCaseParam
   async validate(params: RegisterUserUseCaseParams): Promise<ValidationResult> {
     const emailExists = await this.authRepository.accountExistsByEmail(params.email)
 
-    const isValid = !emailExists
-    const errors: string[] = []
-
     if (emailExists) {
-      errors.push('emailTaken')
+      return {
+        isValid: false,
+        error: 'emailTaken',
+      }
     }
 
     return {
-      isValid,
-      errors,
+      isValid: true,
     }
   }
 }

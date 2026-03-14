@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Role } from '@neko/permissions'
 
 import { AuthRepository } from '../../repositories'
 import { AuthService, JwtService } from '../../services'
@@ -40,7 +41,7 @@ export class RefreshTokenUseCase implements UseCase<RefreshTokenUseCaseParams, R
 
       const { accessToken, refreshToken: newRefreshToken } = await this.authService.generateTokenPair({
         userId: refreshToken.userId,
-        role: account.role,
+        role: account.role as Role,
       })
 
       return {

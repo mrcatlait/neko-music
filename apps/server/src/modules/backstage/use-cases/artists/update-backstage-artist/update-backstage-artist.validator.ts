@@ -22,21 +22,21 @@ export class UpdateBackstageArtistValidator implements Validator<UpdateBackstage
     if (!artistExists) {
       return {
         isValid: false,
-        errors: ['Artist not found'],
+        error: 'Artist not found',
       }
     }
 
     if (genresExist.length !== params.genres.length) {
       return {
         isValid: false,
-        errors: ['Genres not found'],
+        error: 'Genres not found',
       }
     }
 
     if (nameTaken) {
       return {
         isValid: false,
-        errors: ['Artist name already taken'],
+        error: 'Artist name already taken',
       }
     }
 

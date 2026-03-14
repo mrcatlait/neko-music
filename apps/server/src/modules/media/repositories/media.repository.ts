@@ -45,7 +45,7 @@ export class MediaRepository {
         .insertInto('media.ProcessingJob')
         .values({
           sourceAssetId: createdSourceAsset.id,
-          status: ProcessingStatus.PENDING,
+          status: ProcessingStatus.Pending,
         })
         .returning('id')
         .executeTakeFirstOrThrow()
@@ -60,7 +60,7 @@ export class MediaRepository {
             jobId: processingJobId,
             name: step,
             order: index + 1,
-            status: ProcessingStatus.PENDING,
+            status: ProcessingStatus.Pending,
           })
           .execute()
       }
@@ -69,10 +69,27 @@ export class MediaRepository {
     })
   }
 
+  createProcessingJob(processingJob: Insertable<ProcessingJobTable>): Promise<string> {
+    return this.database
+      .insertInto('media.ProcessingJob')
+      .values(processingJob)
+      .returning('id')
+      .executeTakeFirstOrThrow()
+      .then((result) => result.id)
+  }
+
+  createProcessingSteps(processingSteps: Insertable<ProcessingStepTable>[]): Promise<void> {
+    return this.database
+      .insertInto('media.ProcessingStep')
+      .values(processingSteps)
+      .execute()
+      .then(() => undefined)
+  }
+
   findPendingProcessingJob(): Promise<Selectable<ProcessingJobTable> | undefined> {
     return this.database
       .selectFrom('media.ProcessingJob')
-      .where('status', '=', ProcessingStatus.PENDING)
+      .where('status', '=', ProcessingStatus.Pending)
       .orderBy('createdAt', 'asc')
       .selectAll()
       .executeTakeFirst()
@@ -117,10 +134,6 @@ export class MediaRepository {
       .executeTakeFirst()
   }
 
-  findSourceAssetById(id: string): Promise<Selectable<SourceAssetTable> | undefined> {
-    return this.database.selectFrom('media.SourceAsset').where('id', '=', id).selectAll().executeTakeFirst()
-  }
-
   findSourceAssetByEntityTypeAndEntityId(
     entityType: EntityType,
     entityId: string,
@@ -152,7 +165,8 @@ export class MediaRepository {
               'id', a.id,
               'storagePath', a."storagePath",
               'format', a.format,
-              'fileSize', a."fileSize"
+              'fileSize', a."fileSize",
+              'sourceAssetId', a."sourceAssetId"
             ),
             'metadata', jsonb_build_object(
               'width', m.width,
@@ -166,7 +180,7 @@ export class MediaRepository {
         INNER JOIN "media"."ImageMetadata" m ON m."assetId" = a.id
         WHERE a."entityType" = ${entityType}
           AND a."entityId" = ${entityId}
-          AND a."mediaType" = ${MediaType.IMAGE}
+          AND a."mediaType" = ${MediaType.Image}
       ),
       '[]'::jsonb
     ) AS assets`.compile(this.database)
@@ -175,32 +189,5 @@ export class MediaRepository {
     const row = rows[0]
 
     return row.assets
-  }
-
-  createImageAsset(parameters: CreateImageAssetParameters): Promise<Selectable<AssetTable>> {
-    return this.database.transaction().execute(async (tx) => {
-      const asset = await tx.insertInto('media.Asset').values(parameters.image).returningAll().executeTakeFirstOrThrow()
-      await tx
-        .insertInto('media.ImageMetadata')
-        .values({ ...parameters.metadata, assetId: asset.id })
-        .execute()
-      return asset
-    })
-  }
-
-  deleteAssetById(id: string): Promise<void> {
-    return this.database
-      .deleteFrom('media.Asset')
-      .where('id', '=', id)
-      .execute()
-      .then(() => undefined)
-  }
-
-  deleteImageMetadataById(id: string): Promise<void> {
-    return this.database
-      .deleteFrom('media.ImageMetadata')
-      .where('assetId', '=', id)
-      .execute()
-      .then(() => undefined)
   }
 }

@@ -9,29 +9,8 @@ export class ArtworkDto implements Contracts.Shared.Artwork {
   readonly url: string
 
   @ApiProperty({
-    description: 'Available preset names matching image transform presets',
-    example: ['small', 'medium', 'large'],
+    description: 'Dominant color of the artwork',
+    example: '#000000',
   })
-  readonly sizes: string[]
-
-  @ApiProperty({
-    description: 'Background color as hex',
-    example: '000000',
-  })
-  readonly bgColor: string
-
-  @ApiProperty({
-    description: 'Primary text color for contrast (hex)',
-    required: false,
-  })
-  readonly textColor1?: string
-
-  @ApiProperty({ required: false })
-  readonly textColor2?: string
-
-  @ApiProperty({ required: false })
-  readonly textColor3?: string
-
-  @ApiProperty({ required: false })
-  readonly textColor4?: string
+  readonly dominantColor: string
 }

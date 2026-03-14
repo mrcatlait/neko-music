@@ -1,3 +1,5 @@
+@use 'abstracts' as abstracts;
+
 .picture-upload {
   --n-picture-upload-size: 256px;
 
@@ -22,6 +24,10 @@
     width: var(--n-picture-upload-size);
     border-radius: var(--shape-corner-full);
     background-color: var(--color-surface-container);
+  }
+
+  &__preview > img {
+    @include abstracts.image-placeholder;
   }
 
   &__dropzone {

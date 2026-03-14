@@ -1,5 +1,4 @@
 import { join } from 'path'
-
 import { NestFactory, Reflector } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'

@@ -4,7 +4,7 @@ export interface ValidationResultSuccess {
 
 export interface ValidationResultFailure {
   isValid: false
-  errors?: string[]
+  error?: string
 }
 
 export type ValidationResult = ValidationResultSuccess | ValidationResultFailure

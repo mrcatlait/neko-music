@@ -33,8 +33,8 @@ export class GenerateUploadTokenUseCase implements UseCase<
     this.uploadTokenExpiresIn = parseTimePeriod(options.uploadTokenExpiresIn) * 1000
   }
 
-  async invoke(params: GenerateUploadTokenUseCaseParams): Promise<{ uploadToken: string }> {
-    const token = await this.uploadTokenRepository.findById(params.userId)
+  async invoke(params: GenerateUploadTokenUseCaseParams): Promise<GenerateUploadTokenUseCaseResult> {
+    const token = await this.uploadTokenRepository.findByUserId(params.userId)
 
     if (token) {
       await this.uploadTokenRepository.deleteById(token.id)

@@ -22,14 +22,14 @@ export class PublishAlbumValidator implements Validator<PublishAlbumUseCaseParam
     if (!album) {
       return {
         isValid: false,
-        errors: ['Album not found'],
+        error: 'Album not found',
       }
     }
 
     if (album.status === PublishingStatus.PUBLISHED) {
       return {
         isValid: false,
-        errors: ['Album is already published'],
+        error: 'Album is already published',
       }
     }
 
@@ -37,19 +37,19 @@ export class PublishAlbumValidator implements Validator<PublishAlbumUseCaseParam
     if (trackCount < 1) {
       return {
         isValid: false,
-        errors: ['Album must have at least one track to be published'],
+        error: 'Album must have at least one track to be published',
       }
     }
 
     const mediaReadiness = await this.getMediaReadinessUseCase.invoke({
-      entityType: EntityType.ALBUM,
+      entityType: EntityType.Album,
       entityId: params.albumId,
     })
 
     if (!mediaReadiness.ready) {
       return {
         isValid: false,
-        errors: ['Media file is not ready'],
+        error: 'Media file is not ready',
       }
     }
 

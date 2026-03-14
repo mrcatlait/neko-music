@@ -15,4 +15,6 @@ export const testEnvConfig: EnvironmentVariables = {
   JWT_ACCESS_TOKEN_EXPIRES_IN: '1h',
   JWT_REFRESH_TOKEN_SECRET: 'test',
   JWT_REFRESH_TOKEN_EXPIRES_IN: '1h',
+  ADMINISTRATOR_EMAIL: 'admin@neko.com',
+  ADMINISTRATOR_PASSWORD: 'password123',
 }

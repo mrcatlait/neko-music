@@ -18,25 +18,20 @@ export class CreateCatalogAlbumValidator implements Validator<CreateCatalogAlbum
       Promise.all(params.artists.map((a) => this.artistRepository.findArtistById(a.artistId))),
     ])
 
-    const errors: string[] = []
-
     if (genresExist.length !== params.genres.length) {
-      errors.push('Genres not found')
-    }
-
-    if (artistResults.some((a) => !a)) {
-      errors.push('One or more artists not found')
-    }
-
-    if (errors.length > 0) {
       return {
         isValid: false,
-        errors,
+        error: 'Genres not found',
       }
     }
 
-    return {
-      isValid: true,
+    if (artistResults.some((a) => !a)) {
+      return {
+        isValid: false,
+        error: 'One or more artists not found',
+      }
     }
+
+    return { isValid: true }
   }
 }

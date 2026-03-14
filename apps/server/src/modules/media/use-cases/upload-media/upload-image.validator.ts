@@ -25,7 +25,7 @@ export class UploadImageValidator implements Validator<UploadMediaUseCaseParams>
     if (!params.file) {
       return {
         isValid: false,
-        errors: ['File buffer is required'],
+        error: 'File buffer is required',
       }
     }
 
@@ -34,21 +34,21 @@ export class UploadImageValidator implements Validator<UploadMediaUseCaseParams>
     if (!mimetype || !this.allowedImageMimeTypes.includes(mimetype)) {
       return {
         isValid: false,
-        errors: ['Invalid image mime type'],
+        error: 'Invalid image mime type',
       }
     }
 
     if (!params.file.size) {
       return {
         isValid: false,
-        errors: ['Image size is required'],
+        error: 'Image size is required',
       }
     }
 
     if (params.file.size > this.maxImageSize) {
       return {
         isValid: false,
-        errors: ['Image size is too large'],
+        error: 'Image size is too large',
       }
     }
 
@@ -58,13 +58,13 @@ export class UploadImageValidator implements Validator<UploadMediaUseCaseParams>
       if (image.width === 0 || image.height === 0) {
         return {
           isValid: false,
-          errors: ['Invalid image dimensions'],
+          error: 'Invalid image dimensions',
         }
       }
     } catch {
       return {
         isValid: false,
-        errors: ['Invalid image'],
+        error: 'Invalid image',
       }
     }
 

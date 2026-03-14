@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 
-import { MediaRepository } from '../repositories'
+import { AssetRepository, ImageMetadataRepository, SourceAssetRepository } from '../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../tokens'
 import { MediaModuleOptions } from '../types'
 import { ImageSize } from '../enums'
@@ -11,6 +11,7 @@ import {
   NamingStrategy,
   StorageStrategy,
 } from '../strategies'
+import { FileService } from './file.service'
 
 @Injectable()
 export class ImageService {
@@ -22,7 +23,10 @@ export class ImageService {
 
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
-    private readonly mediaRepository: MediaRepository,
+    private readonly assetRepository: AssetRepository,
+    private readonly sourceAssetRepository: SourceAssetRepository,
+    private readonly imageMetadataRepository: ImageMetadataRepository,
+    private readonly fileService: FileService,
   ) {
     this.imageTransformStrategy = options.imageTransformStrategy
     this.imageTransformPresets = options.imageTransformPresets
@@ -32,7 +36,7 @@ export class ImageService {
   }
 
   async transform(sourceAssetId: string): Promise<void> {
-    const source = await this.mediaRepository.findSourceAssetById(sourceAssetId)
+    const source = await this.sourceAssetRepository.findById(sourceAssetId)
 
     if (!source) {
       throw new Error(`Media source with id "${sourceAssetId}" not found`)
@@ -42,8 +46,9 @@ export class ImageService {
 
     const dominantColor = await this.imageAnalyzeStrategy.getDominantColor(sourceImage)
 
-    const created: Record<string, { storagePath: string; assetId?: string }> = {}
+    const sourceFileName = this.fileService.extractFilenameFromPath(source.storagePath)
 
+    const created: Record<string, { storagePath: string; assetId?: string }> = {}
     const format = this.imageTransformPresets.format
 
     try {
@@ -51,29 +56,29 @@ export class ImageService {
         const preset = this.imageTransformPresets[presetName]
         const transformedImage = await this.imageTransformStrategy.transform(sourceImage, format, preset)
 
-        const fileName = this.namingStrategy.generateArtworkFilename(source.entityId, presetName, format)
+        const fileName = this.namingStrategy.generateArtworkFilename(sourceFileName, presetName, format)
 
         const fileSize = transformedImage.length
         const storagePath = await this.storageStrategy.uploadFromBuffer(fileName, transformedImage)
 
         created[presetName] = { storagePath }
 
-        const asset = await this.mediaRepository.createImageAsset({
-          image: {
-            sourceAssetId: source.id,
-            mediaType: source.mediaType,
-            entityType: source.entityType,
-            entityId: source.entityId,
-            storageProvider: this.storageStrategy.name,
-            storagePath,
-            fileSize,
-            format,
-          },
-          metadata: {
-            width: preset.width,
-            height: preset.height,
-            dominantColor,
-          },
+        const asset = await this.assetRepository.create({
+          sourceAssetId: source.id,
+          mediaType: source.mediaType,
+          entityType: source.entityType,
+          entityId: source.entityId,
+          storageProvider: this.storageStrategy.name,
+          storagePath,
+          fileSize,
+          format,
+        })
+
+        await this.imageMetadataRepository.create({
+          assetId: asset.id,
+          width: preset.width,
+          height: preset.height,
+          dominantColor,
         })
 
         created[presetName].assetId = asset.id
@@ -85,10 +90,11 @@ export class ImageService {
         await this.storageStrategy.delete(createdAsset.storagePath)
 
         if (createdAsset.assetId) {
-          await this.mediaRepository.deleteImageMetadataById(createdAsset.assetId)
-          await this.mediaRepository.deleteAssetById(createdAsset.assetId)
+          await this.imageMetadataRepository.deleteByAssetId(createdAsset.assetId)
+          await this.assetRepository.deleteById(createdAsset.assetId)
         }
       }
+
       throw error
     }
   }

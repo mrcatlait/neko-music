@@ -18,14 +18,14 @@ export class UpdateGenreValidator implements Validator<UpdateGenreUseCaseParams>
     if (!hasGenre) {
       return {
         isValid: false,
-        errors: ['Genre not found'],
+        error: 'Genre not found',
       }
     }
 
     if (genreExists) {
       return {
         isValid: false,
-        errors: ['Genre already exists'],
+        error: 'Genre already exists',
       }
     }
 

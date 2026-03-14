@@ -1,2 +1,6 @@
+export * from './asset.repository'
+export * from './audio-metadata.repository'
+export * from './image-metadata.repository'
 export * from './media.repository'
+export * from './source-asset.repository'
 export * from './upload-token.repository'

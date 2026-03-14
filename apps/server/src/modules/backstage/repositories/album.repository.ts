@@ -43,14 +43,12 @@ export class AlbumRepository {
     }
   }
 
-  publishAlbum(albumId: string, catalogAlbumId: string, userId: string): Promise<void> {
+  publishAlbum(albumId: string, catalogAlbumId: string): Promise<void> {
     return this.database
       .updateTable('backstage.Album')
       .set({
         catalogAlbumId,
         status: PublishingStatus.PUBLISHED,
-        updatedAt: new Date(),
-        updatedBy: userId,
       })
       .where('id', '=', albumId)
       .execute()

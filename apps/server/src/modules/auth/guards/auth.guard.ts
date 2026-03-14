@@ -34,6 +34,7 @@ export class AuthGuard implements CanActivate {
 
     try {
       const payload = await this.jwtService.verifyAccessToken(accessToken)
+      // todo: check if user exists in database
       req.user = {
         id: payload.sub,
         role: payload.role,

@@ -41,7 +41,7 @@ export class GetBackstageArtistUseCase implements UseCase<
 
     try {
       artwork = await this.getArtworkUseCase.invoke({
-        entityType: EntityType.ARTIST,
+        entityType: EntityType.Artist,
         entityId: params.artistId,
       })
     } catch {

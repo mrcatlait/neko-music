@@ -1,3 +1,5 @@
+import { ImageSize } from '../../enums/image-size.enum'
+
 export interface GenerateFileNameParameters {
   fileName: string
   format: string
@@ -43,21 +45,20 @@ export interface NamingStrategy {
   generateDashMediaSegmentName(segmentNumber: number | string, chunkNumber: number | string, prefix?: string): string
 
   /**
-   * Generate an artwork filename for storage (e.g. {entityId}_small.webp).
-   * Used by ImageService when creating processed assets and by artwork serving when resolving files.
-   * @param entityId The entity ID
-   * @param presetName The preset name
+   * Generate an artwork path for storage (e.g. artwork/{sourceAssetFilename}/{presetName}.{format}).
+   * @param sourceAssetFilename Source asset filename
+   * @param presetName The preset name (small, medium, large)
    * @param format The format
-   * @returns The generated file name
+   * @returns The generated path
    */
-  generateArtworkFilename(entityId: string, presetName: string, format: string): string
+  generateArtworkFilename(sourceAssetFilename: string, presetName: ImageSize, format: string): string
 
   /**
-   * Generate the artwork filename template for URL construction (e.g. {size}.webp).
+   * Generate the artwork URL template (e.g. artwork/{sourceAssetFilename}/{size}.webp).
    * The client replaces {size} with the preset name (small, medium, large).
-   * @param entityId The entity ID
+   * @param sourceAssetFilename Source asset filename
    * @param format The format
-   * @returns The generated file name
+   * @returns The generated URL template
    */
-  generateArtworkFilenameTemplate(entityId: string, format: string): string
+  generateArtworkFilenameTemplate(sourceAssetFilename: string, format: string): string
 }

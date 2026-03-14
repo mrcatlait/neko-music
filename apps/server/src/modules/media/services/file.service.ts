@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { fileTypeFromBuffer } from 'file-type'
 import { createHash } from 'node:crypto'
 import { readdirSync, statSync } from 'node:fs'
-import { join } from 'node:path'
+import { basename, join } from 'node:path'
 
 @Injectable()
 export class FileService {
@@ -40,5 +40,14 @@ export class FileService {
   getDirectorySize(directoryPath: string): number {
     const files = readdirSync(directoryPath)
     return files.reduce((total, file) => total + statSync(join(directoryPath, file)).size, 0)
+  }
+
+  /**
+   * Extract the filename from a path
+   * @param path - The path to extract the filename from
+   * @returns The filename
+   */
+  extractFilenameFromPath(path: string): string {
+    return basename(path)
   }
 }

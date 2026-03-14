@@ -52,7 +52,7 @@ export class ArtistDetailPage implements OnInit {
     this.saving.set(true)
 
     this.artistApi
-      .updateArtist(this.id(), { name: data.name, genres: data.genres })
+      .updateArtist(this.id(), { name: data.name, genres: data.genres, verified: true })
       .pipe(
         switchMap(({ uploadToken }) => {
           if (data.image) {

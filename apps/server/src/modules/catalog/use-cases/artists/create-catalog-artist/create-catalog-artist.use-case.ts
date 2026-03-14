@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Selectable } from 'kysely'
 
 import { CreateCatalogArtistValidator } from './create-catalog-artist.validator'
@@ -30,7 +30,7 @@ export class CreateCatalogArtistUseCase implements UseCase<
     const validationResult = await this.createCatalogArtistValidator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.errors)
+      throw new Error(validationResult.error)
     }
 
     return await this.artistRepository.createArtist({

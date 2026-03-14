@@ -60,7 +60,7 @@ describe('LoginUseCase', () => {
     it('should throw an error if the email is not found', async () => {
       // Arrange
       vi.mocked(authRepository.findAccountWithCredentialsByEmail).mockResolvedValue(undefined)
-      vi.mocked(loginValidator.validate).mockReturnValue({ isValid: false, errors: ['Invalid credentials'] })
+      vi.mocked(loginValidator.validate).mockReturnValue({ isValid: false, error: 'Invalid credentials' })
 
       // Act & Assert
       await expect(useCase.invoke({ email: 'test@example.com', password: 'password123' })).rejects.toThrow(
@@ -77,7 +77,7 @@ describe('LoginUseCase', () => {
         passwordSalt: 'salt',
         role: 'role-1',
       })
-      vi.mocked(loginValidator.validate).mockReturnValue({ isValid: false, errors: ['Invalid credentials'] })
+      vi.mocked(loginValidator.validate).mockReturnValue({ isValid: false, error: 'Invalid credentials' })
 
       // Act & Assert
       await expect(useCase.invoke({ email: 'test@example.com', password: 'password123' })).rejects.toThrow(

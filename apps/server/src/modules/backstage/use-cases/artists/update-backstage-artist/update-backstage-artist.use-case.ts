@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 
 import { UpdateBackstageArtistValidator } from './update-backstage-artist.validator'
 import { ArtistRepository } from '../../../repositories'
@@ -13,6 +13,7 @@ export interface UpdateBackstageArtistUseCaseParams {
   readonly artistId: string
   readonly name: string
   readonly genres: string[]
+  readonly verified: boolean
 }
 
 @Injectable()
@@ -28,13 +29,10 @@ export class UpdateBackstageArtistUseCase implements UseCase<UpdateBackstageArti
     const validationResult = await this.updateBackstageArtistValidator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.errors)
+      throw new Error(validationResult.error)
     }
 
-    const artist = await this.artistRepository.findArtistWithGenresById(params.artistId)
-    if (!artist) {
-      throw new BadRequestException(['Artist not found'])
-    }
+    const artist = (await this.artistRepository.findArtistById(params.artistId))!
 
     await this.artistRepository.updateArtist({
       artistId: params.artistId,
@@ -44,15 +42,15 @@ export class UpdateBackstageArtistUseCase implements UseCase<UpdateBackstageArti
 
     if (artist.status === PublishingStatus.PUBLISHED && artist.catalogArtistId) {
       const artwork = await this.getArtworkUseCase.invoke({
-        entityType: EntityType.ARTIST,
+        entityType: EntityType.Artist,
         entityId: params.artistId,
       })
 
       await this.updateCatalogArtistUseCase.invoke({
-        catalogArtistId: artist.catalogArtistId,
+        id: artist.catalogArtistId,
         name: params.name,
         genres: params.genres,
-        verified: artist.verified,
+        verified: params.verified,
         artwork,
       })
     }

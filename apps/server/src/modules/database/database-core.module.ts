@@ -1,5 +1,5 @@
 import { Module, Provider } from '@nestjs/common'
-import { Kysely, LogEvent } from 'kysely'
+import { Kysely } from 'kysely'
 import { PostgresJSDialect } from 'kysely-postgres-js'
 import postgres from 'postgres'
 

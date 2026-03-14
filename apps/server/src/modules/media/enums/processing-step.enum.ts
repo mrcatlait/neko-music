@@ -1,4 +1,4 @@
 export enum ProcessingStep {
-  IMAGE_TRANSFORMATION = 'image_transformation',
-  AUDIO_TRANSFORMATION = 'audio_transformation',
+  ImageTransformation = 'image_transformation',
+  AudioTransformation = 'audio_transformation',
 }

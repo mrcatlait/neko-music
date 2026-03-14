@@ -17,6 +17,13 @@ export class UploadTokenRepository {
   }
 
   /**
+   * Find upload token by user ID
+   */
+  findByUserId(userId: string): Promise<Selectable<UploadTokenTable> | undefined> {
+    return this.database.selectFrom('media.UploadToken').where('userId', '=', userId).selectAll().executeTakeFirst()
+  }
+
+  /**
    * Create upload token
    */
   create(uploadToken: Insertable<UploadTokenTable>): Promise<Selectable<UploadTokenTable>> {

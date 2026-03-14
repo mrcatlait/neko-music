@@ -18,25 +18,20 @@ export class CreateCatalogArtistValidator implements Validator<CreateCatalogArti
       this.genreRepository.findGenresByIds(params.genres),
     ])
 
-    const errors: string[] = []
-
     if (nameTaken) {
-      errors.push('Artist name already taken')
-    }
-
-    if (genresExist.length !== params.genres.length) {
-      errors.push('Genres not found')
-    }
-
-    if (errors.length > 0) {
       return {
         isValid: false,
-        errors,
+        error: 'Artist name already taken',
       }
     }
 
-    return {
-      isValid: true,
+    if (genresExist.length !== params.genres.length) {
+      return {
+        isValid: false,
+        error: 'Genres not found',
+      }
     }
+
+    return { isValid: true }
   }
 }

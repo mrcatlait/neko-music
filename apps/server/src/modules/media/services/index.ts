@@ -1,3 +1,4 @@
+export * from './asset-cleanup.service'
 export * from './file.service'
 export * from './image.service'
 export * from './processing-pipeline.service'

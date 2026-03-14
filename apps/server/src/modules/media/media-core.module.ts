@@ -3,7 +3,14 @@ import { ModuleRef } from '@nestjs/core'
 
 import { MEDIA_MODULE_OPTIONS } from './tokens'
 import { MediaController, StreamingController } from './controllers'
-import { FileService, ImageService, ProcessingPipelineService, StreamingService, UploadTokenService } from './services'
+import {
+  AssetCleanupService,
+  FileService,
+  ImageService,
+  ProcessingPipelineService,
+  StreamingService,
+  UploadTokenService,
+} from './services'
 import { MediaModuleOptions } from './types'
 import {
   GenerateUploadTokenUseCase,
@@ -13,8 +20,16 @@ import {
   UploadImageValidator,
   GetMediaReadinessUseCase,
 } from './use-cases'
-import { MediaRepository, UploadTokenRepository } from './repositories'
-import { TriggerMediaProcessingCron, UploadTokenCleanupCron } from './crons'
+import {
+  AssetRepository,
+  AudioMetadataRepository,
+  ImageMetadataRepository,
+  MediaRepository,
+  SourceAssetRepository,
+  UploadTokenRepository,
+} from './repositories'
+import { UploadTokenCleanupCron } from './crons'
+import { MediaListener } from './listeners'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -25,8 +40,8 @@ export class MediaCoreModule extends CoreModuleWithOptions {
   static readonly providers = [
     // Crons
     UploadTokenCleanupCron,
-    TriggerMediaProcessingCron,
     // Services
+    AssetCleanupService,
     FileService,
     ImageService,
     ProcessingPipelineService,
@@ -34,6 +49,10 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     UploadTokenService,
     // Repositories
     MediaRepository,
+    SourceAssetRepository,
+    AssetRepository,
+    ImageMetadataRepository,
+    AudioMetadataRepository,
     UploadTokenRepository,
     // Use Cases
     GenerateUploadTokenUseCase,
@@ -42,6 +61,8 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     UploadMediaUseCase,
     UploadAudioValidator,
     UploadImageValidator,
+    // Listeners
+    MediaListener,
   ]
   static readonly exports = [GenerateUploadTokenUseCase, GetArtworkUseCase, GetMediaReadinessUseCase]
   static readonly controllers = [MediaController, StreamingController]

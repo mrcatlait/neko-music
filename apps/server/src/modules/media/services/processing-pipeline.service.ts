@@ -1,10 +1,10 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { Selectable } from 'kysely'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 
 import { MEDIA_MODULE_OPTIONS } from '../tokens'
 import { MediaModuleOptions } from '../types'
-import { MediaRepository } from '../repositories'
+import { MediaRepository, SourceAssetRepository } from '../repositories'
 import { ProcessingStatus, ProcessingStep } from '../enums'
 import { ImageService } from './image.service'
 import { ProcessingJobTable, ProcessingStepTable } from '../media.schema'
@@ -27,6 +27,7 @@ export class ProcessingPipelineService {
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
     private readonly mediaRepository: MediaRepository,
+    private readonly sourceAssetRepository: SourceAssetRepository,
     private readonly imageService: ImageService,
     private readonly eventEmitter: EventEmitter2,
   ) {
@@ -59,12 +60,12 @@ export class ProcessingPipelineService {
   }
 
   async processJob(job: Job): Promise<void> {
-    job.status = ProcessingStatus.PROCESSING
+    job.status = ProcessingStatus.Processing
     job.startedAt = new Date()
 
     await this.mediaRepository.updateProcessingJob(job)
 
-    const sourceAsset = await this.mediaRepository.findSourceAssetById(job.sourceAssetId)
+    const sourceAsset = await this.sourceAssetRepository.findById(job.sourceAssetId)
 
     if (!sourceAsset) {
       throw new Error('Source asset not found')
@@ -80,14 +81,14 @@ export class ProcessingPipelineService {
 
     try {
       for (const step of job.steps) {
-        if (step.status !== ProcessingStatus.PENDING) {
+        if (step.status !== ProcessingStatus.Pending) {
           continue
         }
 
         await this.processStep(step, job.sourceAssetId)
       }
 
-      job.status = ProcessingStatus.COMPLETED
+      job.status = ProcessingStatus.Completed
       job.completedAt = new Date()
 
       await this.mediaRepository.updateProcessingJob(job)
@@ -95,12 +96,13 @@ export class ProcessingPipelineService {
       this.eventEmitter.emit(
         MediaProcessingCompletedEvent.event,
         new MediaProcessingCompletedEvent({
+          sourceAssetId: sourceAsset.id,
           entityType: sourceAsset.entityType,
           entityId: sourceAsset.entityId,
         }),
       )
     } catch {
-      job.status = ProcessingStatus.FAILED
+      job.status = ProcessingStatus.Failed
       job.completedAt = new Date()
 
       await this.mediaRepository.updateProcessingJob(job)
@@ -116,29 +118,30 @@ export class ProcessingPipelineService {
   }
 
   async processStep(step: Selectable<ProcessingStepTable>, sourceAssetId: string): Promise<void> {
-    step.status = ProcessingStatus.PROCESSING
+    step.status = ProcessingStatus.Processing
     step.startedAt = new Date()
 
     await this.mediaRepository.updateProcessingStep(step)
 
     try {
       switch (step.name) {
-        case ProcessingStep.IMAGE_TRANSFORMATION:
+        case ProcessingStep.ImageTransformation: {
           await this.imageService.transform(sourceAssetId)
           break
-        case ProcessingStep.AUDIO_TRANSFORMATION:
+        }
+        case ProcessingStep.AudioTransformation:
           // return this.processTransformation(step)
           break
         default:
           throw new Error(`Unknown processing step: ${step.name as string}`)
       }
 
-      step.status = ProcessingStatus.COMPLETED
+      step.status = ProcessingStatus.Completed
       step.completedAt = new Date()
 
       await this.mediaRepository.updateProcessingStep(step)
     } catch (error) {
-      step.status = ProcessingStatus.FAILED
+      step.status = ProcessingStatus.Failed
       step.errorMessage = error instanceof Error ? error.message : 'Unknown error'
       step.completedAt = new Date()
 

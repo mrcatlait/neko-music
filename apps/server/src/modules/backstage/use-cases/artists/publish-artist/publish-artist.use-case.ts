@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 
 import { PublishArtistValidator } from './publish-artist.validator'
 
@@ -25,16 +25,17 @@ export class PublishArtistUseCase implements UseCase<PublishArtistUseCaseParams,
     const validationResult = await this.publishArtistValidator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.errors)
+      throw new Error(validationResult.error)
     }
 
     const artist = await this.artistRepository.findArtistWithGenresById(params.artistId)
+
     if (!artist) {
-      throw new BadRequestException(['Artist not found'])
+      throw new Error('Artist not found')
     }
 
     const artwork = await this.getArtworkUseCase.invoke({
-      entityType: EntityType.ARTIST,
+      entityType: EntityType.Artist,
       entityId: params.artistId,
     })
 

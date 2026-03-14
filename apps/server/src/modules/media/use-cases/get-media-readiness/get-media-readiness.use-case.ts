@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 
 import { EntityType, ProcessingStatus } from '../../enums'
-import { MediaRepository } from '../../repositories'
+import { MediaRepository, SourceAssetRepository } from '../../repositories'
 
 import { UseCase } from '@/modules/shared/interfaces'
 
@@ -19,21 +19,23 @@ export class GetMediaReadinessUseCase implements UseCase<
   GetMediaReadinessUseCaseParams,
   GetMediaReadinessUseCaseResult
 > {
-  constructor(private readonly mediaRepository: MediaRepository) {}
+  constructor(
+    private readonly sourceAssetRepository: SourceAssetRepository,
+    private readonly mediaRepository: MediaRepository,
+  ) {}
 
   async invoke(params: GetMediaReadinessUseCaseParams): Promise<GetMediaReadinessUseCaseResult> {
-    const sourceAsset = await this.mediaRepository.findSourceAssetByEntityTypeAndEntityId(
-      params.entityType,
-      params.entityId,
-    )
+    const assets = await this.sourceAssetRepository.findAllByEntityTypeAndEntityId(params.entityType, params.entityId)
 
-    if (!sourceAsset) {
+    if (assets.length === 0) {
       return {
         ready: false,
       }
     }
 
-    const processingJob = await this.mediaRepository.findProcessingJobBySourceAssetId(sourceAsset.id)
+    const lastAsset = assets.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0]
+
+    const processingJob = await this.mediaRepository.findProcessingJobBySourceAssetId(lastAsset.id)
 
     if (!processingJob) {
       return {
@@ -41,7 +43,7 @@ export class GetMediaReadinessUseCase implements UseCase<
       }
     }
 
-    if (processingJob.status !== ProcessingStatus.COMPLETED) {
+    if (processingJob.status !== ProcessingStatus.Completed) {
       return {
         ready: false,
       }

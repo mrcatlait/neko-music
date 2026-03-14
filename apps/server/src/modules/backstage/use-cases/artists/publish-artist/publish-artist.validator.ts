@@ -21,26 +21,26 @@ export class PublishArtistValidator implements Validator<PublishArtistUseCasePar
     if (!artist) {
       return {
         isValid: false,
-        errors: ['Artist not found'],
+        error: `Artist ${params.artistId} not found`,
       }
     }
 
     if (artist.status === PublishingStatus.PUBLISHED) {
       return {
         isValid: false,
-        errors: ['Artist is already published'],
+        error: `Artist ${params.artistId} is already published`,
       }
     }
 
     const mediaReadiness = await this.getMediaReadinessUseCase.invoke({
-      entityType: EntityType.ARTIST,
+      entityType: EntityType.Artist,
       entityId: params.artistId,
     })
 
     if (!mediaReadiness.ready) {
       return {
         isValid: false,
-        errors: ['Media file is not ready'],
+        error: `Media file for artist ${params.artistId} is not ready`,
       }
     }
 

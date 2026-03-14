@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common'
 
 import { EntityType } from '../../enums'
-import { MediaRepository } from '../../repositories'
+import { MediaRepository, SourceAssetRepository } from '../../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
 import { NamingStrategy } from '../../strategies'
+import { FileService } from '../../services'
 
 import { Artwork, UseCase } from '@/modules/shared/interfaces'
 
@@ -22,6 +23,8 @@ export class GetArtworkUseCase implements UseCase<GetArtworkUseCaseParams, GetAr
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
     private readonly mediaRepository: MediaRepository,
+    private readonly sourceAssetRepository: SourceAssetRepository,
+    private readonly fileService: FileService,
   ) {
     this.namingStrategy = options.namingStrategy
   }
@@ -33,15 +36,20 @@ export class GetArtworkUseCase implements UseCase<GetArtworkUseCaseParams, GetAr
       throw new Error(`No artwork found for ${params.entityType} ${params.entityId}`)
     }
 
+    const sourceAsset = await this.sourceAssetRepository.findById(assets[0].asset.sourceAssetId)
+
+    if (!sourceAsset) {
+      throw new Error(`Source asset not found for ${params.entityType} ${params.entityId}`)
+    }
+
     const uniqueFormats = [...new Set(assets.map((asset) => asset.asset.format))]
 
     if (uniqueFormats.length > 1) {
       throw new Error(`Multiple formats found for ${params.entityType} ${params.entityId}`)
     }
 
-    const format = uniqueFormats[0]
-
-    const url = this.namingStrategy.generateArtworkFilenameTemplate(params.entityId, format)
+    const sourceFileName = this.fileService.extractFilenameFromPath(sourceAsset.storagePath)
+    const url = this.namingStrategy.generateArtworkFilenameTemplate(sourceFileName, uniqueFormats[0])
 
     const uniqueDominantColors = [...new Set(assets.map((asset) => asset.metadata.dominantColor))]
 

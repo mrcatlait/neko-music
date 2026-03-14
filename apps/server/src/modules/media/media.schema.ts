@@ -22,6 +22,7 @@ export interface SourceAssetTable {
   storageProvider: StorageProvider
   storagePath: string
   checksum: string
+  // @todo remove this column
   createdBy: string
   createdAt: Generated<Date>
 }

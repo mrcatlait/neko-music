@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Selectable } from 'kysely'
 
 import { AddGenreValidator } from './add-genre.validator'
@@ -24,7 +24,7 @@ export class AddGenreUseCase {
     const validationResult = await this.addGenreValidator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.errors)
+      throw new Error(validationResult.error)
     }
 
     return this.genreRepository.createGenre({

@@ -15,7 +15,7 @@ export class AddGenreValidator implements Validator<AddGenreUseCaseParams> {
     if (genreExists) {
       return {
         isValid: false,
-        errors: ['Genre already exists'],
+        error: 'Genre already exists',
       }
     }
 

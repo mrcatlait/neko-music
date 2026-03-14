@@ -26,15 +26,19 @@ export class LoginValidator implements Validator<LoginValidatorPayload> {
 
       return {
         isValid: false,
-        errors: [INVALID_CREDENTIALS_ERROR],
+        error: INVALID_CREDENTIALS_ERROR,
       }
     }
 
-    const isValid = this.authService.comparePasswordHash(payload.password, payload.passwordHash)
+    const isValidPassword = this.authService.comparePasswordHash(payload.password, payload.passwordHash)
 
-    return {
-      isValid,
-      errors: isValid ? [] : [INVALID_CREDENTIALS_ERROR],
+    if (!isValidPassword) {
+      return {
+        isValid: false,
+        error: INVALID_CREDENTIALS_ERROR,
+      }
     }
+
+    return { isValid: true }
   }
 }

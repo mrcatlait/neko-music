@@ -55,8 +55,8 @@ export class ArtistController {
 
     const uploadToken = await this.generateUploadTokenUseCase.invoke({
       userId: user.id,
-      mediaType: MediaType.IMAGE,
-      entityType: EntityType.ARTIST,
+      mediaType: MediaType.Image,
+      entityType: EntityType.Artist,
       entityId: artist.id,
     })
 
@@ -110,12 +110,13 @@ export class ArtistController {
       artistId,
       name: body.name,
       genres: body.genres,
+      verified: body.verified,
     })
 
     const uploadToken = await this.generateUploadTokenUseCase.invoke({
       userId: user.id,
-      mediaType: MediaType.IMAGE,
-      entityType: EntityType.ARTIST,
+      mediaType: MediaType.Image,
+      entityType: EntityType.Artist,
       entityId: artistId,
     })
 

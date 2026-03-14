@@ -27,7 +27,7 @@ export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, v
     const validationResult = await this.publishAlbumValidator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.errors)
+      throw new Error(validationResult.error)
     }
 
     const album = await this.albumRepository.findAlbumWithGenresAndArtistsById(params.albumId)
@@ -45,7 +45,7 @@ export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, v
     }
 
     const artwork = await this.getArtworkUseCase.invoke({
-      entityType: EntityType.ALBUM,
+      entityType: EntityType.Album,
       entityId: params.albumId,
     })
 
