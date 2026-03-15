@@ -11,8 +11,6 @@ dependsOn:
     scope: 'development'
   - id: 'eslint-config'
     scope: 'development'
-  - id: 'test-deps'
-    scope: 'development'
 
 fileGroups:
   app:

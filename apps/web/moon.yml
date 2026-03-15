@@ -50,7 +50,10 @@ tasks:
       - 'build'
 
   test-unit:
-    command: 'ng test'
+    command: 'vitest'
+    args:
+      - '--config'
+      - 'vitest.config.ts'
     inputs:
       - '@group(app)'
       - '@group(sources)'
@@ -92,3 +95,14 @@ tasks:
     deps:
       - 'test-unit'
       - 'test-integration'
+
+  sonar:
+    command: 'sonar'
+    options:
+      envFile: true
+    inputs:
+      - '@group(sources)'
+      - '@group(unit-tests)'
+      - 'sonar-project.properties'
+    deps:
+      - 'test-unit'

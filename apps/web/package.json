@@ -25,10 +25,12 @@
     "@neko/contracts": "*",
     "@neko/eslint-config": "*",
     "@pact-foundation/pact": "^16.3.0",
+    "@vitest/coverage-v8": "^4.1.0",
     "angular-eslint": "^21.1.0",
     "esbuild-visualizer": "^0.7.0",
     "jsdom": "^28.1.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vite-tsconfig-paths": "^6.1.1"
   },
   "prettier": "@neko/eslint-config/prettier"
 }

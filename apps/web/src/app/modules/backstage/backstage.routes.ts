@@ -14,4 +14,9 @@ export const routes: Routes = [
     canActivate: [withPermissionsGuard([Permissions.Artist.Write])],
     loadChildren: () => import('./artist/artist.routes').then((c) => c.routes),
   },
+  {
+    path: 'tracks',
+    canActivate: [withPermissionsGuard([Permissions.Track.Write])],
+    loadChildren: () => import('./track/track.routes').then((c) => c.routes),
+  },
 ]

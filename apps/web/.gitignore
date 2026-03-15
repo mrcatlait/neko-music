@@ -42,7 +42,15 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+.scannerwork
 
 # System files
 .DS_Store
 Thumbs.db
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local

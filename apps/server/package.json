@@ -32,7 +32,6 @@
     "@faker-js/faker": "^10.0.0",
     "@neko/contracts": "*",
     "@neko/eslint-config": "*",
-    "@neko/test-deps": "*",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.16",
@@ -43,9 +42,12 @@
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.3",
+    "@vitest/coverage-v8": "^4.1.0",
     "supertest": "^7.1.4",
     "typescript": "~5.7.2",
-    "unplugin-swc": "^1.5.1"
+    "unplugin-swc": "^1.5.1",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.0"
   },
   "prettier": "@neko/eslint-config/prettier"
 }

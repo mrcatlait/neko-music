@@ -1,6 +1,12 @@
 import { defineConfig } from 'vitest/config';
+import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
+  plugins: [
+    viteTsConfigPaths({
+      root: './',
+    }),
+  ],
   test: {
     root: './',
     globals: true,
@@ -14,16 +20,10 @@ export default defineConfig({
       junit: './reports/unit/junit-report.xml',
     },
     coverage: {
-      enabled: false,
-      excludeAfterRemap: true
+      enabled: true,
+      provider: 'v8',
+      include: ['src/**/*.ts'],
+      reporter: ['text', 'lcov'],
     }
-  },
-  plugins: [
-    {
-      name: 'angular-coverage-exclude',
-      configureVitest(context) {
-        context.project.config.coverage.exclude = ['**/*.{test,spec}.?(c|m)ts'];
-      }
-    }
-  ]
+  }
 });

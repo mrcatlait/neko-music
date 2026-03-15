@@ -46,6 +46,23 @@
         </a>
       </li>
 
+      <li [aria-current]="tracks.isActive ? 'page' : undefined">
+        <a
+          #tracks="routerLinkActive"
+          routerLink="/backstage/tracks"
+          routerLinkActive="active"
+          [class.active]="tracks.isActive"
+        >
+          <i
+            aria-hidden="true"
+            [class.outlined]="!tracks.isActive"
+          >
+            music_note
+          </i>
+          <span>Tracks</span>
+        </a>
+      </li>
+
       <li [aria-current]="genres.isActive ? 'page' : undefined">
         <a
           #genres="routerLinkActive"
