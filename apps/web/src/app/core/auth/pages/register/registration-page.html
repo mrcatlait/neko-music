@@ -2,22 +2,21 @@
 
 <form
   autocomplete="off"
-  [formGroup]="form"
+  (submit)="register($event)"
 >
   <n-textfield>
     <label for="email">Email address</label>
 
     <input
-      formControlName="email"
       id="email"
-      required
       type="email"
+      [formField]="registrationForm.email"
     />
 
-    @let emailControl = form.controls.email;
-    @let emailTouched = emailControl.touched;
+    @let emailTouched = registrationForm.email().touched();
+    @let emailInvalid = registrationForm.email().invalid();
 
-    @if (emailControl.invalid && emailTouched) {
+    @if (emailInvalid && emailTouched) {
       <i
         aria-hidden="true"
         class="color-error"
@@ -28,17 +27,13 @@
     }
 
     <span slot="error">
-      @if (emailControl.invalid && emailTouched) {
-        @if (emailControl.hasError('required')) {
-          <span>Email is required</span>
-        }
-
-        @if (emailControl.hasError('email')) {
-          <span>Email must be in the format name&#64;example.com</span>
+      @if (emailInvalid && emailTouched) {
+        @for (error of registrationForm.email().errors(); track error) {
+          <span>{{ error.message }}</span>
         }
       }
 
-      @if (emailControl.value === lastEmail() && emailTaken()) {
+      @if (registrationForm.email().value() === lastEmail() && emailTaken()) {
         <span>This email is already in use. Please use a different email address.</span>
       }
     </span>
@@ -48,14 +43,14 @@
     <label for="password">Password</label>
 
     <input
-      formControlName="password"
       id="password"
-      required
+      type="password"
+      [formField]="registrationForm.password"
       [type]="hidePassword() ? 'password' : 'text'"
     />
 
-    @let passwordControl = form.controls.password;
-    @let passwordTouched = passwordControl.touched;
+    @let passwordTouched = registrationForm.password().touched();
+    @let passwordInvalid = registrationForm.password().invalid();
 
     <button
       aria-label="Show password"
@@ -69,7 +64,7 @@
       <i>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</i>
     </button>
 
-    @if (passwordControl.invalid && passwordTouched) {
+    @if (passwordInvalid && passwordTouched) {
       <i
         aria-hidden="true"
         class="color-error"
@@ -84,13 +79,12 @@
     <span class="label-large">Your password must contain at least</span>
 
     <ul class="body-small">
-      @let pristine = passwordControl.pristine;
-      @let requiredError = passwordControl.hasError('required');
+      @let requiredError = registrationForm.password().errors().some(error => error.message === 'required');
 
       <li>
-        @let minLengthError = passwordControl.hasError('minlength');
+        @let minLengthError = registrationForm.password().errors().some(error => error.message === 'minlength');
 
-        @if (!minLengthError && !requiredError && !pristine) {
+        @if (!minLengthError && !requiredError && passwordTouched) {
           <i class="success">check_circle</i>
         } @else {
           <i>radio_button_unchecked</i>
@@ -100,9 +94,9 @@
       </li>
 
       <li>
-        @let patternError = passwordControl.hasError('pattern');
+        @let patternError = registrationForm.password().errors().some(error => error.message === 'pattern');
 
-        @if (!patternError && !requiredError && !pristine) {
+        @if (!patternError && !requiredError && passwordTouched) {
           <i class="success">check_circle</i>
         } @else {
           <i>radio_button_unchecked</i>
@@ -125,16 +119,15 @@
     </label>
 
     <input
-      formControlName="displayName"
       id="displayName"
-      required
       type="text"
+      [formField]="registrationForm.displayName"
     />
 
-    @let displayNameControl = form.controls.displayName;
-    @let displayNameTouched = displayNameControl.touched;
+    @let displayNameTouched = registrationForm.displayName().touched();
+    @let displayNameInvalid = registrationForm.displayName().invalid();
 
-    @if (displayNameControl.invalid && displayNameTouched) {
+    @if (displayNameInvalid && displayNameTouched) {
       <i
         aria-hidden="true"
         class="color-error"
@@ -145,9 +138,9 @@
     }
 
     <span slot="error">
-      @if (displayNameControl.invalid && displayNameTouched) {
-        @if (displayNameControl.hasError('required')) {
-          <span>Name is required</span>
+      @if (displayNameInvalid && displayNameTouched) {
+        @for (error of registrationForm.displayName().errors(); track error) {
+          <span>{{ error.message }}</span>
         }
       }
     </span>
@@ -157,7 +150,7 @@
     nButton
     type="submit"
     [disabled]="loading()"
-    (click)="register()"
+    (click)="register($event)"
   >
     @if (loading()) {
       <n-loading-indicator [size]="12" />

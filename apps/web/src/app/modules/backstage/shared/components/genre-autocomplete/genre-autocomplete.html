@@ -2,14 +2,17 @@
   <n-loading-indicator />
 } @else {
   <n-textfield>
-    <label for="genres">Genres</label>
+    <label for="genres"> Genres </label>
 
     <input
       id="genres"
       placeholder="Type genre name"
       type="text"
+      [class.ng-invalid]="invalid()"
+      [class.ng-touched]="touched()"
       [formField]="filterForm"
       [nAutocompleteTrigger]="autocomplete"
+      (blur)="touched.set(true)"
       (optionSelected)="addGenre($event)"
     />
 
@@ -26,10 +29,28 @@
         }
       </n-autocomplete>
     </ng-template>
+
+    @if (invalid() && touched()) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
+    <span slot="error">
+      @if (invalid() && touched()) {
+        @for (error of errors(); track error) {
+          <span>{{ error.message }}</span>
+        }
+      }
+    </span>
   </n-textfield>
 
   @if (selectedGenres().length > 0) {
-    <div class="genre-picker__selected-genres">
+    <div class="genre-autocomplete__selected-genres">
       @for (genre of selectedGenres(); track genre) {
         <n-input-chip (remove)="removeGenre(genre.id)"> {{ genre.name }} </n-input-chip>
       }

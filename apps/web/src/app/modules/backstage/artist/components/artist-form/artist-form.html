@@ -1,7 +1,7 @@
 <form
   autocomplete="off"
   class="artist-form"
-  [formGroup]="form"
+  (submit)="submit($event)"
 >
   <div class="artist-form__profile-picture">
     <span class="body-large">Profile Picture</span>
@@ -16,15 +16,15 @@
     <label for="name">Artist Name</label>
 
     <input
-      formControlName="name"
       id="name"
-      required
       type="text"
+      [formField]="artistForm.name"
     />
 
-    @let nameTouched = name.touched;
+    @let nameTouched = artistForm.name().touched();
+    @let nameInvalid = artistForm.name().invalid();
 
-    @if (name.invalid && nameTouched) {
+    @if (nameInvalid && nameTouched) {
       <i
         aria-hidden="true"
         class="color-error"
@@ -35,25 +35,21 @@
     }
 
     <span slot="error">
-      @if (name.invalid && nameTouched) {
-        @if (name.hasError('required')) {
-          <span>Name is required</span>
+      @if (nameInvalid && nameTouched) {
+        @for (error of artistForm.name().errors(); track error) {
+          <span class="error">{{ error.message }}</span>
         }
       }
     </span>
   </n-textfield>
 
-  <n-genre-picker
-    [genres]="artist()?.genres"
-    (selectionChange)="onGenreSelectionChange($event)"
-  />
+  <n-genre-autocomplete [formField]="artistForm.genres" />
 
   <button
     class="artist-form__submit"
     nButton
     type="submit"
     [disabled]="saving()"
-    (click)="submit()"
   >
     @if (saving()) {
       <n-loading-indicator [size]="12" />

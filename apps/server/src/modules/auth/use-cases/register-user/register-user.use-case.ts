@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { Role, Roles } from '@neko/permissions'
 
 import { RegisterUserValidator } from './register-user.validator'
@@ -36,7 +36,7 @@ export class RegisterUserUseCase implements UseCase<RegisterUserUseCaseParams, R
     const validationResult = await this.registerValidator.validate(params)
 
     if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
+      throw new BadRequestException(validationResult.error)
     }
 
     const passwordSalt = this.authService.generatePasswordSalt()

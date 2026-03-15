@@ -1,20 +1,33 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Contracts } from '@neko/contracts'
+import {
+  form,
+  email as emailValidator,
+  minLength,
+  required,
+  FormField,
+  disabled,
+  pattern,
+} from '@angular/forms/signals'
 
 import { AuthApi } from '../../auth-api'
 import { RegistrationAuthStrategy } from '../../strategies'
 import { AuthStore } from '../../auth-store'
 
 import { Button, IconButton, LoadingIndicator, Textfield } from '@/shared/components'
-import { emailValidator } from '@/shared/validators'
 import { SessionCookie } from '@/core/services'
+
+interface RegistrationModel {
+  email: string
+  password: string
+  displayName: string
+}
 
 @Component({
   selector: 'n-registration-page',
-  imports: [Button, IconButton, LoadingIndicator, ReactiveFormsModule, RouterLink, Textfield],
+  imports: [Button, IconButton, FormField, LoadingIndicator, RouterLink, Textfield],
   templateUrl: './registration-page.html',
   styleUrl: './registration-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,10 +38,19 @@ export class RegistrationPage {
   private readonly registrationAuthStrategy = inject(RegistrationAuthStrategy)
   private readonly sessionCookie = inject(SessionCookie)
 
-  protected readonly form = new FormGroup({
-    email: new FormControl('', [Validators.required, emailValidator]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/[^a-zA-Z]/)]),
-    displayName: new FormControl('', [Validators.required]),
+  private readonly registrationModel = signal<RegistrationModel>({
+    email: '',
+    password: '',
+    displayName: '',
+  })
+  protected readonly registrationForm = form(this.registrationModel, (schemaPath) => {
+    required(schemaPath.email, { message: 'Email is required' })
+    emailValidator(schemaPath.email, { message: 'Email must be in the format name&#64;example.com' })
+    required(schemaPath.password, { message: 'required' })
+    minLength(schemaPath.password, 8, { message: 'minlength' })
+    pattern(schemaPath.password, /[^a-zA-Z]/, { message: 'pattern' })
+    required(schemaPath.displayName, { message: 'Display name is required' })
+    disabled(schemaPath, () => this.loading())
   })
 
   protected readonly hidePassword = signal(true)
@@ -36,29 +58,28 @@ export class RegistrationPage {
   protected readonly lastEmail = signal('')
   protected readonly emailTaken = signal(false)
 
-  constructor() {
-    this.handleLoading()
-  }
-
   togglePassword(): void {
     this.hidePassword.update((hide) => !hide)
   }
 
-  register(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched()
+  register(event: Event): void {
+    event.preventDefault()
+
+    if (this.registrationForm().invalid()) {
+      this.registrationForm.email().markAsTouched()
+      this.registrationForm.password().markAsTouched()
+      this.registrationForm.displayName().markAsTouched()
+
       return
     }
 
-    const email = this.form.controls.email.value ?? ''
-    const password = this.form.controls.password.value ?? ''
-    const displayName = this.form.controls.displayName.value ?? ''
+    const credentials = this.registrationModel()
 
     this.loading.set(true)
-    this.lastEmail.set(email)
+    this.lastEmail.set(credentials.email)
     this.emailTaken.set(false)
 
-    this.authApi.register({ email, password, displayName }).subscribe({
+    this.authApi.register(credentials).subscribe({
       next: (response) => {
         this.loading.set(false)
         this.registrationAuthStrategy.authenticate({ accessToken: response.accessToken, session: response })
@@ -82,15 +103,5 @@ export class RegistrationPage {
       this.authStore.clearSession()
       this.sessionCookie.delete()
     }
-  }
-
-  private handleLoading() {
-    effect(() => {
-      if (this.loading()) {
-        this.form.disable()
-      } else {
-        this.form.enable()
-      }
-    })
   }
 }

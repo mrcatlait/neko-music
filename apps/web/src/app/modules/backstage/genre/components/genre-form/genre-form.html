@@ -1,7 +1,7 @@
 <form
   autocomplete="off"
   class="genre-form"
-  (submit)="$event.preventDefault(); submit()"
+  (submit)="submit($event)"
 >
   <n-textfield>
     <label for="name">Name</label>
@@ -9,12 +9,13 @@
     <input
       id="name"
       type="text"
-      [formField]="genreForm"
+      [formField]="genreForm.name"
     />
 
-    @let nameTouched = name.touched();
+    @let nameTouched = genreForm.name().touched();
+    @let nameInvalid = genreForm.name().invalid();
 
-    @if (name.invalid() && nameTouched) {
+    @if (nameInvalid && nameTouched) {
       <i
         aria-hidden="true"
         class="color-error"
@@ -25,9 +26,9 @@
     }
 
     <span slot="error">
-      @if (name.invalid() && nameTouched) {
-        @if (hasRequiredError()) {
-          <span>Name is required</span>
+      @if (nameInvalid && nameTouched) {
+        @for (error of genreForm.name().errors(); track error) {
+          <span>{{ error.message }}</span>
         }
       }
     </span>

@@ -7,6 +7,8 @@ import {
 } from '@angular/core'
 import { PreloadAllModules, provideRouter, withComponentInputBinding, withPreloading } from '@angular/router'
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http'
+import { provideSignalFormsConfig } from '@angular/forms/signals'
+import { NG_STATUS_CLASSES } from '@angular/forms/signals/compat'
 
 import { routes } from './app.routes'
 
@@ -26,5 +28,8 @@ export const appConfig: ApplicationConfig = {
     provideArtworkLoader(environment.mediaUrl),
     provideAppInitializer(() => inject(SilentAuthStrategy).authenticate()),
     provideDialogs(),
+    provideSignalFormsConfig({
+      classes: NG_STATUS_CLASSES,
+    }),
   ],
 }

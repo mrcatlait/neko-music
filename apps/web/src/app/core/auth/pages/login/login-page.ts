@@ -1,18 +1,22 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core'
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
 import { take } from 'rxjs'
 import { HttpErrorResponse } from '@angular/common/http'
 import { RouterLink } from '@angular/router'
+import { disabled, email as emailValidator, form, FormField, minLength, required } from '@angular/forms/signals'
 
 import { CredentialsAuthStrategy } from '../../strategies'
 
-import { emailValidator } from '@/shared/validators'
 import { Button, IconButton, LoadingIndicator, Textfield } from '@/shared/components'
 import { Snackbar } from '@/shared/snackbar'
 
+interface LoginModel {
+  email: string
+  password: string
+}
+
 @Component({
   selector: 'n-login-page',
-  imports: [Button, IconButton, LoadingIndicator, ReactiveFormsModule, Textfield, RouterLink],
+  imports: [Button, IconButton, FormField, LoadingIndicator, Textfield, RouterLink],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,9 +25,16 @@ export class LoginPage {
   private readonly snackbar = inject(Snackbar)
   private readonly credentialsAuthStrategy = inject(CredentialsAuthStrategy)
 
-  protected readonly form = new FormGroup({
-    email: new FormControl('', [Validators.required, emailValidator]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+  private readonly loginModel = signal<LoginModel>({
+    email: '',
+    password: '',
+  })
+  protected readonly loginForm = form(this.loginModel, (schemaPath) => {
+    required(schemaPath.email, { message: 'Email is required' })
+    emailValidator(schemaPath.email, { message: 'Email must be in the format name&#64;example.com' })
+    required(schemaPath.password, { message: 'Password is required' })
+    minLength(schemaPath.password, 8, { message: 'Password must be at least 8 characters long' })
+    disabled(schemaPath, () => this.loading())
   })
 
   protected readonly loading = signal(false)
@@ -31,32 +42,23 @@ export class LoginPage {
 
   protected hidePassword = true
 
-  constructor() {
-    this.handleLoading()
-  }
+  login(event: Event): void {
+    event.preventDefault()
 
-  get email(): FormControl {
-    return this.form.controls.email
-  }
+    if (this.loginForm().invalid()) {
+      this.loginForm.email().markAsTouched()
+      this.loginForm.password().markAsTouched()
 
-  get password(): FormControl {
-    return this.form.controls.password
-  }
-
-  login(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched()
       return
     }
 
-    const email = this.form.controls.email.value ?? ''
-    const password = this.form.controls.password.value ?? ''
+    const credentials = this.loginModel()
 
     this.loading.set(true)
     this.invalidCredentials.set(false)
 
     this.credentialsAuthStrategy
-      .authenticate({ email, password })
+      .authenticate(credentials)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -76,15 +78,5 @@ export class LoginPage {
         this.snackbar.info('An error occurred while logging in')
       }
     }
-  }
-
-  private handleLoading() {
-    effect(() => {
-      if (this.loading()) {
-        this.form.disable()
-      } else {
-        this.form.enable()
-      }
-    })
   }
 }

@@ -8,20 +8,21 @@
 
 <form
   autocomplete="off"
-  [formGroup]="form"
+  (submit)="login($event)"
 >
   <n-textfield>
     <label for="email">Email address</label>
 
     <input
-      formControlName="email"
       id="email"
       type="email"
+      [formField]="loginForm.email"
     />
 
-    @let emailTouched = email.touched;
+    @let emailTouched = loginForm.email().touched();
+    @let emailInvalid = loginForm.email().invalid();
 
-    @if (email.invalid && emailTouched) {
+    @if (emailInvalid && emailTouched) {
       <i
         aria-hidden="true"
         class="color-error"
@@ -32,13 +33,9 @@
     }
 
     <span slot="error">
-      @if (email.invalid && emailTouched) {
-        @if (email.hasError('required')) {
-          <span>Email is required</span>
-        }
-
-        @if (email.hasError('email')) {
-          <span>Email must be in the format name&#64;example.com</span>
+      @if (emailInvalid && emailTouched) {
+        @for (error of loginForm.email().errors(); track error) {
+          <span>{{ error.message }}</span>
         }
       }
     </span>
@@ -48,12 +45,13 @@
     <label for="password">Password</label>
 
     <input
-      formControlName="password"
       id="password"
+      [formField]="loginForm.password"
       [type]="hidePassword ? 'password' : 'text'"
     />
 
-    @let passwordTouched = password.touched;
+    @let passwordTouched = loginForm.password().touched();
+    @let passwordInvalid = loginForm.password().invalid();
 
     <button
       aria-label="Show password"
@@ -67,7 +65,7 @@
       <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
     </button>
 
-    @if (password.invalid && passwordTouched) {
+    @if (passwordInvalid && passwordTouched) {
       <i
         aria-hidden="true"
         class="color-error"
@@ -78,13 +76,9 @@
     }
 
     <span slot="error">
-      @if (password.invalid && passwordTouched) {
-        @if (password.hasError('required')) {
-          <span>Password is required</span>
-        }
-
-        @if (password.hasError('minlength')) {
-          <span>Password must be at least 8 characters</span>
+      @if (passwordInvalid && passwordTouched) {
+        @for (error of loginForm.password().errors(); track error) {
+          <span>{{ error.message }}</span>
         }
       }
     </span>
@@ -94,7 +88,7 @@
     nButton
     type="submit"
     [disabled]="loading()"
-    (click)="login()"
+    (click)="login($event)"
   >
     @if (loading()) {
       <n-loading-indicator [size]="12" />

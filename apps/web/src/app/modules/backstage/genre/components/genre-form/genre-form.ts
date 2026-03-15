@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { Contracts } from '@neko/contracts'
-import { form, required, FormField } from '@angular/forms/signals'
+import { form, required, FormField, disabled } from '@angular/forms/signals'
 
 import { Button, LoadingIndicator, Textfield } from '@/shared/components'
+
+interface GenreModel {
+  name: string
+}
 
 @Component({
   selector: 'n-genre-form',
@@ -20,27 +24,25 @@ export class GenreForm {
   readonly formSubmit = output<{ name: string }>()
   readonly formCancel = output<void>()
 
-  private readonly genreName = linkedSignal<string>(() => this.genre()?.name ?? '')
-  protected readonly genreForm = form(this.genreName, (schemaPath) => {
-    required(schemaPath)
+  private readonly genreModel = linkedSignal<GenreModel>(() => ({
+    name: this.genre()?.name ?? '',
+  }))
+  protected readonly genreForm = form(this.genreModel, (schemaPath) => {
+    required(schemaPath.name, { message: 'Name is required' })
+    disabled(schemaPath, () => this.saving())
   })
-  protected readonly hasRequiredError = computed(() => this.name.errors().some((error) => error.kind === 'required'))
 
-  protected get name() {
-    return this.genreForm()
-  }
+  protected submit(event: Event): void {
+    event.preventDefault()
 
-  protected submit(): void {
-    if (this.name.invalid() || this.saving()) {
-      this.name.markAsTouched()
+    if (this.genreForm().invalid() || this.saving()) {
+      this.genreForm.name().markAsTouched()
       return
     }
 
-    const name = this.name.value()
+    const genre = this.genreModel()
 
-    if (name) {
-      this.formSubmit.emit({ name })
-    }
+    this.formSubmit.emit({ name: genre.name })
   }
 
   protected cancel(): void {

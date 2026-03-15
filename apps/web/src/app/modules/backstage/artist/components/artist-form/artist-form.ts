@@ -1,14 +1,29 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input, output, signal } from '@angular/core'
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 import { Contracts } from '@neko/contracts'
+import { disabled, form, FormField, minLength, required } from '@angular/forms/signals'
 
 import { LoadingIndicator, Textfield, Button } from '@/shared/components'
-import { GenrePicker, PictureUpload } from '@/modules/backstage/shared/components'
+import { GenreAutocomplete, PictureUpload } from '@/modules/backstage/shared/components'
 import { ArtworkPipe } from '@/shared/pipes'
+
+interface ArtistModel {
+  name: string
+  genres: string[]
+}
 
 @Component({
   selector: 'n-artist-form',
-  imports: [ArtworkPipe, Button, LoadingIndicator, PictureUpload, ReactiveFormsModule, Textfield, GenrePicker],
+  imports: [
+    ArtworkPipe,
+    Button,
+    LoadingIndicator,
+    FormField,
+    PictureUpload,
+    ReactiveFormsModule,
+    Textfield,
+    GenreAutocomplete,
+  ],
   templateUrl: './artist-form.html',
   styleUrl: './artist-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,54 +38,38 @@ export class ArtistForm {
 
   protected readonly artworkUrl = computed(() => this.artist()?.artwork?.url ?? '')
 
-  protected readonly form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
+  private readonly artistModel = linkedSignal<ArtistModel>(() => ({
+    name: this.artist()?.name ?? '',
+    genres: this.artist()?.genres ?? [],
+  }))
+  protected readonly artistForm = form(this.artistModel, (schemaPath) => {
+    required(schemaPath.name, { message: 'Name is required' })
+    minLength(schemaPath.genres, 1, { message: 'Please enter at least one genre' })
+    disabled(schemaPath, () => this.saving())
   })
 
-  protected readonly selectedGenreIds = signal<string[]>([])
-
   private image: File | null = null
-
-  constructor() {
-    effect(() => {
-      const artist = this.artist()
-
-      if (!artist) {
-        return
-      }
-
-      this.form.patchValue({ name: artist.name })
-      this.selectedGenreIds.set(artist.genres)
-    })
-  }
-
-  protected get name(): FormControl {
-    return this.form.controls.name
-  }
 
   protected onSelectedFile(file: File): void {
     this.image = file
   }
 
-  protected onGenreSelectionChange(genreIds: string[]): void {
-    this.selectedGenreIds.set(genreIds)
-  }
+  protected submit(event: Event): void {
+    event.preventDefault()
 
-  protected submit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched()
+    if (this.artistForm().invalid()) {
+      this.artistForm.name().markAsTouched()
+      this.artistForm.genres().markAsTouched()
       return
     }
 
-    const name = this.form.controls.name.value
+    const artist = this.artistModel()
 
-    if (name) {
-      this.formSubmit.emit({
-        name,
-        genres: this.selectedGenreIds(),
-        image: this.image,
-      })
-    }
+    this.formSubmit.emit({
+      name: artist.name,
+      genres: artist.genres,
+      image: this.image,
+    })
   }
 
   protected cancel(): void {
