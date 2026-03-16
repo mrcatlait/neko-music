@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
 
 import { PlaybackStore } from '@/core/stores'
-import { PLAYBACK_STATUS } from '@/shared/enums'
+import { PlaybackStatus } from '@/shared/enums'
 import { Player } from '@/modules/playback/player'
 
 @Component({
@@ -15,5 +15,5 @@ import { Player } from '@/modules/playback/player'
 export class CatalogLayout {
   private readonly playbackStore = inject(PlaybackStore)
 
-  protected readonly showPlayer = computed(() => this.playbackStore.status() !== PLAYBACK_STATUS.None)
+  protected readonly showPlayer = computed(() => this.playbackStore.status() !== PlaybackStatus.None)
 }

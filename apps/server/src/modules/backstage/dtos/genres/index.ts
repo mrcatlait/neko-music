@@ -1,0 +1,7 @@
+export * from './creation-request.dto'
+export * from './creation-response.dto'
+export * from './statistics.dto'
+export * from './statistics-response.dto'
+export * from './update-request.dto'
+export * from './genre.dto'
+export * from './genres-response.dto'

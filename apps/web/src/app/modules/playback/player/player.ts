@@ -4,7 +4,7 @@ import { PlayerControls, ProgressControl, TrackInfo, VolumeControl } from './com
 import { KeyboardShortcuts } from './services'
 
 import { PlaybackStore } from '@/core/stores'
-import { PLAYBACK_STATUS } from '@/shared/enums'
+import { PlaybackStatus } from '@/shared/enums'
 
 @Component({
   selector: 'n-player',
@@ -17,6 +17,6 @@ import { PLAYBACK_STATUS } from '@/shared/enums'
 export class Player {
   private readonly playbackStore = inject(PlaybackStore)
 
-  protected readonly enabled = computed(() => this.playbackStore.status() !== PLAYBACK_STATUS.None)
+  protected readonly enabled = computed(() => this.playbackStore.status() !== PlaybackStatus.None)
   protected readonly track = computed(() => this.playbackStore.queueStore.currentTrack())
 }

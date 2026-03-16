@@ -1,26 +1,53 @@
-import { Controller, Param, Put } from '@nestjs/common'
+import { Body, Controller, Post } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation } from '@nestjs/swagger'
 
-import { PublishAlbumUseCase } from '../use-cases'
+import { AlbumCreationRequest, AlbumCreationResponse } from '../dtos'
+import { CreateBackstageAlbumUseCase } from '../use-cases'
 
 import { UserSession } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
+import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
+import { EntityType, MediaType } from '@/modules/media/enums'
 
 @Controller('backstage/albums')
 @ApiTags('Backstage')
 @ApiBearerAuth()
 export class AlbumController {
-  constructor(private readonly publishAlbumUseCase: PublishAlbumUseCase) {}
+  constructor(
+    private readonly createBackstageAlbumUseCase: CreateBackstageAlbumUseCase,
+    private readonly generateUploadTokenUseCase: GenerateUploadTokenUseCase,
+  ) {}
 
-  @Put(':albumId/publish')
-  @ApiOperation({
-    summary: 'Publish an album',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The album has been successfully published',
-  })
-  publishAlbum(@Param('albumId') albumId: string, @UserSession() user: User): Promise<void> {
-    return this.publishAlbumUseCase.invoke({ userId: user.id, albumId })
+  @Post()
+  @ApiOperation({ summary: 'Create an album' })
+  @ApiResponse({ status: 201, description: 'The album has been successfully created', type: AlbumCreationRequest })
+  async createAlbum(@Body() body: AlbumCreationRequest, @UserSession() user: User): Promise<AlbumCreationResponse> {
+    const album = await this.createBackstageAlbumUseCase.invoke(body)
+
+    const { uploadToken } = await this.generateUploadTokenUseCase.invoke({
+      userId: user.id,
+      mediaType: MediaType.Image,
+      entityType: EntityType.Album,
+      entityId: album.albumId,
+    })
+
+    const tracks = await Promise.all(
+      album.tracks.map(async (track) => {
+        const trackUploadToken = await this.generateUploadTokenUseCase.invoke({
+          userId: user.id,
+          mediaType: MediaType.Audio,
+          entityType: EntityType.Track,
+          entityId: track,
+        })
+
+        return { id: track, uploadToken: trackUploadToken.uploadToken }
+      }),
+    )
+
+    return {
+      id: album.albumId,
+      uploadToken,
+      tracks,
+    }
   }
 }

@@ -1,3 +1,3 @@
 export interface RefreshTokenResponseDto {
-  readonly accessToken: string
+  accessToken: string
 }

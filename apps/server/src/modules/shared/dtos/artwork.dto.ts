@@ -1,7 +1,7 @@
 import { Contracts } from '@neko/contracts'
 import { ApiProperty } from '@nestjs/swagger'
 
-export class ArtworkDto implements Contracts.Shared.Artwork {
+export class ArtworkDto implements Contracts.Shared.Dtos.Artwork {
   @ApiProperty({
     description: 'Template URL with {size} placeholder; use preset names (small, medium, large)',
     example: 'https://example.com/artwork/{size}.webp',

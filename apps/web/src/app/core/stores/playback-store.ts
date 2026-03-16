@@ -3,7 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core'
 import { Player } from '../services'
 import { QueueStore } from './queue-store'
 
-import { PLAYBACK_STATUS, PlaybackStatus, REPEAT_MODE } from '@/shared/enums'
+import { PlaybackStatus, RepeatMode } from '@/shared/enums'
 import { Queue } from '@/shared/models'
 
 @Injectable({
@@ -13,7 +13,7 @@ export class PlaybackStore {
   private readonly player = inject(Player)
   readonly queueStore = inject(QueueStore)
 
-  readonly status = signal<PlaybackStatus>(PLAYBACK_STATUS.None)
+  readonly status = signal<PlaybackStatus>(PlaybackStatus.None)
   readonly volume = signal<number>(50)
   readonly muted = signal<boolean>(false)
   readonly currentTime = signal<number>(0)
@@ -25,12 +25,12 @@ export class PlaybackStore {
   }
 
   play(): void {
-    this.status.set(PLAYBACK_STATUS.Playing)
+    this.status.set(PlaybackStatus.Playing)
     this.player.play()
   }
 
   pause(): void {
-    this.status.set(PLAYBACK_STATUS.Paused)
+    this.status.set(PlaybackStatus.Paused)
     this.player.pause()
   }
 
@@ -68,7 +68,7 @@ export class PlaybackStore {
   togglePlay(trackId: string, createQueue: (trackId: string) => Queue<unknown>): void {
     const currentTrack = this.queueStore.currentTrack()
     const isCurrentTrack = currentTrack?.id === trackId
-    const isPlaying = this.status() === PLAYBACK_STATUS.Playing
+    const isPlaying = this.status() === PlaybackStatus.Playing
 
     if (isCurrentTrack && isPlaying) {
       // Same track playing -> pause
@@ -94,13 +94,13 @@ export class PlaybackStore {
 
     this.player.onPlaybackEnded(() => {
       switch (this.queueStore.repeat()) {
-        case REPEAT_MODE.Single:
+        case RepeatMode.Single:
           this.play()
           break
-        case REPEAT_MODE.All:
+        case RepeatMode.All:
           this.queueStore.next()
           break
-        case REPEAT_MODE.None:
+        case RepeatMode.None:
           if (this.queueStore.hasNext()) {
             this.queueStore.next()
           }
@@ -109,7 +109,7 @@ export class PlaybackStore {
     })
 
     this.player.onManifestLoadingStarted(() => {
-      this.status.set(PLAYBACK_STATUS.Loading)
+      this.status.set(PlaybackStatus.Loading)
     })
   }
 }

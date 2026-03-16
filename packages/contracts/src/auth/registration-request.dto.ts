@@ -1,5 +1,5 @@
 export interface RegistrationRequestDto {
-  readonly email: string
-  readonly password: string
-  readonly displayName: string
+  email: string
+  password: string
+  displayName: string
 }

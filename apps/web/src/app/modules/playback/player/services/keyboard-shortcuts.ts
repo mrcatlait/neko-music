@@ -1,7 +1,7 @@
 import { DOCUMENT, inject, Injectable, OnDestroy } from '@angular/core'
 
 import { PlaybackStore } from '@/core/stores'
-import { PLAYBACK_STATUS } from '@/shared/enums'
+import { PlaybackStatus } from '@/shared/enums'
 
 @Injectable({
   providedIn: 'root',
@@ -162,7 +162,7 @@ export class KeyboardShortcuts implements OnDestroy {
   }
 
   private togglePlay(): void {
-    if (this.playbackStore.status() === PLAYBACK_STATUS.Playing) {
+    if (this.playbackStore.status() === PlaybackStatus.Playing) {
       this.playbackStore.pause()
     } else {
       this.playbackStore.play()

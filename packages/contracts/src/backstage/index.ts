@@ -1,16 +1,11 @@
-export * from './artist-creation-request.dto'
-export * from './artist-creation-response.dto'
-export * from './artist-statistics.dto'
-export * from './artist-statistics-response.dto'
-export * from './artist-update-request.dto'
-export * from './artist-update-response.dto'
-export * from './backstage-artist.dto'
-export * from './artist.dto'
-export * from './artists-response.dto'
-export * from './genre-creation-request.dto'
-export * from './genre-creation-response.dto'
-export * from './genre-statistics-response.dto'
-export * from './genre-statistics.dto'
-export * from './genre-update-request.dto'
-export * from './genre.dto'
-export * from './genres-response.dto'
+import { AlbumsDtos } from './albums'
+import { ArtistsDtos } from './artists'
+import { GenresDtos } from './genres'
+import { TracksDtos } from './tracks'
+
+export namespace BackstageDtos {
+  export import Albums = AlbumsDtos
+  export import Artists = ArtistsDtos
+  export import Genres = GenresDtos
+  export import Tracks = TracksDtos
+}

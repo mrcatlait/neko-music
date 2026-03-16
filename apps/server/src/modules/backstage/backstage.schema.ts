@@ -42,9 +42,9 @@ export interface BackstageTrackTable {
   id: Generated<string>
   name: string
   catalogTrackId: string
-  albumId: string | null
-  trackNumber: number | null
-  diskNumber: number | null
+  albumId: string
+  trackNumber: number
+  diskNumber: number
   releaseDate: Date
   type: string
   duration: number

@@ -1,6 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core'
 
-import { REPEAT_MODE, RepeatMode } from '@/shared/enums'
+import { RepeatMode } from '@/shared/enums'
 import { Track } from '@/shared/entities'
 import { shuffleArray } from '@/shared/utils'
 import { Queue } from '@/shared/models'
@@ -17,7 +17,7 @@ export class QueueStore {
   readonly queueName = signal<string | null>(null)
   readonly queueDescription = signal<string | null>(null)
 
-  readonly repeat = signal<RepeatMode>(REPEAT_MODE.None)
+  readonly repeat = signal<RepeatMode>(RepeatMode.None)
   readonly shuffle = signal<boolean>(false)
 
   readonly currentTrackIndex = computed(() =>
@@ -27,9 +27,9 @@ export class QueueStore {
   readonly nextInQueue = computed(() => this.nextTracks().filter((_, index) => index > this.currentTrackIndex()))
 
   readonly hasNext = computed(
-    () => this.currentTrackIndex() < this.nextTracks().length - 1 || this.repeat() === REPEAT_MODE.All,
+    () => this.currentTrackIndex() < this.nextTracks().length - 1 || this.repeat() === RepeatMode.All,
   )
-  readonly hasPrevious = computed(() => this.currentTrackIndex() > 0 || this.repeat() === REPEAT_MODE.All)
+  readonly hasPrevious = computed(() => this.currentTrackIndex() > 0 || this.repeat() === RepeatMode.All)
 
   async setQueue(queue: Queue<unknown>): Promise<void> {
     if (queue.id !== this.queueId()) {
@@ -80,15 +80,15 @@ export class QueueStore {
 
   toggleRepeat(): void {
     switch (this.repeat()) {
-      case REPEAT_MODE.None:
-        this.repeat.set(REPEAT_MODE.All)
+      case RepeatMode.None:
+        this.repeat.set(RepeatMode.All)
         break
-      case REPEAT_MODE.All:
-        this.repeat.set(REPEAT_MODE.Single)
+      case RepeatMode.All:
+        this.repeat.set(RepeatMode.Single)
         break
-      case REPEAT_MODE.Single:
+      case RepeatMode.Single:
       default:
-        this.repeat.set(REPEAT_MODE.None)
+        this.repeat.set(RepeatMode.None)
         break
     }
   }
@@ -126,7 +126,7 @@ export class QueueStore {
     this.currentTrack.set({} as Track)
     this.tracks.set([])
     this.nextTracks.set([])
-    this.repeat.set(REPEAT_MODE.None)
+    this.repeat.set(RepeatMode.None)
     this.queueName.set(null)
     this.queueDescription.set(null)
   }

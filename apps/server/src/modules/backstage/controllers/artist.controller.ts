@@ -14,7 +14,7 @@ import {
   ArtistStatisticsResponse,
   ArtistUpdateRequest,
   ArtistUpdateResponse,
-  BackstageArtist,
+  Artist,
 } from '../dtos'
 
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
@@ -52,7 +52,7 @@ export class ArtistController {
       verified: body.verified,
     })
 
-    const uploadToken = await this.generateUploadTokenUseCase.invoke({
+    const { uploadToken } = await this.generateUploadTokenUseCase.invoke({
       userId: user.id,
       mediaType: MediaType.Image,
       entityType: EntityType.Artist,
@@ -61,7 +61,7 @@ export class ArtistController {
 
     return {
       artistId: artist.id,
-      uploadToken: uploadToken.uploadToken,
+      uploadToken,
     }
   }
 
@@ -72,9 +72,9 @@ export class ArtistController {
   @ApiResponse({
     status: 200,
     description: 'The artist has been successfully retrieved',
-    type: BackstageArtist,
+    type: Artist,
   })
-  getArtist(@Param() params: FindOneParams): Promise<BackstageArtist> {
+  getArtist(@Param() params: FindOneParams): Promise<Artist> {
     return this.getBackstageArtistUseCase.invoke({ id: params.id })
   }
 

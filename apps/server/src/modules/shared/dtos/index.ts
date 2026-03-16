@@ -1,3 +1,4 @@
+export * from './artist-role.dto'
 export * from './artwork.dto'
 export * from './find-one-params.dto'
 export * from './page-meta.dto'

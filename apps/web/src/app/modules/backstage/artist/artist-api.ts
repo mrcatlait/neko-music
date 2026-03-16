@@ -10,22 +10,24 @@ export class ArtistApi {
   private readonly http = inject(HttpClient)
   private readonly apiUrl = inject(ENVIRONMENT).apiUrl
 
-  create(payload: Contracts.Backstage.ArtistCreationRequest): Observable<Contracts.Backstage.ArtistCreationResponse> {
-    return this.http.post<Contracts.Backstage.ArtistCreationResponse>(`${this.apiUrl}/backstage/artists`, payload)
+  create(
+    payload: Contracts.Backstage.Artists.CreationRequest,
+  ): Observable<Contracts.Backstage.Artists.CreationResponse> {
+    return this.http.post<Contracts.Backstage.Artists.CreationResponse>(`${this.apiUrl}/backstage/artists`, payload)
   }
 
-  getArtist(id: string): Observable<Contracts.Backstage.BackstageArtist> {
-    return this.http.get<Contracts.Backstage.BackstageArtist>(`${this.apiUrl}/backstage/artists/${id}`)
+  getArtist(id: string): Observable<Contracts.Backstage.Artists.Artist> {
+    return this.http.get<Contracts.Backstage.Artists.Artist>(`${this.apiUrl}/backstage/artists/${id}`)
   }
 
   updateArtist(
     id: string,
-    payload: Contracts.Backstage.ArtistUpdateRequest,
-  ): Observable<Contracts.Backstage.ArtistUpdateResponse> {
-    return this.http.put<Contracts.Backstage.ArtistUpdateResponse>(`${this.apiUrl}/backstage/artists/${id}`, payload)
+    payload: Contracts.Backstage.Artists.UpdateRequest,
+  ): Observable<Contracts.Backstage.Artists.UpdateResponse> {
+    return this.http.put<Contracts.Backstage.Artists.UpdateResponse>(`${this.apiUrl}/backstage/artists/${id}`, payload)
   }
 
-  getStatistics(): Observable<Contracts.Backstage.ArtistStatisticsResponse> {
-    return this.http.get<Contracts.Backstage.ArtistStatisticsResponse>(`${this.apiUrl}/backstage/artists/statistics`)
+  getStatistics(): Observable<Contracts.Backstage.Artists.StatisticsResponse> {
+    return this.http.get<Contracts.Backstage.Artists.StatisticsResponse>(`${this.apiUrl}/backstage/artists/statistics`)
   }
 }

@@ -1,8 +1,8 @@
-export const QUEUE_TYPES = {
+export const QueueType = {
   Playlist: 'playlist',
   Album: 'album',
   Recommendations: 'recommendations',
   UserQueue: 'user_queue',
 } as const
 
-export type QueueType = (typeof QUEUE_TYPES)[keyof typeof QUEUE_TYPES]
+export type QueueType = (typeof QueueType)[keyof typeof QueueType]

@@ -1,6 +1,5 @@
 export * from './album-type'
 export * from './artist-role'
-export * from './auth-status'
 export * from './playback-status'
 export * from './queue-type'
 export * from './repeat-mode'

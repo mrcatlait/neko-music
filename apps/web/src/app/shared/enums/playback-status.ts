@@ -1,4 +1,4 @@
-export const PLAYBACK_STATUS = {
+export const PlaybackStatus = {
   None: 'none',
   Loading: 'loading',
   Playing: 'playing',
@@ -8,4 +8,4 @@ export const PLAYBACK_STATUS = {
   Seeking: 'seeking',
 } as const
 
-export type PlaybackStatus = (typeof PLAYBACK_STATUS)[keyof typeof PLAYBACK_STATUS]
+export type PlaybackStatus = (typeof PlaybackStatus)[keyof typeof PlaybackStatus]

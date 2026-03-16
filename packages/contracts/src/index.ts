@@ -1,72 +1,17 @@
-import {
-  LoginRequestDto,
-  LoginResponseDto,
-  RefreshTokenResponseDto,
-  RegistrationRequestDto,
-  WhoamiResponseDto,
-} from './auth'
-import {
-  ArtistCreationRequestDto,
-  ArtistCreationResponseDto,
-  ArtistStatisticsDto,
-  ArtistStatisticsResponseDto,
-  ArtistDto,
-  ArtistsResponseDto,
-  ArtistUpdateRequestDto,
-  ArtistUpdateResponseDto,
-  BackstageArtistDto,
-  GenreCreationRequestDto,
-  GenreCreationResponseDto,
-  GenreDto,
-  GenresResponseDto,
-  GenreStatisticsDto,
-  GenreStatisticsResponseDto,
-  GenreUpdateRequestDto,
-} from './backstage'
-import { BadRequestDto } from './error'
-import { UploadMediaResponseDto, UploadTokenResponseDto } from './media'
-import { ArtworkDto } from './shared'
+import { AuthDtos } from './auth'
+import { BackstageDtos } from './backstage'
+import { ErrorDtos } from './error'
+import { MediaDtos } from './media'
+import { SharedDtos } from './shared'
 
 export namespace Contracts {
-  export namespace Auth {
-    export type LoginRequest = LoginRequestDto
-    export type LoginResponse = LoginResponseDto
-    export type RefreshTokenResponse = RefreshTokenResponseDto
-    export type RegistrationRequest = RegistrationRequestDto
-    export type WhoamiResponse = WhoamiResponseDto
-  }
+  export import Auth = AuthDtos
 
-  export namespace Backstage {
-    // Genres
-    export type GenreCreationRequest = GenreCreationRequestDto
-    export type GenreCreationResponse = GenreCreationResponseDto
-    export type GenreStatisticsResponse = GenreStatisticsResponseDto
-    export type GenreStatistics = GenreStatisticsDto
-    export type GenreUpdateRequest = GenreUpdateRequestDto
-    export type Genre = GenreDto
-    export type GenresResponse = GenresResponseDto
-    // Artists
-    export type ArtistCreationRequest = ArtistCreationRequestDto
-    export type ArtistCreationResponse = ArtistCreationResponseDto
-    export type ArtistStatistics = ArtistStatisticsDto
-    export type ArtistStatisticsResponse = ArtistStatisticsResponseDto
-    export type ArtistUpdateRequest = ArtistUpdateRequestDto
-    export type ArtistUpdateResponse = ArtistUpdateResponseDto
-    export type BackstageArtist = BackstageArtistDto
-    export type ArtistsResponse = ArtistsResponseDto
-    export type Artist = ArtistDto
-  }
+  export import Backstage = BackstageDtos
 
-  export namespace Media {
-    export type UploadTokenResponse = UploadTokenResponseDto
-    export type UploadMediaResponse = UploadMediaResponseDto
-  }
+  export import Error = ErrorDtos
 
-  export namespace Error {
-    export type BadRequest = BadRequestDto
-  }
+  export import Media = MediaDtos
 
-  export namespace Shared {
-    export type Artwork = ArtworkDto
-  }
+  export import Shared = SharedDtos
 }

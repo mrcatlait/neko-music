@@ -21,6 +21,10 @@ import {
   UpdateGenreUseCase,
   SyncArtistValidator,
   SyncArtistUseCase,
+  CreateBackstageAlbumUseCase,
+  CreateBackstageAlbumValidator,
+  CreateBackstageTrackUseCase,
+  CreateBackstageTrackValidator,
 } from './use-cases'
 import { AlbumController, ArtistController, GenreController } from './controllers'
 import { AlbumRepository, ArtistRepository, GenreRepository, TrackRepository } from './repositories'
@@ -36,8 +40,12 @@ export class BackstageCoreModule extends CoreModuleWithOptions {
     // Use cases
     AddGenreUseCase,
     AddGenreValidator,
+    CreateBackstageAlbumUseCase,
+    CreateBackstageAlbumValidator,
     CreateBackstageArtistUseCase,
     CreateBackstageArtistValidator,
+    CreateBackstageTrackUseCase,
+    CreateBackstageTrackValidator,
     GetArtistStatisticsUseCase,
     GetBackstageArtistUseCase,
     GetGenreStatisticsUseCase,

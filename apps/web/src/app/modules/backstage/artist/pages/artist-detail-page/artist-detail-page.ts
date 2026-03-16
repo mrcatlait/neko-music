@@ -27,7 +27,7 @@ export class ArtistDetailPage implements OnInit {
 
   readonly id = input.required<string>()
 
-  protected readonly artist = signal<Contracts.Backstage.BackstageArtist | undefined>(undefined)
+  protected readonly artist = signal<Contracts.Backstage.Artists.Artist | undefined>(undefined)
   protected readonly loading = signal(true)
   protected readonly saving = signal(false)
 
