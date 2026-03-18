@@ -8,6 +8,7 @@ Thank you for your interest in contributing to Neko Music!
 - [Setting Up the Dev Environment](#setting-up-the-dev-environment)
 - [Development Workflow](#development-workflow)
 - [Contribution Guidelines](#contribution-guidelines)
+- [Good First Contributions](#good-first-contributions)
 - [Commit Message Format](#commit-message-format)
 - [Pull Requests](#pull-requests)
 - [Help & Support](#help--support)
@@ -140,6 +141,52 @@ For larger features, open a feature request issue to discuss the design before i
 - Add unit tests for new or changed behavior
 - Update Pact contracts if you change API interfaces
 - Update documentation when adding or changing public APIs
+
+## Good First Contributions
+
+These are scoped tasks that help you learn the codebase without diving into complex features.
+
+### Documentation
+
+- Fix typos or clarify wording in the README, CONTRIBUTING, or app-specific docs
+- Add JSDoc comments to public APIs that lack them
+- Improve error messages or validation feedback to be more helpful
+
+### Tests
+
+- Add unit tests for utilities, pipes, or services that lack coverage
+- Add edge-case tests to existing specs (null inputs, empty arrays, boundary values)
+- Run `moon run web:test-unit` and `moon run server:test-unit` to find gaps
+
+### Small Refactors
+
+- Rename classes or functions for consistency (e.g. `AddGenreUseCase` → `CreateGenreUseCase` if the pattern elsewhere uses "Create")
+- Extract repeated logic into shared utilities
+- Add missing types or tighten existing ones
+
+### Validation and Error Handling
+
+- Add validation for optional request fields (e.g. artist IDs in album creation)
+- Handle specific error codes (e.g. 401) in API clients to improve UX
+- Improve rollback or cleanup in services that have `@todo` comments
+
+### Improve UI/UX
+
+- Improve accessibility (ARIA labels, keyboard navigation, focus states)
+- Refine responsive layout or fix layout issues on smaller screens
+- Improve loading states, empty states, or error feedback in the catalog or backstage
+- Polish interactions (transitions, hover states, visual hierarchy)
+
+### Shared Packages
+
+- Add DOM selectors to `@neko/selectors` when you find selectors duplicated between contract tests and E2E tests
+- Add permission constants to `@neko/permissions` when adding new guarded actions
+
+### Before You Start
+
+- Search existing issues to avoid duplicate work
+- For refactors or validation changes, open an issue first to confirm the approach
+- Start with documentation or tests if you are new to the codebase
 
 ## Commit Message Format
 

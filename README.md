@@ -3,7 +3,28 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mrcatlait/neko-music/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Neko Music is a self-hosted, web-first music streaming platform. You own your files, your data, and your listening history. No external catalog dependencies, no tracking, no lock-in.
+**Your music. Your server. No subscriptions, no tracking, no lock-in.**
+
+Neko Music is a self-hosted, extensible music streaming platform built on strong architecture. You own your files, your data, and your listening history. The codebase is designed for clarity and extensibility — swap storage, transcoders, or auth providers without fighting the framework.
+
+## Why Neko Music?
+
+- **Ownership** — Your hardware. Your data. No external catalogs, no tracking.
+- **Extensibility** — Swap storage, transcoders, or auth. Implement a strategy and wire it in.
+- **Adaptive streaming** — MPEG-DASH adjusts bitrate to your connection. Built to scale.
+- **API contracts in CI** — Frontend defines what it expects. Backend verifies. No surprise regressions.
+- **Permissions in sync** — RBAC defined once. UI and API stay aligned. No drift.
+- **Clarity over cleverness** — Extensible, good defaults, hackable.
+
+## How we differ
+
+| Neko Music | Typical self-hosted players |
+|------------|-----------------------------|
+| MPEG-DASH adaptive streaming (multi-bitrate) | Raw file serving or single-bitrate transcoding |
+| Consumer-driven Pact contracts in CI | Manual API compatibility checks |
+| Shared permissions across frontend and backend | Duplicated or drift-prone auth logic |
+| Use-case classes with swappable strategies | Monolithic controllers with hardcoded dependencies |
+| Moonrepo task orchestration and caching | Ad-hoc scripts or heavy build tooling |
 
 This monorepo hosts the Angular web application, the NestJS backend, shared packages, infrastructure configuration, and all test suites — managed with Moonrepo for task orchestration and caching.
 
