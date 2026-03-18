@@ -20,7 +20,7 @@ export class GenreForm {
   readonly submitLabel = input.required<string>()
   readonly saving = input.required<boolean>()
 
-  readonly genre = input<Contracts.Backstage.Genre | null>(null)
+  readonly genre = input<Contracts.Backstage.Genres.Genre | null>(null)
   readonly formSubmit = output<{ name: string }>()
   readonly formCancel = output<void>()
 

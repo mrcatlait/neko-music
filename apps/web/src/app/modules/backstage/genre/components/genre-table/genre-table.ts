@@ -28,7 +28,7 @@ export class GenreTable implements OnInit {
     },
   }
   protected readonly modules = [AllCommunityModule]
-  protected readonly columnDefs: ColDef<Contracts.Backstage.GenreStatistics>[] = [
+  protected readonly columnDefs: ColDef<Contracts.Backstage.Genres.Statistics>[] = [
     { field: 'name', headerName: 'Name', flex: 1 },
     {
       field: 'totalArtists',
@@ -47,7 +47,7 @@ export class GenreTable implements OnInit {
     },
   ]
 
-  protected readonly rowData = signal<Contracts.Backstage.GenreStatistics[]>([])
+  protected readonly rowData = signal<Contracts.Backstage.Genres.Statistics[]>([])
   protected readonly error = signal<string | null>(null)
 
   ngOnInit(): void {

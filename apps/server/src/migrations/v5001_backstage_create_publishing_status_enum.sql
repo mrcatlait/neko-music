@@ -1,6 +1,7 @@
 CREATE TYPE "backstage"."PublishingStatus" AS ENUM (
   'DRAFT',
   'PROCESSING',
+  'READY',
   'PUBLISHED',
   'REJECTED'
 );

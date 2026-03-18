@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { ALBUM_TYPES, ARTIST_ROLES } from '@/shared/enums'
+import { AlbumType, ArtistRole } from '@/shared/enums'
 import { Album } from '@/shared/entities'
 
 export class AlbumBuilder {
@@ -12,12 +12,12 @@ export class AlbumBuilder {
       title: faker.music.album(),
       releaseDate: faker.date.past().toISOString().split('T')[0],
       explicit: faker.datatype.boolean(),
-      type: faker.helpers.arrayElement(Object.values(ALBUM_TYPES)),
+      type: faker.helpers.arrayElement(Object.values(AlbumType)),
       artists: faker.helpers.multiple(
         () => ({
           id: faker.string.uuid(),
           name: faker.music.artist(),
-          role: faker.helpers.arrayElement(Object.values(ARTIST_ROLES)),
+          role: faker.helpers.arrayElement(Object.values(ArtistRole)),
         }),
         {
           count: {

@@ -27,7 +27,7 @@ export class GenreAutocomplete implements FormValueControl<string[]>, OnInit {
 
   protected readonly loading = signal(false)
 
-  private readonly availableGenres = signal<Contracts.Backstage.Genre[]>([])
+  private readonly availableGenres = signal<Contracts.Backstage.Genres.Genre[]>([])
 
   private readonly filterValue = signal<string>('')
   protected readonly filterForm = form(this.filterValue)

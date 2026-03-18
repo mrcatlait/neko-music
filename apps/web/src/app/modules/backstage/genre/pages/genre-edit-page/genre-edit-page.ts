@@ -24,7 +24,7 @@ export class GenreEditPage implements OnInit {
 
   readonly genreId = input.required<string>()
 
-  protected readonly genre = signal<Contracts.Backstage.Genre | null>(null)
+  protected readonly genre = signal<Contracts.Backstage.Genres.Genre | null>(null)
   protected readonly saving = signal(false)
 
   ngOnInit(): void {

@@ -25,8 +25,13 @@ export class ArtistListener {
   }
 
   @OnEvent(MediaReadyEvent.event)
-  handleMediaReadyEvent({ payload }: MediaReadyEvent): Promise<void> | void {
+  async handleMediaReadyEvent({ payload }: MediaReadyEvent): Promise<void> {
     if (payload.entityType !== EntityType.Artist) return
+
+    await this.updateArtistStatusUseCase.invoke({
+      artistId: payload.entityId,
+      status: PublishingStatus.Ready,
+    })
 
     return this.syncArtistUseCase
       .invoke({

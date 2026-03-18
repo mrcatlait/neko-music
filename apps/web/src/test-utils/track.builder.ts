@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { ARTIST_ROLES } from '@/shared/enums'
+import { ArtistRole } from '@/shared/enums'
 import { Track } from '@/shared/entities'
 
 export class TrackBuilder {
@@ -23,7 +23,7 @@ export class TrackBuilder {
       artists: faker.helpers.multiple(() => ({
         id: faker.string.uuid(),
         name: faker.music.artist(),
-        role: faker.helpers.arrayElement(Object.values(ARTIST_ROLES)),
+        role: faker.helpers.arrayElement(Object.values(ArtistRole)),
       })),
       genres: faker.helpers.multiple(() => faker.music.genre()),
       artwork: {

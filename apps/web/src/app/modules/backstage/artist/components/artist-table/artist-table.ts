@@ -30,14 +30,14 @@ export class ArtistTable implements OnInit {
     },
   }
   protected readonly modules = [AllCommunityModule]
-  protected readonly columnDefs: ColDef<Contracts.Backstage.ArtistStatistics>[] = [
+  protected readonly columnDefs: ColDef<Contracts.Backstage.Artists.Statistics>[] = [
     { field: 'status', headerName: 'Status', width: 160, cellRenderer: RecordStatusCellRenderer },
     { field: 'name', headerName: 'Name', flex: 1 },
     { field: 'totalAlbums', headerName: 'Total Albums', width: 160 },
     { field: 'totalTracks', headerName: 'Total Tracks', width: 160 },
   ]
 
-  protected readonly rowData = signal<Contracts.Backstage.ArtistStatistics[]>([])
+  protected readonly rowData = signal<Contracts.Backstage.Artists.Statistics[]>([])
   protected readonly error = signal<string | null>(null)
 
   ngOnInit(): void {
