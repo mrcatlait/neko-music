@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 
 import { AuthService } from '../../services'
 
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 
 export interface LoginValidatorPayload {
   password: string
@@ -19,26 +19,18 @@ export class LoginValidator implements Validator<LoginValidatorPayload> {
     this.dummyHash = authService.generatePasswordHash('password', authService.generatePasswordSalt())
   }
 
-  validate(payload: LoginValidatorPayload): ValidationResult {
+  validate(payload: LoginValidatorPayload): void {
     if (!payload.passwordHash) {
       // Use constant-time comparison
       this.authService.comparePasswordHash(payload.password, this.dummyHash)
 
-      return {
-        isValid: false,
-        error: INVALID_CREDENTIALS_ERROR,
-      }
+      throw new UnauthorizedException(INVALID_CREDENTIALS_ERROR)
     }
 
     const isValidPassword = this.authService.comparePasswordHash(payload.password, payload.passwordHash)
 
     if (!isValidPassword) {
-      return {
-        isValid: false,
-        error: INVALID_CREDENTIALS_ERROR,
-      }
+      throw new UnauthorizedException(INVALID_CREDENTIALS_ERROR)
     }
-
-    return { isValid: true }
   }
 }

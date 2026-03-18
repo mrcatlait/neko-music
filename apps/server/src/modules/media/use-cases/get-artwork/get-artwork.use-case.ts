@@ -48,8 +48,11 @@ export class GetArtworkUseCase implements UseCase<GetArtworkUseCaseParams, GetAr
       throw new Error(`Multiple formats found for ${params.entityType} ${params.entityId}`)
     }
 
-    const sourceFileName = this.fileService.extractFilenameFromPath(sourceAsset.storagePath)
-    const url = this.namingStrategy.generateArtworkFilenameTemplate(sourceFileName, uniqueFormats[0])
+    const sourceAssetFilename = this.fileService.extractFilenameFromPath(sourceAsset.storagePath)
+    const url = this.namingStrategy.generateArtworkFilenameTemplate({
+      sourceAssetFilename,
+      format: uniqueFormats[0],
+    })
 
     const uniqueDominantColors = [...new Set(assets.map((asset) => asset.metadata.dominantColor))]
 

@@ -50,6 +50,7 @@ export class TrackCreationRequest implements Contracts.Backstage.Tracks.Creation
   @ApiProperty({
     description: 'The type of the track',
     example: TrackType.Original,
+    enum: TrackType,
   })
   @IsEnum(TrackType)
   @IsNotEmpty()
@@ -73,7 +74,8 @@ export class TrackCreationRequest implements Contracts.Backstage.Tracks.Creation
 
   @ApiProperty({
     description: 'The artists of the track',
-    type: [ArtistRole],
+    type: () => ArtistRole,
+    isArray: true,
   })
   @IsArray()
   @ArrayNotEmpty()

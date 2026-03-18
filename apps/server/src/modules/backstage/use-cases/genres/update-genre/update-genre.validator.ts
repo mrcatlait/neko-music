@@ -1,36 +1,26 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { UpdateGenreUseCaseParams } from './update-genre.use-case'
 import { GenreRepository } from '../../../repositories'
 
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class UpdateGenreValidator implements Validator<UpdateGenreUseCaseParams> {
   constructor(private readonly genreRepository: GenreRepository) {}
 
-  async validate(params: UpdateGenreUseCaseParams): Promise<ValidationResult> {
+  async validate(params: UpdateGenreUseCaseParams): Promise<void> {
     const [genreExists, hasGenre] = await Promise.all([
       this.genreRepository.findGenreByName(params.name),
       this.genreRepository.findGenreById(params.id),
     ])
 
     if (!hasGenre) {
-      return {
-        isValid: false,
-        error: 'Genre not found',
-      }
+      throw new BadRequestException('Genre not found')
     }
 
     if (genreExists) {
-      return {
-        isValid: false,
-        error: 'Genre already exists',
-      }
-    }
-
-    return {
-      isValid: true,
+      throw new BadRequestException('Genre already exists')
     }
   }
 }

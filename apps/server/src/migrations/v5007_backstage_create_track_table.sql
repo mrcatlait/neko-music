@@ -1,7 +1,7 @@
 CREATE TABLE "backstage"."Track" (
   "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   "name" VARCHAR(255) NOT NULL,
-  "catalogTrackId" UUID NOT NULL,
+  "catalogTrackId" UUID,
   "albumId" UUID,
   "trackNumber" SMALLINT,
   "diskNumber" SMALLINT,
@@ -13,10 +13,14 @@ CREATE TABLE "backstage"."Track" (
   CONSTRAINT "UK_Track_Name" UNIQUE (name),
   CONSTRAINT "FK_Track_CatalogTrack" FOREIGN KEY ("catalogTrackId") REFERENCES "catalog"."Track" ("id") ON DELETE CASCADE,
   CONSTRAINT "FK_Track_Album" FOREIGN KEY ("albumId") REFERENCES "backstage"."Album" ("id") ON DELETE CASCADE,
-  CONSTRAINT "CHK_Track_Duration" CHECK ("duration" > 0 AND "duration" < 36000),
+  CONSTRAINT "CHK_Track_Duration" CHECK ("duration" >= 0 AND "duration" < 36000),
   CONSTRAINT "CHK_Track_Positioning" CHECK (
     ("albumId" IS NULL AND "trackNumber" IS NULL AND "diskNumber" IS NULL) OR
     ("albumId" IS NOT NULL AND "trackNumber" IS NOT NULL AND "trackNumber" > 0 AND "diskNumber" IS NOT NULL AND "diskNumber" > 0)
+  ),
+  CONSTRAINT "CHK_Track_CatalogTrackId" CHECK (
+    ("catalogTrackId" IS NOT NULL AND "status" = 'PUBLISHED') OR
+    ("catalogTrackId" IS NULL AND "status" IN ('DRAFT', 'PROCESSING', 'REJECTED'))
   )
 );
 

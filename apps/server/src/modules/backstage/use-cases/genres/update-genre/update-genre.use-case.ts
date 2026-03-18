@@ -22,11 +22,7 @@ export class UpdateGenreUseCase implements UseCase<UpdateGenreUseCaseParams, Upd
   ) {}
 
   async invoke(params: UpdateGenreUseCaseParams): Promise<UpdateGenreUseCaseResult> {
-    const validationResult = await this.updateGenreValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.updateGenreValidator.validate(params)
 
     return this.genreRepository.updateGenre({
       id: params.id,

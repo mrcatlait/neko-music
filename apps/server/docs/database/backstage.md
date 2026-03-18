@@ -1,20 +1,13 @@
-# Catalog Schema
+# Backstage Schema
 
 ```mermaid
 erDiagram
-  Genre {
-    uuid id PK
-    string name UK
-  }
-  Genre ||--o{ ArtistGenre : genreId
-  Genre ||--o{ AlbumGenre : genreId
-  Genre ||--o{ TrackGenre : genreId
-
   Artist {
     uuid id PK
     string name UK
-    JSONB artwork
+    uuid catalogArtistId FK
     boolean verified
+    PublishingStatus status
   }
   Artist ||--o{ ArtistGenre : artistId
   Artist ||--o{ AlbumArtist : artistId
@@ -28,11 +21,12 @@ erDiagram
 
   Album {
     uuid id PK
-    string name
+    string name UK
+    uuid catalogAlbumId FK
     date releaseDate
     boolean explicit
-    JSONB artwork
     AlbumType type
+    PublishingStatus status
   }
   Album ||--o{ AlbumGenre : albumId
   Album ||--o{ AlbumArtist : albumId
@@ -52,20 +46,19 @@ erDiagram
 
   Track {
     uuid id PK
-    string name
+    string name UK
+    uuid catalogTrackId FK
     uuid albumId FK
     smallint trackNumber
     smallint diskNumber
     date releaseDate
     TrackType type
     smallint duration
-    JSONB artwork
-    JSONB playback
     boolean explicit
+    PublishingStatus status
   }
   Track ||--o{ TrackGenre : trackId
   Track ||--o{ TrackArtist : trackId
-  Track ||--o| Lyrics : trackId
 
   TrackGenre {
     uuid trackId PK,FK
@@ -78,32 +71,19 @@ erDiagram
     uuid artistId PK,FK
     ArtistRole role
   }
-
-  Lyrics {
-    uuid trackId PK,FK
-    string lyrics
-    boolean synced
-  }
 ```
+
+Note: `ArtistGenre`, `AlbumGenre`, and `TrackGenre` reference `catalog.Genre`. `Artist`, `Album`, and `Track` reference `catalog.Artist`, `catalog.Album`, and `catalog.Track` respectively when published.
 
 ## Enums
 
-- **ArtistRole**: `PRIMARY`, `FEATURING`, `REMIXER`
-- **AlbumType**: `ALBUM`, `SINGLE`, `COMPILATION`, `EP`, `OTHER`
-- **TrackType**: `ORIGINAL`, `EDIT`, `REMIX`, `ACOUSTIC`, `VOCAL`, `INSTRUMENTAL`
+- **PublishingStatus**: `DRAFT`, `PROCESSING`, `PUBLISHED`, `REJECTED`
+
+Referenced from catalog schema: **AlbumType**, **TrackType**, **ArtistRole**
 
 ## Tables and Columns
 
-### catalog.Genre
-
-A genre of music.
-
-| Column | Type | Description |
-|--------|------|-------------|
-| id | UUID | The ID of the genre |
-| name | VARCHAR(255) | The name of the genre |
-
-### catalog.Artist
+### backstage.Artist
 
 An artist.
 
@@ -111,10 +91,11 @@ An artist.
 |--------|------|-------------|
 | id | UUID | The ID of the artist |
 | name | VARCHAR(255) | The name of the artist |
-| artwork | JSONB | The artwork of the artist |
+| catalogArtistId | UUID | Foreign key to the catalog artist |
 | verified | BOOLEAN | Whether the artist is verified |
+| status | PublishingStatus | The status of the publishing process |
 
-### catalog.ArtistGenre
+### backstage.ArtistGenre
 
 A relationship between an artist and a genre.
 
@@ -124,7 +105,7 @@ A relationship between an artist and a genre.
 | genreId | UUID | Foreign key to the genre |
 | position | SMALLINT | The position of the genre in the artist's genres |
 
-### catalog.Album
+### backstage.Album
 
 An album.
 
@@ -132,12 +113,13 @@ An album.
 |--------|------|-------------|
 | id | UUID | The ID of the album |
 | name | VARCHAR(255) | The name of the album |
+| catalogAlbumId | UUID | Foreign key to the catalog album |
 | releaseDate | DATE | The release date of the album |
 | explicit | BOOLEAN | Whether the album is explicit |
-| artwork | JSONB | The artwork of the album |
 | type | AlbumType | The type of the album |
+| status | PublishingStatus | The status of the publishing process |
 
-### catalog.AlbumGenre
+### backstage.AlbumGenre
 
 A relationship between an album and a genre.
 
@@ -147,7 +129,7 @@ A relationship between an album and a genre.
 | genreId | UUID | Foreign key to the genre |
 | position | SMALLINT | The position of the genre in the album's genres |
 
-### catalog.AlbumArtist
+### backstage.AlbumArtist
 
 A relationship between an album and an artist.
 
@@ -157,7 +139,7 @@ A relationship between an album and an artist.
 | artistId | UUID | Foreign key to the artist |
 | role | ArtistRole | The role of the artist in the album |
 
-### catalog.Track
+### backstage.Track
 
 A track.
 
@@ -165,17 +147,17 @@ A track.
 |--------|------|-------------|
 | id | UUID | The ID of the track |
 | name | VARCHAR(255) | The name of the track |
+| catalogTrackId | UUID | Foreign key to the catalog track |
 | albumId | UUID | Foreign key to the album |
 | trackNumber | SMALLINT | The track number of the track |
 | diskNumber | SMALLINT | The disk number of the track |
 | releaseDate | DATE | The release date of the track |
 | type | TrackType | The type of the track |
 | duration | SMALLINT | The duration of the track |
-| artwork | JSONB | The artwork of the track |
-| playback | JSONB | The playback details of the track |
 | explicit | BOOLEAN | Whether the track is explicit |
+| status | PublishingStatus | The status of the publishing process |
 
-### catalog.TrackGenre
+### backstage.TrackGenre
 
 A relationship between a track and a genre.
 
@@ -185,7 +167,7 @@ A relationship between a track and a genre.
 | genreId | UUID | Foreign key to the genre |
 | position | SMALLINT | The position of the genre in the track's genres |
 
-### catalog.TrackArtist
+### backstage.TrackArtist
 
 A relationship between a track and an artist.
 
@@ -194,13 +176,3 @@ A relationship between a track and an artist.
 | trackId | UUID | Foreign key to the track |
 | artistId | UUID | Foreign key to the artist |
 | role | ArtistRole | The role of the artist in the track |
-
-### catalog.Lyrics
-
-A lyrics.
-
-| Column | Type | Description |
-|--------|------|-------------|
-| trackId | UUID | Foreign key to the track |
-| lyrics | TEXT | The lyrics of the track in TTML format |
-| synced | BOOLEAN | Whether the lyrics are synced |

@@ -27,11 +27,7 @@ export class CreateCatalogArtistUseCase implements UseCase<
   ) {}
 
   async invoke(params: CreateCatalogArtistUseCaseParams): Promise<CreateCatalogArtistUseCaseResult> {
-    const validationResult = await this.createCatalogArtistValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.createCatalogArtistValidator.validate(params)
 
     return await this.artistRepository.createArtist({
       artist: {

@@ -26,6 +26,7 @@ export class AlbumCreationRequest implements Contracts.Backstage.Albums.Creation
   @ApiProperty({
     description: 'The type of the album',
     example: AlbumType.Album,
+    enum: AlbumType,
   })
   @IsEnum(AlbumType)
   @IsNotEmpty()
@@ -49,7 +50,8 @@ export class AlbumCreationRequest implements Contracts.Backstage.Albums.Creation
 
   @ApiProperty({
     description: 'The artists of the album',
-    type: [ArtistRole],
+    type: () => ArtistRole,
+    isArray: true,
   })
   @IsArray()
   @ArrayNotEmpty()
@@ -57,7 +59,8 @@ export class AlbumCreationRequest implements Contracts.Backstage.Albums.Creation
 
   @ApiProperty({
     description: 'The tracks of the album',
-    type: [TrackCreationRequest],
+    type: () => TrackCreationRequest,
+    isArray: true,
   })
   @IsArray()
   @ArrayNotEmpty()

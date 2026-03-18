@@ -15,14 +15,14 @@ export class StreamingService {
     this.namingStrategy = options.namingStrategy
   }
 
-  streamManifest(trackId: string): StreamableFile {
-    const manifestFileName = this.namingStrategy.generateDashManifestName(trackId)
-    const filePath = this.namingStrategy.generateFileName({ fileName: manifestFileName, format: 'mpd' })
+  streamManifest(streamId: string): StreamableFile {
+    const manifestFileName = this.namingStrategy.generateDashManifestName()
+    const filePath = this.namingStrategy.generateStreamFilename({ sourceAssetId: streamId, fileName: manifestFileName })
     return new StreamableFile(this.storageStrategy.downloadToStream(filePath))
   }
 
-  streamSegment(trackId: string, segmentFileName: string): StreamableFile {
-    const filePath = this.namingStrategy.generateFileName({ fileName: segmentFileName, format: 'm4s' })
+  streamSegment(streamId: string, segmentFileName: string): StreamableFile {
+    const filePath = this.namingStrategy.generateStreamFilename({ sourceAssetId: streamId, fileName: segmentFileName })
     return new StreamableFile(this.storageStrategy.downloadToStream(filePath))
   }
 }

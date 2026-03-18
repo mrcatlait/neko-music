@@ -1,11 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
 import { UploadMediaUseCaseParams } from './upload-media.use-case'
 import { FileService } from '../../services'
 
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class UploadAudioValidator implements Validator<UploadMediaUseCaseParams> {
@@ -20,39 +20,23 @@ export class UploadAudioValidator implements Validator<UploadMediaUseCaseParams>
     this.maxAudioSize = options.maxAudioSize
   }
 
-  validate(params: Partial<UploadMediaUseCaseParams>): ValidationResult {
+  validate(params: Partial<UploadMediaUseCaseParams>): void {
     if (!params.file) {
-      return {
-        isValid: false,
-        error: 'File buffer is required',
-      }
+      throw new BadRequestException('File buffer is required')
     }
 
     const mimetype = params.file.mimetype
 
     if (!mimetype || !this.allowedAudioMimeTypes.includes(mimetype)) {
-      return {
-        isValid: false,
-        error: 'Invalid audio mime type',
-      }
+      throw new BadRequestException('Invalid audio mime type')
     }
 
     if (!params.file.size) {
-      return {
-        isValid: false,
-        error: 'Audio size is required',
-      }
+      throw new BadRequestException('Audio size is required')
     }
 
     if (params.file.size > this.maxAudioSize) {
-      return {
-        isValid: false,
-        error: 'Audio size is too large',
-      }
-    }
-
-    return {
-      isValid: true,
+      throw new BadRequestException('Audio size is too large')
     }
   }
 }

@@ -26,7 +26,6 @@ This monorepo hosts the Angular web application, the NestJS backend, shared pack
 - **`@neko/contracts`** — TypeScript DTOs shared between frontend and backend
 - **`@neko/permissions`** — RBAC roles and permissions used by both the UI and API guards
 - **`@neko/selectors`** — DOM selector strings shared between contract tests and acceptance tests
-- **`@neko/test-deps`** — Shared Vitest version and configuration
 
 ### Infrastructure
 - **Moonrepo** — Task orchestration, build caching, and dependency graph
@@ -43,8 +42,7 @@ This monorepo hosts the Angular web application, the NestJS backend, shared pack
 ├── /packages                 # Shared libraries
 │   ├── /contracts            # API DTOs (auth, backstage, media, error)
 │   ├── /permissions          # RBAC roles and permission constants
-│   ├── /selectors            # Shared DOM selectors for testing
-│   └── /test-deps            # Shared Vitest configuration
+│   └── /selectors            # Shared DOM selectors for testing
 ├── /tools
 │   ├── /eslint-config        # Shared ESLint + Prettier configuration
 │   └── /stylelint-config     # Shared Stylelint configuration

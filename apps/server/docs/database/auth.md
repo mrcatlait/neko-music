@@ -1,43 +1,24 @@
+# Auth Schema
+
 ```mermaid
 erDiagram
-  Permission {
-    uuid id PK
-    string name UK
-    string description
-  }
-  Permission many(0)--|| RolePermission : permissionId
-
-  Role {
-    uuid id PK
-    string name UK
-    string description
-    boolean default
-  }
-  Role many(0)--|| RolePermission : roleId
-
-  RolePermission {
-    uuid roleId PK,FK
-    uuid permissionId PK,FK
-  }
-
-  UserAccount {
+  Account {
     uuid id PK
     string emailAddress UK
-    uuid roleId FK
+    string role
     boolean verified
   }
-  UserAccount ||--many(1) UserCredentials : userId
-  UserAccount ||--many(1) UserExternalProvider : userId
-  UserAccount ||--many(1) RefreshToken : userId
-  UserAccount ||--many(1) Role : roleId
+  Account ||--o| Credentials : userId
+  Account ||--o| ExternalProvider : userId
+  Account ||--o{ RefreshToken : userId
 
-  UserCredentials {
+  Credentials {
     uuid userId PK,FK
     string passwordHash
     string passwordSalt
   }
 
-  UserExternalProvider {
+  ExternalProvider {
     uuid userId PK,FK
     string provider
     string providerUserId
@@ -46,7 +27,51 @@ erDiagram
   RefreshToken {
     uuid id PK
     uuid userId FK
-    string token
+    string token UK
     timestamp expiresAt
   }
 ```
+
+## Tables and Columns
+
+### auth.Account
+
+A user account.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | The id of the user |
+| emailAddress | VARCHAR(255) | The email address of the user |
+| role | VARCHAR(255) | The name of the role of the user |
+| verified | BOOLEAN | Whether the user is verified |
+
+### auth.Credentials
+
+A user credentials.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| userId | UUID | Foreign key to the user |
+| passwordHash | VARCHAR(255) | The password hash of the user |
+| passwordSalt | VARCHAR(255) | The password salt of the user |
+
+### auth.ExternalProvider
+
+A user external provider.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| userId | UUID | Foreign key to the user |
+| provider | VARCHAR(255) | The provider of the user |
+| providerUserId | VARCHAR(255) | The id of the user in the external provider |
+
+### auth.RefreshToken
+
+A refresh token.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | The ID of the refresh token |
+| userId | UUID | Foreign key to the user |
+| token | VARCHAR(255) | The token |
+| expiresAt | TIMESTAMP | The expiration date |

@@ -1,26 +1,19 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { RegisterUserUseCaseParams } from './register-user.use-case'
 import { AuthRepository } from '../../repositories'
 
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class RegisterUserValidator implements Validator<RegisterUserUseCaseParams> {
   constructor(private readonly authRepository: AuthRepository) {}
 
-  async validate(params: RegisterUserUseCaseParams): Promise<ValidationResult> {
+  async validate(params: RegisterUserUseCaseParams): Promise<void> {
     const emailExists = await this.authRepository.accountExistsByEmail(params.email)
 
     if (emailExists) {
-      return {
-        isValid: false,
-        error: 'emailTaken',
-      }
-    }
-
-    return {
-      isValid: true,
+      throw new BadRequestException('emailTaken')
     }
   }
 }

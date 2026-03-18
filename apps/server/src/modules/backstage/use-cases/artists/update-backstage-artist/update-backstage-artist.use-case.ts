@@ -5,6 +5,7 @@ import { ArtistRepository } from '../../../repositories'
 import { SyncArtistUseCase } from '../sync-artist'
 
 import { UseCase } from '@/modules/shared/interfaces'
+import { PublishingStatus } from '@/modules/backstage/enums'
 
 export interface UpdateBackstageArtistUseCaseParams {
   readonly id: string
@@ -22,11 +23,7 @@ export class UpdateBackstageArtistUseCase implements UseCase<UpdateBackstageArti
   ) {}
 
   async invoke(params: UpdateBackstageArtistUseCaseParams): Promise<void> {
-    const validationResult = await this.updateBackstageArtistValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.updateBackstageArtistValidator.validate(params)
 
     const artist = await this.artistRepository.updateArtistWithGenres({
       artist: {
@@ -37,8 +34,10 @@ export class UpdateBackstageArtistUseCase implements UseCase<UpdateBackstageArti
       genres: params.genres,
     })
 
-    await this.syncArtistUseCase.invoke({
-      artistId: artist.id,
-    })
+    if (artist.status === PublishingStatus.Published) {
+      await this.syncArtistUseCase.invoke({
+        artistId: artist.id,
+      })
+    }
   }
 }

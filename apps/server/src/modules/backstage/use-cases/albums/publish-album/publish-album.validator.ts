@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { PublishAlbumUseCaseParams } from './publish-album.use-case'
 
 import { AlbumRepository, TrackRepository } from '@/modules/backstage/repositories'
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 import { PublishingStatus } from '@/modules/backstage/enums'
 import { GetMediaReadinessUseCase } from '@/modules/media/use-cases'
 import { EntityType } from '@/modules/media/enums'
@@ -16,29 +16,20 @@ export class PublishAlbumValidator implements Validator<PublishAlbumUseCaseParam
     private readonly getMediaReadinessUseCase: GetMediaReadinessUseCase,
   ) {}
 
-  async validate(params: PublishAlbumUseCaseParams): Promise<ValidationResult> {
+  async validate(params: PublishAlbumUseCaseParams): Promise<void> {
     const album = await this.albumRepository.findAlbumById(params.albumId)
 
     if (!album) {
-      return {
-        isValid: false,
-        error: 'Album not found',
-      }
+      throw new BadRequestException('Album not found')
     }
 
     if (album.status === PublishingStatus.Published) {
-      return {
-        isValid: false,
-        error: 'Album is already published',
-      }
+      throw new BadRequestException('Album is already published')
     }
 
     const trackCount = await this.trackRepository.countTracksByAlbumId(params.albumId)
     if (trackCount < 1) {
-      return {
-        isValid: false,
-        error: 'Album must have at least one track to be published',
-      }
+      throw new BadRequestException('Album must have at least one track to be published')
     }
 
     const mediaReadiness = await this.getMediaReadinessUseCase.invoke({
@@ -47,14 +38,7 @@ export class PublishAlbumValidator implements Validator<PublishAlbumUseCaseParam
     })
 
     if (!mediaReadiness.ready) {
-      return {
-        isValid: false,
-        error: 'Media file is not ready',
-      }
-    }
-
-    return {
-      isValid: true,
+      throw new BadRequestException('Media file is not ready')
     }
   }
 }

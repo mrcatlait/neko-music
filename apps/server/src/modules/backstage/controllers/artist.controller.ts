@@ -65,6 +65,19 @@ export class ArtistController {
     }
   }
 
+  @Get('/statistics')
+  @ApiOperation({
+    summary: 'Get artist statistics',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The artist statistics have been successfully retrieved.',
+    type: ArtistStatisticsResponse,
+  })
+  getArtistStatistics(): Promise<ArtistStatisticsResponse> {
+    return this.getArtistStatisticsUseCase.invoke().then((result) => ({ data: result }))
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get a backstage artist with artwork',
@@ -107,18 +120,5 @@ export class ArtistController {
     })
 
     return { uploadToken: uploadToken.uploadToken }
-  }
-
-  @Get('/statistics')
-  @ApiOperation({
-    summary: 'Get artist statistics',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The artist statistics have been successfully retrieved.',
-    type: ArtistStatisticsResponse,
-  })
-  getArtistStatistics(): Promise<ArtistStatisticsResponse> {
-    return this.getArtistStatisticsUseCase.invoke().then((result) => ({ data: result }))
   }
 }

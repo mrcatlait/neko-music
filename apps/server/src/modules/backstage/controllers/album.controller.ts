@@ -20,7 +20,11 @@ export class AlbumController {
 
   @Post()
   @ApiOperation({ summary: 'Create an album' })
-  @ApiResponse({ status: 201, description: 'The album has been successfully created', type: AlbumCreationRequest })
+  @ApiResponse({
+    status: 201,
+    description: 'The album has been successfully created',
+    type: () => AlbumCreationResponse,
+  })
   async createAlbum(@Body() body: AlbumCreationRequest, @UserSession() user: User): Promise<AlbumCreationResponse> {
     const album = await this.createBackstageAlbumUseCase.invoke(body)
 

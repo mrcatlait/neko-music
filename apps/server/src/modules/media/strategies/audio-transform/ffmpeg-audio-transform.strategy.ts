@@ -1,14 +1,12 @@
 import { execSync } from 'child_process'
-import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import { readdirSync } from 'node:fs'
 import { ModuleRef } from '@nestjs/core'
-import { join } from 'node:path'
 import { Logger } from '@nestjs/common'
 
 import { AudioTransformParameters, AudioTransformResult, AudioTransformStrategy } from './audio-transform.strategy'
 import { NamingStrategy } from '../naming/naming.strategy'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
-import { FileService } from '../../services'
 
 import { InjectableStrategy } from '@/modules/shared/interfaces'
 
@@ -19,35 +17,19 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, Inj
   private readonly logger = new Logger(this.constructor.name)
 
   private namingStrategy: NamingStrategy
-  private fileService: FileService
 
   onInit(moduleRef: ModuleRef): void {
     this.namingStrategy = moduleRef.get<MediaModuleOptions>(MEDIA_MODULE_OPTIONS).namingStrategy
-    this.fileService = moduleRef.get(FileService)
   }
 
   async transform(
-    audio: Buffer,
+    audioFilePath: string,
     targetDirectory: string,
     parameters: AudioTransformParameters,
   ): Promise<AudioTransformResult> {
     const manifestName = this.namingStrategy.generateDashManifestName()
     // https://stackoverflow.com/questions/40046444/how-should-i-use-the-dash-not-webm-dash-manifest-format-in-ffmpeg
     const manifestPath = `${targetDirectory}/${manifestName}`
-
-    const format = await this.fileService.getFileTypeFromBuffer(audio)
-
-    if (!format) {
-      throw new Error('Failed to get file type from buffer')
-    }
-
-    const sourceFilePath = join(targetDirectory, `${crypto.randomUUID()}.${format}`)
-
-    if (!existsSync(targetDirectory)) {
-      mkdirSync(targetDirectory, { recursive: true })
-    }
-
-    writeFileSync(sourceFilePath, audio)
 
     const bitrateArgs = parameters.bitrate.map((b, index) =>
       [
@@ -62,11 +44,11 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, Inj
     const args = [
       // Input file
       '-i',
-      sourceFilePath,
+      audioFilePath,
       // DASH options
       '-f dash',
-      `-init_seg_name ${this.namingStrategy.generateDashInitSegmentName('$RepresentationID$')}`,
-      `-media_seg_name ${this.namingStrategy.generateDashMediaSegmentName('$RepresentationID$', '$Number%05d$')}`,
+      `-init_seg_name ${this.namingStrategy.generateDashInitSegmentName({ segmentNumber: '$RepresentationID$' })}`,
+      `-media_seg_name ${this.namingStrategy.generateDashMediaSegmentName({ segmentNumber: '$RepresentationID$', chunkNumber: '$Number%05d$' })}`,
       `-seg_duration ${parameters.segmentDuration}`,
       '-vn', // No video
       // Audio options
@@ -83,19 +65,13 @@ export class FfmpegAudioTransformStrategy implements AudioTransformStrategy, Inj
         stdio: 'ignore',
       })
 
-      rmSync(sourceFilePath)
-
       const files = readdirSync(targetDirectory)
 
-      const segmentNames = files.filter((fileName) => fileName !== manifestName)
-      const totalSize = this.fileService.getDirectorySize(targetDirectory)
+      const segments = files.filter((fileName) => fileName !== manifestName)
 
       return Promise.resolve({
         manifestName,
-        segmentNames,
-        metadata: {
-          totalSize,
-        },
+        segments,
       })
     } catch (error) {
       this.logger.error(error)

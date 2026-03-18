@@ -68,7 +68,7 @@ describe('Auth', () => {
       // Assert
       expect(response.status).toBe(400)
       expect(response.body).toMatchObject({
-        message: ['emailTaken'],
+        message: 'emailTaken',
       })
     })
 
@@ -148,7 +148,7 @@ describe('Auth', () => {
       // Assert
       expect(response.status).toBe(401)
       expect(response.body).toMatchObject({
-        message: 'Unauthorized',
+        message: 'Invalid credentials',
       })
     })
 
@@ -162,7 +162,7 @@ describe('Auth', () => {
       // Assert
       expect(response.status).toBe(401)
       expect(response.body).toMatchObject({
-        message: 'Unauthorized',
+        message: 'Invalid credentials',
       })
     })
   })

@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { CreateBackstageAlbumUseCaseParams } from './create-backstage-album.use-case'
 import { AlbumRepository, GenreRepository } from '../../../repositories'
 
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class CreateBackstageAlbumValidator implements Validator<CreateBackstageAlbumUseCaseParams> {
@@ -12,30 +12,23 @@ export class CreateBackstageAlbumValidator implements Validator<CreateBackstageA
     private readonly genreRepository: GenreRepository,
   ) {}
 
-  async validate(params: CreateBackstageAlbumUseCaseParams): Promise<ValidationResult> {
+  // todo add artists validation
+  async validate(params: CreateBackstageAlbumUseCaseParams): Promise<void> {
     const [nameTaken, genresExist] = await Promise.all([
       this.albumRepository.findAlbumByName(params.name),
       this.genreRepository.findGenresByIds(params.genres),
     ])
 
     if (nameTaken) {
-      return {
-        isValid: false,
-        error: 'Album name already taken',
-      }
+      throw new BadRequestException('Album name already taken')
     }
 
     if (genresExist.length !== params.genres.length) {
-      return {
-        isValid: false,
-        error: 'Genres not found',
-      }
+      throw new BadRequestException('Genres not found')
     }
 
     /**
      * @todo Validate artist IDs
      */
-
-    return { isValid: true }
   }
 }

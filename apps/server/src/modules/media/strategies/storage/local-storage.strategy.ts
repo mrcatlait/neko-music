@@ -1,4 +1,5 @@
 import {
+  copyFile,
   copyFileSync,
   createReadStream,
   createWriteStream,
@@ -20,6 +21,7 @@ const writeFileAsync = promisify(writeFile)
 const unlinkAsync = promisify(unlink)
 const readFileAsync = promisify(readFile)
 const rmdirAsync = promisify(rmdir)
+const copyFileAsync = promisify(copyFile)
 
 export interface LocalStorageStrategyOptions {
   /**
@@ -62,6 +64,13 @@ export class LocalStorageStrategy implements StorageStrategy {
     })
   }
 
+  uploadFromFile(fileName: string, sourcePath: string): Promise<string> {
+    const filePath = join(this.directory, fileName)
+    this.ensureDirectoryExists(filePath)
+
+    return copyFileAsync(sourcePath, filePath).then(() => filePath)
+  }
+
   downloadToBuffer(storagePath: string): Promise<Buffer> {
     return readFileAsync(storagePath)
   }
@@ -71,6 +80,8 @@ export class LocalStorageStrategy implements StorageStrategy {
   }
 
   downloadToFile(storagePath: string, localFilePath: string): Promise<void> {
+    this.ensureDirectoryExists(localFilePath)
+
     copyFileSync(storagePath, localFilePath)
 
     return Promise.resolve()

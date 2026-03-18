@@ -76,8 +76,11 @@ tasks:
 
   test-performance:
     command: 'k6 run performance-tests/test.js'
+    preset: 'server'
     options:
-      runInCI: false
+      envFile: true
+    env:
+      K6_WEB_DASHBOARD: 'true'
     inputs:
       - '@globs(performance-tests)'
 

@@ -21,11 +21,7 @@ export class AddGenreUseCase {
   ) {}
 
   async invoke(params: AddGenreUseCaseParams): Promise<AddGenreUseCaseResult> {
-    const validationResult = await this.addGenreValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.addGenreValidator.validate(params)
 
     return this.genreRepository.createGenre({
       name: params.name,

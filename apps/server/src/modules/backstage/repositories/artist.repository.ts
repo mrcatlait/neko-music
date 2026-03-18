@@ -99,6 +99,10 @@ export class ArtistRepository {
     return this.database.selectFrom('backstage.Artist').where('id', '=', id).selectAll().executeTakeFirst()
   }
 
+  findArtistsByIds(ids: string[]): Promise<Selectable<BackstageArtistTable>[]> {
+    return this.database.selectFrom('backstage.Artist').where('id', 'in', ids).selectAll().execute()
+  }
+
   getArtistStatistics(): Promise<ArtistStatisticsEntity[]> {
     return this.database
       .selectFrom('backstage.Artist')

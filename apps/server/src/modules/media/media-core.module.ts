@@ -5,6 +5,8 @@ import { MEDIA_MODULE_OPTIONS } from './tokens'
 import { MediaController, StreamingController } from './controllers'
 import {
   AssetCleanupService,
+  AudioService,
+  DashService,
   FileService,
   ImageService,
   ProcessingPipelineService,
@@ -28,7 +30,7 @@ import {
   SourceAssetRepository,
   UploadTokenRepository,
 } from './repositories'
-import { UploadTokenCleanupCron } from './crons'
+import { TriggerMediaProcessingCron, UploadTokenCleanupCron } from './crons'
 import { MediaListener } from './listeners'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
@@ -39,9 +41,12 @@ export class MediaCoreModule extends CoreModuleWithOptions {
   static readonly optionsToken = MEDIA_MODULE_OPTIONS
   static readonly providers = [
     // Crons
+    TriggerMediaProcessingCron,
     UploadTokenCleanupCron,
     // Services
     AssetCleanupService,
+    AudioService,
+    DashService,
     FileService,
     ImageService,
     ProcessingPipelineService,

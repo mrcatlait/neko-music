@@ -1,21 +1,29 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { CreateBackstageTrackUseCaseParams } from './create-backstage-track.use-case'
-import { GenreRepository } from '../../../repositories'
+import { ArtistRepository, GenreRepository } from '../../../repositories'
 
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class CreateBackstageTrackValidator implements Validator<CreateBackstageTrackUseCaseParams> {
-  constructor(private readonly genreRepository: GenreRepository) {}
+  constructor(
+    private readonly genreRepository: GenreRepository,
+    private readonly artistRepository: ArtistRepository,
+  ) {}
 
-  async validate(params: CreateBackstageTrackUseCaseParams): Promise<ValidationResult> {
-    const [genresExist] = await Promise.all([this.genreRepository.findGenresByIds(params.genres)])
+  async validate(params: CreateBackstageTrackUseCaseParams): Promise<void> {
+    const [genresExist, artistsExist] = await Promise.all([
+      this.genreRepository.findGenresByIds(params.genres),
+      this.artistRepository.findArtistsByIds(params.artists.map((a) => a.id)),
+    ])
 
     if (genresExist.length !== params.genres.length) {
-      return { isValid: false, error: 'Genres not found' }
+      throw new BadRequestException('Genres not found')
     }
 
-    return { isValid: true }
+    if (artistsExist.length !== params.artists.length) {
+      throw new BadRequestException('Artists not found')
+    }
   }
 }

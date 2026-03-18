@@ -25,13 +25,10 @@ export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, v
   ) {}
 
   async invoke(params: PublishAlbumUseCaseParams): Promise<void> {
-    const validationResult = await this.publishAlbumValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.publishAlbumValidator.validate(params)
 
     const album = await this.albumRepository.findAlbumWithGenresAndArtistsById(params.albumId)
+
     if (!album) {
       throw new BadRequestException(['Album not found'])
     }
@@ -54,7 +51,7 @@ export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, v
       name: album.name,
       releaseDate: album.releaseDate,
       explicit: album.explicit,
-      type: AlbumType.ALBUM,
+      type: AlbumType.Album,
       artwork,
       genres: album.genres,
       artists: catalogArtistIds,

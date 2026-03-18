@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { CreateCatalogArtistUseCaseParams } from './create-catalog-artist.use-case'
 import { ArtistRepository, GenreRepository } from '../../../repositories'
 
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class CreateCatalogArtistValidator implements Validator<CreateCatalogArtistUseCaseParams> {
@@ -12,26 +12,18 @@ export class CreateCatalogArtistValidator implements Validator<CreateCatalogArti
     private readonly genreRepository: GenreRepository,
   ) {}
 
-  async validate(params: CreateCatalogArtistUseCaseParams): Promise<ValidationResult> {
+  async validate(params: CreateCatalogArtistUseCaseParams): Promise<void> {
     const [nameTaken, genresExist] = await Promise.all([
       this.artistRepository.findArtistByName(params.name),
       this.genreRepository.findGenresByIds(params.genres),
     ])
 
     if (nameTaken) {
-      return {
-        isValid: false,
-        error: 'Artist name already taken',
-      }
+      throw new BadRequestException('Artist name already taken')
     }
 
     if (genresExist.length !== params.genres.length) {
-      return {
-        isValid: false,
-        error: 'Genres not found',
-      }
+      throw new BadRequestException('Genres not found')
     }
-
-    return { isValid: true }
   }
 }

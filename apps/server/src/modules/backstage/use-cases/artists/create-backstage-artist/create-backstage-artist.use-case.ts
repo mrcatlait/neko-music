@@ -27,11 +27,7 @@ export class CreateBackstageArtistUseCase implements UseCase<
   ) {}
 
   async invoke(params: CreateBackstageArtistUseCaseParams): Promise<CreateBackstageArtistUseCaseResult> {
-    const validationResult = await this.createBackstageArtistValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.createBackstageArtistValidator.validate(params)
 
     return await this.artistRepository.createArtistWithGenres({
       artist: {

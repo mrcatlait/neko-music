@@ -7,12 +7,12 @@ import { Context, Params } from 'integration-tests/utils'
 import { ACCESS_TOKEN_HEADER_NAME } from '@/modules/auth/constants'
 import { LoginUseCase, RegisterUserUseCase } from '@/modules/auth/use-cases'
 
-type GenreCreationOptions = Partial<Contracts.Backstage.GenreCreationRequest>
+type GenreCreationOptions = Partial<Contracts.Backstage.Genres.CreationRequest>
 
 const getGenreCreationPayload = (
   context: Context,
   options: GenreCreationOptions = {},
-): Contracts.Backstage.GenreCreationRequest => {
+): Contracts.Backstage.Genres.CreationRequest => {
   const params = new Params<GenreCreationOptions>(context, options)
 
   return {
@@ -61,7 +61,7 @@ describe('Backstage Genre', () => {
       expect(response.body).toMatchObject({
         id: expect.any(String),
         name: payload.name,
-      } as Contracts.Backstage.GenreCreationResponse)
+      } as Contracts.Backstage.Genres.CreationResponse)
     })
 
     it('should fail to create a genre if the name is not provided', async () => {
@@ -147,10 +147,10 @@ describe('Backstage Genre', () => {
 
       // Assert
       expect(response.status).toBe(200)
-      expect((response.body as Contracts.Backstage.GenresResponse).data).toContainEqual({
+      expect((response.body as Contracts.Backstage.Genres.GenresResponse).data).toContainEqual({
         id: expect.any(String),
         name: payload.name,
-      } as Contracts.Backstage.Genre)
+      } as Contracts.Backstage.Genres.Genre)
     })
 
     it('should fail to get all genres if the user is not authenticated', async () => {
@@ -188,7 +188,7 @@ describe('Backstage Genre', () => {
         .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${administratorAccessToken}`)
         .send(payload)
 
-      const genreId = (genreResponse.body as Contracts.Backstage.GenreCreationResponse).id
+      const genreId = (genreResponse.body as Contracts.Backstage.Genres.CreationResponse).id
 
       // Act
       const response = await request(app.getHttpServer())
@@ -200,7 +200,7 @@ describe('Backstage Genre', () => {
       expect(response.body).toMatchObject({
         id: genreId,
         name: payload.name,
-      } as Contracts.Backstage.Genre)
+      } as Contracts.Backstage.Genres.Genre)
     })
 
     it('should fail to get a genre if the user is not authenticated', async () => {
@@ -236,7 +236,7 @@ describe('Backstage Genre', () => {
 
   describe('PUT /backstage/genres/:id', () => {
     let context: Context
-    let genre: Contracts.Backstage.Genre
+    let genre: Contracts.Backstage.Genres.CreationResponse
 
     beforeEach(async () => {
       context = new Context()
@@ -247,7 +247,7 @@ describe('Backstage Genre', () => {
         .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${administratorAccessToken}`)
         .send(payload)
 
-      genre = genreResponse.body as Contracts.Backstage.GenreCreationResponse
+      genre = genreResponse.body as Contracts.Backstage.Genres.CreationResponse
     })
 
     it('should successfully update a genre', async () => {
@@ -266,7 +266,7 @@ describe('Backstage Genre', () => {
       expect(response.body).toMatchObject({
         id: genreId,
         name: payload.name,
-      } as Contracts.Backstage.Genre)
+      } as Contracts.Backstage.Genres.Genre)
     })
 
     it('should fail to update a genre if the user is not authenticated', async () => {
@@ -342,7 +342,7 @@ describe('Backstage Genre', () => {
             name: expect.any(String),
           }),
         ]),
-      } as Contracts.Backstage.GenreStatisticsResponse)
+      } as Contracts.Backstage.Genres.StatisticsResponse)
     })
 
     it('should fail to get genre statistics if the user is not authenticated', async () => {

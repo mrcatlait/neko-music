@@ -34,12 +34,12 @@ export class LoginUseCase implements UseCase<LoginUseCaseParams, LoginUseCaseRes
     const account = await this.authRepository.findAccountWithCredentialsByEmail(params.email)
 
     // Running the validator before checking if the account exists to avoid timing attacks
-    const validationResult = this.loginValidator.validate({
+    this.loginValidator.validate({
       password: params.password,
       passwordHash: account?.passwordHash,
     })
 
-    if (!validationResult.isValid || !account) {
+    if (!account) {
       throw new UnauthorizedException()
     }
 

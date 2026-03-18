@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import sharp from 'sharp'
 
 import { MediaModuleOptions } from '../../types'
@@ -6,7 +6,7 @@ import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { FileService } from '../../services'
 import { UploadMediaUseCaseParams } from './upload-media.use-case'
 
-import { ValidationResult, Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/interfaces'
 
 @Injectable()
 export class UploadImageValidator implements Validator<UploadMediaUseCaseParams> {
@@ -21,55 +21,33 @@ export class UploadImageValidator implements Validator<UploadMediaUseCaseParams>
     this.maxImageSize = options.maxImageSize
   }
 
-  async validate(params: Partial<UploadMediaUseCaseParams>): Promise<ValidationResult> {
+  async validate(params: Partial<UploadMediaUseCaseParams>): Promise<void> {
     if (!params.file) {
-      return {
-        isValid: false,
-        error: 'File buffer is required',
-      }
+      throw new BadRequestException('File buffer is required')
     }
 
     const mimetype = params.file.mimetype
 
     if (!mimetype || !this.allowedImageMimeTypes.includes(mimetype)) {
-      return {
-        isValid: false,
-        error: 'Invalid image mime type',
-      }
+      throw new BadRequestException('Invalid image mime type')
     }
 
     if (!params.file.size) {
-      return {
-        isValid: false,
-        error: 'Image size is required',
-      }
+      throw new BadRequestException('Image size is required')
     }
 
     if (params.file.size > this.maxImageSize) {
-      return {
-        isValid: false,
-        error: 'Image size is too large',
-      }
+      throw new BadRequestException('Image size is too large')
     }
 
     try {
       const image = await sharp(params.file.buffer).metadata()
 
       if (image.width === 0 || image.height === 0) {
-        return {
-          isValid: false,
-          error: 'Invalid image dimensions',
-        }
+        throw new BadRequestException('Invalid image dimensions')
       }
     } catch {
-      return {
-        isValid: false,
-        error: 'Invalid image',
-      }
-    }
-
-    return {
-      isValid: true,
+      throw new BadRequestException('Invalid image')
     }
   }
 }

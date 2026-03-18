@@ -69,11 +69,7 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
      * @todo need to validate if there is already media in processing
      * @todo need to check for duplicates
      */
-    const validationResult = await validator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await validator.validate(params)
 
     const format = await this.fileService.getFileTypeFromBuffer(params.file.buffer!)
     const fileName = this.namingStrategy.generateRandomFileName(format)

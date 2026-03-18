@@ -33,11 +33,7 @@ export class RegisterUserUseCase implements UseCase<RegisterUserUseCaseParams, R
   ) {}
 
   async invoke(params: RegisterUserUseCaseParams): Promise<RegisterUserUseCaseResult> {
-    const validationResult = await this.registerValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new BadRequestException(validationResult.error)
-    }
+    await this.registerValidator.validate(params)
 
     const passwordSalt = this.authService.generatePasswordSalt()
     const passwordHash = this.authService.generatePasswordHash(params.password, passwordSalt)

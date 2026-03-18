@@ -41,7 +41,7 @@ export interface BackstageAlbumArtistTable {
 export interface BackstageTrackTable {
   id: Generated<string>
   name: string
-  catalogTrackId: string
+  catalogTrackId: string | null
   albumId: string
   trackNumber: number
   diskNumber: number

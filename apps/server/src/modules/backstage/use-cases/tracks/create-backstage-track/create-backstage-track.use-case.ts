@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common'
-import { Contracts } from '@neko/contracts'
 
 import { CreateBackstageTrackValidator } from './create-backstage-track.validator'
+import { TrackRepository } from '../../../repositories'
 
 import { UseCase } from '@/modules/shared/interfaces'
+import { TrackType } from '@/modules/shared/enums'
+import { ArtistRole } from '@/modules/shared/dtos'
+import { PublishingStatus } from '@/modules/backstage/enums'
 
 export type CreateBackstageTrackUseCaseParams = {
   readonly name: string
@@ -11,13 +14,10 @@ export type CreateBackstageTrackUseCaseParams = {
   readonly releaseDate: Date
   readonly diskNumber: number
   readonly trackNumber: number
-  readonly type: Contracts.Shared.TrackType
+  readonly type: TrackType
   readonly explicit: boolean
   readonly genres: string[]
-  readonly artists: {
-    readonly id: string
-    readonly role: Contracts.Shared.ArtistRole
-  }[]
+  readonly artists: ArtistRole[]
 }
 
 export interface CreateBackstageTrackUseCaseResult {
@@ -35,13 +35,23 @@ export class CreateBackstageTrackUseCase implements UseCase<
   ) {}
 
   async invoke(params: CreateBackstageTrackUseCaseParams): Promise<CreateBackstageTrackUseCaseResult> {
-    const validationResult = await this.createBackstageTrackValidator.validate(params)
+    await this.createBackstageTrackValidator.validate(params)
 
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
-
-    const track = await this.trackRepository.createTrackWithGenresAndArtists(params)
+    const track = await this.trackRepository.createTrackWithGenresAndArtists({
+      track: {
+        name: params.name,
+        albumId: params.albumId,
+        trackNumber: params.trackNumber,
+        diskNumber: params.diskNumber,
+        releaseDate: params.releaseDate,
+        type: params.type,
+        duration: 0,
+        explicit: params.explicit,
+        status: PublishingStatus.Draft,
+      },
+      genres: params.genres,
+      artists: params.artists,
+    })
 
     return { id: track.id }
   }

@@ -27,11 +27,7 @@ export class CreateBackstageAlbumUseCase implements UseCase<
   ) {}
 
   async invoke(params: CreateBackstageAlbumUseCaseParams): Promise<CreateBackstageAlbumUseCaseResult> {
-    const validationResult = await this.createBackstageAlbumValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.createBackstageAlbumValidator.validate(params)
 
     const album = await this.albumRepository.createAlbumWithGenresAndArtists({
       album: {

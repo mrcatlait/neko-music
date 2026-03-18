@@ -40,11 +40,10 @@ export class AlbumRepository {
       await trx
         .insertInto('backstage.AlbumArtist')
         .values(
-          params.artists.map((artist, index) => ({
+          params.artists.map((artist) => ({
             albumId: album.id,
-            artistId: artist.artistId,
+            artistId: artist.id,
             role: artist.role,
-            position: index,
           })),
         )
         .execute()

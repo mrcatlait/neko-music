@@ -31,11 +31,7 @@ export class CreateCatalogAlbumUseCase implements UseCase<
   ) {}
 
   async invoke(params: CreateCatalogAlbumUseCaseParams): Promise<CreateCatalogAlbumUseCaseResult> {
-    const validationResult = await this.createCatalogAlbumValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.createCatalogAlbumValidator.validate(params)
 
     return await this.albumRepository.createAlbum({
       album: {

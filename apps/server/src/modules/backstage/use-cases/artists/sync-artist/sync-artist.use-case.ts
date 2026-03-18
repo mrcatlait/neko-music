@@ -28,11 +28,7 @@ export class SyncArtistUseCase implements UseCase<SyncArtistUseCaseParams, SyncA
   ) {}
 
   async invoke(params: SyncArtistUseCaseParams): Promise<SyncArtistUseCaseResult> {
-    const validationResult = await this.syncArtistValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.syncArtistValidator.validate(params)
 
     const artist = await this.artistRepository.findArtistWithGenresById(params.artistId)
 

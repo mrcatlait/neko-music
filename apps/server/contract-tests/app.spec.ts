@@ -6,8 +6,15 @@ import { Reflector } from '@nestjs/core'
 import fastifyCookie from '@fastify/cookie'
 
 import { testEnvConfig } from './test-env'
-import { authStateHandler, genreStateHandler } from './state-handlers'
-import { authGuardMock, authRepositoryMock, databaseMock, genreRepositoryMock, userRepositoryMock } from './mocks'
+import { artistStateHandler, authStateHandler, genreStateHandler } from './state-handlers'
+import {
+  artistRepositoryMock,
+  authGuardMock,
+  authRepositoryMock,
+  databaseMock,
+  genreRepositoryMock,
+  userRepositoryMock,
+} from './mocks'
 
 import { PactModule, PactVerifierService } from 'contract-tests/pact.module'
 import { AppModule } from '@/modules/app/app.module'
@@ -16,9 +23,10 @@ import { DatabaseService } from '@/modules/database/services'
 import { DATABASE } from '@/modules/database/database.tokens'
 import { AuthRepository } from '@/modules/auth/repositories'
 import { UserRepository } from '@/modules/user/repositories'
-import { GenreRepository } from '@/modules/backstage/repositories'
+import { ArtistRepository, GenreRepository } from '@/modules/backstage/repositories'
 import { AdministratorService } from '@/modules/auth/services/administrator.service'
 import { AuthGuard } from '@/modules/auth/guards'
+import { GenerateUploadTokenUseCase, GetArtworkUseCase } from '@/modules/media/use-cases'
 
 describe('Pact Verification', () => {
   let verifierService: PactVerifierService
@@ -26,6 +34,7 @@ describe('Pact Verification', () => {
 
   beforeAll(async () => {
     const stateHandlers: MessageStateHandlers = {
+      ...artistStateHandler,
       ...authStateHandler,
       ...genreStateHandler,
     }
@@ -59,6 +68,16 @@ describe('Pact Verification', () => {
       .useValue(userRepositoryMock)
       .overrideProvider(GenreRepository)
       .useValue(genreRepositoryMock)
+      .overrideProvider(ArtistRepository)
+      .useValue(artistRepositoryMock)
+      .overrideProvider(GenerateUploadTokenUseCase)
+      .useValue({ invoke: () => Promise.resolve({ uploadToken: 'test-upload-token' }) })
+      .overrideProvider(GetArtworkUseCase)
+      .useValue({
+        invoke: () => {
+          throw new Error('Artwork not found')
+        },
+      })
 
     const moduleRef = await moduleBuilder.compile()
 

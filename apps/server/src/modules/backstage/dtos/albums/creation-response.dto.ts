@@ -18,7 +18,8 @@ export class AlbumCreationResponse implements Contracts.Backstage.Albums.Creatio
 
   @ApiProperty({
     description: 'The tracks of the album',
-    type: [TrackCreationResponse],
+    type: () => TrackCreationResponse,
+    isArray: true,
   })
   tracks: TrackCreationResponse[]
 }

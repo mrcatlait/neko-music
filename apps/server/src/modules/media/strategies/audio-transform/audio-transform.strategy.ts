@@ -46,16 +46,7 @@ export interface AudioTransformResult {
    * Names of all generated DASH segment files
    * @example ['init_0.m4s', 'chunk_0_00001.m4s']
    */
-  readonly segmentNames: string[]
-  /**
-   * Metadata about the generated files
-   */
-  readonly metadata: {
-    /**
-     * Total size of all generated files in bytes
-     */
-    readonly totalSize: number
-  }
+  readonly segments: string[]
 }
 
 /**
@@ -64,10 +55,14 @@ export interface AudioTransformResult {
 export interface AudioTransformStrategy extends InjectableStrategy {
   /**
    * Transforms an audio file to MPEG-DASH format. Result is stored in local file system to reduce memory usage.
-   * @param audio - The buffer of the source file
+   * @param audioFilePath - The path to the source audio file
    * @param targetDirectory - The directory to store the transformed files
    * @param parameters - The parameters for the audio transformation
    * @returns The result of the audio transformation
    */
-  transform(audio: Buffer, targetDirectory: string, parameters: AudioTransformParameters): Promise<AudioTransformResult>
+  transform(
+    audioFilePath: string,
+    targetDirectory: string,
+    parameters: AudioTransformParameters,
+  ): Promise<AudioTransformResult>
 }

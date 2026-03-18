@@ -19,11 +19,7 @@ export class UpdateArtistStatusUseCase implements UseCase<UpdateArtistStatusUseC
   ) {}
 
   async invoke(params: UpdateArtistStatusUseCaseParams): Promise<void> {
-    const validationResult = await this.updateArtistStatusValidator.validate(params)
-
-    if (!validationResult.isValid) {
-      throw new Error(validationResult.error)
-    }
+    await this.updateArtistStatusValidator.validate(params)
 
     const artist = await this.artistRepository.findArtistById(params.artistId)
 

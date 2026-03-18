@@ -11,7 +11,7 @@ CREATE TABLE "catalog"."Track" (
   "playback" JSONB NOT NULL,
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   CONSTRAINT "FK_Track_Album" FOREIGN KEY ("albumId") REFERENCES "catalog"."Album" ("id") ON DELETE CASCADE,
-  CONSTRAINT "CHK_Track_Duration" CHECK ("duration" > 0 AND "duration" < 36000),
+  CONSTRAINT "CHK_Track_Duration" CHECK ("duration" >= 0 AND "duration" < 36000),
   CONSTRAINT "CHK_Track_Positioning" CHECK (
     ("albumId" IS NULL AND "trackNumber" IS NULL AND "diskNumber" IS NULL) OR
     ("albumId" IS NOT NULL AND "trackNumber" IS NOT NULL AND "trackNumber" > 0 AND "diskNumber" IS NOT NULL AND "diskNumber" > 0)

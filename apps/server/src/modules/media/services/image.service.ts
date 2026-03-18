@@ -46,17 +46,22 @@ export class ImageService {
 
     const dominantColor = await this.imageAnalyzeStrategy.getDominantColor(sourceImage)
 
-    const sourceFileName = this.fileService.extractFilenameFromPath(source.storagePath)
+    const sourceAssetFilename = this.fileService.extractFilenameFromPath(source.storagePath)
 
     const created: Record<string, { storagePath: string; assetId?: string }> = {}
     const format = this.imageTransformPresets.format
 
+    // todo improve rollback with DB records
     try {
       for (const presetName of Object.values(ImageSize)) {
         const preset = this.imageTransformPresets[presetName]
         const transformedImage = await this.imageTransformStrategy.transform(sourceImage, format, preset)
 
-        const fileName = this.namingStrategy.generateArtworkFilename(sourceFileName, presetName, format)
+        const fileName = this.namingStrategy.generateArtworkFilename({
+          sourceAssetFilename,
+          presetName,
+          format,
+        })
 
         const fileSize = transformedImage.length
         const storagePath = await this.storageStrategy.uploadFromBuffer(fileName, transformedImage)

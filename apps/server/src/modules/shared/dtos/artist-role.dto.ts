@@ -16,6 +16,7 @@ export class ArtistRole implements Contracts.Shared.Dtos.ArtistRole {
   @ApiProperty({
     description: 'The role of the artist in the album',
     example: ArtistRoleEnum.Primary,
+    enum: ArtistRoleEnum,
   })
   @IsEnum(ArtistRoleEnum)
   @IsNotEmpty()

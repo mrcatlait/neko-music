@@ -1,4 +1,6 @@
 export * from './asset-cleanup.service'
+export * from './audio.service'
+export * from './dash.service'
 export * from './file.service'
 export * from './image.service'
 export * from './processing-pipeline.service'

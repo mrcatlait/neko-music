@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Selectable } from 'kysely'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 
@@ -8,6 +8,7 @@ import { MediaRepository, SourceAssetRepository } from '../repositories'
 import { ProcessingStatus, ProcessingStep } from '../enums'
 import { ImageService } from './image.service'
 import { ProcessingJobTable, ProcessingStepTable } from '../media.schema'
+import { AudioService } from './audio.service'
 
 import {
   MediaProcessingCompletedEvent,
@@ -21,6 +22,8 @@ interface Job extends Selectable<ProcessingJobTable> {
 
 @Injectable()
 export class ProcessingPipelineService {
+  private readonly logger = new Logger(this.constructor.name)
+
   private readonly maxConcurrentProcessingJobs: number
   private readonly processingJobs = new Map<string, Job>()
 
@@ -29,6 +32,7 @@ export class ProcessingPipelineService {
     private readonly mediaRepository: MediaRepository,
     private readonly sourceAssetRepository: SourceAssetRepository,
     private readonly imageService: ImageService,
+    private readonly audioService: AudioService,
     private readonly eventEmitter: EventEmitter2,
   ) {
     this.maxConcurrentProcessingJobs = options.maxConcurrentProcessingJobs
@@ -130,7 +134,7 @@ export class ProcessingPipelineService {
           break
         }
         case ProcessingStep.AudioTransformation:
-          // return this.processTransformation(step)
+          await this.audioService.transform(sourceAssetId)
           break
         default:
           throw new Error(`Unknown processing step: ${step.name as string}`)
@@ -141,8 +145,11 @@ export class ProcessingPipelineService {
 
       await this.mediaRepository.updateProcessingStep(step)
     } catch (error) {
+      this.logger.error(error)
       step.status = ProcessingStatus.Failed
-      step.errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const shortErrorMessage = errorMessage.length > 255 ? errorMessage.slice(0, 255) : errorMessage
+      step.errorMessage = shortErrorMessage
       step.completedAt = new Date()
 
       await this.mediaRepository.updateProcessingStep(step)
