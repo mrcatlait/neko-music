@@ -140,7 +140,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Docker volumes
-/data
+# Processed media files
 /media
-/stream
+
+# Temp files for processing media
+/temp

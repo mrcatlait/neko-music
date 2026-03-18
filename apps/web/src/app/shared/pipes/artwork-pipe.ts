@@ -23,7 +23,11 @@ type ArtworkSize = 'small' | 'medium' | 'large'
 export class ArtworkPipe implements PipeTransform {
   private readonly artworkLoader = inject(ARTWORK_LOADER_TOKEN)
 
-  transform(template: string, size: ArtworkSize): string {
+  transform(template?: string, size: ArtworkSize = 'medium'): string {
+    if (!template) {
+      return ''
+    }
+
     if (!template?.trim()) {
       return ''
     }

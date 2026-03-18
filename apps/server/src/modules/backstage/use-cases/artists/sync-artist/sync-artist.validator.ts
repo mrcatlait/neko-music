@@ -22,8 +22,8 @@ export class SyncArtistValidator implements Validator<SyncArtistUseCaseParams> {
       throw new BadRequestException(`Artist ${params.artistId} not found`)
     }
 
-    if (artist.status !== PublishingStatus.Ready) {
-      throw new BadRequestException(`Artist ${params.artistId} is not ready for publishing`)
+    if (artist.status !== PublishingStatus.Ready && artist.status !== PublishingStatus.Published) {
+      throw new BadRequestException('Artist is not ready for publishing')
     }
 
     const mediaReadiness = await this.getMediaReadinessUseCase.invoke({

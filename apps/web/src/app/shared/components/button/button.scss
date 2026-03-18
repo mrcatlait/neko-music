@@ -18,7 +18,6 @@
   align-items: center;
   justify-content: center;
   gap: var(--n-button-gap);
-  border: none;
   cursor: pointer;
   background: transparent;
   block-size: var(--n-button-size);
@@ -49,7 +48,7 @@
   }
 
   &[data-button-variant='outlined'] {
-    --n-button-border: var(--color-outline);
+    --n-button-border: 1px solid var(--color-outline);
     --n-button-color: var(--color-on-surface);
 
     &[disabled] {

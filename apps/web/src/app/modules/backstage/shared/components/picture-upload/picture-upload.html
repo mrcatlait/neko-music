@@ -5,8 +5,7 @@
       fetchpriority="high"
       height="256"
       width="256"
-      [src]="previewUrl()!"
-      (error)="error.set('Failed to load image')"
+      [src]="previewUrl()"
     />
   </picture>
 
@@ -47,9 +46,11 @@
     </div>
   </div>
 
-  @if (error()) {
+  @if (invalid() && touched()) {
     <div class="picture-upload__error">
-      <span class="body-small">{{ error() }}</span>
+      @for (error of errors(); track error) {
+        <span class="body-small">{{ error.message }}</span>
+      }
     </div>
   }
 </div>

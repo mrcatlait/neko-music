@@ -7,8 +7,8 @@
     <span class="body-large">Profile Picture</span>
 
     <n-picture-upload
-      [src]="artworkUrl() | artwork: 'medium'"
-      (selectedFile)="onSelectedFile($event)"
+      [existingImageUrl]="artist()?.artwork?.url | artwork: 'medium'"
+      [formField]="artistForm.image"
     />
   </div>
 
@@ -45,16 +45,27 @@
 
   <n-genre-autocomplete [formField]="artistForm.genres" />
 
-  <button
-    class="artist-form__submit"
-    nButton
-    type="submit"
-    [disabled]="saving()"
-  >
-    @if (saving()) {
-      <n-loading-indicator [size]="12" />
-    } @else {
-      {{ submitLabel() }}
-    }
-  </button>
+  <div class="artist-form__actions">
+    <button
+      nButton
+      type="submit"
+      [disabled]="saving()"
+    >
+      @if (saving()) {
+        <n-loading-indicator [size]="12" />
+      } @else {
+        {{ submitLabel() }}
+      }
+    </button>
+
+    <button
+      color="secondary"
+      nButton
+      type="button"
+      variant="outlined"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+  </div>
 </form>

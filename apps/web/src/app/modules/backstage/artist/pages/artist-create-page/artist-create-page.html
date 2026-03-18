@@ -15,6 +15,6 @@
 <n-artist-form
   submitLabel="Create artist"
   [saving]="saving()"
-  (formCancel)="cancel()"
+  (formCancel)="navigateToArtistList()"
   (formSubmit)="createArtist($event)"
 />

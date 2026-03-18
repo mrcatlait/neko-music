@@ -4,7 +4,7 @@
     nIconButton
     type="button"
     variant="filled"
-    (click)="cancel()"
+    (click)="navigateToGenreList()"
   >
     <i>arrow_back</i>
   </button>
@@ -15,6 +15,6 @@
 <n-genre-form
   submitLabel="Create genre"
   [saving]="saving()"
-  (formCancel)="cancel()"
+  (formCancel)="navigateToGenreList()"
   (formSubmit)="createGenre($event)"
 />

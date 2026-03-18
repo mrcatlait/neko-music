@@ -39,7 +39,8 @@
     outline-color: var(--n-input-outline-hover-color);
   }
 
-  &:has(input.ng-invalid.ng-touched) {
+  &:has(input.ng-invalid.ng-touched),
+  :host.ng-invalid.ng-touched & {
     --n-input-outline-color: var(--color-error);
     --n-input-outline-focus-color: var(--color-error);
     --n-input-outline-hover-color: var(--color-error);

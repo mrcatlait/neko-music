@@ -56,7 +56,7 @@ export class GenreEditPage implements OnInit {
     })
   }
 
-  protected cancel(): void {
+  protected navigateToGenreList(): void {
     this.router.navigate(['/backstage/genres'])
   }
 }

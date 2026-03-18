@@ -48,7 +48,7 @@ export class ArtistDetailPage implements OnInit {
     })
   }
 
-  protected updateArtist(data: { name: string; genres: string[]; image: File | null }): void {
+  protected updateArtist(data: Contracts.Backstage.Artists.UpdateRequest & { image: File | null }): void {
     this.saving.set(true)
 
     this.artistApi

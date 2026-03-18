@@ -1,0 +1,20 @@
+<header>
+  <button
+    color="standard"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="navigateToAlbumList()"
+  >
+    <i>arrow_back</i>
+  </button>
+
+  <h2>Create Album</h2>
+</header>
+
+<n-album-form
+  submitLabel="Create album"
+  [saving]="saving()"
+  (formCancel)="navigateToAlbumList()"
+  (formSubmit)="createAlbum($event)"
+/>

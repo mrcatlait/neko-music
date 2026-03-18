@@ -8,7 +8,7 @@ CREATE TABLE "backstage"."Artist" (
   CONSTRAINT "FK_Artist_CatalogArtist" FOREIGN KEY ("catalogArtistId") REFERENCES "catalog"."Artist" ("id") ON DELETE CASCADE,
   CONSTRAINT "CHK_Artist_CatalogArtistId" CHECK (
     ("catalogArtistId" IS NOT NULL AND "status" = 'PUBLISHED') OR
-    ("catalogArtistId" IS NULL AND "status" IN ('DRAFT', 'PROCESSING', 'REJECTED'))
+    ("catalogArtistId" IS NULL AND "status" IN ('DRAFT', 'PROCESSING', 'READY', 'REJECTED'))
   )
 
 );

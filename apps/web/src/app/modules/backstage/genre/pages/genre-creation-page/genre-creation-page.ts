@@ -44,7 +44,7 @@ export class GenreCreationPage {
     })
   }
 
-  protected cancel(): void {
+  protected navigateToGenreList(): void {
     this.router.navigate(['/backstage/genres'])
   }
 }

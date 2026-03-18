@@ -1,19 +1,28 @@
 <form
   autocomplete="off"
-  class="genre-form"
+  class="album-form"
   (submit)="submit($event)"
 >
+  <div class="album-form__profile-picture">
+    <span class="body-large">Profile Picture</span>
+
+    <n-picture-upload
+      [existingImageUrl]="album()?.artwork?.url | artwork: 'medium'"
+      [formField]="albumForm.image"
+    />
+  </div>
+
   <n-textfield>
-    <label for="name">Name</label>
+    <label for="name">Album Name</label>
 
     <input
       id="name"
       type="text"
-      [formField]="genreForm.name"
+      [formField]="albumForm.name"
     />
 
-    @let nameTouched = genreForm.name().touched();
-    @let nameInvalid = genreForm.name().invalid();
+    @let nameTouched = albumForm.name().touched();
+    @let nameInvalid = albumForm.name().invalid();
 
     @if (nameInvalid && nameTouched) {
       <i
@@ -27,14 +36,16 @@
 
     <span slot="error">
       @if (nameInvalid && nameTouched) {
-        @for (error of genreForm.name().errors(); track error) {
-          <span>{{ error.message }}</span>
+        @for (error of albumForm.name().errors(); track error) {
+          <span class="error">{{ error.message }}</span>
         }
       }
     </span>
   </n-textfield>
 
-  <div class="genre-form__actions">
+  <n-genre-autocomplete [formField]="albumForm.genres" />
+
+  <div class="album-form__actions">
     <button
       nButton
       type="submit"

@@ -28,6 +28,24 @@
         </a>
       </li>
 
+      <li [aria-current]="albums.isActive ? 'page' : undefined">
+        <a
+          #albums="routerLinkActive"
+          routerLink="/backstage/albums"
+          routerLinkActive="active"
+          [class.active]="albums.isActive"
+        >
+          <i
+            aria-hidden="true"
+            [class.outlined]="!albums.isActive"
+          >
+            album
+          </i>
+
+          <span>Albums</span>
+        </a>
+      </li>
+
       <li [aria-current]="artists.isActive ? 'page' : undefined">
         <a
           #artists="routerLinkActive"

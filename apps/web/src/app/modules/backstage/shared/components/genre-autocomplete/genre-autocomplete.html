@@ -1,16 +1,17 @@
 @if (loading()) {
   <n-loading-indicator />
 } @else {
-  <n-textfield>
+  <n-textfield
+    [class.ng-invalid]="invalid()"
+    [class.ng-touched]="touched()"
+  >
     <label for="genres"> Genres </label>
 
     <input
       id="genres"
       placeholder="Type genre name"
       type="text"
-      [class.ng-invalid]="invalid()"
-      [class.ng-touched]="touched()"
-      [formField]="filterForm"
+      [formField]="filterForm.value"
       [nAutocompleteTrigger]="autocomplete"
       (blur)="touched.set(true)"
       (optionSelected)="addGenre($event)"

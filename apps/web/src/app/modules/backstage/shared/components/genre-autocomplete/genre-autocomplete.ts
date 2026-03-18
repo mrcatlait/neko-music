@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, model, OnInit, signal } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  model,
+  OnInit,
+  signal,
+} from '@angular/core'
 import { form, FormField, FormValueControl, ValidationError, WithOptionalFieldTree } from '@angular/forms/signals'
 import { Contracts } from '@neko/contracts'
 import { HttpErrorResponse } from '@angular/common/http'
@@ -7,6 +17,10 @@ import { GenreApi } from '../../services/genre-api'
 
 import { Autocomplete, AutocompleteOption, AutocompleteTrigger } from '@/shared/autocomplete'
 import { Textfield, InputChip, LoadingIndicator } from '@/shared/components'
+
+interface FilterModel {
+  value: string
+}
 
 @Component({
   selector: 'n-genre-autocomplete',
@@ -29,11 +43,11 @@ export class GenreAutocomplete implements FormValueControl<string[]>, OnInit {
 
   private readonly availableGenres = signal<Contracts.Backstage.Genres.Genre[]>([])
 
-  private readonly filterValue = signal<string>('')
+  private readonly filterValue = signal<FilterModel>({ value: '' })
   protected readonly filterForm = form(this.filterValue)
 
   protected readonly filteredGenres = computed(() => {
-    const filterValue = this.filterValue()?.toLowerCase() ?? ''
+    const filterValue = this.filterValue()?.value?.toLowerCase() ?? ''
     const notSelectedGenres = this.availableGenres().filter(
       (genre) => !this.value().some((selectedGenre) => selectedGenre === genre.id),
     )
@@ -41,6 +55,14 @@ export class GenreAutocomplete implements FormValueControl<string[]>, OnInit {
     return notSelectedGenres?.filter((genre) => genre.name.toLowerCase().includes(filterValue)) ?? []
   })
   protected readonly selectedGenres = computed(() => this.availableGenres().filter((g) => this.value().includes(g.id)))
+
+  constructor() {
+    effect(() => {
+      if (this.touched()) {
+        this.filterForm.value().markAsTouched()
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.loadGenres()
@@ -75,7 +97,7 @@ export class GenreAutocomplete implements FormValueControl<string[]>, OnInit {
       this.value.update((genres) => [...genres, newGenre.id])
     }
 
-    this.filterValue.set('')
+    this.filterValue.set({ value: '' })
   }
 
   protected removeGenre(genreId: string): void {

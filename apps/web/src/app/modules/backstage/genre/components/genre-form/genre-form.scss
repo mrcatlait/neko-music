@@ -7,10 +7,10 @@
 .genre-form {
   display: flex;
   flex-direction: column;
+  gap: 16px;
 
-  &__submit {
-    align-self: flex-end;
-    margin-top: 24px;
-    width: fit-content;
+  &__actions {
+    display: flex;
+    gap: 16px;
   }
 }

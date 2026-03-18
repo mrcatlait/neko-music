@@ -1,45 +1,49 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChild } from '@angular/core'
 import { Router } from '@angular/router'
 import { switchMap } from 'rxjs'
-import { Contracts } from '@neko/contracts'
 
-import { ArtistForm } from '../../components'
-import { ArtistApi } from '../../artist-api'
+import { AlbumForm } from '../../components'
+import { AlbumApi } from '../../album-api'
 
 import { IconButton } from '@/shared/components'
 import { Snackbar } from '@/shared/snackbar'
 import { MediaApi } from '@/modules/backstage/shared/services'
+import { AlbumType } from '@/shared/enums'
 
 @Component({
-  selector: 'n-artist-create-page',
-  imports: [ArtistForm, IconButton],
-  templateUrl: './artist-create-page.html',
-  styleUrl: './artist-create-page.scss',
-  providers: [ArtistApi, MediaApi],
+  selector: 'n-album-create-page',
+  imports: [AlbumForm, IconButton],
+  templateUrl: './album-create-page.html',
+  styleUrl: './album-create-page.scss',
+  providers: [AlbumApi, MediaApi],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ArtistCreatePage {
+export class AlbumCreatePage {
   private readonly router = inject(Router)
   private readonly snackbar = inject(Snackbar)
-  private readonly artistApi = inject(ArtistApi)
+  private readonly albumApi = inject(AlbumApi)
   private readonly mediaApi = inject(MediaApi)
 
   protected readonly saving = signal(false)
   protected readonly isDragging = signal(false)
   protected readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput')
 
-  protected createArtist(artist: Contracts.Backstage.Artists.CreationRequest & { image: File | null }): void {
-    if (!artist.image) return
+  protected createAlbum(album: { name: string; genres: string[]; image: File | null }): void {
+    if (!album.image) return
 
-    this.artistApi
+    this.albumApi
       .create({
-        name: artist.name,
-        genres: artist.genres,
-        verified: true,
+        name: album.name,
+        genres: album.genres,
+        releaseDate: new Date().toISOString(),
+        type: AlbumType.Album,
+        explicit: false,
+        artists: [],
+        tracks: [],
       })
       .pipe(
         switchMap(({ uploadToken }) => {
-          return this.mediaApi.upload(artist.image!, uploadToken)
+          return this.mediaApi.upload(album.image!, uploadToken)
         }),
       )
       .subscribe({
@@ -55,7 +59,7 @@ export class ArtistCreatePage {
       })
   }
 
-  protected navigateToArtistList(): void {
-    this.router.navigate(['/backstage/artists'])
+  protected navigateToAlbumList(): void {
+    this.router.navigate(['/backstage/albums'])
   }
 }
