@@ -43,6 +43,19 @@
     </span>
   </n-textfield>
 
+  <div class="artist-form__verified">
+    <n-checkbox>
+      <input
+        id="verified"
+        nBlurOnClick
+        type="checkbox"
+        [formField]="artistForm.verified"
+      />
+    </n-checkbox>
+
+    <label for="verified">Verified</label>
+  </div>
+
   <n-genre-autocomplete [formField]="artistForm.genres" />
 
   <div class="artist-form__actions">

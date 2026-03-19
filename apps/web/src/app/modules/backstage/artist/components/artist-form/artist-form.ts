@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { Contracts } from '@neko/contracts'
 import { disabled, form, FormField, minLength, required } from '@angular/forms/signals'
 
-import { LoadingIndicator, Textfield, Button } from '@/shared/components'
+import { LoadingIndicator, Textfield, Button, Checkbox } from '@/shared/components'
 import { GenreAutocomplete, PictureUpload } from '@/modules/backstage/shared/components'
 import { fileSize, fileType } from '@/shared/validators'
 import { PICTURE_UPLOAD_CONFIG } from '@/modules/backstage/shared/constants'
@@ -13,6 +13,7 @@ interface ArtistModel {
   name: string
   image: File | null
   genres: string[]
+  verified: boolean
 }
 
 @Component({
@@ -20,6 +21,7 @@ interface ArtistModel {
   imports: [
     ArtworkPipe,
     Button,
+    Checkbox,
     LoadingIndicator,
     FormField,
     PictureUpload,
@@ -36,12 +38,13 @@ export class ArtistForm {
   readonly saving = input.required<boolean>()
   readonly artist = input<Contracts.Backstage.Artists.Artist>()
 
-  readonly formSubmit = output<{ name: string; genres: string[]; image: File | null }>()
+  readonly formSubmit = output<{ name: string; genres: string[]; verified: boolean; image: File | null }>()
   readonly formCancel = output<void>()
 
   private readonly artistModel = linkedSignal<ArtistModel>(() => ({
     name: this.artist()?.name ?? '',
     genres: this.artist()?.genres ?? [],
+    verified: this.artist()?.verified ?? false,
     image: null,
   }))
   protected readonly artistForm = form(this.artistModel, (schemaPath) => {
@@ -65,6 +68,7 @@ export class ArtistForm {
       this.artistForm.name().markAsTouched()
       this.artistForm.genres().markAsTouched()
       this.artistForm.image().markAsTouched()
+      this.artistForm.verified().markAsTouched()
       return
     }
 
@@ -73,6 +77,7 @@ export class ArtistForm {
     this.formSubmit.emit({
       name: artist.name,
       genres: artist.genres,
+      verified: artist.verified,
       image: artist.image,
     })
   }

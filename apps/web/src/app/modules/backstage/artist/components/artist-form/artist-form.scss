@@ -21,4 +21,10 @@
     display: flex;
     gap: 16px;
   }
+
+  &__verified {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 }

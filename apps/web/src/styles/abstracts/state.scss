@@ -23,7 +23,8 @@
       }
     }
 
-    &:focus {
+    &:focus,
+    &:focus-within {
       &::before {
         background-color: $overlay;
         opacity: var(--state-focus-layer-opacity);

@@ -262,6 +262,7 @@
   }
   
   p,
+  label,
   .body-large {
     @include abstracts.typography('body-large');
   }

@@ -10,7 +10,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { ConfigService } from './modules/config/services'
 
 import { AppModule } from '@/modules/app/app.module'
-
+ 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
 

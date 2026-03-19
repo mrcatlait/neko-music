@@ -1,0 +1,93 @@
+@use 'abstracts' as abstracts;
+
+n-checkbox {
+  --n-checkbox-target-size: 48px;
+  --n-checkbox-container-size: 20px;
+  --n-checkbox-selected-container-color: var(--color-primary);
+  --n-checkbox-selected-icon-color: var(--color-on-primary);
+  --n-checkbox-outline-color: var(--color-outline);
+  --n-checkbox-outline-width: 2px;
+  --n-checkbox-container-shape-corner: 2px;
+
+  display: inline-flex;
+  height: var(--n-checkbox-target-size);
+  width: var(--n-checkbox-target-size);
+  position: relative;
+  vertical-align: top; // Prevent vertical misalignment with text fields
+  border-radius: var(--shape-corner-full);
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+
+  @include abstracts.state(var(--n-checkbox-selected-container-color));
+
+  .container {
+    border-radius: inherit;
+    display: flex;
+    height: var(--n-checkbox-container-size);
+    width: var(--n-checkbox-container-size);
+    place-content: center;
+    place-items: center;
+    position: relative;
+    margin: max(0px, (var(--n-checkbox-target-size) - var(--n-checkbox-container-size)) / 2);
+  }
+
+  input {
+    position: absolute;
+    appearance: none;
+    height: var(--n-checkbox-target-size);
+    width: var(--n-checkbox-target-size);
+    margin: auto;
+    opacity: 0;
+    outline: none;
+    cursor: inherit;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .outline,
+  .background,
+  .icon {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .background,
+  .outline {
+    border-radius: var(--n-checkbox-container-shape-corner);
+  }
+
+  .outline {
+    border-color: var(--n-checkbox-outline-color);
+    border-style: solid;
+    border-width: var(--n-checkbox-outline-width);
+    box-sizing: border-box;
+  }
+
+  .background {
+    background-color: var(--n-checkbox-selected-container-color);
+  }
+
+  .icon {
+    fill: var(--n-checkbox-selected-icon-color);
+    height: var(--n-checkbox-container-size);
+    width: var(--n-checkbox-container-size);
+  }
+
+  .background,
+  .icon {
+    opacity: 0;
+    transition-duration: var(--motion-duration-short4), var(--motion-duration-short1);
+    transition-property: transform,opacity;
+    transition-timing-function: var(--motion-easing-emphasized), var(--motion-easing-standard);
+    transform: scale(0.6);
+  }
+
+  input:checked ~ .background,
+  input:checked ~ .icon {
+    opacity: 1;
+    transition-duration: var(--motion-duration-medium3), var(--motion-duration-short1);
+    transition-timing-function: var(--motion-easing-emphasized-decelerate), var(--motion-easing-standard);
+    transform: scale(1);
+  }
+}
