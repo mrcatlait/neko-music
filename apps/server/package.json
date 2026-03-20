@@ -41,7 +41,7 @@
     "@testcontainers/postgresql": "^11.5.1",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.10.7",
-    "@types/supertest": "^6.0.3",
+    "@types/supertest": "^7.2.0",
     "@vitest/coverage-v8": "^4.1.0",
     "supertest": "^7.1.4",
     "typescript": "~5.7.2",
