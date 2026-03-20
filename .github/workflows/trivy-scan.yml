@@ -1,4 +1,4 @@
-name: Vulnerability Scan
+name: Trivy Scan
 
 on:
   schedule:
@@ -6,19 +6,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  audit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Run npm audit
-        run: npm audit --audit-level=moderate
   trivy-scan:
     name: 'Trivy Scan'
     runs-on: ubuntu-latest
