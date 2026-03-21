@@ -3,7 +3,7 @@ import { Role } from '@neko/permissions'
 
 import { AuthRepository } from '../../repositories'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export interface UpdateRoleUseCaseParams {
   readonly userId: string

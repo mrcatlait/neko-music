@@ -9,7 +9,8 @@ import { RECORD_STATUSES, RecordStatus } from '../../enums'
   template: `
     <div
       class="record-status-badge label-large"
-      [style.background-color]="color()"
+      [style.background-color]="backgroundColor()"
+      [style.color]="textColor()"
     >
       {{ status() | titlecase }}
     </div>
@@ -32,7 +33,7 @@ import { RECORD_STATUSES, RecordStatus } from '../../enums'
 export class RecordStatusBadge {
   status = input.required<RecordStatus>()
 
-  protected readonly color = computed(() => {
+  protected readonly backgroundColor = computed(() => {
     switch (this.status()) {
       case RECORD_STATUSES.Draft:
         return 'var(--color-surface-container-highest)'
@@ -40,5 +41,15 @@ export class RecordStatusBadge {
         return 'var(--color-primary)'
     }
     return 'var(--color-surface-container-highest)'
+  })
+
+  protected readonly textColor = computed(() => {
+    switch (this.status()) {
+      case RECORD_STATUSES.Draft:
+        return 'var(--color-on-surface-variant)'
+      case RECORD_STATUSES.Published:
+        return 'var(--color-on-primary)'
+    }
+    return 'var(--color-on-surface)'
   })
 }

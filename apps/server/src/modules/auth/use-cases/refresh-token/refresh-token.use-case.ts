@@ -4,7 +4,7 @@ import { Role } from '@neko/permissions'
 import { AuthRepository } from '../../repositories'
 import { AuthService, JwtService } from '../../services'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export interface RefreshTokenUseCaseParams {
   readonly token: string

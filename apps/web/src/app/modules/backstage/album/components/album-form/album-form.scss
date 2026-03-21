@@ -16,6 +16,34 @@
     gap: 8px;
   }
 
+  &__explicit {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background-color: var(--color-surface-container);
+    border-radius: var(--shape-corner-medium);
+  }
+
+  &__explicit-icon {
+    color: var(--color-text-medium-emphasis);
+  }
+
+  &__explicit-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    h3 {
+      color: var(--color-text-high-emphasis);
+    }
+
+    p {
+      color: var(--color-text-medium-emphasis);
+    }
+  }
+
   &__actions {
     margin-top: 24px;
     display: flex;

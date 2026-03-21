@@ -5,6 +5,7 @@ import { CreateCatalogAlbumUseCase, CreateCatalogAlbumValidator } from './use-ca
 import {
   CreateCatalogArtistUseCase,
   CreateCatalogArtistValidator,
+  GetCatalogArtistsUseCase,
   UpdateCatalogArtistUseCase,
   UpdateCatalogArtistValidator,
 } from './use-cases/artists'
@@ -26,6 +27,7 @@ export class CatalogCoreModule extends CoreModuleWithOptions {
     CreateCatalogAlbumValidator,
     CreateCatalogArtistUseCase,
     CreateCatalogArtistValidator,
+    GetCatalogArtistsUseCase,
     UpdateCatalogArtistUseCase,
     UpdateCatalogArtistValidator,
   ]
@@ -35,6 +37,7 @@ export class CatalogCoreModule extends CoreModuleWithOptions {
     CreateCatalogAlbumValidator,
     CreateCatalogArtistUseCase,
     CreateCatalogArtistValidator,
+    GetCatalogArtistsUseCase,
     UpdateCatalogArtistUseCase,
     UpdateCatalogArtistValidator,
   ]

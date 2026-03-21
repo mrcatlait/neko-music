@@ -6,11 +6,12 @@ import { fastifyCookie } from '@fastify/cookie'
 import { fastifyMultipart } from '@fastify/multipart'
 import fastifyStatic from '@fastify/static'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { apiReference } from '@scalar/nestjs-api-reference'
 
 import { ConfigService } from './modules/config/services'
 
 import { AppModule } from '@/modules/app/app.module'
- 
+
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
 
@@ -56,6 +57,14 @@ async function bootstrap() {
     .build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('swagger', app, document)
+
+  app.use(
+    '/docs',
+    apiReference({
+      content: document,
+      withFastify: true,
+    }),
+  )
 
   await app.listen({
     port: PORT,

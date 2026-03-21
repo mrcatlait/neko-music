@@ -1,6 +1,6 @@
 import { DynamicModule, Type } from '@nestjs/common'
 
-import { AsyncModuleOptions } from '../interfaces'
+import { AsyncModuleOptions } from '../types'
 import { CoreModuleWithOptions } from './core-module-with-options.class'
 
 export abstract class ModuleWithOptions {

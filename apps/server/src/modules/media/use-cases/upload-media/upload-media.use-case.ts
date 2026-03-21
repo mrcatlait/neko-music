@@ -13,7 +13,7 @@ import { NamingStrategy, StorageStrategy } from '../../strategies'
 import { FileService } from '../../services'
 import { MediaUploadedEvent } from '../../events'
 
-import { UseCase, Validator } from '@/modules/shared/interfaces'
+import { UseCase, Validator } from '@/modules/shared/types'
 
 export interface UploadMediaUseCaseParams {
   readonly file: File

@@ -6,7 +6,7 @@ import { AuthRepository } from '../../repositories'
 import { AuthService } from '../../services'
 
 import { CreateUserProfileUseCase } from '@/modules/user/use-cases'
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export interface RegisterUserUseCaseParams {
   readonly email: string

@@ -8,7 +8,7 @@ import { NamingStrategy } from '../naming/naming.strategy'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
 
-import { InjectableStrategy } from '@/modules/shared/interfaces'
+import { InjectableStrategy } from '@/modules/shared/types'
 
 /**
  * Audio transform strategy that uses ffmpeg to transform audio files to MPEG-DASH format.

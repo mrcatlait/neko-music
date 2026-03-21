@@ -5,7 +5,7 @@ import { MediaModuleOptions } from '../../types'
 import { UploadMediaUseCaseParams } from './upload-media.use-case'
 import { FileService } from '../../services'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class UploadAudioValidator implements Validator<UploadMediaUseCaseParams> {

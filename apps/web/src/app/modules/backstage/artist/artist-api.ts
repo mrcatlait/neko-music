@@ -20,6 +20,10 @@ export class ArtistApi {
     return this.http.get<Contracts.Backstage.Artists.Artist>(`${this.apiUrl}/backstage/artists/${id}`)
   }
 
+  getArtists(): Observable<Contracts.Backstage.Artists.ArtistsResponse> {
+    return this.http.get<Contracts.Backstage.Artists.ArtistsResponse>(`${this.apiUrl}/backstage/artists`)
+  }
+
   updateArtist(
     id: string,
     payload: Contracts.Backstage.Artists.UpdateRequest,

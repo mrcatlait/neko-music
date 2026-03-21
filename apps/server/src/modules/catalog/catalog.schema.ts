@@ -2,7 +2,7 @@ import { Generated } from 'kysely'
 
 import { AlbumType } from './enums'
 
-import { Artwork } from '@/modules/shared/interfaces'
+import { Artwork } from '@/modules/shared/types'
 
 export interface GenreTable {
   id: Generated<string>

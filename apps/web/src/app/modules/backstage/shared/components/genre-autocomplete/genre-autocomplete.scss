@@ -1,7 +1,12 @@
 .genre-autocomplete {
   &__selected-genres {
+    margin-top: 8px;
     display: flex;
     flex-direction: row;
     gap: 8px;
+  }
+
+  &__search-icon {
+    color: var(--color-text-medium-emphasis);
   }
 }

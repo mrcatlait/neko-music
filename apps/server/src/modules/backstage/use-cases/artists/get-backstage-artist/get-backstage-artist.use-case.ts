@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { ArtistRepository } from '../../../repositories'
 
-import { Artwork, UseCase } from '@/modules/shared/interfaces'
+import { Artwork, UseCase } from '@/modules/shared/types'
 import { PublishingStatus } from '@/modules/backstage/enums'
 import { GetArtworkUseCase } from '@/modules/media/use-cases'
 import { EntityType } from '@/modules/media/enums'
@@ -31,7 +31,7 @@ export class GetBackstageArtistUseCase implements UseCase<
   ) {}
 
   async invoke(params: GetBackstageArtistUseCaseParams): Promise<GetBackstageArtistUseCaseResult> {
-    const artist = await this.artistRepository.findArtistWithGenresById(params.id)
+    const artist = await this.artistRepository.findOneWithGenres(params.id)
 
     if (!artist) {
       throw new NotFoundException('Artist not found')

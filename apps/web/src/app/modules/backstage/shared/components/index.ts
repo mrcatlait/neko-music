@@ -1,3 +1,5 @@
+export * from './artist-autocomplete/artist-autocomplete'
+export * from './audio-file-upload/audio-file-upload'
 export * from './genre-autocomplete/genre-autocomplete'
 export * from './picture-upload/picture-upload'
 export * from './record-status-badge/record-status-badge'

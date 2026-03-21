@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { CreateBackstageTrackValidator } from './create-backstage-track.validator'
 import { TrackRepository } from '../../../repositories'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 import { TrackType } from '@/modules/shared/enums'
 import { ArtistRole } from '@/modules/shared/dtos'
 import { PublishingStatus } from '@/modules/backstage/enums'

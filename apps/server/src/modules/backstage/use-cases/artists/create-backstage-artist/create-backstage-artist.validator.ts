@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { CreateBackstageArtistUseCaseParams } from './create-backstage-artist.use-case'
 import { ArtistRepository, GenreRepository } from '../../../repositories'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class CreateBackstageArtistValidator implements Validator<CreateBackstageArtistUseCaseParams> {
@@ -14,7 +14,7 @@ export class CreateBackstageArtistValidator implements Validator<CreateBackstage
 
   async validate(params: CreateBackstageArtistUseCaseParams): Promise<void> {
     const [nameTaken, genresExist] = await Promise.all([
-      this.artistRepository.findArtistByName(params.name),
+      this.artistRepository.exists({ name: params.name }),
       this.genreRepository.findGenresByIds(params.genres),
     ])
 

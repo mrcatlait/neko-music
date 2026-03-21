@@ -6,7 +6,7 @@ n-checkbox {
   --n-checkbox-selected-container-color: var(--color-primary);
   --n-checkbox-selected-icon-color: var(--color-on-primary);
   --n-checkbox-outline-color: var(--color-outline);
-  --n-checkbox-outline-width: 2px;
+  --n-checkbox-outline-width: 3px;
   --n-checkbox-container-shape-corner: 2px;
 
   display: inline-flex;
@@ -89,5 +89,9 @@ n-checkbox {
     transition-duration: var(--motion-duration-medium3), var(--motion-duration-short1);
     transition-timing-function: var(--motion-easing-emphasized-decelerate), var(--motion-easing-standard);
     transform: scale(1);
+  }
+
+  input:checked ~ .icon {
+    transform: scale(1.2);
   }
 }

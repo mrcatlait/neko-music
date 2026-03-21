@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { UpdateGenreUseCaseParams } from './update-genre.use-case'
 import { GenreRepository } from '../../../repositories'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class UpdateGenreValidator implements Validator<UpdateGenreUseCaseParams> {

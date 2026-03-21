@@ -5,7 +5,7 @@ import { UploadTokenRepository } from '../../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 import { parseTimePeriod } from '@/modules/shared/utils'
 
 interface GenerateUploadTokenUseCaseParams {

@@ -35,7 +35,7 @@ export class ArtistCreatePage {
       .create({
         name: artist.name,
         genres: artist.genres,
-        verified: true,
+        verified: artist.verified,
       })
       .pipe(
         switchMap(({ uploadToken }) => {

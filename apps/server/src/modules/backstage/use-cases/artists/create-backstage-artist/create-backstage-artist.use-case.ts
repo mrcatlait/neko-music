@@ -4,7 +4,7 @@ import { Selectable } from 'kysely'
 import { CreateBackstageArtistValidator } from './create-backstage-artist.validator'
 import { ArtistRepository } from '../../../repositories'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 import { PublishingStatus } from '@/modules/backstage/enums'
 import { BackstageArtistTable } from '@/modules/backstage/backstage.schema'
 
@@ -29,7 +29,7 @@ export class CreateBackstageArtistUseCase implements UseCase<
   async invoke(params: CreateBackstageArtistUseCaseParams): Promise<CreateBackstageArtistUseCaseResult> {
     await this.createBackstageArtistValidator.validate(params)
 
-    return await this.artistRepository.createArtistWithGenres({
+    return await this.artistRepository.createWithGenres({
       artist: {
         name: params.name,
         status: PublishingStatus.Draft,

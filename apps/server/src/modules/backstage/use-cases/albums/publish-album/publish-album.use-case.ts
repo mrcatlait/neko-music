@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { PublishAlbumValidator } from './publish-album.validator'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 import { AlbumRepository, ArtistRepository } from '@/modules/backstage/repositories'
 import { CreateCatalogAlbumUseCase } from '@/modules/catalog/use-cases'
 import { GetArtworkUseCase } from '@/modules/media/use-cases'
@@ -35,7 +35,7 @@ export class PublishAlbumUseCase implements UseCase<PublishAlbumUseCaseParams, v
 
     const catalogArtistIds: { artistId: string; role: string }[] = []
     for (const { artistId, role } of album.artists) {
-      const backstageArtist = await this.artistRepository.findArtistById(artistId)
+      const backstageArtist = await this.artistRepository.findOne(artistId)
       if (!backstageArtist?.catalogArtistId) {
         throw new BadRequestException([`Artist ${artistId} is not published; all album artists must be published`])
       }

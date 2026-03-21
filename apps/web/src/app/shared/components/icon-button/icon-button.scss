@@ -24,7 +24,7 @@
   border: var(--n-icon-button-border);
 
   i {
-    --n-icon-button-icon-size: var(--n-icon-button-icon-size);
+    font-size: var(--n-icon-button-icon-size);
   }
 
   @include abstracts.state(var(--n-icon-button-color));

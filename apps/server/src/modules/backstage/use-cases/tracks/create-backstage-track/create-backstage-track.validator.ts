@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { CreateBackstageTrackUseCaseParams } from './create-backstage-track.use-case'
 import { ArtistRepository, GenreRepository } from '../../../repositories'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class CreateBackstageTrackValidator implements Validator<CreateBackstageTrackUseCaseParams> {
@@ -13,16 +13,16 @@ export class CreateBackstageTrackValidator implements Validator<CreateBackstageT
   ) {}
 
   async validate(params: CreateBackstageTrackUseCaseParams): Promise<void> {
-    const [genresExist, artistsExist] = await Promise.all([
+    const [genresExist, artistsCount] = await Promise.all([
       this.genreRepository.findGenresByIds(params.genres),
-      this.artistRepository.findArtistsByIds(params.artists.map((a) => a.id)),
+      this.artistRepository.count(params.artists.map((a) => a.id)),
     ])
 
     if (genresExist.length !== params.genres.length) {
       throw new BadRequestException('Genres not found')
     }
 
-    if (artistsExist.length !== params.artists.length) {
+    if (artistsCount !== params.artists.length) {
       throw new BadRequestException('Artists not found')
     }
   }

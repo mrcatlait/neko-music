@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { CreateBackstageAlbumUseCaseParams } from './create-backstage-album.use-case'
 import { AlbumRepository, GenreRepository } from '../../../repositories'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class CreateBackstageAlbumValidator implements Validator<CreateBackstageAlbumUseCaseParams> {

@@ -86,4 +86,34 @@ export class ArtistRepository {
   findArtistById(id: string): Promise<Selectable<CatalogArtistTable> | undefined> {
     return this.database.selectFrom('catalog.Artist').where('id', '=', id).selectAll().executeTakeFirst()
   }
+
+  async findAllArtistsWithGenres(): Promise<Array<Selectable<CatalogArtistTable> & { genres: string[] }>> {
+    const artists = await this.database.selectFrom('catalog.Artist').selectAll().orderBy('name', 'asc').execute()
+
+    if (artists.length === 0) {
+      return []
+    }
+
+    const artistIds = artists.map((a) => a.id)
+
+    const genreRows = await this.database
+      .selectFrom('catalog.ArtistGenre')
+      .where('artistId', 'in', artistIds)
+      .orderBy('artistId', 'asc')
+      .orderBy('position', 'asc')
+      .select(['artistId', 'genreId'])
+      .execute()
+
+    const genresByArtist = new Map<string, string[]>()
+    for (const row of genreRows) {
+      const list = genresByArtist.get(row.artistId) ?? []
+      list.push(row.genreId)
+      genresByArtist.set(row.artistId, list)
+    }
+
+    return artists.map((artist) => ({
+      ...artist,
+      genres: genresByArtist.get(artist.id) ?? [],
+    }))
+  }
 }

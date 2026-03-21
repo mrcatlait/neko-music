@@ -24,21 +24,12 @@ const artistWithGenres = {
 export const artistStateHandler: MessageStateHandlers = {
   'genres exist and no artist with name exists': async () => {
     genreRepositoryMock.findGenresByIds?.mockResolvedValue([genreEntity])
-    artistRepositoryMock.findArtistByName?.mockResolvedValue(undefined)
-    artistRepositoryMock.createArtistWithGenres?.mockResolvedValue(artistEntity)
 
     return Promise.resolve()
   },
 
   'an artist exists': async () => {
     genreRepositoryMock.findGenresByIds?.mockResolvedValue([genreEntity])
-    artistRepositoryMock.findArtistById?.mockResolvedValue(artistEntity)
-    artistRepositoryMock.findArtistByNameExcluding?.mockResolvedValue(undefined)
-    artistRepositoryMock.findArtistWithGenresById?.mockResolvedValue(artistWithGenres)
-    artistRepositoryMock.updateArtistWithGenres?.mockResolvedValue({
-      ...artistEntity,
-      name: 'Updated Artist',
-    })
 
     return Promise.resolve()
   },

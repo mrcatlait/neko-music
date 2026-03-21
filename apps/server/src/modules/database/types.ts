@@ -1,4 +1,4 @@
-import { Kysely, Selectable } from 'kysely'
+import { Kysely } from 'kysely'
 
 export interface DatabaseModuleOptions {
   // Database
@@ -20,5 +20,3 @@ export interface DatabaseModuleOptions {
 }
 
 export type Database<Schema> = Kysely<Schema>
-
-export type FindOptions<T> = Partial<Selectable<T>>

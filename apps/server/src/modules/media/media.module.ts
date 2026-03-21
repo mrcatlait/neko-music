@@ -4,7 +4,7 @@ import { MediaCoreModule } from './media-core.module'
 import { MediaModuleOptions } from './types'
 
 import { ModuleWithOptions } from '@/modules/shared/classes'
-import { AsyncModuleOptions } from '@/modules/shared/interfaces'
+import { AsyncModuleOptions } from '@/modules/shared/types'
 
 @Module({})
 export class MediaModule extends ModuleWithOptions {

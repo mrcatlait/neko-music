@@ -5,8 +5,8 @@ import { Genre } from './genre.dto'
 
 export class GenresResponse implements Contracts.Backstage.Genres.GenresResponse {
   @ApiProperty({
-    description: 'The genre',
-    type: Genre,
+    description: 'The genres',
+    type: [Genre],
   })
   data: Genre[]
 }

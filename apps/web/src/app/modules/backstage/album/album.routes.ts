@@ -6,7 +6,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages').then((c) => c.AlbumManagementPage),
   },
   {
+    path: 'create/single',
+    loadComponent: () => import('./pages').then((c) => c.AlbumSingleCreatePage),
+  },
+  {
     path: 'create',
-    loadComponent: () => import('./pages').then((c) => c.AlbumCreatePage),
+    loadComponent: () => import('./pages').then((c) => c.AlbumCreateKindPage),
   },
 ]

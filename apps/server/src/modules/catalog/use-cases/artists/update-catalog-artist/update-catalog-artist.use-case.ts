@@ -4,7 +4,7 @@ import { Selectable } from 'kysely'
 import { UpdateCatalogArtistValidator } from './update-catalog-artist.validator'
 import { ArtistRepository } from '../../../repositories'
 
-import { Artwork, UseCase } from '@/modules/shared/interfaces'
+import { Artwork, UseCase } from '@/modules/shared/types'
 import { CatalogArtistTable } from '@/modules/catalog/catalog.schema'
 
 export interface UpdateCatalogArtistUseCaseParams {

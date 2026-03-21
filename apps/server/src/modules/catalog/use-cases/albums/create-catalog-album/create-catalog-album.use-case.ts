@@ -4,7 +4,7 @@ import { Selectable } from 'kysely'
 import { CreateCatalogAlbumValidator } from './create-catalog-album.validator'
 import { AlbumRepository } from '../../../repositories'
 
-import { Artwork, UseCase } from '@/modules/shared/interfaces'
+import { Artwork, UseCase } from '@/modules/shared/types'
 import { CatalogAlbumTable } from '@/modules/catalog/catalog.schema'
 import { AlbumType } from '@/modules/catalog/enums'
 

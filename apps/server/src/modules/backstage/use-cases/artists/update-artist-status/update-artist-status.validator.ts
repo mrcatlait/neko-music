@@ -3,16 +3,16 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { UpdateArtistStatusUseCaseParams } from './update-artist-status.use-case'
 import { ArtistRepository } from '../../../repositories'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class UpdateArtistStatusValidator implements Validator<UpdateArtistStatusUseCaseParams> {
   constructor(private readonly artistRepository: ArtistRepository) {}
 
   async validate(params: UpdateArtistStatusUseCaseParams): Promise<void> {
-    const artist = await this.artistRepository.findArtistById(params.artistId)
+    const exists = await this.artistRepository.exists(params.artistId)
 
-    if (!artist) {
+    if (!exists) {
       throw new BadRequestException(`Artist ${params.artistId} not found`)
     }
   }

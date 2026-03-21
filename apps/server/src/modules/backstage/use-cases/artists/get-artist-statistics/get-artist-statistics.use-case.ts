@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { ArtistRepository } from '../../../repositories'
 import { ArtistStatisticsEntity } from '../../../entities'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export type GetArtistStatisticsUseCaseResult = ArtistStatisticsEntity[]
 

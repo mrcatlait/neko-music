@@ -6,7 +6,7 @@ import { PublishingStatus } from '../../../enums'
 import { AlbumRepository } from '../../../repositories'
 import { CreateBackstageTrackUseCase } from '../../tracks'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export type CreateBackstageAlbumUseCaseParams = AlbumCreationRequest
 

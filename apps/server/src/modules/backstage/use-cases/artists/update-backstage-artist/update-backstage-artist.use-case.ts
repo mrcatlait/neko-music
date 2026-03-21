@@ -4,7 +4,7 @@ import { UpdateBackstageArtistValidator } from './update-backstage-artist.valida
 import { ArtistRepository } from '../../../repositories'
 import { SyncArtistUseCase } from '../sync-artist'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 import { PublishingStatus } from '@/modules/backstage/enums'
 
 export interface UpdateBackstageArtistUseCaseParams {
@@ -25,9 +25,8 @@ export class UpdateBackstageArtistUseCase implements UseCase<UpdateBackstageArti
   async invoke(params: UpdateBackstageArtistUseCaseParams): Promise<void> {
     await this.updateBackstageArtistValidator.validate(params)
 
-    const artist = await this.artistRepository.updateArtistWithGenres({
+    const artist = await this.artistRepository.updateWithGenres(params.id, {
       artist: {
-        id: params.id,
         name: params.name,
         verified: params.verified,
       },

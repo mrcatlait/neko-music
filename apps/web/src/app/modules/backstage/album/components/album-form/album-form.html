@@ -1,8 +1,4 @@
-<form
-  autocomplete="off"
-  class="album-form"
-  (submit)="submit($event)"
->
+<div class="album-form">
   <div class="album-form__profile-picture">
     <span class="body-large">Profile Picture</span>
 
@@ -43,29 +39,54 @@
     </span>
   </n-textfield>
 
+  <n-artist-autocomplete [formField]="albumForm.artists" />
+
+  <section class="album-form__explicit">
+    <i class="album-form__explicit-icon">explicit</i>
+    <div class="album-form__explicit-content">
+      <h3 class="title-medium">Explicit content</h3>
+      <p class="body-medium">Mark this album as containing explicit content.</p>
+    </div>
+    <n-switch>
+      <input
+        id="explicit"
+        nBlurOnClick
+        type="checkbox"
+        [formField]="albumForm.explicit"
+      />
+    </n-switch>
+  </section>
+
   <n-genre-autocomplete [formField]="albumForm.genres" />
 
-  <div class="album-form__actions">
-    <button
-      nButton
-      type="submit"
-      [disabled]="saving()"
-    >
-      @if (saving()) {
-        <n-loading-indicator [size]="12" />
-      } @else {
-        {{ submitLabel() }}
-      }
-    </button>
+  @if (showAudio()) {
+    <n-audio-file-upload [formField]="albumForm.audio" />
+  }
 
-    <button
-      color="secondary"
-      nButton
-      type="button"
-      variant="outlined"
-      (click)="cancel()"
-    >
-      Cancel
-    </button>
-  </div>
-</form>
+  @if (showFormActions()) {
+    <div class="album-form__actions">
+      <button
+        nButton
+        type="button"
+        [disabled]="saving()"
+        (click)="submit($event)"
+      >
+        @if (saving()) {
+          <n-loading-indicator [size]="12" />
+        } @else {
+          {{ submitLabel() }}
+        }
+      </button>
+
+      <button
+        color="secondary"
+        nButton
+        type="button"
+        variant="outlined"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+    </div>
+  }
+</div>

@@ -1,6 +1,6 @@
 import { DynamicModule, Provider, Type } from '@nestjs/common'
 
-import { AsyncModuleOptions, AsyncModuleOptionsFactory } from '../interfaces'
+import { AsyncModuleOptions, AsyncModuleOptionsFactory } from '../types'
 
 export abstract class CoreModuleWithOptions {
   protected static module: Type<CoreModuleWithOptions>

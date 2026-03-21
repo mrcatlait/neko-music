@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { EntityType, ProcessingStatus } from '../../enums'
 import { MediaRepository, SourceAssetRepository } from '../../repositories'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export interface GetMediaReadinessUseCaseParams {
   entityType: EntityType

@@ -3,13 +3,13 @@ import type { PartiallyMocked } from 'vitest'
 import { ArtistRepository } from '@/modules/backstage/repositories'
 
 export const artistRepositoryMock: PartiallyMocked<ArtistRepository> = {
-  createArtistWithGenres: vi.fn(),
-  findArtistById: vi.fn(),
-  findArtistByName: vi.fn(),
-  findArtistByNameExcluding: vi.fn(),
-  findArtistWithGenresById: vi.fn(),
-  findArtistsByIds: vi.fn(),
-  getArtistStatistics: vi.fn(),
+  createWithGenres: vi.fn(),
+  findOne: vi.fn(),
+  findMany: vi.fn(),
   update: vi.fn(),
-  updateArtistWithGenres: vi.fn(),
+  updateWithGenres: vi.fn(),
+  exists: vi.fn(),
+  count: vi.fn(),
+  getArtistStatistics: vi.fn(),
+  findOneWithGenres: vi.fn(),
 }

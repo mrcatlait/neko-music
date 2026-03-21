@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { SyncArtistUseCaseParams } from './sync-artist.use-case'
 
 import { ArtistRepository } from '@/modules/backstage/repositories'
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 import { GetMediaReadinessUseCase } from '@/modules/media/use-cases'
 import { EntityType } from '@/modules/media/enums'
 import { PublishingStatus } from '@/modules/backstage/enums'
@@ -16,7 +16,7 @@ export class SyncArtistValidator implements Validator<SyncArtistUseCaseParams> {
   ) {}
 
   async validate(params: SyncArtistUseCaseParams): Promise<void> {
-    const artist = await this.artistRepository.findArtistById(params.artistId)
+    const artist = await this.artistRepository.findOne(params.artistId)
 
     if (!artist) {
       throw new BadRequestException(`Artist ${params.artistId} not found`)

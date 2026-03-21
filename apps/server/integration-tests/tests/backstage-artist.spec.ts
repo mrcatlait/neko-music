@@ -7,6 +7,9 @@ import { Context, Params } from '../utils'
 import { ACCESS_TOKEN_HEADER_NAME } from '@/modules/auth/constants'
 import { LoginUseCase, RegisterUserUseCase } from '@/modules/auth/use-cases'
 
+/** Valid UUID v4 that is not used as a route param placeholder (see FindOneParams @IsUUID('4')). */
+const NON_EXISTENT_ARTIST_ID = 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+
 type ArtistRequestOptions = Partial<
   Contracts.Backstage.Artists.CreationRequest | Contracts.Backstage.Artists.UpdateRequest
 >
@@ -170,6 +173,40 @@ describe('Backstage Artist', () => {
     })
   })
 
+  describe('GET /backstage/artists', () => {
+    it('should successfully list artists', async () => {
+      // Arrange & Act
+      const response = await request(app.getHttpServer())
+        .get('/backstage/artists')
+        .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${administratorAccessToken}`)
+
+      // Assert
+      expect(response.status).toBe(200)
+      expect(response.body).toMatchObject({
+        data: expect.any(Array),
+      } as Contracts.Backstage.Artists.ArtistsResponse)
+    })
+
+    it('should fail to list artists if the user is not authenticated', async () => {
+      // Arrange & Act
+      const response = await request(app.getHttpServer()).get('/backstage/artists')
+
+      // Assert
+      expect(response.status).toBe(401)
+      expect(response.body).toMatchObject({ message: 'Unauthorized', statusCode: 401 })
+    })
+
+    it('should fail to list artists if the user does not have the required permissions', async () => {
+      // Arrange & Act
+      const response = await request(app.getHttpServer())
+        .get('/backstage/artists')
+        .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${userAccessToken}`)
+
+      // Assert
+      expect(response.status).toBe(403)
+    })
+  })
+
   describe('GET /backstage/artists/:id', () => {
     let context: Context
 
@@ -202,7 +239,7 @@ describe('Backstage Artist', () => {
 
     it('should fail to get an artist if the user is not authenticated', async () => {
       // Arrange & Act
-      const response = await request(app.getHttpServer()).get('/backstage/artists/00000000-0000-0000-0000-000000000000')
+      const response = await request(app.getHttpServer()).get(`/backstage/artists/${NON_EXISTENT_ARTIST_ID}`)
 
       // Assert
       expect(response.status).toBe(401)
@@ -212,7 +249,7 @@ describe('Backstage Artist', () => {
     it('should fail to get an artist if the user does not have the required permissions', async () => {
       // Arrange & Act
       const response = await request(app.getHttpServer())
-        .get('/backstage/artists/00000000-0000-0000-0000-000000000000')
+        .get(`/backstage/artists/${NON_EXISTENT_ARTIST_ID}`)
         .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${userAccessToken}`)
 
       // Assert
@@ -222,7 +259,7 @@ describe('Backstage Artist', () => {
     it('should fail to get an artist if the artist does not exist', async () => {
       // Arrange & Act
       const response = await request(app.getHttpServer())
-        .get('/backstage/artists/00000000-0000-0000-0000-000000000000')
+        .get(`/backstage/artists/${NON_EXISTENT_ARTIST_ID}`)
         .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${administratorAccessToken}`)
 
       // Assert
@@ -295,7 +332,7 @@ describe('Backstage Artist', () => {
       // Arrange & Act
       const payload = getArtistPayload(context, genreIds)
       const response = await request(app.getHttpServer())
-        .put('/backstage/artists/00000000-0000-0000-0000-000000000000')
+        .put(`/backstage/artists/${NON_EXISTENT_ARTIST_ID}`)
         .set(ACCESS_TOKEN_HEADER_NAME, `Bearer ${administratorAccessToken}`)
         .send(payload)
 

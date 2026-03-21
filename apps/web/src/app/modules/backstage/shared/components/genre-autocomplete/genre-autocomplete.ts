@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { GenreApi } from '../../services/genre-api'
 
 import { Autocomplete, AutocompleteOption, AutocompleteTrigger } from '@/shared/autocomplete'
-import { Textfield, InputChip, LoadingIndicator } from '@/shared/components'
+import { Textfield, Chip, LoadingIndicator } from '@/shared/components'
 
 interface FilterModel {
   value: string
@@ -26,7 +26,7 @@ interface FilterModel {
   selector: 'n-genre-autocomplete',
   templateUrl: './genre-autocomplete.html',
   styleUrl: './genre-autocomplete.scss',
-  imports: [Textfield, Autocomplete, AutocompleteOption, AutocompleteTrigger, InputChip, LoadingIndicator, FormField],
+  imports: [Textfield, Autocomplete, AutocompleteOption, AutocompleteTrigger, Chip, LoadingIndicator, FormField],
   providers: [GenreApi],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

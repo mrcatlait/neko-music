@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation } from '@nestjs/swagger'
 import { Permissions } from '@neko/permissions'
 
 import {
   CreateBackstageArtistUseCase,
   GetArtistStatisticsUseCase,
+  GetBackstageArtistsUseCase,
   GetBackstageArtistUseCase,
   UpdateBackstageArtistUseCase,
 } from '../use-cases'
@@ -14,14 +15,14 @@ import {
   ArtistStatisticsResponse,
   ArtistUpdateRequest,
   ArtistUpdateResponse,
-  Artist,
+  ArtistDto,
 } from '../dtos'
 
 import { GenerateUploadTokenUseCase } from '@/modules/media/use-cases'
 import { EntityType, MediaType } from '@/modules/media/enums'
 import { RequirePermissions, UserSession } from '@/modules/auth/decorators'
 import { User } from '@/modules/auth/interfaces'
-import { FindOneParams } from '@/modules/shared/dtos'
+import { CursorPaginationDto, FindOneParams } from '@/modules/shared/dtos'
 
 @Controller('backstage/artists')
 @ApiTags('Backstage')
@@ -33,6 +34,7 @@ export class ArtistController {
     private readonly generateUploadTokenUseCase: GenerateUploadTokenUseCase,
     private readonly getArtistStatisticsUseCase: GetArtistStatisticsUseCase,
     private readonly getBackstageArtistUseCase: GetBackstageArtistUseCase,
+    private readonly getBackstageArtistsUseCase: GetBackstageArtistsUseCase,
     private readonly updateBackstageArtistUseCase: UpdateBackstageArtistUseCase,
   ) {}
 
@@ -65,6 +67,18 @@ export class ArtistController {
     }
   }
 
+  @Get('')
+  @ApiOperation({
+    summary: 'Get all artists',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The artists have been successfully retrieved',
+  })
+  getArtists(@Query() query: CursorPaginationDto): Promise<any> {
+    return this.getBackstageArtistsUseCase.invoke(query)
+  }
+
   @Get('/statistics')
   @ApiOperation({
     summary: 'Get artist statistics',
@@ -85,9 +99,9 @@ export class ArtistController {
   @ApiResponse({
     status: 200,
     description: 'The artist has been successfully retrieved',
-    type: Artist,
+    type: ArtistDto,
   })
-  getArtist(@Param() params: FindOneParams): Promise<Artist> {
+  getArtist(@Param() params: FindOneParams): Promise<ArtistDto> {
     return this.getBackstageArtistUseCase.invoke({ id: params.id })
   }
 

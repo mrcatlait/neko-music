@@ -4,7 +4,7 @@ import { BackstageCoreModule } from './backstage-core.module'
 import { BackstageModuleOptions } from './types'
 
 import { ModuleWithOptions } from '@/modules/shared/classes'
-import { AsyncModuleOptions } from '@/modules/shared/interfaces'
+import { AsyncModuleOptions } from '@/modules/shared/types'
 
 @Module({})
 export class BackstageModule extends ModuleWithOptions {

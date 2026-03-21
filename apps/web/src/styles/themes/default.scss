@@ -25,7 +25,7 @@
     --color-on-secondary-container: var(--color-on-surface);
 
     // Outline
-    --color-outline: #49454F; // rgb(255 255 255 / 16%);
+    --color-outline: rgb(255 255 255 / 22%);
     --color-outline-variant: rgb(255 255 255 / 8%);
 
     // Surface
@@ -51,5 +51,9 @@
 
   .color-error {
     color: var(--color-error);
+  }
+
+  .color-primary {
+    color: var(--color-primary);
   }
 }

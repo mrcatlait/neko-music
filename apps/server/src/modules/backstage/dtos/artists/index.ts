@@ -1,4 +1,5 @@
 export * from './artist.dto'
+export * from './artists-response.dto'
 export * from './creation-request.dto'
 export * from './creation-response.dto'
 export * from './statistics.dto'

@@ -5,7 +5,7 @@ import { UpdateGenreValidator } from './update-genre.validator'
 
 import { GenreRepository } from '@/modules/backstage/repositories'
 import { GenreTable } from '@/modules/catalog/catalog.schema'
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export interface UpdateGenreUseCaseParams {
   readonly id: string

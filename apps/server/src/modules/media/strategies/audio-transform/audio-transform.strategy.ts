@@ -1,4 +1,4 @@
-import { InjectableStrategy } from '@/modules/shared/interfaces'
+import { InjectableStrategy } from '@/modules/shared/types'
 
 export type Bitrate = '64k' | '128k' | '256k'
 

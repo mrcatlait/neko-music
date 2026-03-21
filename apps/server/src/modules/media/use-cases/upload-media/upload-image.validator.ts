@@ -6,7 +6,7 @@ import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { FileService } from '../../services'
 import { UploadMediaUseCaseParams } from './upload-media.use-case'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class UploadImageValidator implements Validator<UploadMediaUseCaseParams> {

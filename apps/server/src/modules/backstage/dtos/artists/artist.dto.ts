@@ -1,11 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiSchema } from '@nestjs/swagger'
 import { Contracts } from '@neko/contracts'
 
 import { PublishingStatus } from '../../enums'
 
 import { ArtworkDto } from '@/modules/shared/dtos'
 
-export class Artist implements Contracts.Backstage.Artists.Artist {
+@ApiSchema({ name: 'Artist', description: 'An artist' })
+export class ArtistDto implements Contracts.Backstage.Artists.Artist {
   @ApiProperty({
     description: 'The id of the artist',
     example: '123e4567-e89b-12d3-a456-426614174000',

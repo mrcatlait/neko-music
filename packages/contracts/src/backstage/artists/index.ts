@@ -14,6 +14,6 @@ export namespace ArtistsDtos {
   export type StatisticsResponse = StatisticsResponseDto
   export type UpdateRequest = UpdateRequestDto
   export type UpdateResponse = UpdateResponseDto
-  export type Response = ArtistsResponseDto
+  export type ArtistsResponse = ArtistsResponseDto
   export type Artist = ArtistDto
 }

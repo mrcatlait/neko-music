@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { UpdateCatalogArtistUseCaseParams } from './update-catalog-artist.use-case'
 import { ArtistRepository, GenreRepository } from '../../../repositories'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class UpdateCatalogArtistValidator implements Validator<UpdateCatalogArtistUseCaseParams> {

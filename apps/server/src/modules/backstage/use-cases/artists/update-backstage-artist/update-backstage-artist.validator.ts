@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { UpdateBackstageArtistUseCaseParams } from './update-backstage-artist.use-case'
 import { ArtistRepository, GenreRepository } from '../../../repositories'
 
-import { Validator } from '@/modules/shared/interfaces'
+import { Validator } from '@/modules/shared/types'
 
 @Injectable()
 export class UpdateBackstageArtistValidator implements Validator<UpdateBackstageArtistUseCaseParams> {
@@ -13,10 +13,10 @@ export class UpdateBackstageArtistValidator implements Validator<UpdateBackstage
   ) {}
 
   async validate(params: UpdateBackstageArtistUseCaseParams): Promise<void> {
-    const [artistExists, genresExist, nameTaken] = await Promise.all([
-      this.artistRepository.findArtistById(params.id),
+    const [artistExists, genresExist, artistsWithName] = await Promise.all([
+      this.artistRepository.exists(params.id),
       this.genreRepository.findGenresByIds(params.genres),
-      this.artistRepository.findArtistByNameExcluding(params.name, params.id),
+      this.artistRepository.findMany({ name: params.name }),
     ])
 
     if (!artistExists) {
@@ -26,6 +26,8 @@ export class UpdateBackstageArtistValidator implements Validator<UpdateBackstage
     if (genresExist.length !== params.genres.length) {
       throw new BadRequestException('Genres not found')
     }
+
+    const nameTaken = artistsWithName.some((a) => a.id !== params.id)
 
     if (nameTaken) {
       throw new BadRequestException('Artist name already taken')

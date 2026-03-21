@@ -6,7 +6,7 @@ import { LoginValidator } from './login.validator'
 import { AuthService } from '../../services'
 
 import { GetUserProfileUseCase } from '@/modules/user/use-cases'
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export interface LoginUseCaseParams {
   readonly email: string

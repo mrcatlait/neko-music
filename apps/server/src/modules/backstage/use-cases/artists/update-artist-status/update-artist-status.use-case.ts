@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { UpdateArtistStatusValidator } from './update-artist-status.validator'
 import { ArtistRepository } from '../../../repositories'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 import { PublishingStatus } from '@/modules/backstage/enums'
 
 export interface UpdateArtistStatusUseCaseParams {
@@ -21,14 +21,13 @@ export class UpdateArtistStatusUseCase implements UseCase<UpdateArtistStatusUseC
   async invoke(params: UpdateArtistStatusUseCaseParams): Promise<void> {
     await this.updateArtistStatusValidator.validate(params)
 
-    const artist = await this.artistRepository.findArtistById(params.artistId)
+    const artist = await this.artistRepository.findOne(params.artistId)
 
     if (artist!.status === PublishingStatus.Published) {
       return
     }
 
-    await this.artistRepository.update({
-      id: params.artistId,
+    await this.artistRepository.update(params.artistId, {
       status: params.status,
     })
   }

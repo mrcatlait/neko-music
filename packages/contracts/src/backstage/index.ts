@@ -10,9 +10,9 @@ export namespace BackstageDtos {
   }
   export namespace Artists {
     export type Artist = ArtistsDtos.Artist
+    export type ArtistsResponse = ArtistsDtos.ArtistsResponse
     export type CreationRequest = ArtistsDtos.CreationRequest
     export type CreationResponse = ArtistsDtos.CreationResponse
-    export type Response = ArtistsDtos.Response
     export type Statistics = ArtistsDtos.Statistics
     export type StatisticsResponse = ArtistsDtos.StatisticsResponse
     export type UpdateRequest = ArtistsDtos.UpdateRequest

@@ -4,7 +4,7 @@ import { Selectable } from 'kysely'
 import { ArtistRepository } from '../../../repositories'
 import { SyncArtistValidator } from './sync-artist.validator'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 import { EntityType } from '@/modules/media/enums'
 import { GetArtworkUseCase } from '@/modules/media/use-cases'
 import { CreateCatalogArtistUseCase, UpdateCatalogArtistUseCase } from '@/modules/catalog/use-cases'
@@ -30,7 +30,7 @@ export class SyncArtistUseCase implements UseCase<SyncArtistUseCaseParams, SyncA
   async invoke(params: SyncArtistUseCaseParams): Promise<SyncArtistUseCaseResult> {
     await this.syncArtistValidator.validate(params)
 
-    const artist = await this.artistRepository.findArtistWithGenresById(params.artistId)
+    const artist = await this.artistRepository.findOneWithGenres(params.artistId)
 
     if (!artist) {
       throw new Error('Artist not found')
@@ -62,8 +62,7 @@ export class SyncArtistUseCase implements UseCase<SyncArtistUseCaseParams, SyncA
       artwork,
     })
 
-    await this.artistRepository.update({
-      id: artist.id,
+    await this.artistRepository.update(artist.id, {
       catalogArtistId: catalogArtist.id,
       status: PublishingStatus.Published,
     })

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { GenreRepository } from '../../../repositories'
 import { GenreStatisticsEntity } from '../../../entities'
 
-import { UseCase } from '@/modules/shared/interfaces'
+import { UseCase } from '@/modules/shared/types'
 
 export type GetGenreStatisticsUseCaseResult = GenreStatisticsEntity[]
 

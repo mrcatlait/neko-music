@@ -7,7 +7,7 @@ import { MediaModuleOptions } from '../../types'
 import { NamingStrategy } from '../../strategies'
 import { FileService } from '../../services'
 
-import { Artwork, UseCase } from '@/modules/shared/interfaces'
+import { Artwork, UseCase } from '@/modules/shared/types'
 
 export interface GetArtworkUseCaseParams {
   readonly entityType: EntityType
