@@ -1,7 +1,7 @@
 import { AlbumsDtos } from './albums'
 import { ArtistsDtos } from './artists'
-import { GenresDtos } from './genres'
 import { TracksDtos } from './tracks'
+import * as Genres from './genres'
 
 export namespace BackstageDtos {
   export namespace Albums {
@@ -18,15 +18,13 @@ export namespace BackstageDtos {
     export type UpdateRequest = ArtistsDtos.UpdateRequest
     export type UpdateResponse = ArtistsDtos.UpdateResponse
   }
-  export namespace Genres {
-    export type CreationRequest = GenresDtos.CreationRequest
-    export type CreationResponse = GenresDtos.CreationResponse
-    export type Genre = GenresDtos.Genre
-    export type GenresResponse = GenresDtos.GenresResponse
-    export type Statistics = GenresDtos.Statistics
-    export type StatisticsResponse = GenresDtos.StatisticsResponse
-    export type UpdateRequest = GenresDtos.UpdateRequest
-  }
+  // Genres
+  export type GenreCreationRequest = Genres.GenreCreationRequest
+  export type GenreListResponse = Genres.GenreListResponse
+  export type GenreResponse = Genres.GenreResponse
+  export type GenreUpdateRequest = Genres.GenreUpdateRequest
+  export type Genre = Genres.Genre
+
   export namespace Tracks {
     export type CreationRequest = TracksDtos.CreationRequest
     export type CreationResponse = TracksDtos.CreationResponse

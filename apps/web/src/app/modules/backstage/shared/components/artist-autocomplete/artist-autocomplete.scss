@@ -1,0 +1,11 @@
+.artist-autocomplete__selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.artist-autocomplete__option-image {
+  border-radius: var(--shape-corner-full);
+  margin-right: 4px;
+}

@@ -30,20 +30,20 @@ export class AssetCleanupService {
    * @param sourceAssetId - The ID of the source asset to cleanup.
    */
   async cleanupSourceAsset(sourceAssetId: string): Promise<void> {
-    const sourceAsset = await this.sourceAssetRepository.findById(sourceAssetId)
+    const sourceAsset = await this.sourceAssetRepository.findOne(sourceAssetId)
 
     if (!sourceAsset) {
       throw new Error(`Source asset with id "${sourceAssetId}" not found`)
     }
 
-    const assets = await this.assetRepository.findBySourceAssetId(sourceAsset.id)
+    const assets = await this.assetRepository.findMany({ sourceAssetId: sourceAsset.id })
 
     for (const asset of assets) {
       await this.cleanupAsset(asset.id)
     }
 
     await this.storageStrategy.delete(sourceAsset.storagePath)
-    await this.sourceAssetRepository.deleteById(sourceAsset.id)
+    await this.sourceAssetRepository.delete(sourceAsset.id)
   }
 
   /**
@@ -51,7 +51,7 @@ export class AssetCleanupService {
    * @param assetId - The ID of the asset to cleanup.
    */
   async cleanupAsset(assetId: string): Promise<void> {
-    const asset = await this.assetRepository.findById(assetId)
+    const asset = await this.assetRepository.findOne(assetId)
 
     if (!asset) {
       throw new Error(`Asset with id "${assetId}" not found`)
@@ -67,7 +67,7 @@ export class AssetCleanupService {
     }
 
     await this.storageStrategy.delete(asset.storagePath)
-    await this.assetRepository.deleteById(asset.id)
+    await this.assetRepository.delete(asset.id)
   }
 
   /**
@@ -81,7 +81,7 @@ export class AssetCleanupService {
     entityId: string,
     excludeSourceAssetId: string,
   ): Promise<void> {
-    const sourceAssets = await this.sourceAssetRepository.findAllByEntityTypeAndEntityId(entityType, entityId)
+    const sourceAssets = await this.sourceAssetRepository.findMany({ entityType, entityId })
 
     const oldSourceAssets = sourceAssets.filter((sourceAsset) => sourceAsset.id !== excludeSourceAssetId)
 

@@ -10,9 +10,12 @@ export class AddGenreValidator implements Validator<AddGenreUseCaseParams> {
   constructor(private readonly genreRepository: GenreRepository) {}
 
   async validate(params: AddGenreUseCaseParams): Promise<void> {
-    const genreExists = await this.genreRepository.findGenreByName(params.name)
+    const [nameTaken, slugTaken] = await Promise.all([
+      this.genreRepository.findOne({ name: params.name }),
+      this.genreRepository.findOne({ slug: params.slug }),
+    ])
 
-    if (genreExists) {
+    if (nameTaken || slugTaken) {
       throw new BadRequestException('Genre already exists')
     }
   }

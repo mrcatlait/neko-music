@@ -1,0 +1,33 @@
+<header>
+  <button
+    color="standard"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="navigateToAlbumList()"
+  >
+    <i>arrow_back</i>
+  </button>
+
+  <h2>Create Album</h2>
+</header>
+
+<p class="body-medium">Choose how you want to add this release.</p>
+
+<div class="kind-cards">
+  <a
+    class="kind-card"
+    routerLink="single"
+  >
+    <span class="title-large">Single</span>
+    <p class="body-medium">One track. The track uses the same title, artists, and genres as the release.</p>
+  </a>
+
+  <a
+    class="kind-card"
+    routerLink="album"
+  >
+    <span class="title-large">Album</span>
+    <p class="body-medium">Multiple tracks. Each track can have its own title, genres, artists, and audio file.</p>
+  </a>
+</div>

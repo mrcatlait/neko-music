@@ -1,0 +1,31 @@
+.audio-file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &--invalid .audio-file-upload__name {
+    color: var(--sys-color-error, #b00020);
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__browse {
+    cursor: pointer;
+  }
+
+  &__name {
+    font-size: 0.875rem;
+    opacity: 0.85;
+  }
+
+  &__errors {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

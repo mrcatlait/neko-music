@@ -36,7 +36,7 @@ export class ImageService {
   }
 
   async transform(sourceAssetId: string): Promise<void> {
-    const source = await this.sourceAssetRepository.findById(sourceAssetId)
+    const source = await this.sourceAssetRepository.findOne(sourceAssetId)
 
     if (!source) {
       throw new Error(`Media source with id "${sourceAssetId}" not found`)
@@ -96,7 +96,7 @@ export class ImageService {
 
         if (createdAsset.assetId) {
           await this.imageMetadataRepository.deleteByAssetId(createdAsset.assetId)
-          await this.assetRepository.deleteById(createdAsset.assetId)
+          await this.assetRepository.delete(createdAsset.assetId)
         }
       }
 

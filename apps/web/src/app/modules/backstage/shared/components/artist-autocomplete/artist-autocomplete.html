@@ -1,0 +1,83 @@
+@if (loading()) {
+  <n-loading-indicator />
+} @else {
+  <n-textfield
+    [class.ng-invalid]="invalid()"
+    [class.ng-touched]="touched()"
+  >
+    <label for="artists">Artists</label>
+
+    <input
+      id="artists"
+      placeholder="Type artist name"
+      type="text"
+      [formField]="filterForm.value"
+      [nAutocompleteTrigger]="autocomplete"
+      (blur)="touched.set(true)"
+      (optionSelected)="addArtist($event)"
+    />
+
+    <ng-template #autocomplete>
+      <n-autocomplete>
+        @if (filteredArtists().length > 0) {
+          @for (artist of filteredArtists(); track artist.id) {
+            <n-autocomplete-option [value]="artist.id">
+              <img
+                class="artist-autocomplete__option-image"
+                height="40"
+                loading="lazy"
+                width="40"
+                [alt]="artist.name"
+                [src]="artist.artwork?.url | artwork: 'small'"
+              />
+              {{ artist.name }}
+            </n-autocomplete-option>
+          }
+        } @else {
+          <n-autocomplete-option disabled>No artists found</n-autocomplete-option>
+        }
+      </n-autocomplete>
+    </ng-template>
+
+    @if (invalid() && touched()) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
+    <span slot="error">
+      @if (invalid() && touched()) {
+        @for (error of errors(); track error) {
+          <span>{{ error.message }}</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  @if (selectedArtists().length > 0) {
+    <div class="artist-autocomplete__selected">
+      @for (artist of selectedArtists(); track artist.id) {
+        <n-chip>
+          <!-- <i>person</i> -->
+          <img
+            loading="lazy"
+            [alt]="artist.name"
+            [src]="artist.artwork?.url | artwork: 'small'"
+          />
+          {{ artist.name }}
+          <button
+            nIconButton
+            type="button"
+            (click)="removeArtist(artist.id)"
+          >
+            <i>close</i>
+          </button>
+        </n-chip>
+      }
+    </div>
+  }
+}

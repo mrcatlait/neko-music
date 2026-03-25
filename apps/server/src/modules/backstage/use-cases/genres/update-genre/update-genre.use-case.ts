@@ -4,15 +4,17 @@ import { Selectable } from 'kysely'
 import { UpdateGenreValidator } from './update-genre.validator'
 
 import { GenreRepository } from '@/modules/backstage/repositories'
-import { GenreTable } from '@/modules/catalog/catalog.schema'
 import { UseCase } from '@/modules/shared/types'
+import { BackstageGenreTable } from '@/modules/backstage/backstage.schema'
 
 export interface UpdateGenreUseCaseParams {
   readonly id: string
   readonly name: string
+  readonly slug: string
+  readonly userId: string
 }
 
-export type UpdateGenreUseCaseResult = Selectable<GenreTable>
+export type UpdateGenreUseCaseResult = Selectable<BackstageGenreTable>
 
 @Injectable()
 export class UpdateGenreUseCase implements UseCase<UpdateGenreUseCaseParams, UpdateGenreUseCaseResult> {
@@ -24,9 +26,11 @@ export class UpdateGenreUseCase implements UseCase<UpdateGenreUseCaseParams, Upd
   async invoke(params: UpdateGenreUseCaseParams): Promise<UpdateGenreUseCaseResult> {
     await this.updateGenreValidator.validate(params)
 
-    return this.genreRepository.updateGenre({
-      id: params.id,
+    return this.genreRepository.update(params.id, {
       name: params.name,
+      slug: params.slug,
+      updatedAt: new Date(),
+      updatedBy: params.userId,
     })
   }
 }

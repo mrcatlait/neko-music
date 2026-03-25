@@ -31,7 +31,7 @@ export class GetBackstageArtistUseCase implements UseCase<
   ) {}
 
   async invoke(params: GetBackstageArtistUseCaseParams): Promise<GetBackstageArtistUseCaseResult> {
-    const artist = await this.artistRepository.findOneWithGenres(params.id)
+    const artist = await this.artistRepository.findOne(params.id)
 
     if (!artist) {
       throw new NotFoundException('Artist not found')

@@ -3,8 +3,8 @@ CREATE TABLE "audit"."AuditLog" (
   "action" "audit"."Action" NOT NULL,
   "resourceType" "audit"."ResourceType" NOT NULL,
   "resourceId" UUID NOT NULL,
-  "userId" UUID NOT NULL,
-  "changes" JSONB,
+  "actorId" UUID NOT NULL,
+  "payload" JSONB,
   "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -13,6 +13,6 @@ COMMENT ON COLUMN "audit"."AuditLog"."id" IS 'The ID of the audit log';
 COMMENT ON COLUMN "audit"."AuditLog"."action" IS 'The action performed on the resource';
 COMMENT ON COLUMN "audit"."AuditLog"."resourceType" IS 'The type of resource';
 COMMENT ON COLUMN "audit"."AuditLog"."resourceId" IS 'The ID of the resource';
-COMMENT ON COLUMN "audit"."AuditLog"."userId" IS 'The ID of the user';
-COMMENT ON COLUMN "audit"."AuditLog"."changes" IS 'The changes made to the resource';
+COMMENT ON COLUMN "audit"."AuditLog"."actorId" IS 'The ID of the actor';
+COMMENT ON COLUMN "audit"."AuditLog"."payload" IS 'The payload of the audit log';
 COMMENT ON COLUMN "audit"."AuditLog"."timestamp" IS 'The date and time the audit log was created';

@@ -3,15 +3,23 @@ import { Selectable } from 'kysely'
 
 import { GenreRepository } from '@/modules/backstage/repositories'
 import { UseCase } from '@/modules/shared/types'
-import { GenreTable } from '@/modules/catalog/catalog.schema'
+import { BackstageGenreTable } from '@/modules/backstage/backstage.schema'
 
-export type GetGenresUseCaseResult = Selectable<GenreTable>[]
+export interface GetGenresUseCaseParameters {
+  limit: number
+  offset: number
+}
+
+export interface GetGenresUseCaseResult {
+  data: Selectable<BackstageGenreTable>[]
+  count: number
+}
 
 @Injectable()
-export class GetGenresUseCase implements UseCase<void, GetGenresUseCaseResult> {
+export class GetGenresUseCase implements UseCase<GetGenresUseCaseParameters, GetGenresUseCaseResult> {
   constructor(private readonly genreRepository: GenreRepository) {}
 
-  invoke(): Promise<Selectable<GenreTable>[]> {
-    return this.genreRepository.findAllGenres()
+  invoke({ limit, offset }: GetGenresUseCaseParameters): Promise<GetGenresUseCaseResult> {
+    return this.genreRepository.findAll({ limit, offset })
   }
 }

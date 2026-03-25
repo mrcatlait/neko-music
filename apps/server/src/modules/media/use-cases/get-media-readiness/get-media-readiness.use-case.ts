@@ -25,7 +25,10 @@ export class GetMediaReadinessUseCase implements UseCase<
   ) {}
 
   async invoke(params: GetMediaReadinessUseCaseParams): Promise<GetMediaReadinessUseCaseResult> {
-    const assets = await this.sourceAssetRepository.findAllByEntityTypeAndEntityId(params.entityType, params.entityId)
+    const assets = await this.sourceAssetRepository.findMany({
+      entityType: params.entityType,
+      entityId: params.entityId,
+    })
 
     if (assets.length === 0) {
       return {

@@ -1,4 +1,6 @@
 export * from './artist-role.dto'
 export * from './artwork.dto'
-export * from './cursor-pagination.dto'
+export * from './cursor-pagination-query.dto'
 export * from './find-one-params.dto'
+export * from './page-pagination-metadata.dto'
+export * from './page-pagination-query.dto'

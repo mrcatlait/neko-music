@@ -36,7 +36,7 @@ export class GetArtworkUseCase implements UseCase<GetArtworkUseCaseParams, GetAr
       throw new Error(`No artwork found for ${params.entityType} ${params.entityId}`)
     }
 
-    const sourceAsset = await this.sourceAssetRepository.findById(assets[0].asset.sourceAssetId)
+    const sourceAsset = await this.sourceAssetRepository.findOne(assets[0].asset.sourceAssetId)
 
     if (!sourceAsset) {
       throw new Error(`Source asset not found for ${params.entityType} ${params.entityId}`)

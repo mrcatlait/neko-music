@@ -1,0 +1,35 @@
+<div
+  class="audio-file-upload"
+  [class.audio-file-upload--invalid]="invalid() && touched()"
+>
+  <span class="body-large">{{ label() }}</span>
+
+  <input
+    #fileInput
+    hidden
+    type="file"
+    [accept]="accept"
+    [disabled]="disabled()"
+    (change)="onSelected($event)"
+  />
+
+  <div class="audio-file-upload__row">
+    <button
+      class="audio-file-upload__browse"
+      type="button"
+      [disabled]="disabled()"
+      (click)="onBrowse()"
+    >
+      Choose file
+    </button>
+    <span class="audio-file-upload__name">{{ fileName() || 'No file selected' }}</span>
+  </div>
+
+  @if (invalid() && touched()) {
+    <div class="audio-file-upload__errors">
+      @for (error of errors(); track error) {
+        <span class="error">{{ error.message }}</span>
+      }
+    </div>
+  }
+</div>

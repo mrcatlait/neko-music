@@ -69,7 +69,7 @@ export class ProcessingPipelineService {
 
     await this.mediaRepository.updateProcessingJob(job)
 
-    const sourceAsset = await this.sourceAssetRepository.findById(job.sourceAssetId)
+    const sourceAsset = await this.sourceAssetRepository.findOne(job.sourceAssetId)
 
     if (!sourceAsset) {
       throw new Error('Source asset not found')

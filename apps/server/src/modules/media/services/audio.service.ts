@@ -36,7 +36,7 @@ export class AudioService {
   }
 
   async transform(sourceAssetId: string): Promise<void> {
-    const source = await this.sourceAssetRepository.findById(sourceAssetId)
+    const source = await this.sourceAssetRepository.findOne(sourceAssetId)
 
     if (!source) {
       throw new Error(`Media source with id "${sourceAssetId}" not found`)

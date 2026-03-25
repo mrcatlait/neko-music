@@ -1,0 +1,71 @@
+@use 'abstracts' as abstracts;
+
+n-chip,
+[nChip] {
+  --n-chip-container-height: 32px;
+  --n-chip-container-shape: var(--shape-corner-full);
+  --n-chip-outline-color: var(--color-outline);
+  --n-chip-outline-width: 1px;
+  --n-chip-leading-space: 16px;
+  --n-chip-trailing-space: 16px;
+  --n-chip-label-text-color: var(--color-on-surface);
+
+  // Icons
+  --n-chip-icon-size: 18px;
+  --n-chip-icon-label-space: 8px;
+
+  // Leading icon
+  --n-chip-with-leading-icon-leading-space: 8px;
+  --n-chip-leading-icon-color: var(--color-primary);
+
+  // Trailing icon
+  // --n-chip-trailing-icon-color: var(--color-on-surface-variant);
+  --n-chip-trailing-icon-color: var(--color-on-surface);
+  --n-chip-with-trailing-icon-trailing-space: 8px;
+
+  // Avatar
+  --n-chip-avatar-shape: var(--shape-corner-full);
+  --n-chip-avatar-size: 24px;
+  --n-chip-with-avatar-leading-space: 4px;
+
+  @include abstracts.typography('label-large');
+  
+  @include abstracts.state(var(--n-chip-label-text-color));
+
+  &:not([disabled]):hover:has(> [nIconButton]:hover)::before {
+    background-color: transparent;
+    opacity: 0;
+  }
+
+  border-radius: var(--n-chip-container-shape);
+  padding-inline-start: var(--n-chip-leading-space);
+  padding-inline-end: var(--n-chip-trailing-space);
+  color: var(--n-chip-label-text-color);
+  height: var(--n-chip-container-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: var(--n-chip-outline-width) solid var(--n-chip-outline-color);
+  
+  & > [nIconButton] {
+    --n-icon-button-color: var(--n-chip-trailing-icon-color);
+    --n-icon-button-icon-size: var(--n-chip-icon-size);
+    margin-inline-end: calc(-1 * var(--n-chip-trailing-space));
+  }
+
+  & > i {
+    font-size: var(--n-chip-icon-size);
+    color: var(--n-chip-leading-icon-color);
+    margin-inline-start: calc(var(--n-chip-with-leading-icon-leading-space) - var(--n-chip-leading-space));
+    margin-inline-end: var(--n-chip-icon-label-space);
+  }
+
+  & > img {
+    height: var(--n-chip-avatar-size);
+    width: var(--n-chip-avatar-size);
+    border-radius: var(--n-chip-avatar-shape);
+    margin-inline-start: calc(var(--n-chip-with-avatar-leading-space) - var(--n-chip-leading-space));
+    margin-inline-end: var(--n-chip-icon-label-space);
+  }
+}

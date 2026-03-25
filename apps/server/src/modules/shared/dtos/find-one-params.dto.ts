@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
 /**
@@ -9,6 +10,10 @@ import { IsUUID } from 'class-validator'
  * ```
  */
 export class FindOneParams {
+  @ApiProperty({
+    description: 'The UUID of the entity',
+    example: '00000000-0000-0000-0000-000000000000',
+  })
   @IsUUID('4')
   id: string
 }

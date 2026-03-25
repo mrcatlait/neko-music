@@ -1,0 +1,21 @@
+<header>
+  <button
+    color="standard"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="navigateToKindChooser()"
+  >
+    <i>arrow_back</i>
+  </button>
+
+  <h2>Create new <span class="color-primary">Single</span></h2>
+</header>
+
+<n-album-form
+  submitLabel="Create single"
+  [requireAudio]="true"
+  [saving]="saving()"
+  (formCancel)="navigateToKindChooser()"
+  (formSubmit)="createSingle($event)"
+/>

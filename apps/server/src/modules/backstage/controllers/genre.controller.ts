@@ -1,25 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiOperation, ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'
 import { Permissions } from '@neko/permissions'
 
-import {
-  Genre,
-  GenreCreationRequest,
-  GenreCreationResponse,
-  GenresResponse,
-  GenreStatisticsResponse,
-  GenreUpdateRequest,
-} from '../dtos'
-import {
-  AddGenreUseCase,
-  GetGenreStatisticsUseCase,
-  GetGenresUseCase,
-  GetGenreUseCase,
-  UpdateGenreUseCase,
-} from '../use-cases'
+import { GenreCreationRequest, GenreListResponse, GenreResponse, GenreUpdateRequest } from '../dtos'
+import { AddGenreUseCase, GetGenresUseCase, GetGenreUseCase, UpdateGenreUseCase } from '../use-cases'
 
-import { RequirePermissions } from '@/modules/auth/decorators'
-import { FindOneParams } from '@/modules/shared/dtos'
+import { RequirePermissions, UserSession } from '@/modules/auth/decorators'
+import { FindOneParams, PagePaginationMetadata, PagePaginationQuery } from '@/modules/shared/dtos'
+import { User } from '@/modules/auth/interfaces'
 
 @Controller('backstage/genres')
 @ApiTags('Backstage')
@@ -28,7 +16,6 @@ import { FindOneParams } from '@/modules/shared/dtos'
 export class GenreController {
   constructor(
     private readonly addGenreUseCase: AddGenreUseCase,
-    private readonly getGenreStatisticsUseCase: GetGenreStatisticsUseCase,
     private readonly getGenresUseCase: GetGenresUseCase,
     private readonly getGenreUseCase: GetGenreUseCase,
     private readonly updateGenreUseCase: UpdateGenreUseCase,
@@ -41,10 +28,14 @@ export class GenreController {
   @ApiResponse({
     status: 200,
     description: 'The genres have been successfully retrieved.',
-    type: GenresResponse,
+    type: GenreListResponse,
   })
-  getGenres(): Promise<GenresResponse> {
-    return this.getGenresUseCase.invoke().then((result) => ({ data: result }))
+  getGenres(@Query() query: PagePaginationQuery): Promise<GenreListResponse> {
+    return this.getGenresUseCase
+      .invoke({ limit: query.limit, offset: query.offset })
+      .then(
+        (result) => new GenreListResponse(result.data, new PagePaginationMetadata({ query, itemCount: result.count })),
+      )
   }
 
   @Post('')
@@ -54,10 +45,12 @@ export class GenreController {
   @ApiResponse({
     status: 201,
     description: 'The genre has been successfully created.',
-    type: GenreCreationResponse,
+    type: GenreResponse,
   })
-  createGenre(@Body() body: GenreCreationRequest): Promise<GenreCreationResponse> {
-    return this.addGenreUseCase.invoke({ name: body.name })
+  createGenre(@Body() body: GenreCreationRequest, @UserSession() user: User): Promise<GenreResponse> {
+    return this.addGenreUseCase
+      .invoke({ name: body.name, slug: body.slug, userId: user.id })
+      .then((result) => ({ data: result }))
   }
 
   @Get(':id')
@@ -67,10 +60,10 @@ export class GenreController {
   @ApiResponse({
     status: 200,
     description: 'The genre has been successfully retrieved.',
-    type: Genre,
+    type: GenreResponse,
   })
-  getGenre(@Param() params: FindOneParams): Promise<Genre> {
-    return this.getGenreUseCase.invoke(params.id)
+  getGenre(@Param() params: FindOneParams): Promise<GenreResponse> {
+    return this.getGenreUseCase.invoke(params.id).then((result) => ({ data: result }))
   }
 
   @Put(':id')
@@ -80,22 +73,15 @@ export class GenreController {
   @ApiResponse({
     status: 200,
     description: 'The genre has been successfully updated.',
-    type: Genre,
+    type: GenreResponse,
   })
-  updateGenre(@Param() params: FindOneParams, @Body() body: GenreUpdateRequest): Promise<Genre> {
-    return this.updateGenreUseCase.invoke({ id: params.id, name: body.name })
-  }
-
-  @Get('/statistics')
-  @ApiOperation({
-    summary: 'Get genre statistics',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The genre statistics have been successfully retrieved.',
-    type: GenreStatisticsResponse,
-  })
-  getGenreStatistics(): Promise<GenreStatisticsResponse> {
-    return this.getGenreStatisticsUseCase.invoke().then((result) => ({ data: result }))
+  updateGenre(
+    @Param() params: FindOneParams,
+    @Body() body: GenreUpdateRequest,
+    @UserSession() user: User,
+  ): Promise<GenreResponse> {
+    return this.updateGenreUseCase
+      .invoke({ id: params.id, name: body.name, slug: body.slug, userId: user.id })
+      .then((result) => ({ data: result }))
   }
 }

@@ -5,7 +5,7 @@ import { IsString, IsNotEmpty, IsDateString, IsEnum, IsBoolean, IsUUID, ArrayNot
 import { TrackCreationRequest } from '../tracks'
 
 import { ArtistRole } from '@/modules/shared/dtos'
-import { AlbumType } from '@/modules/catalog/enums'
+import { AlbumType } from '@/modules/shared/enums'
 
 export class AlbumCreationRequest implements Contracts.Backstage.Albums.CreationRequest {
   @ApiProperty({

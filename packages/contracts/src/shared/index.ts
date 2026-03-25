@@ -3,6 +3,8 @@ import { ArtistRoleDto } from './artist-role.dto'
 import { ArtistRoleEnum } from './artist-role.enum'
 import { ArtworkDto } from './artwork.dto'
 import { TrackTypeEnum } from './track-type.enum'
+import { PagePaginationMetadata as PagePaginationMetadataDto } from './page-pagination-metadata'
+import { ListResponse as ListResponseDto } from './list-response'
 
 export namespace SharedDtos {
   export namespace Enums {
@@ -17,5 +19,7 @@ export namespace SharedDtos {
   export namespace Dtos {
     export type Artwork = ArtworkDto
     export type ArtistRole = ArtistRoleDto
+    export type PagePaginationMetadata = PagePaginationMetadataDto
+    export type ListResponse<T> = ListResponseDto<T>
   }
 }

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
-import { DeleteResult, Insertable, Selectable, Updateable } from 'kysely'
-import { jsonArrayFrom } from 'kysely/helpers/postgres'
+import { Insertable, Selectable, Updateable } from 'kysely'
 
 import { ArtistStatisticsEntity } from '../entities'
 import { BackstageArtistTable, BackstageSchema } from '../backstage.schema'
 
 import { Database, InjectDatabase } from '@/modules/database'
 import { CursorPaginatedResult, FindOptions, SearchOptions } from '@/modules/shared/types'
+import { Repository } from '@/modules/shared/classes'
 
 interface CreateArtistWithGenresParams {
   readonly artist: Insertable<BackstageArtistTable>
@@ -23,8 +23,10 @@ export interface ArtistWithGenres extends Selectable<BackstageArtistTable> {
 }
 
 @Injectable()
-export class ArtistRepository {
-  constructor(@InjectDatabase() private readonly database: Database<BackstageSchema>) {}
+export class ArtistRepository extends Repository<BackstageSchema, 'backstage.Artist'> {
+  constructor(@InjectDatabase() database: Database<BackstageSchema>) {
+    super(database, 'backstage.Artist')
+  }
 
   createWithGenres(artistWithGenres: CreateArtistWithGenresParams): Promise<Selectable<BackstageArtistTable>> {
     return this.database.transaction().execute(async (trx) => {
@@ -115,107 +117,6 @@ export class ArtistRepository {
     }
   }
 
-  findOne(criteria: string | FindOptions<BackstageArtistTable>): Promise<Selectable<BackstageArtistTable> | undefined> {
-    if (typeof criteria === 'string') {
-      return this.database.selectFrom('backstage.Artist').selectAll().where('id', '=', criteria).executeTakeFirst()
-    }
-
-    return this.database
-      .selectFrom('backstage.Artist')
-      .selectAll()
-      .where((eb) => eb.and(criteria))
-      .executeTakeFirst()
-  }
-
-  findMany(criteria: string | FindOptions<BackstageArtistTable>): Promise<Selectable<BackstageArtistTable>[]> {
-    if (typeof criteria === 'string') {
-      return this.database.selectFrom('backstage.Artist').selectAll().where('id', '=', criteria).execute()
-    }
-
-    return this.database
-      .selectFrom('backstage.Artist')
-      .selectAll()
-      .where((eb) => eb.and(criteria))
-      .execute()
-  }
-
-  update(
-    criteria: string | FindOptions<BackstageArtistTable>,
-    artist: Updateable<BackstageArtistTable>,
-  ): Promise<Selectable<BackstageArtistTable>> {
-    if (typeof criteria === 'string') {
-      return this.database
-        .updateTable('backstage.Artist')
-        .set(artist)
-        .where('id', '=', criteria)
-        .returningAll()
-        .executeTakeFirstOrThrow()
-    }
-
-    return this.database
-      .updateTable('backstage.Artist')
-      .set(artist)
-      .where((eb) => eb.and(criteria))
-      .returningAll()
-      .executeTakeFirstOrThrow()
-  }
-
-  exists(criteria: string | FindOptions<BackstageArtistTable>): Promise<boolean> {
-    if (typeof criteria === 'string') {
-      return this.database
-        .selectFrom('backstage.Artist')
-        .select((eb) => eb.lit(true).as('exists'))
-        .where('id', '=', criteria)
-        .executeTakeFirst()
-        .then(Boolean)
-    }
-
-    return this.database
-      .selectFrom('backstage.Artist')
-      .where((eb) => eb.and(criteria))
-      .select((eb) => eb.lit(true).as('exists'))
-      .executeTakeFirst()
-      .then(Boolean)
-  }
-
-  count(criteria: string | string[] | FindOptions<BackstageArtistTable>): Promise<number> {
-    if (typeof criteria === 'string') {
-      return this.database
-        .selectFrom('backstage.Artist')
-        .where('id', '=', criteria)
-        .select((eb) => eb.fn.countAll().as('count'))
-        .executeTakeFirst()
-        .then((row) => Number(row?.count ?? 0))
-    }
-
-    if (Array.isArray(criteria)) {
-      return this.database
-        .selectFrom('backstage.Artist')
-        .where('id', 'in', criteria)
-        .select((eb) => eb.fn.countAll().as('count'))
-        .executeTakeFirst()
-        .then((row) => Number(row?.count ?? 0))
-    }
-
-    return this.database
-      .selectFrom('backstage.Artist')
-      .where((eb) => eb.and(criteria))
-      .select((eb) => eb.fn.countAll().as('count'))
-      .executeTakeFirst()
-      .then((row) => Number(row?.count ?? 0))
-  }
-
-  delete(criteria: string | FindOptions<BackstageArtistTable>): Promise<DeleteResult[]> {
-    if (typeof criteria === 'string') {
-      return this.database.deleteFrom('backstage.Artist').where('id', '=', criteria).execute()
-    }
-
-    return this.database
-      .deleteFrom('backstage.Artist')
-      .where((eb) => eb.and(criteria))
-      .execute()
-  }
-
   getArtistStatistics(): Promise<ArtistStatisticsEntity[]> {
     return this.database
       .selectFrom('backstage.Artist')
@@ -244,46 +145,5 @@ export class ArtistRepository {
           totalTracks: Number(row.totalTracks ?? 0),
         })),
       )
-  }
-
-  findOneWithGenres(criteria: string): Promise<ArtistWithGenres | undefined> {
-    return this.database
-      .selectFrom('backstage.Artist')
-      .selectAll('backstage.Artist')
-      .where('backstage.Artist.id', '=', criteria)
-      .select((eb) => [
-        jsonArrayFrom(
-          eb
-            .selectFrom('backstage.ArtistGenre')
-            .whereRef('backstage.ArtistGenre.artistId', '=', 'backstage.Artist.id')
-            .select('genreId')
-            .orderBy('position', 'asc'),
-        ).as('genres'),
-      ])
-      .executeTakeFirst()
-      .then((row) =>
-        row
-          ? {
-              ...row,
-              genres: row.genres.map((g) => g.genreId),
-            }
-          : undefined,
-      )
-
-    // return this.database
-    //   .selectFrom('backstage.Artist')
-    //   .where('backstage.Artist.id', '=', id)
-    //   .selectAll('backstage.Artist')
-    //   .select((eb) => [
-    //     sql<string[]>`(
-    //       select coalesce(
-    //         json_agg(ag."genreId" order by ag."position"),
-    //         '[]'::json
-    //       )
-    //       from backstage."ArtistGenre" as ag
-    //       where ag."artistId" = ${eb.ref('backstage.Artist.id')}
-    //     )`.as('genres'),
-    //   ])
-    //   .executeTakeFirst()
   }
 }

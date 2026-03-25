@@ -6,7 +6,7 @@ import { AlbumRepository } from '../../../repositories'
 
 import { Artwork, UseCase } from '@/modules/shared/types'
 import { CatalogAlbumTable } from '@/modules/catalog/catalog.schema'
-import { AlbumType } from '@/modules/catalog/enums'
+import { AlbumType } from '@/modules/shared/enums'
 
 export interface CreateCatalogAlbumUseCaseParams {
   readonly name: string

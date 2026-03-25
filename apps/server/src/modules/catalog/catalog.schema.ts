@@ -1,16 +1,14 @@
-import { Generated } from 'kysely'
-
-import { AlbumType } from './enums'
-
 import { Artwork } from '@/modules/shared/types'
+import { AlbumType, TrackType } from '@/modules/shared/enums'
 
 export interface GenreTable {
-  id: Generated<string>
+  id: string
   name: string
+  slug: string
 }
 
 export interface CatalogArtistTable {
-  id: Generated<string>
+  id: string
   name: string
   artwork: Artwork
   verified: boolean
@@ -23,12 +21,13 @@ export interface CatalogArtistGenreTable {
 }
 
 export interface CatalogAlbumTable {
-  id: Generated<string>
+  id: string
   name: string
   releaseDate: Date
   explicit: boolean
   artwork: Artwork
   type: AlbumType
+  artists: { id: string; name: string }[]
 }
 
 export interface CatalogAlbumGenreTable {
@@ -44,17 +43,20 @@ export interface CatalogAlbumArtistTable {
 }
 
 export interface CatalogTrackTable {
-  id: Generated<string>
+  id: string
   name: string
   albumId: string
+  albumName: string
   trackNumber: number
   diskNumber: number
   releaseDate: Date
-  type: string
+  type: TrackType
   duration: number
-  artwork: JSON
-  playback: JSON
+  artwork: Artwork
+  playback: any
   explicit: boolean
+  artists: { id: string; name: string }[]
+  // @todo think is to add hasLyrics column
 }
 
 export interface CatalogTrackGenreTable {

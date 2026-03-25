@@ -1,13 +1,29 @@
 import { Generated } from 'kysely'
 
 import { PublishingStatus } from './enums'
+import { Artwork } from '../shared/types'
+import { AlbumType, TrackType } from '../shared/enums'
 
-export interface BackstageArtistTable {
+interface AuditableTable {
+  createdAt: Generated<Date>
+  createdBy: string
+  updatedAt: Generated<Date>
+  updatedBy: string
+}
+
+export interface BackstageGenreTable extends AuditableTable {
   id: Generated<string>
   name: string
-  catalogArtistId: string | null
+  slug: string
+  status: PublishingStatus
+}
+
+export interface BackstageArtistTable extends AuditableTable {
+  id: Generated<string>
+  name: string
   verified: boolean
   status: PublishingStatus
+  artwork?: Artwork
 }
 
 export interface BackstageArtistGenreTable {
@@ -16,13 +32,13 @@ export interface BackstageArtistGenreTable {
   position: number
 }
 
-export interface BackstageAlbumTable {
+export interface BackstageAlbumTable extends AuditableTable {
   id: Generated<string>
   name: string
-  catalogAlbumId: string | null
   releaseDate: Date
   explicit: boolean
-  type: string
+  type: AlbumType
+  artwork?: Artwork
   status: PublishingStatus
 }
 
@@ -38,18 +54,18 @@ export interface BackstageAlbumArtistTable {
   role: string
 }
 
-export interface BackstageTrackTable {
+export interface BackstageTrackTable extends AuditableTable {
   id: Generated<string>
   name: string
-  catalogTrackId: string | null
   albumId: string
   trackNumber: number
   diskNumber: number
   releaseDate: Date
-  type: string
+  type: TrackType
   duration: number
   explicit: boolean
   status: PublishingStatus
+  artwork?: Artwork
 }
 
 export interface BackstageTrackGenreTable {
@@ -65,6 +81,7 @@ export interface BackstageTrackArtistTable {
 }
 
 export interface BackstageSchema {
+  'backstage.Genre': BackstageGenreTable
   'backstage.Artist': BackstageArtistTable
   'backstage.ArtistGenre': BackstageArtistGenreTable
   'backstage.Album': BackstageAlbumTable
