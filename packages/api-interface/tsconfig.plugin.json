@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "noEmit": false,
+    "emitDeclarationOnly": false,
+    "declaration": false,
+    "declarationMap": false,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "target": "ES2022",
+    "outDir": "./dist",
+    "rootDir": "./plugins",
+    "esModuleInterop": true
+  },
+  "include": ["plugins/**/*.ts"]
+}

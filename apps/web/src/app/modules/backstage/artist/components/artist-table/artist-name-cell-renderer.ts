@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { ICellRendererAngularComp } from 'ag-grid-angular'
 import { ICellRendererParams } from 'ag-grid-community'
 
-import { GetBackstageArtistQuery } from '@/shared/graphql/graphql'
+import { GetBackstageArtistsQuery } from '@/shared/generated-types'
 import { ArtworkPipe } from '@/shared/pipes'
 
-type ArtistNameCellRendererParams = ICellRendererParams<GetBackstageArtistQuery['backstageArtists'][number]>
+type ArtistNameCellRendererParams = ICellRendererParams<GetBackstageArtistsQuery['backstageArtists'][number]>
 
 @Component({
   selector: 'n-artist-name-cell-renderer',

@@ -3,35 +3,26 @@ import { AgGridModule } from 'ag-grid-angular'
 import { ColDef, AllCommunityModule, GridOptions } from 'ag-grid-community'
 import { Router } from '@angular/router'
 
-import { ArtistApi } from '../../artist-api'
 import { ArtistNameCellRenderer } from './artist-name-cell-renderer'
 
 import { StatusIndicatorCellRenderer } from '@/modules/backstage/shared/components'
 import { GRID_OPTIONS, provideGridOptions } from '@/modules/backstage/shared/providers'
-import { Graphql } from '@/core/services/graphql'
-import {
-  GetBackstageArtistDocument,
-  GetBackstageArtistQuery,
-  GetBackstageArtistQueryVariables,
-} from '@/shared/graphql/graphql'
+import { GetBackstageArtistsGql, GetBackstageArtistsQuery } from '@/shared/generated-types'
 
 @Component({
   selector: 'n-artist-table',
   imports: [AgGridModule],
   templateUrl: './artist-table.html',
   styleUrl: './artist-table.scss',
-  providers: [ArtistApi, provideGridOptions()],
+  providers: [provideGridOptions(), GetBackstageArtistsGql],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArtistTable {
   private readonly router = inject(Router)
-  private readonly graphql = inject(Graphql)
+  private readonly getBackstageArtistsGql = inject(GetBackstageArtistsGql)
   private readonly defaultGridOptions = inject(GRID_OPTIONS)
 
-  protected readonly artistsResource = this.graphql.graphqlResource<
-    GetBackstageArtistQuery,
-    GetBackstageArtistQueryVariables
-  >(GetBackstageArtistDocument, {})
+  protected readonly artistsResource = this.getBackstageArtistsGql.graphqlResource({})
 
   protected readonly gridOptions: GridOptions = {
     ...this.defaultGridOptions,
@@ -40,7 +31,7 @@ export class ArtistTable {
     },
   }
   protected readonly modules = [AllCommunityModule]
-  protected readonly columnDefs: ColDef<GetBackstageArtistQuery['backstageArtists'][number]>[] = [
+  protected readonly columnDefs: ColDef<GetBackstageArtistsQuery['backstageArtists'][number]>[] = [
     { field: 'name', headerName: 'Name', flex: 1, cellRenderer: ArtistNameCellRenderer },
     { field: 'status', headerName: 'Status', width: 160, cellRenderer: StatusIndicatorCellRenderer },
     { field: 'mediaStatus', headerName: 'Media Status', width: 160 },

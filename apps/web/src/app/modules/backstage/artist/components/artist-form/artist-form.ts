@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, linkedSignal, output } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
-import { Contracts } from '@neko/contracts'
 import { disabled, form, FormField, minLength, required } from '@angular/forms/signals'
 
 import { LoadingIndicator, Textfield, Button, Checkbox } from '@/shared/components'
@@ -8,6 +7,7 @@ import { GenreAutocomplete, PictureUpload } from '@/modules/backstage/shared/com
 import { fileSize, fileType } from '@/shared/validators'
 import { PICTURE_UPLOAD_CONFIG } from '@/modules/backstage/shared/constants'
 import { ArtworkPipe } from '@/shared/pipes'
+import { GetBackstageArtistQuery } from '@/shared/generated-types'
 
 interface ArtistModel {
   name: string
@@ -36,14 +36,14 @@ interface ArtistModel {
 export class ArtistForm {
   readonly submitLabel = input.required<string>()
   readonly saving = input.required<boolean>()
-  readonly artist = input<any>()
+  readonly artist = input<GetBackstageArtistQuery['backstageArtist'] | null>(null)
 
   readonly formSubmit = output<{ name: string; genres: string[]; verified: boolean; image: File | null }>()
   readonly formCancel = output<void>()
 
   private readonly artistModel = linkedSignal<ArtistModel>(() => ({
     name: this.artist()?.name ?? '',
-    genres: this.artist()?.genres ?? [],
+    genres: this.artist()?.genres?.map((genre) => genre.id) ?? [],
     verified: this.artist()?.verified ?? false,
     image: null,
   }))

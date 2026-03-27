@@ -1,0 +1,7 @@
+mutation CreateGenre($genre: CreateGenreInput!) {
+  createGenre(genre: $genre) {
+    id
+    name
+    slug
+  }
+}

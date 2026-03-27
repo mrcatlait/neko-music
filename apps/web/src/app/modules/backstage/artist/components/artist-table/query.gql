@@ -1,4 +1,4 @@
-query GetBackstageArtist {
+query GetBackstageArtists {
   backstageArtists {
     id
     name

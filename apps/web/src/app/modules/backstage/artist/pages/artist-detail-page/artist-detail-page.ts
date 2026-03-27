@@ -4,77 +4,68 @@ import { of, switchMap } from 'rxjs'
 import { HttpErrorResponse } from '@angular/common/http'
 
 import { ArtistForm } from '../../components'
-import { ArtistApi } from '../../artist-api'
 
 import { IconButton, LoadingIndicator } from '@/shared/components'
 import { Snackbar } from '@/shared/snackbar'
 import { MediaApi } from '@/modules/backstage/shared/services'
+import {
+  GetBackstageArtistGql,
+  GetBackstageArtistQuery,
+  UpdateArtistGql,
+  UpdateArtistInput,
+} from '@/shared/generated-types'
 
 @Component({
   selector: 'n-artist-detail-page',
   imports: [ArtistForm, IconButton, LoadingIndicator],
   templateUrl: './artist-detail-page.html',
   styleUrl: './artist-detail-page.scss',
-  providers: [ArtistApi, MediaApi],
+  providers: [MediaApi, GetBackstageArtistGql, UpdateArtistGql],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArtistDetailPage implements OnInit {
   private readonly router = inject(Router)
   private readonly snackbar = inject(Snackbar)
-  private readonly artistApi = inject(ArtistApi)
+  private readonly getBackstageArtistGql = inject(GetBackstageArtistGql)
+  private readonly updateArtistGql = inject(UpdateArtistGql)
   private readonly mediaApi = inject(MediaApi)
 
   readonly id = input.required<string>()
 
-  protected readonly artist = signal<any | undefined>(undefined)
+  protected readonly artist = signal<GetBackstageArtistQuery['backstageArtist'] | null>(null)
   protected readonly loading = signal(true)
   protected readonly saving = signal(false)
 
   ngOnInit(): void {
-    this.loadArtist()
-  }
+    this.getBackstageArtistGql.fetch({ id: this.id() }).then((result) => {
+      if (result.error) {
+        this.snackbar.info(result.error.message)
+      }
 
-  private loadArtist(): void {
-    this.artistApi.getArtist(this.id()).subscribe({
-      next: (artist) => {
-        this.artist.set(artist)
-        this.loading.set(false)
-      },
-      error: () => {
-        this.snackbar.info('Failed to load artist')
-        this.loading.set(false)
-      },
+      if (result.data) {
+        this.artist.set(result.data.backstageArtist)
+      }
+
+      this.loading.set(false)
     })
   }
 
-  protected updateArtist(data: any): void {
+  protected updateArtist(data: UpdateArtistInput): void {
     this.saving.set(true)
 
-    this.artistApi
-      .updateArtist(this.id(), { name: data.name, genres: data.genres, verified: data.verified })
-      .pipe(
-        switchMap(({ uploadToken }) => {
-          if (data.image) {
-            return this.mediaApi.upload(data.image, uploadToken)
-          }
-          return of(null)
-        }),
-      )
-      .subscribe({
-        next: () => {
-          this.saving.set(false)
-          this.snackbar.info('Artist updated successfully')
-          this.router.navigate(['/backstage/artists'])
-        },
-        error: (error) => {
-          this.saving.set(false)
+    this.updateArtistGql
+      .mutate({ id: this.id(), artist: { name: data.name, genres: data.genres, verified: data.verified } })
+      .then((result) => {
+        this.saving.set(false)
 
-          if (error instanceof HttpErrorResponse) {
-            this.snackbar.info(error.error.message ?? 'Failed to update artist')
-          } else {
-            this.snackbar.info('Failed to update artist')
-          }
-        },
+        if (result.error) {
+          this.snackbar.info('Failed to update artist')
+        }
+
+        if (result.data) {
+          this.snackbar.info('Artist updated successfully')
+          this.navigateToArtistList()
+        }
       })
   }
 

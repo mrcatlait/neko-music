@@ -9,10 +9,24 @@ dependsOn:
     scope: 'development'
 
 tasks:
+  build:
+    command: 'tsc'
+    args:
+      - '-p'
+      - 'tsconfig.plugin.json'
+    inputs:
+      - 'plugins/**/*.ts'
+      - '@globs(configs)'
+    outputs:
+      - 'dist'
+
   codegen:
     command: 'graphql-codegen'
+    preset: 'server'
     args:
       - '--config'
       - 'codegen.ts'
     inputs:
       - 'codegen.ts'
+    deps:
+      - 'build'

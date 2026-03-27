@@ -1,0 +1,13 @@
+query GetBackstageArtist($id: String!) {
+  backstageArtist(id: $id) {
+    id
+    name
+    verified
+    artwork {
+      url
+    }
+    genres {
+      id
+    }
+  }
+}
