@@ -9,12 +9,7 @@ import { ProcessingStatus, ProcessingStep } from '../enums'
 import { ImageService } from './image.service'
 import { ProcessingJobTable, ProcessingStepTable } from '../media.schema'
 import { AudioService } from './audio.service'
-
-import {
-  MediaProcessingCompletedEvent,
-  MediaProcessingFailedEvent,
-  MediaProcessingStartedEvent,
-} from '@/modules/shared/events'
+import { MediaProcessingCompletedEvent, MediaProcessingFailedEvent, MediaProcessingStartedEvent } from '../events'
 
 interface Job extends Selectable<ProcessingJobTable> {
   steps: Selectable<ProcessingStepTable>[]

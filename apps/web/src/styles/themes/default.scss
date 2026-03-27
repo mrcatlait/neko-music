@@ -47,6 +47,15 @@
 
     // Success
     --color-success: #b7e1cd;
+
+    // Status
+    // https://carbondesignsystem.com/patterns/status-indicator-pattern/
+    --color-status-normal: #64D3FF;
+    --color-status-success: #32D84C;
+    --color-status-caution: #FFD509;
+    --color-status-failed: #FF443B;
+    --color-status-undefined: #BE5AF2;
+    --color-status-pending: var(--color-text-medium-emphasis);
   }
 
   .color-error {

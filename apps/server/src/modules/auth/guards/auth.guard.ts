@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable, Unauthor
 import { FastifyRequest } from 'fastify'
 import { Reflector } from '@nestjs/core'
 import { RolePermissions } from '@neko/permissions'
+import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql'
 
 import { AuthService, JwtService } from '../services'
 import { PERMISSIONS_METADATA_KEY, PUBLIC_METADATA_KEY } from '../decorators'
@@ -24,7 +25,15 @@ export class AuthGuard implements CanActivate {
       return true
     }
 
-    const req = context.switchToHttp().getRequest<FastifyRequest>()
+    let req: FastifyRequest
+
+    if (context.getType() === 'http') {
+      req = context.switchToHttp().getRequest<FastifyRequest>()
+    } else if (context.getType<GqlContextType>() === 'graphql') {
+      req = GqlExecutionContext.create(context).getContext<{ req: FastifyRequest }>().req
+    } else {
+      throw new UnauthorizedException()
+    }
 
     const accessToken = this.authService.extractAccessTokenFromHeader(req)
 

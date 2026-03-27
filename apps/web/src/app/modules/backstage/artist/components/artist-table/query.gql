@@ -1,0 +1,11 @@
+query GetBackstageArtist {
+  backstageArtists {
+    id
+    name
+    status
+    mediaStatus
+    artwork {
+      url
+    }
+  }
+}

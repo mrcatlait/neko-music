@@ -1,5 +1,6 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common'
+import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
+import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql'
 
 import { User } from '../interfaces'
 
@@ -15,6 +16,11 @@ import { User } from '../interfaces'
  * ```
  */
 export const UserSession = createParamDecorator((data: unknown, ctx: ExecutionContext): User | undefined => {
-  const request = ctx.switchToHttp().getRequest<FastifyRequest>()
-  return request.user
+  if (ctx.getType() === 'http') {
+    return ctx.switchToHttp().getRequest<FastifyRequest>().user
+  } else if (ctx.getType<GqlContextType>() === 'graphql') {
+    return GqlExecutionContext.create(ctx).getContext<{ req: FastifyRequest }>().req.user
+  } else {
+    throw new UnauthorizedException()
+  }
 })

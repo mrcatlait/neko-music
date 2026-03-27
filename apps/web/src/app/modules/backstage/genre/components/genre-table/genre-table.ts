@@ -1,12 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { AgGridModule } from 'ag-grid-angular'
 import { ColDef, AllCommunityModule, GridOptions } from 'ag-grid-community'
-import { HttpErrorResponse } from '@angular/common/http'
-import { Contracts } from '@neko/contracts'
 import { Router } from '@angular/router'
 
 import { GenreApi } from '@/modules/backstage/shared/services'
 import { GRID_OPTIONS, provideGridOptions } from '@/modules/backstage/shared/providers'
+import { Graphql } from '@/core/services/graphql'
+import {
+  GetBackstageGenresDocument,
+  GetBackstageGenresQuery,
+  GetBackstageGenresQueryVariables,
+} from '@/shared/graphql/graphql'
+import { StatusIndicatorCellRenderer } from '@/modules/backstage/shared/components'
 
 @Component({
   selector: 'n-genre-table',
@@ -16,10 +21,15 @@ import { GRID_OPTIONS, provideGridOptions } from '@/modules/backstage/shared/pro
   providers: [GenreApi, provideGridOptions()],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GenreTable implements OnInit {
+export class GenreTable {
   private readonly router = inject(Router)
-  private readonly genreApi = inject(GenreApi)
+  private readonly graphql = inject(Graphql)
   private readonly defaultGridOptions = inject(GRID_OPTIONS)
+
+  protected readonly genresResource = this.graphql.graphqlResource<
+    GetBackstageGenresQuery,
+    GetBackstageGenresQueryVariables
+  >(GetBackstageGenresDocument, {})
 
   protected readonly gridOptions: GridOptions = {
     ...this.defaultGridOptions,
@@ -28,40 +38,18 @@ export class GenreTable implements OnInit {
     },
   }
   protected readonly modules = [AllCommunityModule]
-  protected readonly columnDefs: ColDef<Contracts.Backstage.Genres.Statistics>[] = [
+  protected readonly columnDefs: ColDef<GetBackstageGenresQuery['backstageGenres'][number]>[] = [
     { field: 'name', headerName: 'Name', flex: 1 },
     {
-      field: 'totalArtists',
-      headerName: 'Total Artists',
+      field: 'slug',
+      headerName: 'Slug',
       flex: 1,
     },
     {
-      field: 'totalAlbums',
-      headerName: 'Total Albums',
-      flex: 1,
-    },
-    {
-      field: 'totalTracks',
-      headerName: 'Total Tracks',
-      flex: 1,
+      field: 'status',
+      headerName: 'Status',
+      width: 160,
+      cellRenderer: StatusIndicatorCellRenderer,
     },
   ]
-
-  protected readonly rowData = signal<Contracts.Backstage.Genres.Statistics[]>([])
-  protected readonly error = signal<string | null>(null)
-
-  ngOnInit(): void {
-    this.genreApi.getStatistics().subscribe({
-      next: (response) => {
-        this.rowData.set(response.data)
-      },
-      error: (error) => {
-        if (error instanceof HttpErrorResponse) {
-          this.error.set(error.error.message)
-        } else {
-          this.error.set('An error occurred while fetching genres. Please try again later.')
-        }
-      },
-    })
-  }
 }

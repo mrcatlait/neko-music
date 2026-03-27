@@ -34,6 +34,37 @@
     </span>
   </n-textfield>
 
+  <n-textfield>
+    <label for="slug">Slug</label>
+
+    <input
+      id="slug"
+      type="text"
+      [formField]="genreForm.slug"
+    />
+
+    @let slugTouched = genreForm.slug().touched();
+    @let slugInvalid = genreForm.slug().invalid();
+
+    @if (slugInvalid && slugTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
+    <span slot="error">
+      @if (slugInvalid && slugTouched) {
+        @for (error of genreForm.slug().errors(); track error) {
+          <span>{{ error.message }}</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
   <div class="genre-form__actions">
     <button
       nButton

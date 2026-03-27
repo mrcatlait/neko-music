@@ -1,18 +1,14 @@
 import { HttpInterceptorFn, HttpErrorResponse, HttpRequest, HttpHandlerFn, HttpEvent } from '@angular/common/http'
 import { inject } from '@angular/core'
-import { catchError, switchMap, throwError, BehaviorSubject, filter, take, finalize, Observable } from 'rxjs'
+import { catchError, switchMap, throwError, Observable } from 'rxjs'
 
 import { AuthStore } from '../auth-store'
-import { AuthApi } from '../auth-api'
-
-let isRefreshing = false
-const refreshTokenSubject = new BehaviorSubject<string | null>(null)
+import { RefreshTokenAuthStrategy } from '../strategies'
 
 export const jwtInterceptor: HttpInterceptorFn = (request, next) => {
-  const authStore = inject(AuthStore)
-  const authApi = inject(AuthApi)
+  const refreshTokenAuth = inject(RefreshTokenAuthStrategy)
 
-  const accessToken = authStore.accessToken()
+  const accessToken = inject(AuthStore).accessToken()
 
   if (accessToken) {
     request = addTokenHeader(request, accessToken)
@@ -22,7 +18,7 @@ export const jwtInterceptor: HttpInterceptorFn = (request, next) => {
     catchError((error: HttpErrorResponse) => {
       // Only handle 401 errors for non-refresh endpoints
       if (error.status === 401 && !request.url.includes('/auth/refresh')) {
-        return handle401Error(request, next, authStore, authApi)
+        return handle401Error(request, next, refreshTokenAuth)
       }
 
       return throwError(() => error)
@@ -33,44 +29,14 @@ export const jwtInterceptor: HttpInterceptorFn = (request, next) => {
 function handle401Error(
   request: HttpRequest<unknown>,
   next: HttpHandlerFn,
-  authStore: AuthStore,
-  authApi: AuthApi,
+  refreshTokenAuth: RefreshTokenAuthStrategy,
 ): Observable<HttpEvent<unknown>> {
-  if (!isRefreshing) {
-    isRefreshing = true
-    refreshTokenSubject.next(null)
-
-    return authApi.refresh().pipe(
-      switchMap((response) => {
-        // Update access token in store
-        authStore.updateAccessToken(response.accessToken)
-        refreshTokenSubject.next(response.accessToken)
-
-        // Retry original request with new token
-        const retryRequest = addTokenHeader(request, response.accessToken)
-
-        return next(retryRequest)
-      }),
-      catchError((refreshError) => {
-        // Refresh failed - logout user
-        authStore.logout()
-        return throwError(() => refreshError)
-      }),
-      finalize(() => {
-        isRefreshing = false
-      }),
-    )
-  } else {
-    // Token refresh is in progress, wait for completion
-    return refreshTokenSubject.pipe(
-      filter((token) => token !== null),
-      take(1),
-      switchMap((token) => {
-        const retryRequest = addTokenHeader(request, token)
-        return next(retryRequest)
-      }),
-    )
-  }
+  return refreshTokenAuth.refreshAccessToken().pipe(
+    switchMap((accessToken) => {
+      const retryRequest = addTokenHeader(request, accessToken)
+      return next(retryRequest)
+    }),
+  )
 }
 
 const addTokenHeader = (request: HttpRequest<unknown>, token: string) => {

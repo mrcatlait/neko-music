@@ -10,8 +10,12 @@
     "@angular/router": "^21.2.5",
     "@neko/permissions": "*",
     "@neko/selectors": "*",
+    "@urql/core": "^6.0.1",
+    "@urql/exchange-auth": "^3.0.0",
+    "@urql/exchange-persisted": "^5.0.1",
     "ag-grid-angular": "^35.1.0",
     "dashjs": "^5.1.0",
+    "graphql": "^16.13.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } fro
 import { Router } from '@angular/router'
 import { of, switchMap } from 'rxjs'
 import { HttpErrorResponse } from '@angular/common/http'
-import { Contracts } from '@neko/contracts'
 
 import { ArtistForm } from '../../components'
 import { ArtistApi } from '../../artist-api'
@@ -27,7 +26,7 @@ export class ArtistDetailPage implements OnInit {
 
   readonly id = input.required<string>()
 
-  protected readonly artist = signal<Contracts.Backstage.Artists.Artist | undefined>(undefined)
+  protected readonly artist = signal<any | undefined>(undefined)
   protected readonly loading = signal(true)
   protected readonly saving = signal(false)
 
@@ -48,7 +47,7 @@ export class ArtistDetailPage implements OnInit {
     })
   }
 
-  protected updateArtist(data: Contracts.Backstage.Artists.UpdateRequest & { image: File | null }): void {
+  protected updateArtist(data: any): void {
     this.saving.set(true)
 
     this.artistApi

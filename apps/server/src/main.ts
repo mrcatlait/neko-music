@@ -1,12 +1,12 @@
 import { join } from 'path'
 import { NestFactory, Reflector } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { fastifyCookie } from '@fastify/cookie'
 import { fastifyMultipart } from '@fastify/multipart'
 import fastifyStatic from '@fastify/static'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 
 import { ConfigService } from './modules/config/services'
 
@@ -25,21 +25,24 @@ async function bootstrap() {
     prefix: '/media/',
   })
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-    }),
-  )
   const reflector = app.get(Reflector)
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector))
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      dismissDefaultMessages: true,
+      validationError: { target: false },
+    }),
+  )
 
   await app.register(fastifyCookie)
   await app.register(fastifyMultipart)
 
-  app.enableCors({
-    origin: UI_URL,
-    credentials: true,
-  })
+  // app.enableCors({
+  //   origin: UI_URL,
+  //   credentials: true,
+  // })
 
   const config = new DocumentBuilder()
     .setTitle('Neko Music API')

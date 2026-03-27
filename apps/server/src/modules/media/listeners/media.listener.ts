@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
 
 import { AssetCleanupService, ProcessingPipelineService } from '../services'
-import { MediaUploadedEvent } from '../events'
-
-import { MediaProcessingCompletedEvent, MediaReadyEvent } from '@/modules/shared/events'
+import { MediaUploadedEvent, MediaProcessingCompletedEvent, MediaReadyEvent } from '../events'
 
 @Injectable()
 export class MediaListener {

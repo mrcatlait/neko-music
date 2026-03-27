@@ -45,7 +45,7 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
   }
 
   async invoke(params: UploadMediaUseCaseParams): Promise<UploadMediaUseCaseResult> {
-    const uploadToken = await this.uploadTokenRepository.findById(params.token)
+    const uploadToken = await this.uploadTokenRepository.findOne(params.token)
 
     if (!uploadToken) {
       throw new ForbiddenException()
@@ -118,7 +118,7 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
         })),
       )
 
-      await this.uploadTokenRepository.deleteById(uploadToken.id)
+      await this.uploadTokenRepository.delete(uploadToken.id)
 
       this.eventEmitter.emit(
         MediaUploadedEvent.event,

@@ -1,0 +1,7 @@
+export * from './create-backstage-artist'
+export * from './generate-artist-artwork-upload-token'
+export * from './get-backstage-artist'
+export * from './get-backstage-artists'
+export * from './sync-artist'
+export * from './update-artist-status'
+export * from './update-backstage-artist'

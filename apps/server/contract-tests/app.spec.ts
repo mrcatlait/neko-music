@@ -6,15 +6,8 @@ import { Reflector } from '@nestjs/core'
 import fastifyCookie from '@fastify/cookie'
 
 import { testEnvConfig } from './test-env'
-import { artistStateHandler, authStateHandler, genreStateHandler } from './state-handlers'
-import {
-  artistRepositoryMock,
-  authGuardMock,
-  authRepositoryMock,
-  databaseMock,
-  genreRepositoryMock,
-  userRepositoryMock,
-} from './mocks'
+import { authStateHandler } from './state-handlers'
+import { authGuardMock, authRepositoryMock, databaseMock, userRepositoryMock } from './mocks'
 
 import { PactModule, PactVerifierService } from 'contract-tests/pact.module'
 import { AppModule } from '@/modules/app/app.module'
@@ -23,7 +16,6 @@ import { DatabaseService } from '@/modules/database/services'
 import { DATABASE } from '@/modules/database/database.tokens'
 import { AuthRepository } from '@/modules/auth/repositories'
 import { UserRepository } from '@/modules/user/repositories'
-import { ArtistRepository, GenreRepository } from '@/modules/backstage/repositories'
 import { AdministratorService } from '@/modules/auth/services/administrator.service'
 import { AuthGuard } from '@/modules/auth/guards'
 import { GenerateUploadTokenUseCase, GetArtworkUseCase } from '@/modules/media/use-cases'
@@ -34,9 +26,7 @@ describe('Pact Verification', () => {
 
   beforeAll(async () => {
     const stateHandlers: MessageStateHandlers = {
-      ...artistStateHandler,
       ...authStateHandler,
-      ...genreStateHandler,
     }
 
     const requestFilter = (req: Request, res: Response, next: () => void) => {
@@ -66,10 +56,6 @@ describe('Pact Verification', () => {
       .useValue(authRepositoryMock)
       .overrideProvider(UserRepository)
       .useValue(userRepositoryMock)
-      .overrideProvider(GenreRepository)
-      .useValue(genreRepositoryMock)
-      .overrideProvider(ArtistRepository)
-      .useValue(artistRepositoryMock)
       .overrideProvider(GenerateUploadTokenUseCase)
       .useValue({ invoke: () => Promise.resolve({ uploadToken: 'test-upload-token' }) })
       .overrideProvider(GetArtworkUseCase)

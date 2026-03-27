@@ -28,7 +28,7 @@ export class ArtistCreatePage {
   protected readonly isDragging = signal(false)
   protected readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput')
 
-  protected createArtist(artist: Contracts.Backstage.Artists.CreationRequest & { image: File | null }): void {
+  protected createArtist(artist: any): void {
     if (!artist.image) return
 
     this.artistApi

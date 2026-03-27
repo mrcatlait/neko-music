@@ -36,7 +36,7 @@ interface ArtistModel {
 export class ArtistForm {
   readonly submitLabel = input.required<string>()
   readonly saving = input.required<boolean>()
-  readonly artist = input<Contracts.Backstage.Artists.Artist>()
+  readonly artist = input<any>()
 
   readonly formSubmit = output<{ name: string; genres: string[]; verified: boolean; image: File | null }>()
   readonly formCancel = output<void>()

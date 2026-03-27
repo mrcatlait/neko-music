@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
-import { Contracts } from '@neko/contracts'
 import { Observable } from 'rxjs'
 
 import { ENVIRONMENT } from '@/core/providers'
@@ -10,28 +9,23 @@ export class ArtistApi {
   private readonly http = inject(HttpClient)
   private readonly apiUrl = inject(ENVIRONMENT).apiUrl
 
-  create(
-    payload: Contracts.Backstage.Artists.CreationRequest,
-  ): Observable<Contracts.Backstage.Artists.CreationResponse> {
-    return this.http.post<Contracts.Backstage.Artists.CreationResponse>(`${this.apiUrl}/backstage/artists`, payload)
+  create(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/backstage/artists`, payload)
   }
 
-  getArtist(id: string): Observable<Contracts.Backstage.Artists.Artist> {
-    return this.http.get<Contracts.Backstage.Artists.Artist>(`${this.apiUrl}/backstage/artists/${id}`)
+  getArtist(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/backstage/artists/${id}`)
   }
 
-  getArtists(): Observable<Contracts.Backstage.Artists.ArtistsResponse> {
-    return this.http.get<Contracts.Backstage.Artists.ArtistsResponse>(`${this.apiUrl}/backstage/artists`)
+  getArtists(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/backstage/artists`)
   }
 
-  updateArtist(
-    id: string,
-    payload: Contracts.Backstage.Artists.UpdateRequest,
-  ): Observable<Contracts.Backstage.Artists.UpdateResponse> {
-    return this.http.put<Contracts.Backstage.Artists.UpdateResponse>(`${this.apiUrl}/backstage/artists/${id}`, payload)
+  updateArtist(id: string, payload: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/backstage/artists/${id}`, payload)
   }
 
-  getStatistics(): Observable<Contracts.Backstage.Artists.StatisticsResponse> {
-    return this.http.get<Contracts.Backstage.Artists.StatisticsResponse>(`${this.apiUrl}/backstage/artists/statistics`)
+  getStatistics(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/backstage/artists/statistics`)
   }
 }

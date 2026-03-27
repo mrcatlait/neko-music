@@ -1,0 +1,8 @@
+query GetBackstageGenres {
+  backstageGenres {
+    id
+    name
+    slug
+    status
+  }
+}

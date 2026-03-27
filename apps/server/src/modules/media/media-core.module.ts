@@ -21,6 +21,7 @@ import {
   UploadAudioValidator,
   UploadImageValidator,
   GetMediaReadinessUseCase,
+  GetProcessingStatusUseCase,
 } from './use-cases'
 import {
   AssetRepository,
@@ -28,6 +29,7 @@ import {
   ImageMetadataRepository,
   MediaRepository,
   SourceAssetRepository,
+  ProcessingJobRepository,
   UploadTokenRepository,
 } from './repositories'
 import { TriggerMediaProcessingCron, UploadTokenCleanupCron } from './crons'
@@ -58,18 +60,25 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     AssetRepository,
     ImageMetadataRepository,
     AudioMetadataRepository,
+    ProcessingJobRepository,
     UploadTokenRepository,
     // Use Cases
     GenerateUploadTokenUseCase,
     GetArtworkUseCase,
     GetMediaReadinessUseCase,
+    GetProcessingStatusUseCase,
     UploadMediaUseCase,
     UploadAudioValidator,
     UploadImageValidator,
     // Listeners
     MediaListener,
   ]
-  static readonly exports = [GenerateUploadTokenUseCase, GetArtworkUseCase, GetMediaReadinessUseCase]
+  static readonly exports = [
+    GenerateUploadTokenUseCase,
+    GetArtworkUseCase,
+    GetMediaReadinessUseCase,
+    GetProcessingStatusUseCase,
+  ]
   static readonly controllers = [MediaController, StreamingController]
 
   constructor(

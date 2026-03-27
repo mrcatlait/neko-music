@@ -10,7 +10,6 @@ import {
   signal,
 } from '@angular/core'
 import { form, FormField, FormValueControl, ValidationError, WithOptionalFieldTree } from '@angular/forms/signals'
-import { Contracts } from '@neko/contracts'
 import { HttpErrorResponse } from '@angular/common/http'
 
 import { GenreApi } from '../../services/genre-api'
@@ -41,7 +40,7 @@ export class GenreAutocomplete implements FormValueControl<string[]>, OnInit {
 
   protected readonly loading = signal(false)
 
-  private readonly availableGenres = signal<Contracts.Backstage.Genres.Genre[]>([])
+  private readonly availableGenres = signal<any[]>([])
 
   private readonly filterValue = signal<FilterModel>({ value: '' })
   protected readonly filterForm = form(this.filterValue)

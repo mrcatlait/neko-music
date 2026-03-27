@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, input, linkedSignal, output } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
-import { Contracts } from '@neko/contracts'
 import { form, required, FormField, disabled } from '@angular/forms/signals'
 
 import { Button, LoadingIndicator, Textfield } from '@/shared/components'
 
 interface GenreModel {
   name: string
+  slug: string
 }
 
 @Component({
@@ -20,15 +20,17 @@ export class GenreForm {
   readonly submitLabel = input.required<string>()
   readonly saving = input.required<boolean>()
 
-  readonly genre = input<Contracts.Backstage.Genres.Genre | null>(null)
-  readonly formSubmit = output<{ name: string }>()
+  readonly genre = input<GenreModel | null>(null)
+  readonly formSubmit = output<GenreModel>()
   readonly formCancel = output<void>()
 
   private readonly genreModel = linkedSignal<GenreModel>(() => ({
     name: this.genre()?.name ?? '',
+    slug: this.genre()?.slug ?? '',
   }))
   protected readonly genreForm = form(this.genreModel, (schemaPath) => {
     required(schemaPath.name, { message: 'Name is required' })
+    required(schemaPath.slug, { message: 'Slug is required' })
     disabled(schemaPath, () => this.saving())
   })
 
@@ -42,7 +44,7 @@ export class GenreForm {
 
     const genre = this.genreModel()
 
-    this.formSubmit.emit({ name: genre.name })
+    this.formSubmit.emit({ name: genre.name, slug: genre.slug })
   }
 
   protected cancel(): void {

@@ -1,7 +1,0 @@
-export * from './create-backstage-artist'
-export * from './get-artist-statistics'
-export * from './get-backstage-artist'
-export * from './get-backstage-artists'
-export * from './sync-artist'
-export * from './update-artist-status'
-export * from './update-backstage-artist'

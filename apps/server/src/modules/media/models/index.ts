@@ -1,1 +1,1 @@
-export * from './image-resolution.model'
+export * from './upload-token.model'

@@ -1,0 +1,96 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Artwork {
+  """
+  The template URL with {size} placeholder; use preset names (small, medium, large)
+  """
+  url: String!
+
+  """The dominant color of the artwork"""
+  dominantColor: String!
+}
+
+type BackstageGenre {
+  id: ID!
+  name: String!
+  slug: String!
+  status: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: String!
+  updatedBy: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type BackstageArtist {
+  id: ID!
+  name: String!
+  verified: Boolean!
+  status: String!
+  artwork: Artwork
+  mediaStatus: String
+  genres: [BackstageGenre!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: String!
+  updatedBy: String!
+}
+
+type UploadToken {
+  uploadToken: String!
+}
+
+type Query {
+  backstageArtist(id: String!): BackstageArtist!
+  backstageArtists(
+    """The limit of the page"""
+    limit: Int = 10
+
+    """The offset of the page"""
+    offset: Int = 0
+  ): [BackstageArtist!]!
+  backstageGenre(id: String!): BackstageGenre!
+  backstageGenres(
+    """The limit of the page"""
+    limit: Int = 10
+
+    """The offset of the page"""
+    offset: Int = 0
+  ): [BackstageGenre!]!
+}
+
+type Mutation {
+  createArtist(artist: CreateArtistInput!): BackstageArtist!
+  updateArtist(id: String!, artist: UpdateArtistInput!): BackstageArtist!
+  generateArtistArtworkUploadToken(id: String!): UploadToken!
+  createGenre(genre: CreateGenreInput!): BackstageGenre!
+  updateGenre(id: String!, genre: UpdateGenreInput!): BackstageGenre!
+}
+
+input CreateArtistInput {
+  name: String!
+  verified: Boolean!
+  genres: [String!]!
+}
+
+input UpdateArtistInput {
+  name: String!
+  verified: Boolean!
+  genres: [String!]!
+}
+
+input CreateGenreInput {
+  name: String!
+  slug: String!
+}
+
+input UpdateGenreInput {
+  name: String!
+  slug: String!
+}

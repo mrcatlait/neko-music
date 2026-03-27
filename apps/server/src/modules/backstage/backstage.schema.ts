@@ -1,6 +1,6 @@
 import { Generated } from 'kysely'
 
-import { PublishingStatus } from './enums'
+import { PublishingStatus } from './shared/enums'
 import { Artwork } from '../shared/types'
 import { AlbumType, TrackType } from '../shared/enums'
 
@@ -16,6 +16,7 @@ export interface BackstageGenreTable extends AuditableTable {
   name: string
   slug: string
   status: PublishingStatus
+  // @todo add parentId
 }
 
 export interface BackstageArtistTable extends AuditableTable {
@@ -23,7 +24,7 @@ export interface BackstageArtistTable extends AuditableTable {
   name: string
   verified: boolean
   status: PublishingStatus
-  artwork?: Artwork
+  artwork: Artwork | null
 }
 
 export interface BackstageArtistGenreTable {

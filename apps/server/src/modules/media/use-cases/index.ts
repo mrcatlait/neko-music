@@ -1,4 +1,5 @@
 export * from './generate-upload-token'
 export * from './get-artwork'
 export * from './get-media-readiness'
+export * from './get-processing-status'
 export * from './upload-media'

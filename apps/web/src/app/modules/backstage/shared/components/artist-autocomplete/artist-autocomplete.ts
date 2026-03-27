@@ -10,7 +10,6 @@ import {
   signal,
 } from '@angular/core'
 import { form, FormField, FormValueControl, ValidationError, WithOptionalFieldTree } from '@angular/forms/signals'
-import { Contracts } from '@neko/contracts'
 import { HttpErrorResponse } from '@angular/common/http'
 
 import { ArtistApi } from '@/modules/backstage/artist/artist-api'
@@ -50,7 +49,7 @@ export class ArtistAutocomplete implements FormValueControl<string[]>, OnInit {
 
   protected readonly loading = signal(false)
 
-  private readonly availableArtists = signal<Contracts.Backstage.Artists.ArtistsResponse['data']>([])
+  private readonly availableArtists = signal<any[]>([])
 
   private readonly filterValue = signal<FilterModel>({ value: '' })
   protected readonly filterForm = form(this.filterValue)

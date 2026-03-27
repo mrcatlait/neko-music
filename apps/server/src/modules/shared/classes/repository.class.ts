@@ -138,7 +138,7 @@ export abstract class Repository<Schema, TableName extends keyof Schema & string
         .select((eb) => eb.fn.countAll().as('count'))
         .where('id', '=', criteria)
         .executeTakeFirst()
-        .then(Number)
+        .then((row) => Number(row?.count ?? 0))
     }
 
     if (Array.isArray(criteria)) {
@@ -147,7 +147,7 @@ export abstract class Repository<Schema, TableName extends keyof Schema & string
         .select((eb) => eb.fn.countAll().as('count'))
         .where('id', 'in', criteria)
         .executeTakeFirst()
-        .then(Number)
+        .then((row) => Number(row?.count ?? 0))
     }
 
     return this.db

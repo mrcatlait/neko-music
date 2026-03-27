@@ -34,10 +34,10 @@ export class GenerateUploadTokenUseCase implements UseCase<
   }
 
   async invoke(params: GenerateUploadTokenUseCaseParams): Promise<GenerateUploadTokenUseCaseResult> {
-    const token = await this.uploadTokenRepository.findByUserId(params.userId)
+    const token = await this.uploadTokenRepository.findOne({ userId: params.userId })
 
     if (token) {
-      await this.uploadTokenRepository.deleteById(token.id)
+      await this.uploadTokenRepository.delete(token.id)
     }
 
     const newToken = await this.uploadTokenRepository.create({

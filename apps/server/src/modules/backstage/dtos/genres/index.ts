@@ -1,5 +1,0 @@
-export * from './genre-creation-request.dto'
-export * from './genre-response.dto'
-export * from './genre-list-response.dto'
-export * from './genre-update-request.dto'
-export * from './genre.dto'

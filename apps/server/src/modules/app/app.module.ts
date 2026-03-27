@@ -3,9 +3,13 @@ import { join } from 'path'
 import { ScheduleModule } from '@nestjs/schedule'
 import { APP_GUARD } from '@nestjs/core'
 import { EventEmitterModule } from '@nestjs/event-emitter'
+import { GraphQLModule } from '@nestjs/graphql'
+import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius'
+import { mercurius } from 'mercurius'
 
 import { SecurityHeadersMiddleware } from './middlewares'
 import { BackstageModule } from '../backstage/backstage.module'
+import { ArtistLoader } from '../backstage/artist/loaders'
 
 import { AuthGuard } from '@/modules/auth/guards'
 import { DatabaseModule } from '@/modules/database/database.module'
@@ -40,6 +44,19 @@ import { AuthModule } from '@/modules/auth/auth.module'
         database: configService.config.DATABASE_NAME,
       }),
       inject: [ConfigService],
+    }),
+    GraphQLModule.forRootAsync<MercuriusDriverConfig>({
+      driver: MercuriusDriver,
+      imports: [BackstageModule],
+      inject: [ArtistLoader],
+      useFactory: (artistLoader: ArtistLoader) => ({
+        autoSchemaFile: join(process.cwd(), 'schema.gql'),
+        graphiql: true,
+        jit: 1,
+        loaders: {
+          ...artistLoader.defaultLoader(),
+        },
+      }),
     }),
     ScheduleModule.forRoot(),
     AuthModule.forRootAsync({
@@ -120,6 +137,6 @@ import { AuthModule } from '@/modules/auth/auth.module'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(SecurityHeadersMiddleware).forRoutes('*')
+    // consumer.apply(SecurityHeadersMiddleware).forRoutes('*')
   }
 }

@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Type } from 'class-transformer'
-import { IsInt, IsOptional, Max, Min } from 'class-validator'
+import { JSONSchemaType } from 'ajv'
 
 /**
  * The page pagination query DTO is used to paginate the results of a query.
@@ -12,10 +11,6 @@ export class PagePaginationQuery {
     default: 1,
     required: false,
   })
-  @IsInt()
-  @Min(1)
-  @Type(() => Number)
-  @IsOptional()
   readonly page: number = 1
 
   @ApiProperty({
@@ -25,14 +20,19 @@ export class PagePaginationQuery {
     default: 10,
     required: false,
   })
-  @IsInt()
-  @Min(1)
-  @Max(100)
-  @Type(() => Number)
-  @IsOptional()
   readonly limit: number = 10
 
   get offset(): number {
     return (this.page - 1) * this.limit
   }
+}
+
+export const pagePaginationQuerySchema: JSONSchemaType<Omit<PagePaginationQuery, 'offset'>> = {
+  type: 'object',
+  properties: {
+    page: { type: 'number', minimum: 1, default: 1, required: false },
+    limit: { type: 'number', minimum: 1, maximum: 100, default: 10, required: false },
+  },
+  required: ['page', 'limit'],
+  additionalProperties: false,
 }

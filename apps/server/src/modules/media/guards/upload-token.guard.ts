@@ -20,7 +20,7 @@ export class UploadTokenGuard implements CanActivate {
       throw new UnauthorizedException()
     }
 
-    const token = await this.uploadTokenRepository.findById(uploadToken)
+    const token = await this.uploadTokenRepository.findOne(uploadToken)
 
     if (!token) {
       throw new UnauthorizedException()
