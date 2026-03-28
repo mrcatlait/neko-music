@@ -2,18 +2,22 @@
   <n-loading-indicator />
 } @else {
   <n-textfield
+    class="genre-autocomplete"
     [class.ng-invalid]="invalid()"
     [class.ng-touched]="touched()"
   >
-    <label for="genres"> Choose up to 3 genres </label>
+    <label for="genres"> Genres </label>
 
     <i
+      aria-hidden="true"
       class="genre-autocomplete__search-icon"
       slot="left"
-      >search</i
     >
+      search
+    </i>
 
     <input
+      class="genre-autocomplete__input"
       id="genres"
       placeholder="Search"
       type="text"
@@ -40,10 +44,18 @@
     @if (invalid() && touched()) {
       <i
         aria-hidden="true"
-        class="color-error"
+        class="genre-autocomplete__error-icon"
         slot="right"
       >
         error
+      </i>
+    } @else {
+      <i
+        aria-hidden="true"
+        class="genre-autocomplete__arrow-down"
+        slot="right"
+      >
+        arrow_drop_down
       </i>
     }
 
@@ -56,7 +68,7 @@
     </span>
   </n-textfield>
 
-  @if (selectedGenres().length > 0) {
+  <!-- @if (selectedGenres().length > 0) {
     <div class="genre-autocomplete__selected-genres">
       @for (genre of selectedGenres(); track genre) {
         <n-chip>
@@ -71,5 +83,5 @@
         </n-chip>
       }
     </div>
-  }
+  } -->
 }

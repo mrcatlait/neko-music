@@ -4,7 +4,7 @@ import { Permissions } from '@neko/permissions'
 
 import { BackstageGenre } from '../models'
 import { GetGenresUseCase, GetGenreUseCase } from '../use-cases'
-import { PagePaginationArgs } from '../../shared/models'
+import { FilterArgs } from '../../shared/models'
 
 import { RequirePermissions } from '@/modules/auth/decorators'
 
@@ -23,7 +23,9 @@ export class GenreQuery {
 
   @Query(() => [BackstageGenre])
   @RequirePermissions(Permissions.Genre.Write)
-  backstageGenres(@Args({ nullable: true }) args: PagePaginationArgs): Promise<BackstageGenre[]> {
-    return this.getGenresUseCase.invoke({ limit: args.limit, offset: args.offset }).then((result) => result.data)
+  backstageGenres(@Args({ nullable: true }) args: FilterArgs): Promise<BackstageGenre[]> {
+    return this.getGenresUseCase
+      .invoke({ limit: args.limit, offset: args.offset, search: args.search })
+      .then((result) => result.data)
   }
 }

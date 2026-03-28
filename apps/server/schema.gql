@@ -62,6 +62,9 @@ type Query {
 
     """The offset of the page"""
     offset: Int = 0
+
+    """The search query"""
+    search: String
   ): [BackstageGenre!]!
 }
 

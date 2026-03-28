@@ -132,6 +132,7 @@ export type QueryBackstageGenreArgs = {
 export type QueryBackstageGenresArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateArtistInput = {
@@ -196,6 +197,15 @@ export type UpdateGenreMutationVariables = Exact<{
 
 
 export type UpdateGenreMutation = { __typename?: 'Mutation', updateGenre: { __typename?: 'BackstageGenre', id: string } };
+
+export type GetBackstageGenresByFilterQueryVariables = Exact<{
+  limit: Scalars['Int']['input'];
+  offset: Scalars['Int']['input'];
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetBackstageGenresByFilterQuery = { __typename?: 'Query', backstageGenres: Array<{ __typename?: 'BackstageGenre', id: string, name: string }> };
 
 
 export const GetBackstageArtistsDocument = gql`
@@ -302,4 +312,17 @@ export const UpdateGenreDocument = gql`
 @Injectable()
 export class UpdateGenreGql extends GraphqlMutation<UpdateGenreMutation, UpdateGenreMutationVariables> {
   override readonly document = UpdateGenreDocument;
+}
+export const GetBackstageGenresByFilterDocument = gql`
+    query GetBackstageGenresByFilter($limit: Int!, $offset: Int!, $search: String) {
+  backstageGenres(limit: $limit, offset: $offset, search: $search) {
+    id
+    name
+  }
+}
+    ` as unknown as TypedDocumentNode<GetBackstageGenresByFilterQuery, GetBackstageGenresByFilterQueryVariables>;
+
+@Injectable()
+export class GetBackstageGenresByFilterGql extends GraphqlQuery<GetBackstageGenresByFilterQuery, GetBackstageGenresByFilterQueryVariables> {
+  override readonly document = GetBackstageGenresByFilterDocument;
 }

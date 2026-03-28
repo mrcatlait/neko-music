@@ -1,36 +1,28 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  model,
-  OnInit,
-  signal,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, model, signal } from '@angular/core'
 import { form, FormField, FormValueControl, ValidationError, WithOptionalFieldTree } from '@angular/forms/signals'
-import { HttpErrorResponse } from '@angular/common/http'
-
-import { GenreApi } from '../../services/genre-api'
 
 import { Autocomplete, AutocompleteOption, AutocompleteTrigger } from '@/shared/autocomplete'
 import { Textfield, Chip, LoadingIndicator } from '@/shared/components'
+import { GetBackstageGenresByFilterGql, type GetBackstageGenresByFilterQuery } from '@/shared/generated-types'
 
 interface FilterModel {
   value: string
 }
 
+/**
+ * Backstage multi-select for genre IDs: loads genres once, then filters by the search field locally
+ * (same idea as {@link ArtistAutocomplete}).
+ */
 @Component({
   selector: 'n-genre-autocomplete',
   templateUrl: './genre-autocomplete.html',
   styleUrl: './genre-autocomplete.scss',
   imports: [Textfield, Autocomplete, AutocompleteOption, AutocompleteTrigger, Chip, LoadingIndicator, FormField],
-  providers: [GenreApi],
+  providers: [GetBackstageGenresByFilterGql],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GenreAutocomplete implements FormValueControl<string[]>, OnInit {
-  private readonly genreApi = inject(GenreApi)
+export class GenreAutocomplete implements FormValueControl<string[]> {
+  private readonly getBackstageGenresByFilterGql = inject(GetBackstageGenresByFilterGql)
 
   readonly value = model<string[]>([])
   readonly errors = input<readonly WithOptionalFieldTree<ValidationError>[]>([])
@@ -40,18 +32,26 @@ export class GenreAutocomplete implements FormValueControl<string[]>, OnInit {
 
   protected readonly loading = signal(false)
 
-  private readonly availableGenres = signal<any[]>([])
+  private readonly availableGenres = signal<GetBackstageGenresByFilterQuery['backstageGenres']>([])
 
   private readonly filterValue = signal<FilterModel>({ value: '' })
   protected readonly filterForm = form(this.filterValue)
 
   protected readonly filteredGenres = computed(() => {
-    const filterValue = this.filterValue()?.value?.toLowerCase() ?? ''
-    const notSelectedGenres = this.availableGenres().filter(
-      (genre) => !this.value().some((selectedGenre) => selectedGenre === genre.id),
-    )
+    const query = this.filterValue()?.value?.trim().toLowerCase() ?? ''
+    const selectedIds = new Set(this.value())
 
-    return notSelectedGenres?.filter((genre) => genre.name.toLowerCase().includes(filterValue)) ?? []
+    return this.availableGenres()
+
+    return this.availableGenres().filter((genre) => {
+      if (selectedIds.has(genre.id)) {
+        return false
+      }
+      if (query.length === 0) {
+        return true
+      }
+      return genre.name.toLowerCase().includes(query)
+    })
   })
   protected readonly selectedGenres = computed(() => this.availableGenres().filter((g) => this.value().includes(g.id)))
 
@@ -60,31 +60,31 @@ export class GenreAutocomplete implements FormValueControl<string[]>, OnInit {
       if (this.touched()) {
         this.filterForm.value().markAsTouched()
       }
-    })
-  }
 
-  ngOnInit(): void {
-    this.loadGenres()
+      this.loadGenres()
+    })
   }
 
   private loadGenres(): void {
     this.loading.set(true)
 
-    this.genreApi.getGenres().subscribe({
-      next: (response) => {
-        this.availableGenres.set(response.data)
+    this.getBackstageGenresByFilterGql
+      .fetch({
+        limit: 10,
+        offset: 0,
+        search: this.filterValue().value,
+      })
+      .then(({ error, data }) => {
         this.loading.set(false)
-      },
-      error: (error) => {
-        if (error instanceof HttpErrorResponse) {
-          console.error(error.error.message)
-        } else {
-          console.error('Failed to load genres')
+
+        if (error) {
+          console.error(error)
         }
 
-        this.loading.set(false)
-      },
-    })
+        if (data) {
+          this.availableGenres.set(data.backstageGenres)
+        }
+      })
   }
 
   protected addGenre(genreId: unknown): void {

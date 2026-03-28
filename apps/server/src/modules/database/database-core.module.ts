@@ -14,7 +14,7 @@ export const kyselyProvider: Provider = {
   inject: [DATABASE_MODULE_OPTIONS],
   useFactory: (options: DatabaseModuleOptions) => {
     return new Kysely({
-      log: ['error'], // 'query', 'error'
+      log: ['error', 'query'], // 'query', 'error'
       // log(event: LogEvent): void {
       //   if (event.level === 'error') {
       //     throw event.error

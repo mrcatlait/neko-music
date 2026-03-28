@@ -1,12 +1,33 @@
 .genre-autocomplete {
+  position: relative;
+
   &__selected-genres {
     margin-top: 8px;
     display: flex;
     flex-direction: row;
     gap: 8px;
+    flex-wrap: wrap;
   }
 
   &__search-icon {
     color: var(--color-text-medium-emphasis);
+    position: absolute;
+  }
+
+  &__input {
+    padding-left: 56px;
+    padding-right: 52px;
+  }
+
+  &__arrow-down {
+    color: var(--color-text-medium-emphasis);
+    position: absolute;
+    right: 0;
+  }
+
+  &__error-icon {
+    color: var(--color-error);
+    position: absolute;
+    right: 0;
   }
 }
