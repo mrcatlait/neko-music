@@ -1,0 +1,28 @@
+<header class="artist-list__header">
+  <h2>Artists</h2>
+
+  <button
+    color="primary"
+    nButton
+    type="button"
+    variant="filled"
+    (click)="createNew()"
+  >
+    <i>add</i>
+    Create new
+  </button>
+</header>
+
+@if (!artistsResource.error()) {
+  <ag-grid-angular
+    class="artist-list__table"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [modules]="modules"
+    [rowData]="artistsResource.value()?.backstageArtists ?? []"
+  />
+} @else {
+  <div class="artist-list__error">
+    <p class="body-medium">{{ artistsResource.error()?.message }}</p>
+  </div>
+}

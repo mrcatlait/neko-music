@@ -2,9 +2,8 @@ import { Args, Query } from '@nestjs/graphql'
 import { Injectable } from '@nestjs/common'
 import { Permissions } from '@neko/permissions'
 
-import { BackstageGenre } from '../models'
+import { BackstageGenre, GenresInput } from '../models'
 import { GetGenresUseCase, GetGenreUseCase } from '../use-cases'
-import { FilterArgs } from '../../shared/models'
 
 import { RequirePermissions } from '@/modules/auth/decorators'
 
@@ -23,9 +22,14 @@ export class GenreQuery {
 
   @Query(() => [BackstageGenre])
   @RequirePermissions(Permissions.Genre.Write)
-  backstageGenres(@Args({ nullable: true }) args: FilterArgs): Promise<BackstageGenre[]> {
+  backstageGenres(@Args('input', { nullable: true }) input?: GenresInput): Promise<BackstageGenre[]> {
     return this.getGenresUseCase
-      .invoke({ limit: args.limit, offset: args.offset, search: args.search })
+      .invoke({
+        limit: input?.pagination?.limit,
+        offset: input?.pagination?.offset,
+        search: input?.filters?.search,
+        ids: input?.filters?.ids,
+      })
       .then((result) => result.data)
   }
 }

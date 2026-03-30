@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core'
 
-import { Track } from '@/shared/entities'
 import { ArtistList } from '@/shared/components'
 
 @Component({
@@ -11,5 +10,5 @@ import { ArtistList } from '@/shared/components'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackInfo {
-  readonly track = input.required<Track>()
+  readonly track = input.required<any>()
 }

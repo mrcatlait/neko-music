@@ -1,0 +1,98 @@
+<header class="artist-editor__header">
+  <button
+    color="standard"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="navigateToArtistList()"
+  >
+    <i>arrow_back</i>
+  </button>
+
+  <h2>Create Artist</h2>
+</header>
+
+<form
+  autocomplete="off"
+  class="artist-editor__form"
+  [formRoot]="artistForm"
+>
+  <div class="artist-editor__profile-picture">
+    <span class="body-large">Profile Picture</span>
+
+    <n-picture-upload
+      [existingImageUrl]="existingArtworkUrl() | artwork: 'medium'"
+      [formField]="artistForm.image"
+    />
+  </div>
+
+  <n-textfield>
+    <label for="name">Artist Name</label>
+
+    <input
+      id="name"
+      type="text"
+      [formField]="artistForm.name"
+    />
+
+    @let nameTouched = artistForm.name().touched();
+    @let nameInvalid = artistForm.name().invalid();
+
+    @if (nameInvalid && nameTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
+    <span slot="error">
+      @if (nameInvalid && nameTouched) {
+        @for (error of artistForm.name().errors(); track error) {
+          <span class="error">{{ error.message }}</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  <div class="artist-editor__verified">
+    <n-checkbox>
+      <input
+        id="verified"
+        nBlurOnClick
+        type="checkbox"
+        [formField]="artistForm.verified"
+      />
+    </n-checkbox>
+
+    <label for="verified">Verified</label>
+  </div>
+
+  <n-genre-autocomplete [formField]="artistForm.genres" />
+
+  <div class="artist-editor__actions">
+    <button
+      nButton
+      type="submit"
+      [disabled]="isBusy()"
+    >
+      @if (isBusy()) {
+        <n-loading-indicator [size]="12" />
+      } @else {
+        Save changes
+      }
+    </button>
+
+    <button
+      color="secondary"
+      nButton
+      type="button"
+      variant="outlined"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+  </div>
+</form>

@@ -1,0 +1,105 @@
+<header class="genre-editor__header">
+  <button
+    color="standard"
+    nIconButton
+    type="button"
+    variant="filled"
+    (click)="navigateToGenreList()"
+  >
+    <i>arrow_back</i>
+  </button>
+
+  <h2>{{ title() }}</h2>
+</header>
+
+<form
+  autocomplete="off"
+  class="genre-editor__form"
+  [formRoot]="genreForm"
+>
+  <n-textfield>
+    <label for="name">Name</label>
+
+    <input
+      id="name"
+      type="text"
+      [formField]="genreForm.name"
+    />
+
+    @let nameTouched = genreForm.name().touched();
+    @let nameInvalid = genreForm.name().invalid();
+
+    @if (nameInvalid && nameTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
+    <span slot="error">
+      @if (nameInvalid && nameTouched) {
+        @for (error of genreForm.name().errors(); track error) {
+          <span>{{ error.message }}</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  <n-textfield>
+    <label for="slug">Slug</label>
+
+    <input
+      id="slug"
+      type="text"
+      [formField]="genreForm.slug"
+    />
+
+    @let slugTouched = genreForm.slug().touched();
+    @let slugInvalid = genreForm.slug().invalid();
+
+    @if (slugInvalid && slugTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
+    <span slot="error">
+      @if (slugInvalid && slugTouched) {
+        @for (error of genreForm.slug().errors(); track error) {
+          <span>{{ error.message }}</span>
+        }
+      }
+    </span>
+  </n-textfield>
+
+  <div class="genre-editor__actions">
+    <button
+      nButton
+      type="submit"
+      [disabled]="loading()"
+    >
+      @if (loading()) {
+        <n-loading-indicator [size]="12" />
+      } @else {
+        Save genre
+      }
+    </button>
+
+    <button
+      color="secondary"
+      nButton
+      type="button"
+      variant="outlined"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+  </div>
+</form>

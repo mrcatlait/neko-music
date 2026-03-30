@@ -6,8 +6,8 @@ import { ArtistRepository } from '../../repositories'
 import { CursorPaginatedResult, UseCase } from '@/modules/shared/types'
 
 export interface GetBackstageArtistsUseCaseParams {
-  readonly limit: number
-  readonly offset: number
+  readonly limit?: number
+  readonly offset?: number
 }
 
 export type GetBackstageArtistsUseCaseResult = CursorPaginatedResult<BackstageArtistTable>

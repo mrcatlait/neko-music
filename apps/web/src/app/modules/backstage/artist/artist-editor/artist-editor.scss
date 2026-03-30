@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 0;
+  flex: 1;
+}
+
+.artist-editor {
+  &__header {
+    display: flex;
+    grid-template-columns: auto 1fr;
+    align-items: end;
+    gap: 16px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  &__profile-picture {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  &__verified {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+  }
+}

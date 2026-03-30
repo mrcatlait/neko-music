@@ -3,14 +3,14 @@ import { Routes } from '@angular/router'
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./pages').then((c) => c.ArtistsManagementPage),
+    loadComponent: () => import('./artist-list').then((c) => c.ArtistList),
   },
   {
     path: 'create',
-    loadComponent: () => import('./pages').then((c) => c.ArtistCreatePage),
+    loadComponent: () => import('./artist-editor').then((c) => c.ArtistEditor),
   },
   {
     path: ':id',
-    loadComponent: () => import('./pages').then((c) => c.ArtistDetailPage),
+    loadComponent: () => import('./artist-editor').then((c) => c.ArtistEditor),
   },
 ]

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, ViewEncapsulation } from '@angular/core'
+import { booleanAttribute, ChangeDetectionStrategy, Component, inject, input, ViewEncapsulation } from '@angular/core'
 
 import { AutocompleteContext } from './autocomplete-context'
 import { PORTAL_CONTEXT } from '../portal'
@@ -33,6 +33,7 @@ import { PORTAL_CONTEXT } from '../portal'
     }
   `,
   host: {
+    '[attr.disabled]': 'disabled() ? "true" : null',
     '(mousedown)': 'onMouseDown($event)',
     '(click)': 'onClick($event)',
   },
@@ -43,12 +44,17 @@ export class AutocompleteOption {
   private readonly context = inject<AutocompleteContext>(PORTAL_CONTEXT)
 
   value = input<string | number>()
+  disabled = input(false, { transform: booleanAttribute })
 
   protected onMouseDown(event: Event): void {
     event.preventDefault()
   }
 
   protected onClick(event: Event): void {
+    if (this.disabled()) {
+      return
+    }
+
     const customEvent = new CustomEvent('autocomplete-option-selected', {
       detail: {
         value: this.value(),

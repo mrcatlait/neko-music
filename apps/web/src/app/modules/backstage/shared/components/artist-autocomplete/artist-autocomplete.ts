@@ -10,9 +10,7 @@ import {
   signal,
 } from '@angular/core'
 import { form, FormField, FormValueControl, ValidationError, WithOptionalFieldTree } from '@angular/forms/signals'
-import { HttpErrorResponse } from '@angular/common/http'
 
-import { ArtistApi } from '@/modules/backstage/artist/artist-api'
 import { Autocomplete, AutocompleteOption, AutocompleteTrigger } from '@/shared/autocomplete'
 import { Textfield, LoadingIndicator, Chip } from '@/shared/components'
 import { ArtworkPipe } from '@/shared/pipes'
@@ -35,12 +33,9 @@ interface FilterModel {
     FormField,
     ArtworkPipe,
   ],
-  providers: [ArtistApi],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArtistAutocomplete implements FormValueControl<string[]>, OnInit {
-  private readonly artistApi = inject(ArtistApi)
-
   readonly value = model<string[]>([])
   readonly errors = input<readonly WithOptionalFieldTree<ValidationError>[]>([])
   readonly disabled = input(false)
@@ -82,21 +77,21 @@ export class ArtistAutocomplete implements FormValueControl<string[]>, OnInit {
   private loadArtists(): void {
     this.loading.set(true)
 
-    this.artistApi.getArtists().subscribe({
-      next: (response) => {
-        this.availableArtists.set(response.data)
-        this.loading.set(false)
-      },
-      error: (error: unknown) => {
-        if (error instanceof HttpErrorResponse) {
-          console.error(error.error?.message ?? error.message)
-        } else {
-          console.error('Failed to load artists')
-        }
+    // this.artistApi.getArtists().subscribe({
+    //   next: (response) => {
+    //     this.availableArtists.set(response.data)
+    //     this.loading.set(false)
+    //   },
+    //   error: (error: unknown) => {
+    //     if (error instanceof HttpErrorResponse) {
+    //       console.error(error.error?.message ?? error.message)
+    //     } else {
+    //       console.error('Failed to load artists')
+    //     }
 
-        this.loading.set(false)
-      },
-    })
+    //     this.loading.set(false)
+    //   },
+    // })
   }
 
   protected addArtist(artistId: unknown): void {

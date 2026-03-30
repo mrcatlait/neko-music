@@ -15,7 +15,7 @@ import { routes } from './app.routes'
 import { SilentAuthStrategy } from '@/core/auth/strategies'
 import { provideDialogs } from '@/shared/dialog'
 import { provideEnvironment, provideArtworkLoader } from '@/core/providers'
-import { jwtInterceptor } from '@/core/auth/interceptors'
+import { jwtInterceptor } from '@/core/interceptors'
 import { environment } from '@/environment'
 
 export const appConfig: ApplicationConfig = {

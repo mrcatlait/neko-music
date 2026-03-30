@@ -22,6 +22,10 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
 };
 
+export type ArtistsInput = {
+  pagination?: InputMaybe<PagePaginationInput>;
+};
+
 export type Artwork = {
   __typename?: 'Artwork';
   /** The dominant color of the artwork */
@@ -68,6 +72,18 @@ export type CreateGenreInput = {
   slug: Scalars['String']['input'];
 };
 
+export type GenresFiltersInput = {
+  /** The IDs of the genres */
+  ids?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** The search query */
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GenresInput = {
+  filters?: InputMaybe<GenresFiltersInput>;
+  pagination?: InputMaybe<PagePaginationInput>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createArtist: BackstageArtist;
@@ -104,6 +120,13 @@ export type MutationUpdateGenreArgs = {
   id: Scalars['String']['input'];
 };
 
+export type PagePaginationInput = {
+  /** The limit of the page */
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  /** The offset of the page */
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   backstageArtist: BackstageArtist;
@@ -119,8 +142,7 @@ export type QueryBackstageArtistArgs = {
 
 
 export type QueryBackstageArtistsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  input?: InputMaybe<ArtistsInput>;
 };
 
 
@@ -130,9 +152,7 @@ export type QueryBackstageGenreArgs = {
 
 
 export type QueryBackstageGenresArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  search?: InputMaybe<Scalars['String']['input']>;
+  input?: InputMaybe<GenresInput>;
 };
 
 export type UpdateArtistInput = {
@@ -151,10 +171,19 @@ export type UploadToken = {
   uploadToken: Scalars['String']['output'];
 };
 
-export type GetBackstageArtistsQueryVariables = Exact<{ [key: string]: never; }>;
+export type CreateArtistMutationVariables = Exact<{
+  artist: CreateArtistInput;
+}>;
 
 
-export type GetBackstageArtistsQuery = { __typename?: 'Query', backstageArtists: Array<{ __typename?: 'BackstageArtist', id: string, name: string, status: string, mediaStatus?: string | null, artwork?: { __typename?: 'Artwork', url: string } | null }> };
+export type CreateArtistMutation = { __typename?: 'Mutation', createArtist: { __typename?: 'BackstageArtist', id: string } };
+
+export type GenerateArtistArtworkUploadTokenMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GenerateArtistArtworkUploadTokenMutation = { __typename?: 'Mutation', generateArtistArtworkUploadToken: { __typename?: 'UploadToken', uploadToken: string } };
 
 export type GetBackstageArtistQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -171,10 +200,10 @@ export type UpdateArtistMutationVariables = Exact<{
 
 export type UpdateArtistMutation = { __typename?: 'Mutation', updateArtist: { __typename?: 'BackstageArtist', id: string } };
 
-export type GetBackstageGenresQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetBackstageArtistsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBackstageGenresQuery = { __typename?: 'Query', backstageGenres: Array<{ __typename?: 'BackstageGenre', id: string, name: string, slug: string, status: string }> };
+export type GetBackstageArtistsQuery = { __typename?: 'Query', backstageArtists: Array<{ __typename?: 'BackstageArtist', id: string, name: string, status: string, mediaStatus?: string | null, artwork?: { __typename?: 'Artwork', url: string } | null }> };
 
 export type CreateGenreMutationVariables = Exact<{
   genre: CreateGenreInput;
@@ -198,33 +227,42 @@ export type UpdateGenreMutationVariables = Exact<{
 
 export type UpdateGenreMutation = { __typename?: 'Mutation', updateGenre: { __typename?: 'BackstageGenre', id: string } };
 
+export type GetBackstageGenresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBackstageGenresQuery = { __typename?: 'Query', backstageGenres: Array<{ __typename?: 'BackstageGenre', id: string, name: string, slug: string, status: string }> };
+
 export type GetBackstageGenresByFilterQueryVariables = Exact<{
-  limit: Scalars['Int']['input'];
-  offset: Scalars['Int']['input'];
-  search?: InputMaybe<Scalars['String']['input']>;
+  input?: InputMaybe<GenresInput>;
 }>;
 
 
 export type GetBackstageGenresByFilterQuery = { __typename?: 'Query', backstageGenres: Array<{ __typename?: 'BackstageGenre', id: string, name: string }> };
 
 
-export const GetBackstageArtistsDocument = gql`
-    query GetBackstageArtists {
-  backstageArtists {
+export const CreateArtistDocument = gql`
+    mutation CreateArtist($artist: CreateArtistInput!) {
+  createArtist(artist: $artist) {
     id
-    name
-    status
-    mediaStatus
-    artwork {
-      url
-    }
   }
 }
-    ` as unknown as TypedDocumentNode<GetBackstageArtistsQuery, GetBackstageArtistsQueryVariables>;
+    ` as unknown as TypedDocumentNode<CreateArtistMutation, CreateArtistMutationVariables>;
 
 @Injectable()
-export class GetBackstageArtistsGql extends GraphqlQuery<GetBackstageArtistsQuery, GetBackstageArtistsQueryVariables> {
-  override readonly document = GetBackstageArtistsDocument;
+export class CreateArtistGql extends GraphqlMutation<CreateArtistMutation, CreateArtistMutationVariables> {
+  override readonly document = CreateArtistDocument;
+}
+export const GenerateArtistArtworkUploadTokenDocument = gql`
+    mutation GenerateArtistArtworkUploadToken($id: String!) {
+  generateArtistArtworkUploadToken(id: $id) {
+    uploadToken
+  }
+}
+    ` as unknown as TypedDocumentNode<GenerateArtistArtworkUploadTokenMutation, GenerateArtistArtworkUploadTokenMutationVariables>;
+
+@Injectable()
+export class GenerateArtistArtworkUploadTokenGql extends GraphqlMutation<GenerateArtistArtworkUploadTokenMutation, GenerateArtistArtworkUploadTokenMutationVariables> {
+  override readonly document = GenerateArtistArtworkUploadTokenDocument;
 }
 export const GetBackstageArtistDocument = gql`
     query GetBackstageArtist($id: String!) {
@@ -258,20 +296,23 @@ export const UpdateArtistDocument = gql`
 export class UpdateArtistGql extends GraphqlMutation<UpdateArtistMutation, UpdateArtistMutationVariables> {
   override readonly document = UpdateArtistDocument;
 }
-export const GetBackstageGenresDocument = gql`
-    query GetBackstageGenres {
-  backstageGenres {
+export const GetBackstageArtistsDocument = gql`
+    query GetBackstageArtists {
+  backstageArtists {
     id
     name
-    slug
     status
+    mediaStatus
+    artwork {
+      url
+    }
   }
 }
-    ` as unknown as TypedDocumentNode<GetBackstageGenresQuery, GetBackstageGenresQueryVariables>;
+    ` as unknown as TypedDocumentNode<GetBackstageArtistsQuery, GetBackstageArtistsQueryVariables>;
 
 @Injectable()
-export class GetBackstageGenresGql extends GraphqlQuery<GetBackstageGenresQuery, GetBackstageGenresQueryVariables> {
-  override readonly document = GetBackstageGenresDocument;
+export class GetBackstageArtistsGql extends GraphqlQuery<GetBackstageArtistsQuery, GetBackstageArtistsQueryVariables> {
+  override readonly document = GetBackstageArtistsDocument;
 }
 export const CreateGenreDocument = gql`
     mutation CreateGenre($genre: CreateGenreInput!) {
@@ -313,9 +354,24 @@ export const UpdateGenreDocument = gql`
 export class UpdateGenreGql extends GraphqlMutation<UpdateGenreMutation, UpdateGenreMutationVariables> {
   override readonly document = UpdateGenreDocument;
 }
+export const GetBackstageGenresDocument = gql`
+    query GetBackstageGenres {
+  backstageGenres {
+    id
+    name
+    slug
+    status
+  }
+}
+    ` as unknown as TypedDocumentNode<GetBackstageGenresQuery, GetBackstageGenresQueryVariables>;
+
+@Injectable()
+export class GetBackstageGenresGql extends GraphqlQuery<GetBackstageGenresQuery, GetBackstageGenresQueryVariables> {
+  override readonly document = GetBackstageGenresDocument;
+}
 export const GetBackstageGenresByFilterDocument = gql`
-    query GetBackstageGenresByFilter($limit: Int!, $offset: Int!, $search: String) {
-  backstageGenres(limit: $limit, offset: $offset, search: $search) {
+    query GetBackstageGenresByFilter($input: GenresInput) {
+  backstageGenres(input: $input) {
     id
     name
   }

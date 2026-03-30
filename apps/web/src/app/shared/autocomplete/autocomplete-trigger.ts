@@ -1,4 +1,5 @@
 import {
+  computed,
   DestroyRef,
   Directive,
   DOCUMENT,
@@ -17,6 +18,7 @@ import { AutocompleteContext } from './autocomplete-context'
 
 @Directive({
   selector: '[nAutocompleteTrigger]',
+  exportAs: 'nAutocompleteTrigger',
   host: {
     '(focusin)': 'onFocus()',
     '(blur)': 'onBlur()',
@@ -33,7 +35,12 @@ export class AutocompleteTrigger {
   readonly optionSelected = output<unknown>()
 
   private readonly autocompleteRef = signal<EmbeddedViewRef<HTMLElement> | null>(null)
+  readonly panelOpen = computed(() => this.autocompleteRef() !== null)
   private scrollSubscription: Subscription | null = null
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.detachPanel())
+  }
 
   protected toggle(): void {
     const autocompleteRef = this.autocompleteRef()
@@ -58,6 +65,17 @@ export class AutocompleteTrigger {
   }
 
   protected close(): void {
+    const hadOpenPanel = this.autocompleteRef() !== null
+    this.detachPanel()
+    if (hadOpenPanel) {
+      this.host.nativeElement.blur()
+    }
+  }
+
+  /**
+   * Removes the overlay without blurring the host.
+   */
+  private detachPanel(): void {
     const autocompleteRef = this.autocompleteRef()
 
     if (autocompleteRef) {
@@ -65,7 +83,6 @@ export class AutocompleteTrigger {
       this.autocompleteRef.set(null)
       this.scrollSubscription?.unsubscribe()
       this.scrollSubscription = null
-      this.host.nativeElement.blur()
     }
   }
 

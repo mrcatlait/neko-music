@@ -7,9 +7,10 @@ import { InjectDatabase, Database } from '@/modules/database'
 import { Repository } from '@/modules/shared/classes'
 
 interface FindAllParameters {
-  limit: number
-  offset: number
+  limit?: number
+  offset?: number
   search?: string
+  ids?: string[]
 }
 
 interface FindAllResult {
@@ -23,22 +24,24 @@ export class GenreRepository extends Repository<BackstageSchema, 'backstage.Genr
     super(database, 'backstage.Genre')
   }
 
-  findAll({ limit, offset, search }: FindAllParameters): Promise<FindAllResult> {
+  findAll({ limit, offset, search, ids }: FindAllParameters): Promise<FindAllResult> {
     return Promise.all([
       this.database
         .selectFrom('backstage.Genre')
         .selectAll()
+        .$if(Boolean(ids), (eb) => eb.where('id', 'in', ids!))
         .$if(Boolean(search), (eb) =>
           eb
             .where((nestedEb) => sql`levenshtein(${nestedEb.ref('name')}::text, ${search!}::text)`, '<=', 3)
             .orderBy((nestedEb) => sql`levenshtein(${nestedEb.ref('name')}::text, ${search!}::text)`),
         )
-        .limit(limit)
-        .offset(offset)
+        .$if(Boolean(limit), (eb) => eb.limit(limit!))
+        .$if(Boolean(offset), (eb) => eb.offset(offset!))
         .execute(),
       this.database
         .selectFrom('backstage.Genre')
         .select((eb) => eb.fn.countAll().as('count'))
+        .$if(Boolean(ids), (eb) => eb.where('id', 'in', ids!))
         .$if(Boolean(search), (eb) =>
           eb.where((nestedEb) => sql`levenshtein(${nestedEb.ref('name')}::text, ${search!}::text)`, '<=', 3),
         )

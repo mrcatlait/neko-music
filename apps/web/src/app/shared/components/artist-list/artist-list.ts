@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
-import { AlbumArtist, TrackArtist } from '@/shared/entities'
 import { UiStore } from '@/core/stores'
 
 @Component({
@@ -16,5 +15,5 @@ export class ArtistList {
 
   protected readonly touchDevice = computed(() => this.uiStore.touchDevice())
 
-  artists = input.required<TrackArtist[] | AlbumArtist[]>()
+  artists = input.required<any[]>()
 }

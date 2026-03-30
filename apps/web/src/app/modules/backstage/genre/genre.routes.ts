@@ -4,14 +4,14 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadComponent: () => import('./pages').then((c) => c.GenresManagementPage),
+    loadComponent: () => import('./genre-list').then((c) => c.GenreList),
   },
   {
     path: 'new',
-    loadComponent: () => import('./pages').then((c) => c.GenreCreationPage),
+    loadComponent: () => import('./genre-editor').then((c) => c.GenreEditor),
   },
   {
     path: ':genreId',
-    loadComponent: () => import('./pages').then((c) => c.GenreEditPage),
+    loadComponent: () => import('./genre-editor').then((c) => c.GenreEditor),
   },
 ]

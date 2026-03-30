@@ -1,7 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core'
 
 import { RepeatMode } from '@/shared/enums'
-import { Track } from '@/shared/entities'
 import { shuffleArray } from '@/shared/utils'
 import { Queue } from '@/shared/models'
 
@@ -9,9 +8,9 @@ import { Queue } from '@/shared/models'
   providedIn: 'root',
 })
 export class QueueStore {
-  readonly tracks = signal<Track[]>([])
-  readonly nextTracks = signal<Track[]>([])
-  readonly currentTrack = signal<Track>({} as Track)
+  readonly tracks = signal<any[]>([])
+  readonly nextTracks = signal<any[]>([])
+  readonly currentTrack = signal<any>({} as any)
 
   readonly queueId = signal<string | null>(null)
   readonly queueName = signal<string | null>(null)
@@ -107,7 +106,7 @@ export class QueueStore {
     }
   }
 
-  addToPlayNext(newTracks: Track[]): void {
+  addToPlayNext(newTracks: any[]): void {
     const targetPosition = this.currentTrackIndex() + 1
     this.nextTracks.update((nextTracks) => nextTracks.splice(targetPosition, 0, ...newTracks))
 
@@ -115,7 +114,7 @@ export class QueueStore {
     this.tracks.update((tracks) => tracks.splice(originalTargetPosition, 0, ...newTracks))
   }
 
-  addToPlayLater(newTracks: Track[]): void {
+  addToPlayLater(newTracks: any[]): void {
     this.nextTracks.update((nextTracks) => [...nextTracks, ...newTracks])
     this.tracks.update((tracks) => [...tracks, ...newTracks])
   }
@@ -123,7 +122,7 @@ export class QueueStore {
   private clear(): void {
     this.queueId.set(null)
     this.shuffle.set(false)
-    this.currentTrack.set({} as Track)
+    this.currentTrack.set({} as any)
     this.tracks.set([])
     this.nextTracks.set([])
     this.repeat.set(RepeatMode.None)

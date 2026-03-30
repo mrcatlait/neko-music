@@ -49,9 +49,13 @@ n-chip,
   border: var(--n-chip-outline-width) solid var(--n-chip-outline-color);
   
   & > [nIconButton] {
-    --n-icon-button-color: var(--n-chip-trailing-icon-color);
-    --n-icon-button-icon-size: var(--n-chip-icon-size);
+    // --n-icon-button-size: var(--n-chip-container-height) !important;
     margin-inline-end: calc(-1 * var(--n-chip-trailing-space));
+
+    & > i {
+      --n-icon-button-icon-size: var(--n-chip-icon-size);
+      --n-icon-button-color: var(--n-chip-trailing-icon-color);
+    }
   }
 
   & > i {

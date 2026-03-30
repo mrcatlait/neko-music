@@ -1,5 +1,5 @@
-query GetBackstageGenresByFilter($limit: Int!, $offset: Int!, $search: String) {
-  backstageGenres(limit: $limit, offset: $offset, search: $search) {
+query GetBackstageGenresByFilter($input: GenresInput) {
+  backstageGenres(input: $input) {
     id
     name
   }

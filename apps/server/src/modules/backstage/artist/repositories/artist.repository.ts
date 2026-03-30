@@ -15,8 +15,8 @@ interface UpdateWithGenresParams extends Updateable<BackstageArtistTable> {
 }
 
 interface FindAllParameters {
-  limit: number
-  offset: number
+  limit?: number
+  offset?: number
 }
 
 interface FindAllResult {
@@ -81,7 +81,12 @@ export class ArtistRepository extends Repository<BackstageSchema, 'backstage.Art
 
   findAll({ limit, offset }: FindAllParameters): Promise<FindAllResult> {
     return Promise.all([
-      this.database.selectFrom('backstage.Artist').selectAll().limit(limit).offset(offset).execute(),
+      this.database
+        .selectFrom('backstage.Artist')
+        .selectAll()
+        .$if(Boolean(limit), (eb) => eb.limit(limit!))
+        .$if(Boolean(offset), (eb) => eb.offset(offset!))
+        .execute(),
       this.database
         .selectFrom('backstage.Artist')
         .select((eb) => eb.fn.countAll().as('count'))

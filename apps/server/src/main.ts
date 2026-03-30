@@ -29,7 +29,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector))
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
+      // whitelist: true,
       transform: true,
       dismissDefaultMessages: true,
       validationError: { target: false },

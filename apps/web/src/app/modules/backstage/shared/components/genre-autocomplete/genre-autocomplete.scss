@@ -19,10 +19,20 @@
     padding-right: 52px;
   }
 
-  &__arrow-down {
+  &__arrow-down,
+  &__loading {
     color: var(--color-text-medium-emphasis);
     position: absolute;
     right: 0;
+  }
+
+  &__arrow-down {
+    display: inline-block;
+    transition: transform var(--motion-duration-short3) var(--motion-easing-standard-accelerate);
+
+    &--open {
+      transform: rotate(180deg);
+    }
   }
 
   &__error-icon {

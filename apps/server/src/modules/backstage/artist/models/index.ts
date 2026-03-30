@@ -1,3 +1,4 @@
+export * from './artists.input'
 export * from './artwork.model'
 export * from './backstage-artist.model'
 export * from './create-artist.input'

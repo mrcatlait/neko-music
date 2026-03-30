@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common'
 import { Args, Query } from '@nestjs/graphql'
 import { Permissions } from '@neko/permissions'
 
-import { BackstageArtist } from '../models'
+import { ArtistsInput, BackstageArtist } from '../models'
 import { GetBackstageArtistsUseCase, GetBackstageArtistUseCase } from '../use-cases'
-import { PagePaginationArgs } from '../../shared/models'
 
 import { RequirePermissions } from '@/modules/auth/decorators'
 
@@ -23,9 +22,9 @@ export class ArtistQuery {
 
   @Query(() => [BackstageArtist])
   @RequirePermissions(Permissions.Artist.Read)
-  backstageArtists(@Args({ nullable: true }) args: PagePaginationArgs): Promise<BackstageArtist[]> {
+  backstageArtists(@Args('input', { nullable: true }) input?: ArtistsInput): Promise<BackstageArtist[]> {
     return this.getBackstageArtistsUseCase
-      .invoke({ limit: args.limit, offset: args.offset })
+      .invoke({ limit: input?.pagination?.limit, offset: input?.pagination?.offset })
       .then((result) => result.data)
   }
 }

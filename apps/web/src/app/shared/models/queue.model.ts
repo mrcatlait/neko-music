@@ -1,4 +1,3 @@
-import type { Track } from '../entities'
 import type { QueueType } from '../enums'
 
 export interface QueueMetadata {
@@ -13,7 +12,7 @@ export interface QueueOptions {
 }
 
 export interface QueueResult {
-  tracks: Track[]
+  tracks: any[]
   metadata: QueueMetadata
 }
 
@@ -25,7 +24,7 @@ export abstract class Queue<TypeOptions, Options = TypeOptions & QueueOptions> {
   /**
    * Fetch tracks from the source
    */
-  abstract fetchTracks(): Promise<Track[]>
+  abstract fetchTracks(): Promise<any[]>
 
   /**
    * Fetch metadata for the queue

@@ -1,87 +1,93 @@
-@if (loading()) {
-  <n-loading-indicator />
-} @else {
-  <n-textfield
-    class="genre-autocomplete"
-    [class.ng-invalid]="invalid()"
-    [class.ng-touched]="touched()"
-  >
-    <label for="genres"> Genres </label>
+<n-textfield
+  class="genre-autocomplete"
+  [class.ng-invalid]="invalid()"
+  [class.ng-touched]="touched()"
+>
+  <label for="genres"> Genres </label>
 
+  <i
+    aria-hidden="true"
+    class="genre-autocomplete__search-icon"
+    slot="left"
+  >
+    search
+  </i>
+
+  <input
+    #genreAcTrigger="nAutocompleteTrigger"
+    class="genre-autocomplete__input"
+    id="genres"
+    placeholder="Search"
+    type="text"
+    [formField]="filterForm.value"
+    [nAutocompleteTrigger]="autocomplete"
+    (blur)="touched.set(true)"
+    (optionSelected)="addGenre($event)"
+  />
+
+  <ng-template #autocomplete>
+    <n-autocomplete>
+      @if (genres().length > 0) {
+        @for (genre of genres(); track genre.id) {
+          <n-autocomplete-option
+            [disabled]="selectedGenres().some(selectedGenre => selectedGenre.id === genre.id)"
+            [value]="genre.id"
+          >
+            {{ genre.name }}
+          </n-autocomplete-option>
+        }
+      } @else {
+        <n-autocomplete-option disabled> No genres found </n-autocomplete-option>
+      }
+    </n-autocomplete>
+  </ng-template>
+
+  @if (invalid() && touched()) {
     <i
       aria-hidden="true"
-      class="genre-autocomplete__search-icon"
-      slot="left"
+      class="genre-autocomplete__error-icon"
+      slot="right"
     >
-      search
+      error
     </i>
-
-    <input
-      class="genre-autocomplete__input"
-      id="genres"
-      placeholder="Search"
-      type="text"
-      [formField]="filterForm.value"
-      [nAutocompleteTrigger]="autocomplete"
-      (blur)="touched.set(true)"
-      (optionSelected)="addGenre($event)"
+  } @else if (loading()) {
+    <n-loading-indicator
+      class="genre-autocomplete__loading"
+      slot="right"
     />
+  } @else {
+    <i
+      aria-hidden="true"
+      class="genre-autocomplete__arrow-down"
+      slot="right"
+      [class.genre-autocomplete__arrow-down--open]="genreAcTrigger.panelOpen()"
+    >
+      arrow_drop_down
+    </i>
+  }
 
-    <ng-template #autocomplete>
-      <n-autocomplete>
-        @if (filteredGenres().length > 0) {
-          @for (genre of filteredGenres(); track genre.id) {
-            <n-autocomplete-option [value]="genre.id">
-              {{ genre.name }}
-            </n-autocomplete-option>
-          }
-        } @else {
-          <n-autocomplete-option disabled> No genres found </n-autocomplete-option>
-        }
-      </n-autocomplete>
-    </ng-template>
-
+  <span slot="error">
     @if (invalid() && touched()) {
-      <i
-        aria-hidden="true"
-        class="genre-autocomplete__error-icon"
-        slot="right"
-      >
-        error
-      </i>
-    } @else {
-      <i
-        aria-hidden="true"
-        class="genre-autocomplete__arrow-down"
-        slot="right"
-      >
-        arrow_drop_down
-      </i>
+      @for (error of errors(); track error) {
+        <span>{{ error.message }}</span>
+      }
     }
+  </span>
+</n-textfield>
 
-    <span slot="error">
-      @if (invalid() && touched()) {
-        @for (error of errors(); track error) {
-          <span>{{ error.message }}</span>
-        }
-      }
-    </span>
-  </n-textfield>
-
-  <!-- @if (selectedGenres().length > 0) {
-    <div class="genre-autocomplete__selected-genres">
-      @for (genre of selectedGenres(); track genre) {
-        <n-chip>
-          {{ genre.name }}
-          <button
-            nIconButton
-            type="button"
-            (click)="removeGenre(genre.id)"
-          >
-            <i>close</i>
-          </button>
-        </n-chip>
-      }
-    </div>
-  } -->
+@if (selectedGenres().length > 0) {
+  <div class="genre-autocomplete__selected-genres">
+    @for (genre of selectedGenres(); track genre) {
+      <n-chip>
+        {{ genre.name }}
+        <button
+          nIconButton
+          type="button"
+          (click)="removeGenre(genre.id)"
+        >
+          <i>close</i>
+        </button>
+      </n-chip>
+    }
+  </div>
 }

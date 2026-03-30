@@ -48,24 +48,34 @@ type UploadToken {
 
 type Query {
   backstageArtist(id: String!): BackstageArtist!
-  backstageArtists(
-    """The limit of the page"""
-    limit: Int = 10
-
-    """The offset of the page"""
-    offset: Int = 0
-  ): [BackstageArtist!]!
+  backstageArtists(input: ArtistsInput): [BackstageArtist!]!
   backstageGenre(id: String!): BackstageGenre!
-  backstageGenres(
-    """The limit of the page"""
-    limit: Int = 10
+  backstageGenres(input: GenresInput): [BackstageGenre!]!
+}
 
-    """The offset of the page"""
-    offset: Int = 0
+input ArtistsInput {
+  pagination: PagePaginationInput
+}
 
-    """The search query"""
-    search: String
-  ): [BackstageGenre!]!
+input PagePaginationInput {
+  """The limit of the page"""
+  limit: Int = 10
+
+  """The offset of the page"""
+  offset: Int = 0
+}
+
+input GenresInput {
+  filters: GenresFiltersInput
+  pagination: PagePaginationInput
+}
+
+input GenresFiltersInput {
+  """The search query"""
+  search: String
+
+  """The IDs of the genres"""
+  ids: [String!]
 }
 
 type Mutation {

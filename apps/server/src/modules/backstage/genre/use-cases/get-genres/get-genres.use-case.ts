@@ -7,9 +7,10 @@ import { UseCase } from '@/modules/shared/types'
 import { BackstageGenreTable } from '@/modules/backstage/backstage.schema'
 
 export interface GetGenresUseCaseParameters {
-  limit: number
-  offset: number
+  limit?: number
+  offset?: number
   search?: string
+  ids?: string[]
 }
 
 export interface GetGenresUseCaseResult {
@@ -21,7 +22,7 @@ export interface GetGenresUseCaseResult {
 export class GetGenresUseCase implements UseCase<GetGenresUseCaseParameters, GetGenresUseCaseResult> {
   constructor(private readonly genreRepository: GenreRepository) {}
 
-  invoke({ limit, offset, search }: GetGenresUseCaseParameters): Promise<GetGenresUseCaseResult> {
-    return this.genreRepository.findAll({ limit, offset, search })
+  invoke({ limit, offset, search, ids }: GetGenresUseCaseParameters): Promise<GetGenresUseCaseResult> {
+    return this.genreRepository.findAll({ limit, offset, search, ids })
   }
 }

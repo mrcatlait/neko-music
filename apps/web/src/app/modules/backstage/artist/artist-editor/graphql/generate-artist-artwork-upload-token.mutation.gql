@@ -1,0 +1,5 @@
+mutation GenerateArtistArtworkUploadToken($id: String!) {
+  generateArtistArtworkUploadToken(id: $id) {
+    uploadToken
+  }
+}
