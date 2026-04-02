@@ -1,4 +1,4 @@
-import { inject, Injectable, Provider, signal } from '@angular/core'
+import { effect, inject, Injectable, Provider, signal } from '@angular/core'
 import { disabled, form, required, TreeValidationResult } from '@angular/forms/signals'
 import { Router } from '@angular/router'
 
@@ -53,6 +53,12 @@ export class GenreEditorStore {
     },
   )
 
+  constructor() {
+    effect(() => {
+      this.deriveSlugFromName()
+    })
+  }
+
   fetchGenre(genreId: string): void {
     this.genreId.set(genreId)
     this.loading.set(true)
@@ -75,6 +81,16 @@ export class GenreEditorStore {
 
   navigateToGenreList(): void {
     this.router.navigate(['/backstage/genres'])
+  }
+
+  private deriveSlugFromName() {
+    const pristine = !this.genreForm.slug().touched() || !this.genreForm.slug().dirty()
+    const isEditing = Boolean(this.genreId())
+    const slug = this.genreForm.name().controlValue().toLowerCase().replace(/ /g, '-')
+
+    if (pristine && !isEditing) {
+      this.genreForm.slug().controlValue.set(slug)
+    }
   }
 
   private save(genre: Genre): Promise<TreeValidationResult> {

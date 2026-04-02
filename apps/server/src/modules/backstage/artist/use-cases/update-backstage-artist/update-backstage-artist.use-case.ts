@@ -4,7 +4,6 @@ import { Selectable } from 'kysely'
 import { UpdateBackstageArtistValidator } from './update-backstage-artist.validator'
 import { ArtistRepository } from '../../repositories'
 import { SyncArtistUseCase } from '../sync-artist'
-import { PublishingStatus } from '../../../shared/enums'
 import { BackstageArtistTable } from '../../../backstage.schema'
 
 import { UseCase } from '@/modules/shared/types'
@@ -41,11 +40,9 @@ export class UpdateBackstageArtistUseCase implements UseCase<
       genres: params.genres,
     })
 
-    if (artist.status === PublishingStatus.Published) {
-      await this.syncArtistUseCase.invoke({
-        artistId: artist.id,
-      })
-    }
+    await this.syncArtistUseCase.invoke({
+      artistId: artist.id,
+    })
 
     return artist
   }

@@ -10,9 +10,11 @@ import { MediaApi } from '@/modules/backstage/shared/services'
 import { fileSize, fileType } from '@/shared/validators'
 import {
   CreateArtistGql,
+  CreateArtistInput,
   GenerateArtistArtworkUploadTokenGql,
   GetBackstageArtistGql,
   UpdateArtistGql,
+  UpdateArtistInput,
 } from '@/shared/generated-types'
 import { Snackbar } from '@/shared/snackbar'
 
@@ -115,7 +117,7 @@ export class ArtistEditorStore {
     const id = this.editingArtistId()
 
     if (id) {
-      return this.updateArtistGql.mutate({ id, artist }).then((result) => {
+      return this.updateArtistGql.mutate({ id, artist: this.getArtistPayload(artist) }).then((result) => {
         if (result.error) {
           return this.serverValidationError(result.error)
         }
@@ -128,13 +130,21 @@ export class ArtistEditorStore {
       })
     }
 
-    return this.createArtistGql.mutate({ artist }).then((result) => {
+    return this.createArtistGql.mutate({ artist: this.getArtistPayload(artist) }).then((result) => {
       if (result.error) {
         return this.serverValidationError(result.error)
       }
 
       return this.uploadArtwork(result.data!.createArtist.id, artist.image!)
     })
+  }
+
+  private getArtistPayload(artist: Artist): CreateArtistInput | UpdateArtistInput {
+    return {
+      name: artist.name,
+      genres: artist.genres,
+      verified: artist.verified,
+    }
   }
 
   private async uploadArtwork(artistId: string, image: File): Promise<TreeValidationResult> {

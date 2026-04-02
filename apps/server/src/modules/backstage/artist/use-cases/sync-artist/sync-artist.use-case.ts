@@ -4,10 +4,9 @@ import { Selectable } from 'kysely'
 import { ArtistRepository } from '../../repositories'
 import { SyncArtistValidator } from './sync-artist.validator'
 import { PublishingStatus } from '../../../shared/enums'
+import { GetBackstageArtistUseCase } from '../get-backstage-artist'
 
 import { UseCase } from '@/modules/shared/types'
-import { EntityType } from '@/modules/media/enums'
-import { GetArtworkUseCase } from '@/modules/media/use-cases'
 import { BackstageArtistTable } from '@/modules/backstage/backstage.schema'
 
 export interface SyncArtistUseCaseParams {
@@ -20,29 +19,22 @@ export type SyncArtistUseCaseResult = Selectable<BackstageArtistTable>
 export class SyncArtistUseCase implements UseCase<SyncArtistUseCaseParams, SyncArtistUseCaseResult> {
   constructor(
     private readonly syncArtistValidator: SyncArtistValidator,
-    private readonly getArtworkUseCase: GetArtworkUseCase,
     private readonly artistRepository: ArtistRepository,
+    private readonly getBackstageArtistUseCase: GetBackstageArtistUseCase,
   ) {}
 
   async invoke(params: SyncArtistUseCaseParams): Promise<SyncArtistUseCaseResult> {
     await this.syncArtistValidator.validate(params)
 
-    // const artist = await this.artistRepository.findOneWithGenres(params.artistId)
+    const artist = await this.getBackstageArtistUseCase.invoke({ id: params.artistId })
 
-    // if (!artist) {
-    //   throw new Error('Artist not found')
-    // }
-
-    // const artwork = await this.getArtworkUseCase.invoke({
-    //   entityType: EntityType.Artist,
-    //   entityId: params.artistId,
-    // })
+    if (artist.status !== PublishingStatus.Published) {
+      await this.artistRepository.update(artist.id, {
+        status: PublishingStatus.Published,
+      })
+    }
 
     // if (artist.status === PublishingStatus.Published) {
-    //   if (!artist.catalogArtistId) {
-    //     throw new Error('Artist is published but does not have a catalog artist id')
-    //   }
-
     //   return this.updateCatalogArtistUseCase.invoke({
     //     id: artist.catalogArtistId,
     //     name: artist.name,
@@ -52,18 +44,6 @@ export class SyncArtistUseCase implements UseCase<SyncArtistUseCaseParams, SyncA
     //   })
     // }
 
-    // const catalogArtist = await this.createCatalogArtistUseCase.invoke({
-    //   name: artist.name,
-    //   genres: artist.genres,
-    //   verified: artist.verified,
-    //   artwork,
-    // })
-
-    // await this.artistRepository.update(artist.id, {
-    //   catalogArtistId: catalogArtist.id,
-    //   status: PublishingStatus.Published,
-    // })
-
-    return {} as SyncArtistUseCaseResult
+    return artist
   }
 }
