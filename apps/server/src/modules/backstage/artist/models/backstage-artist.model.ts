@@ -1,8 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 
-import { Artwork } from './artwork.model'
 import { BackstageGenre } from '../../genre/models'
 import { MediaStatus, PublishingStatus } from '../../shared/enums'
+import { Artwork } from '../../shared/models'
 
 @ObjectType()
 export class BackstageArtist {

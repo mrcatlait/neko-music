@@ -10,6 +10,7 @@ CREATE TABLE "backstage"."Track" (
   "explicit" BOOLEAN NOT NULL DEFAULT FALSE,
   "status" "backstage"."PublishingStatus" NOT NULL DEFAULT 'DRAFT',
   "artwork" JSONB,
+  "playback" JSONB,
   "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "createdBy" UUID NOT NULL,
   "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -35,6 +36,7 @@ COMMENT ON COLUMN "backstage"."Track"."duration" IS 'The duration of the track';
 COMMENT ON COLUMN "backstage"."Track"."explicit" IS 'Whether the track is explicit';
 COMMENT ON COLUMN "backstage"."Track"."status" IS 'The status of the publishing process';
 COMMENT ON COLUMN "backstage"."Track"."artwork" IS 'The artwork of the track';
+COMMENT ON COLUMN "backstage"."Track"."playback" IS 'The playback details of the track';
 COMMENT ON COLUMN "backstage"."Track"."createdAt" IS 'The timestamp of the track creation';
 COMMENT ON COLUMN "backstage"."Track"."createdBy" IS 'The user who created the track';
 COMMENT ON COLUMN "backstage"."Track"."updatedAt" IS 'The timestamp of the track update';
