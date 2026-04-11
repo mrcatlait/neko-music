@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common'
 
-import { GenerateArtistArtworkUploadTokenUseCaseParams } from './generate-artist-artwork-upload-token.params'
 import { GenerateArtistArtworkUploadTokenValidator } from './generate-artist-artwork-upload-token.validator'
 
 import { EntityType, MediaType } from '@/modules/media/enums'
 import { GenerateUploadTokenUseCase, GenerateUploadTokenUseCaseResult } from '@/modules/media/use-cases'
 import { UseCase } from '@/modules/shared/types'
+
+export interface GenerateArtistArtworkUploadTokenUseCaseParams {
+  readonly artistId: string
+  readonly userId: string
+}
 
 @Injectable()
 export class GenerateArtistArtworkUploadTokenUseCase implements UseCase<

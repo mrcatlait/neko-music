@@ -14,16 +14,6 @@ interface UpdateWithGenresParams extends Updateable<BackstageArtistTable> {
   genres: string[]
 }
 
-interface FindAllParameters {
-  limit?: number
-  offset?: number
-}
-
-interface FindAllResult {
-  data: Selectable<BackstageArtistTable>[]
-  count: number
-}
-
 type ArtistGenre = Selectable<BackstageGenreTable> & { artistId: string }
 
 @Injectable()
@@ -77,21 +67,6 @@ export class ArtistRepository extends Repository<BackstageSchema, 'backstage.Art
 
       return artist
     })
-  }
-
-  findAll({ limit, offset }: FindAllParameters): Promise<FindAllResult> {
-    return Promise.all([
-      this.database
-        .selectFrom('backstage.Artist')
-        .selectAll()
-        .$if(Boolean(limit), (eb) => eb.limit(limit!))
-        .$if(Boolean(offset), (eb) => eb.offset(offset!))
-        .execute(),
-      this.database
-        .selectFrom('backstage.Artist')
-        .select((eb) => eb.fn.countAll().as('count'))
-        .executeTakeFirst(),
-    ]).then(([data, count]) => ({ data, count: Number(count?.count ?? 0) }))
   }
 
   findManyGenres(artistIds: string[]): Promise<ArtistGenre[]> {

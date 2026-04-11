@@ -1,6 +1,7 @@
 export * from './artwork'
 export * from './async-module-options'
 export * from './cursor-paginated-result'
+export * from './find-all-options'
 export * from './find-options'
 export * from './injectable-strategy'
 export * from './search-options'

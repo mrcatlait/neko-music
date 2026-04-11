@@ -1,2 +1,6 @@
+export * from './create-backstage-album'
+export * from './generate-album-artwork-upload-token'
 export * from './get-backstage-album'
 export * from './get-backstage-albums'
+export * from './sync-album'
+export * from './update-backstage-album'

@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { ArtistRepository } from '../../repositories'
-import { GenerateArtistArtworkUploadTokenUseCaseParams } from './generate-artist-artwork-upload-token.params'
+import { GenerateArtistArtworkUploadTokenUseCaseParams } from './generate-artist-artwork-upload-token.use-case'
 
 import { Validator } from '@/modules/shared/types'
 

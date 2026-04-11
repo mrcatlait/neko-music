@@ -1,7 +1,7 @@
 import type { Kysely } from 'kysely'
 import { Insertable, Selectable, Updateable } from 'kysely'
 
-import { FindOptions } from '../types'
+import { FindAllOptions, FindAllResult, FindOptions } from '../types'
 
 import { Database } from '@/modules/database'
 
@@ -68,6 +68,21 @@ export abstract class Repository<Schema, TableName extends keyof Schema & string
       .selectAll()
       .where((eb) => eb.and(criteria))
       .execute() as Promise<Selectable<Schema[TableName]>[]>
+  }
+
+  findAll({ limit, offset }: FindAllOptions): Promise<FindAllResult<Selectable<Schema[TableName]>>> {
+    return Promise.all([
+      this.db
+        .selectFrom(this.tableName)
+        .selectAll()
+        .$if(Boolean(limit), (eb) => eb.limit(limit!))
+        .$if(Boolean(offset), (eb) => eb.offset(offset!))
+        .execute(),
+      this.db
+        .selectFrom(this.tableName)
+        .select((eb) => eb.fn.countAll().as('count'))
+        .executeTakeFirst(),
+    ]).then(([data, count]) => ({ data: data as Selectable<Schema[TableName]>[], count: Number(count?.count ?? 0) }))
   }
 
   create(data: Insertable<Schema[TableName]>): Promise<Selectable<Schema[TableName]>> {
