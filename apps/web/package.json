@@ -13,7 +13,7 @@
     "@urql/core": "^6.0.1",
     "@urql/exchange-auth": "^3.0.0",
     "@urql/exchange-persisted": "^5.0.1",
-    "ag-grid-angular": "^35.1.0",
+    "ag-grid-angular": "^35.2.1",
     "dashjs": "^5.1.0",
     "graphql": "^16.13.2",
     "rxjs": "~7.8.0",
