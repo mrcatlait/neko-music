@@ -24,5 +24,6 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
-  "javascript.suggestionActions.enabled": false
+  "javascript.suggestionActions.enabled": false,
+  "git.ignoreLimitWarning": true
 }

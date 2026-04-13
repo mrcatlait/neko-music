@@ -7,11 +7,11 @@
   "compilerOptions": {
     "builder": "swc",
     "deleteOutDir": true,
-    "tsConfigPath": "tsconfig.json",
+    "tsConfigPath": "tsconfig.build.json",
     "watchAssets": true,
     "typeCheck": true,
     "assets": [
-      { "include": "../src/migrations/**", "outDir": "dist/src", "watchAssets": true }
+      { "include": "../src/migrations/**", "outDir": "dist", "watchAssets": true }
     ]
   }
 }
