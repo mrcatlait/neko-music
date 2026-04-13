@@ -36,7 +36,7 @@ export abstract class DatabasePropagationService {
     const allScripts = this.getAllScripts(scriptsFolder)
     const executedScripts = await this.loadExecutedScripts(tableName)
 
-    return allScripts.filter((script) => !executedScripts.find((executedScript) => executedScript === script))
+    return allScripts.filter((script) => !executedScripts.some((executedScript) => executedScript === script))
   }
 
   private getAllScripts(scriptsFolder: string): string[] {

@@ -36,9 +36,9 @@ export class ProcessingJobRepository {
       .orderBy('media.SourceAsset.entityId')
       .orderBy('media.SourceAsset.createdAt', 'desc')
 
-    if (params.entityId !== undefined) {
+    if (params.entityId) {
       query = query.where('media.SourceAsset.entityId', '=', params.entityId)
-    } else if (params.entityIds !== undefined) {
+    } else if (params.entityIds) {
       query = query.where('media.SourceAsset.entityId', 'in', params.entityIds)
     } else {
       throw new Error('Either entityId or entityIds must be provided')

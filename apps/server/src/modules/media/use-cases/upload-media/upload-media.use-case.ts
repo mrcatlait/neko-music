@@ -5,7 +5,7 @@ import { join } from 'node:path'
 
 import { UploadImageValidator } from './upload-image.validator'
 import { UploadAudioValidator } from './upload-audio.validator'
-import { MediaType, ProcessingStatus, ProcessingStep } from '../../enums'
+import { EntityType, MediaType, ProcessingStatus, ProcessingStep } from '../../enums'
 import { MediaRepository, SourceAssetRepository, UploadTokenRepository } from '../../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
@@ -22,6 +22,12 @@ export interface UploadMediaUseCaseParams {
 
 export interface UploadMediaUseCaseResult {
   readonly processingJobId: string
+}
+
+interface UploadMediaToken {
+  readonly mediaType: MediaType
+  readonly entityType: EntityType
+  readonly entityId: string
 }
 
 @Injectable()
@@ -64,12 +70,11 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
         throw new BadRequestException('Invalid media type')
     }
 
-    /**
-     * @todo need to validate if there is already a media with the same entity type and entity id
-     * @todo need to validate if there is already media in processing
-     * @todo need to check for duplicates
-     */
     await validator.validate(params)
+    const checksum = this.fileService.computeChecksumFromBuffer(params.file.buffer!)
+
+    await this.validateNoProcessingInProgress(uploadToken)
+    await this.validateNoDuplicate(uploadToken, checksum)
 
     const format = await this.fileService.getFileTypeFromBuffer(params.file.buffer!)
     const fileName = this.namingStrategy.generateRandomFileName(format)
@@ -78,44 +83,22 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
       params.file.buffer!,
     )
 
-    let processingSteps: ProcessingStep[] = []
-
-    // @todo Think of a better way to determine the processing steps based on the media type and entity type
-    // Maybe create empty pipeline and add the steps to it later in separate use cases
-    switch (uploadToken.mediaType) {
-      case MediaType.Image:
-        processingSteps = [ProcessingStep.ImageTransformation]
-        break
-      case MediaType.Audio:
-        processingSteps = [ProcessingStep.AudioTransformation]
-        break
-    }
+    const processingSteps = this.resolveProcessingSteps(uploadToken.mediaType)
 
     try {
-      const sourceAsset = await this.sourceAssetRepository.create({
-        mediaType: uploadToken.mediaType,
-        entityType: uploadToken.entityType,
-        entityId: uploadToken.entityId,
-        fileSize: params.file.size ?? 0,
-        storageProvider: this.storageStrategy.name,
-        checksum: this.fileService.computeChecksumFromBuffer(params.file.buffer!),
-        createdBy: uploadToken.userId,
-        format,
-        storagePath,
-      })
-
-      const processingJobId = await this.mediaRepository.createProcessingJob({
-        sourceAssetId: sourceAsset.id,
-        status: ProcessingStatus.Pending,
-      })
-
-      await this.mediaRepository.createProcessingSteps(
-        processingSteps.map((step) => ({
-          status: ProcessingStatus.Pending,
-          jobId: processingJobId,
-          name: step,
-          order: processingSteps.indexOf(step) + 1,
-        })),
+      const processingJobId = await this.mediaRepository.createSourceAssetAndProcessingJob(
+        {
+          mediaType: uploadToken.mediaType,
+          entityType: uploadToken.entityType,
+          entityId: uploadToken.entityId,
+          fileSize: params.file.size ?? 0,
+          storageProvider: this.storageStrategy.name,
+          checksum,
+          createdBy: uploadToken.userId,
+          format,
+          storagePath,
+        },
+        processingSteps,
       )
 
       await this.uploadTokenRepository.delete(uploadToken.id)
@@ -132,6 +115,55 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
     } catch (error) {
       await this.storageStrategy.delete(storagePath)
       throw error
+    }
+  }
+
+  private async validateNoDuplicate(uploadToken: UploadMediaToken, checksum: string): Promise<void> {
+    const duplicateExists = await this.sourceAssetRepository.exists({
+      entityType: uploadToken.entityType,
+      entityId: uploadToken.entityId,
+      mediaType: uploadToken.mediaType,
+      checksum,
+    })
+
+    if (duplicateExists) {
+      throw new BadRequestException('Duplicate media upload')
+    }
+  }
+
+  private async validateNoProcessingInProgress(uploadToken: UploadMediaToken): Promise<void> {
+    const sourceAssets = await this.sourceAssetRepository.findMany({
+      entityType: uploadToken.entityType,
+      entityId: uploadToken.entityId,
+      mediaType: uploadToken.mediaType,
+    })
+
+    if (sourceAssets.length === 0) {
+      return
+    }
+
+    const latestSourceAsset = sourceAssets.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0]
+    const latestProcessingJob = await this.mediaRepository.findProcessingJobBySourceAssetId(latestSourceAsset.id)
+
+    if (
+      latestProcessingJob &&
+      (latestProcessingJob.status === ProcessingStatus.Pending ||
+        latestProcessingJob.status === ProcessingStatus.Processing)
+    ) {
+      throw new BadRequestException('Media is already being processed')
+    }
+  }
+
+  private resolveProcessingSteps(mediaType: MediaType): ProcessingStep[] {
+    // @todo Think of a better way to determine the processing steps based on the media type and entity type
+    // Maybe create empty pipeline and add the steps to it later in separate use cases
+    switch (mediaType) {
+      case MediaType.Image:
+        return [ProcessingStep.ImageTransformation]
+      case MediaType.Audio:
+        return [ProcessingStep.AudioTransformation]
+      default:
+        return []
     }
   }
 }

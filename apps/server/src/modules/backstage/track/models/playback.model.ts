@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 
 @ObjectType()
 export class Playback {
@@ -7,4 +7,7 @@ export class Playback {
 
   @Field(() => String)
   format: string
+
+  @Field(() => Int)
+  duration: number
 }

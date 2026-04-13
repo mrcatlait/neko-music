@@ -46,14 +46,46 @@ type UploadToken {
   uploadToken: String!
 }
 
+type BackstageAlbum {
+  id: ID!
+  name: String!
+  releaseDate: DateTime!
+  explicit: Boolean!
+  type: String!
+  status: String!
+  artwork: Artwork
+}
+
+type Playback {
+  url: String!
+  format: String!
+  duration: Int!
+}
+
+type BackstageTrack {
+  id: ID!
+  name: String!
+  albumId: String!
+  trackNumber: Int!
+  diskNumber: Int!
+  releaseDate: DateTime!
+  type: String!
+  explicit: Boolean!
+  status: String!
+  artwork: Artwork
+  playback: Playback
+}
+
 type Query {
+  backstageAlbum(id: String!): BackstageAlbum!
+  backstageAlbums(input: AlbumsInput): [BackstageAlbum!]!
   backstageArtist(id: String!): BackstageArtist!
   backstageArtists(input: ArtistsInput): [BackstageArtist!]!
   backstageGenre(id: String!): BackstageGenre!
   backstageGenres(input: GenresInput): [BackstageGenre!]!
 }
 
-input ArtistsInput {
+input AlbumsInput {
   pagination: PagePaginationInput
 }
 
@@ -63,6 +95,10 @@ input PagePaginationInput {
 
   """The offset of the page"""
   offset: Int = 0
+}
+
+input ArtistsInput {
+  pagination: PagePaginationInput
 }
 
 input GenresInput {
@@ -79,11 +115,32 @@ input GenresFiltersInput {
 }
 
 type Mutation {
+  createAlbum(album: CreateAlbumInput!): BackstageAlbum!
+  updateAlbum(id: String!, album: UpdateAlbumInput!): BackstageAlbum!
+  generateAlbumArtworkUploadToken(id: String!): UploadToken!
   createArtist(artist: CreateArtistInput!): BackstageArtist!
   updateArtist(id: String!, artist: UpdateArtistInput!): BackstageArtist!
   generateArtistArtworkUploadToken(id: String!): UploadToken!
   createGenre(genre: CreateGenreInput!): BackstageGenre!
   updateGenre(id: String!, genre: UpdateGenreInput!): BackstageGenre!
+  createTrack(track: CreateTrackInput!): BackstageTrack!
+  generateTrackArtworkUploadToken(id: String!): UploadToken!
+}
+
+input CreateAlbumInput {
+  name: String!
+  releaseDate: DateTime!
+  explicit: Boolean!
+  type: String!
+  genres: [String!]!
+}
+
+input UpdateAlbumInput {
+  name: String!
+  releaseDate: DateTime!
+  explicit: Boolean!
+  type: String!
+  genres: [String!]!
 }
 
 input CreateArtistInput {
@@ -106,4 +163,15 @@ input CreateGenreInput {
 input UpdateGenreInput {
   name: String!
   slug: String!
+}
+
+input CreateTrackInput {
+  name: String!
+  albumId: String!
+  trackNumber: Int!
+  diskNumber: Int!
+  releaseDate: DateTime!
+  type: String!
+  explicit: Boolean!
+  genres: [String!]!
 }

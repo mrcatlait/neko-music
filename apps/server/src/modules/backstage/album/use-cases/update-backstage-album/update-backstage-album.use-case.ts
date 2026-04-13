@@ -4,8 +4,9 @@ import { Selectable } from 'kysely'
 import { AlbumRepository } from '../../repositories'
 import { BackstageAlbumTable } from '../../../backstage.schema'
 import { UpdateBackstageAlbumValidator } from './update-backstage-album.validator'
-import { SyncAlbumUseCase } from '../sync-album'
 import { PublishingStatus } from '../../../shared/enums'
+import { ProcessBackstageAlbumLifecycleUseCase } from '../process-backstage-album-lifecycle'
+import { ProcessLinkedBackstageTracksUseCase } from '../process-linked-backstage-tracks'
 
 import { Artwork, UseCase } from '@/modules/shared/types'
 import { AlbumType } from '@/modules/shared/enums'
@@ -32,7 +33,8 @@ export class UpdateBackstageAlbumUseCase implements UseCase<
   constructor(
     private readonly updateBackstageAlbumValidator: UpdateBackstageAlbumValidator,
     private readonly albumRepository: AlbumRepository,
-    private readonly syncAlbumUseCase: SyncAlbumUseCase,
+    private readonly processBackstageAlbumLifecycleUseCase: ProcessBackstageAlbumLifecycleUseCase,
+    private readonly processLinkedBackstageTracksUseCase: ProcessLinkedBackstageTracksUseCase,
   ) {}
 
   async invoke(params: UpdateBackstageAlbumUseCaseParams): Promise<UpdateBackstageAlbumUseCaseResult> {
@@ -50,9 +52,11 @@ export class UpdateBackstageAlbumUseCase implements UseCase<
       genres: params.genres,
     })
 
-    await this.syncAlbumUseCase.invoke({
+    await this.processBackstageAlbumLifecycleUseCase.invoke({
       albumId: album.id,
     })
+
+    await this.processLinkedBackstageTracksUseCase.invoke({ albumId: album.id })
 
     return album
   }

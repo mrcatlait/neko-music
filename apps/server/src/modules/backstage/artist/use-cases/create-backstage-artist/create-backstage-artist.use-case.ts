@@ -5,6 +5,7 @@ import { CreateBackstageArtistValidator } from './create-backstage-artist.valida
 import { ArtistRepository } from '../../repositories'
 import { PublishingStatus } from '../../../shared/enums'
 import { BackstageArtistTable } from '../../../backstage.schema'
+import { ProcessBackstageArtistLifecycleUseCase } from '../process-backstage-artist-lifecycle'
 
 import { UseCase } from '@/modules/shared/types'
 
@@ -25,12 +26,13 @@ export class CreateBackstageArtistUseCase implements UseCase<
   constructor(
     private readonly createBackstageArtistValidator: CreateBackstageArtistValidator,
     private readonly artistRepository: ArtistRepository,
+    private readonly processBackstageArtistLifecycleUseCase: ProcessBackstageArtistLifecycleUseCase,
   ) {}
 
   async invoke(params: CreateBackstageArtistUseCaseParams): Promise<CreateBackstageArtistUseCaseResult> {
     await this.createBackstageArtistValidator.validate(params)
 
-    return this.artistRepository.createWithGenres({
+    const artist = await this.artistRepository.createWithGenres({
       name: params.name,
       status: PublishingStatus.Draft,
       verified: params.verified,
@@ -38,5 +40,9 @@ export class CreateBackstageArtistUseCase implements UseCase<
       updatedBy: params.userId,
       genres: params.genres,
     })
+
+    await this.processBackstageArtistLifecycleUseCase.invoke({ artistId: artist.id })
+
+    return artist
   }
 }

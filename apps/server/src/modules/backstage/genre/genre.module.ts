@@ -4,12 +4,15 @@ import { GenreMutation } from './mutations'
 import { GenreQuery } from './queries'
 import { GenreRepository } from './repositories'
 import {
-  CreateGenreUseCase,
-  CreateGenreValidator,
-  GetGenreUseCase,
-  GetGenresUseCase,
-  UpdateGenreUseCase,
-  UpdateGenreValidator,
+  CreateBackstageGenreUseCase,
+  CreateBackstageGenreValidator,
+  GetBackstageGenreUseCase,
+  GetBackstageGenresUseCase,
+  UpdateBackstageGenreUseCase,
+  UpdateBackstageGenreValidator,
+  ProcessBackstageGenreLifecycleUseCase,
+  SyncPublishedGenreUseCase,
+  SyncPublishedGenreValidator,
 } from './use-cases'
 
 @Module({
@@ -22,12 +25,15 @@ import {
     // Repositories
     GenreRepository,
     // Use cases
-    CreateGenreUseCase,
-    CreateGenreValidator,
-    GetGenreUseCase,
-    GetGenresUseCase,
-    UpdateGenreUseCase,
-    UpdateGenreValidator,
+    CreateBackstageGenreUseCase,
+    CreateBackstageGenreValidator,
+    GetBackstageGenreUseCase,
+    GetBackstageGenresUseCase,
+    UpdateBackstageGenreUseCase,
+    UpdateBackstageGenreValidator,
+    ProcessBackstageGenreLifecycleUseCase,
+    SyncPublishedGenreUseCase,
+    SyncPublishedGenreValidator,
   ],
   exports: [GenreRepository],
 })

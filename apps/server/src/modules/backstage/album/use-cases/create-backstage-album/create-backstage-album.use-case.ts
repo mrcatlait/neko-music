@@ -33,7 +33,7 @@ export class CreateBackstageAlbumUseCase implements UseCase<
   async invoke(params: CreateBackstageAlbumUseCaseParams): Promise<CreateBackstageAlbumUseCaseResult> {
     await this.createBackstageAlbumValidator.validate(params)
 
-    return this.albumRepository.createWithGenres({
+    const album = await this.albumRepository.createWithGenres({
       name: params.name,
       status: PublishingStatus.Draft,
       releaseDate: params.releaseDate,
@@ -43,5 +43,7 @@ export class CreateBackstageAlbumUseCase implements UseCase<
       updatedBy: params.userId,
       genres: params.genres,
     })
+
+    return album
   }
 }

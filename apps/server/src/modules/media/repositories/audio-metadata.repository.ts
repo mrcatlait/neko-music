@@ -1,27 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { Insertable, Selectable } from 'kysely'
 
-import { AudioMetadataTable, MediaSchema } from '../media.schema'
+import { MediaSchema } from '../media.schema'
 
 import { InjectDatabase, Database } from '@/modules/database'
+import { Repository } from '@/modules/shared/classes/repository.class'
 
 @Injectable()
-export class AudioMetadataRepository {
-  constructor(@InjectDatabase() private readonly database: Database<MediaSchema>) {}
-
-  create(audioMetadata: Insertable<AudioMetadataTable>): Promise<Selectable<AudioMetadataTable>> {
-    return this.database
-      .insertInto('media.AudioMetadata')
-      .values(audioMetadata)
-      .returningAll()
-      .executeTakeFirstOrThrow()
-  }
-
-  deleteByAssetId(assetId: string): Promise<void> {
-    return this.database
-      .deleteFrom('media.AudioMetadata')
-      .where('assetId', '=', assetId)
-      .execute()
-      .then(() => undefined)
+export class AudioMetadataRepository extends Repository<MediaSchema, 'media.AudioMetadata'> {
+  constructor(@InjectDatabase() database: Database<MediaSchema>) {
+    super(database, 'media.AudioMetadata')
   }
 }

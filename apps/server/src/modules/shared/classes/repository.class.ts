@@ -165,6 +165,7 @@ export abstract class Repository<Schema, TableName extends keyof Schema & string
         .then((row) => Number(row?.count ?? 0))
     }
 
+    // Repository.count() has a correctness bug for object criteria; it returns Number(rowObject) (=> NaN) instead of row count.
     return this.db
       .selectFrom(this.tableName)
       .select((eb) => eb.fn.countAll().as('count'))

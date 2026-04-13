@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { join } from 'node:path'
 import { rmSync } from 'node:fs'
 
@@ -11,8 +11,6 @@ import { DashService } from './dash.service'
 
 @Injectable()
 export class AudioService {
-  private readonly logger = new Logger(this.constructor.name)
-
   private readonly audioTransformStrategy: AudioTransformStrategy
   private readonly namingStrategy: NamingStrategy
   private readonly storageStrategy: StorageStrategy

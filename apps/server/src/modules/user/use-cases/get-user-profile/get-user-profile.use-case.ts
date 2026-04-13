@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { UserRepository } from '../../repositories'
 
+import { UseCase } from '@/modules/shared/types'
+
 export interface GetUserProfileUseCaseParams {
   readonly userId: string
 }
@@ -12,7 +14,7 @@ export interface GetUserProfileUseCaseResult {
 }
 
 @Injectable()
-export class GetUserProfileUseCase {
+export class GetUserProfileUseCase implements UseCase<GetUserProfileUseCaseParams, GetUserProfileUseCaseResult> {
   constructor(private readonly userRepository: UserRepository) {}
 
   async invoke(params: GetUserProfileUseCaseParams): Promise<GetUserProfileUseCaseResult> {

@@ -95,7 +95,9 @@ export class ImageService {
         await this.storageStrategy.delete(createdAsset.storagePath)
 
         if (createdAsset.assetId) {
-          await this.imageMetadataRepository.deleteByAssetId(createdAsset.assetId)
+          await this.imageMetadataRepository.delete({
+            assetId: createdAsset.assetId,
+          })
           await this.assetRepository.delete(createdAsset.assetId)
         }
       }

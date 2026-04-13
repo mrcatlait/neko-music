@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 
 import { ArtistRepository } from '../../repositories'
 import { UpdateBackstageArtistArtworkValidator } from './update-backstage-artist-artwork.validator'
-import { SyncArtistUseCase } from '../sync-artist'
+import { ProcessBackstageArtistLifecycleUseCase } from '../process-backstage-artist-lifecycle'
 
 import { UseCase } from '@/modules/shared/types'
 import { EntityType } from '@/modules/media/enums'
@@ -23,7 +23,7 @@ export class UpdateBackstageArtistArtworkUseCase implements UseCase<
     private readonly updateBackstageArtistArtworkValidator: UpdateBackstageArtistArtworkValidator,
     private readonly artistRepository: ArtistRepository,
     private readonly getArtworkUseCase: GetArtworkUseCase,
-    private readonly syncArtistUseCase: SyncArtistUseCase,
+    private readonly processBackstageArtistLifecycleUseCase: ProcessBackstageArtistLifecycleUseCase,
   ) {}
 
   async invoke(params: UpdateBackstageArtistArtworkUseCaseParams): Promise<UpdateBackstageArtistArtworkUseCaseResult> {
@@ -38,7 +38,7 @@ export class UpdateBackstageArtistArtworkUseCase implements UseCase<
       artwork,
     })
 
-    await this.syncArtistUseCase.invoke({
+    await this.processBackstageArtistLifecycleUseCase.invoke({
       artistId: params.id,
     })
   }

@@ -1,4 +1,4 @@
-import { Artwork } from '@/modules/shared/types'
+import { Artwork, Playback } from '@/modules/shared/types'
 import { AlbumType, TrackType } from '@/modules/shared/enums'
 
 export interface GenreTable {
@@ -53,7 +53,7 @@ export interface CatalogTrackTable {
   type: TrackType
   duration: number
   artwork: Artwork
-  playback: any
+  playback: Playback
   explicit: boolean
   artists: { id: string; name: string }[]
   // @todo think is to add hasLyrics column

@@ -29,9 +29,6 @@ export class BackstageTrack {
   @Field(() => String)
   type: TrackType
 
-  @Field(() => Int)
-  duration: number
-
   @Field(() => Boolean)
   explicit: boolean
 

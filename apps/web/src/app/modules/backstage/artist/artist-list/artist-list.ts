@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { Router } from '@angular/router'
-import { AgGridModule } from 'ag-grid-angular'
+import { AgGridAngular } from 'ag-grid-angular'
 import { ColDef, AllCommunityModule, GridOptions } from 'ag-grid-community'
 
 import { StatusIndicatorCellRenderer } from '../../shared/components'
@@ -12,7 +12,7 @@ import { Button } from '@/shared/components'
 
 @Component({
   selector: 'n-artist-list',
-  imports: [AgGridModule, Button],
+  imports: [AgGridAngular, Button],
   templateUrl: './artist-list.html',
   styleUrl: './artist-list.scss',
   providers: [provideGridOptions(), GetBackstageArtistsGql],

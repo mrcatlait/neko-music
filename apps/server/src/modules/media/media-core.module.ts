@@ -22,6 +22,7 @@ import {
   UploadImageValidator,
   GetMediaReadinessUseCase,
   GetProcessingStatusUseCase,
+  GetPlaybackUseCase,
 } from './use-cases'
 import {
   AssetRepository,
@@ -67,6 +68,7 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     GetArtworkUseCase,
     GetMediaReadinessUseCase,
     GetProcessingStatusUseCase,
+    GetPlaybackUseCase,
     UploadMediaUseCase,
     UploadAudioValidator,
     UploadImageValidator,
@@ -78,6 +80,7 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     GetArtworkUseCase,
     GetMediaReadinessUseCase,
     GetProcessingStatusUseCase,
+    GetPlaybackUseCase,
   ]
   static readonly controllers = [MediaController, StreamingController]
 

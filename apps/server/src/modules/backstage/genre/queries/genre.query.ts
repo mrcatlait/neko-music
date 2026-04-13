@@ -3,27 +3,27 @@ import { Injectable } from '@nestjs/common'
 import { Permissions } from '@neko/permissions'
 
 import { BackstageGenre, GenresInput } from '../models'
-import { GetGenresUseCase, GetGenreUseCase } from '../use-cases'
+import { GetBackstageGenresUseCase, GetBackstageGenreUseCase } from '../use-cases'
 
 import { RequirePermissions } from '@/modules/auth/decorators'
 
 @Injectable()
 export class GenreQuery {
   constructor(
-    private readonly getGenreUseCase: GetGenreUseCase,
-    private readonly getGenresUseCase: GetGenresUseCase,
+    private readonly getBackstageGenreUseCase: GetBackstageGenreUseCase,
+    private readonly getBackstageGenresUseCase: GetBackstageGenresUseCase,
   ) {}
 
   @Query(() => BackstageGenre)
   @RequirePermissions(Permissions.Genre.Write)
   backstageGenre(@Args('id') id: string): Promise<BackstageGenre> {
-    return this.getGenreUseCase.invoke({ id })
+    return this.getBackstageGenreUseCase.invoke({ id })
   }
 
   @Query(() => [BackstageGenre])
   @RequirePermissions(Permissions.Genre.Write)
   backstageGenres(@Args('input', { nullable: true }) input?: GenresInput): Promise<BackstageGenre[]> {
-    return this.getGenresUseCase
+    return this.getBackstageGenresUseCase
       .invoke({
         limit: input?.pagination?.limit,
         offset: input?.pagination?.offset,

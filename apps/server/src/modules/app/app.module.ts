@@ -1,11 +1,10 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
-import { join } from 'path'
+import { join } from 'node:path'
 import { ScheduleModule } from '@nestjs/schedule'
 import { APP_GUARD } from '@nestjs/core'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { GraphQLModule } from '@nestjs/graphql'
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius'
-import { mercurius } from 'mercurius'
 
 import { SecurityHeadersMiddleware } from './middlewares'
 import { BackstageModule } from '../backstage/backstage.module'
@@ -73,7 +72,9 @@ import { AuthModule } from '@/modules/auth/auth.module'
       }),
       inject: [ConfigService],
     }),
-    BackstageModule.forRoot({}),
+    BackstageModule.forRoot({
+      autoPublish: true,
+    }),
     CatalogModule.forRoot({}),
     MediaModule.forRoot({
       storageStrategy: new LocalStorageStrategy({
@@ -137,6 +138,6 @@ import { AuthModule } from '@/modules/auth/auth.module'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer.apply(SecurityHeadersMiddleware).forRoutes('*')
+    consumer.apply(SecurityHeadersMiddleware).forRoutes('*')
   }
 }

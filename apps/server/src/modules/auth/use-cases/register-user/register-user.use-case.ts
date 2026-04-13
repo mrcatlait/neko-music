@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Role, Roles } from '@neko/permissions'
 
 import { RegisterUserValidator } from './register-user.validator'

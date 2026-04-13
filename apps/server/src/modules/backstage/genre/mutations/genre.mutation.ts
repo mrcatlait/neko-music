@@ -2,7 +2,7 @@ import { Args, Mutation } from '@nestjs/graphql'
 import { Injectable } from '@nestjs/common'
 import { Permissions } from '@neko/permissions'
 
-import { CreateGenreUseCase, UpdateGenreUseCase } from '../use-cases'
+import { CreateBackstageGenreUseCase, UpdateBackstageGenreUseCase } from '../use-cases'
 import { BackstageGenre, CreateGenreInput, UpdateGenreInput } from '../models'
 
 import { RequirePermissions, UserSession } from '@/modules/auth/decorators'
@@ -11,14 +11,14 @@ import { User } from '@/modules/auth/interfaces'
 @Injectable()
 export class GenreMutation {
   constructor(
-    private readonly createGenreUseCase: CreateGenreUseCase,
-    private readonly updateGenreUseCase: UpdateGenreUseCase,
+    private readonly createBackstageGenreUseCase: CreateBackstageGenreUseCase,
+    private readonly updateBackstageGenreUseCase: UpdateBackstageGenreUseCase,
   ) {}
 
   @Mutation(() => BackstageGenre)
   @RequirePermissions(Permissions.Genre.Write)
   createGenre(@Args('genre') genre: CreateGenreInput, @UserSession() user: User): Promise<BackstageGenre> {
-    return this.createGenreUseCase.invoke({ name: genre.name, slug: genre.slug, userId: user.id })
+    return this.createBackstageGenreUseCase.invoke({ name: genre.name, slug: genre.slug, userId: user.id })
   }
 
   @Mutation(() => BackstageGenre)
@@ -28,6 +28,6 @@ export class GenreMutation {
     @Args('genre') genre: UpdateGenreInput,
     @UserSession() user: User,
   ): Promise<BackstageGenre> {
-    return this.updateGenreUseCase.invoke({ id, name: genre.name, slug: genre.slug, userId: user.id })
+    return this.updateBackstageGenreUseCase.invoke({ id, name: genre.name, slug: genre.slug, userId: user.id })
   }
 }

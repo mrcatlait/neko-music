@@ -1,7 +1,7 @@
 import { Generated } from 'kysely'
 
 import { PublishingStatus } from './shared/enums'
-import { Artwork } from '../shared/types'
+import { Artwork, Playback } from '../shared/types'
 import { AlbumType, TrackType } from '../shared/enums'
 
 interface AuditableTable {
@@ -63,10 +63,10 @@ export interface BackstageTrackTable extends AuditableTable {
   diskNumber: number
   releaseDate: Date
   type: TrackType
-  duration: number
   explicit: boolean
   status: PublishingStatus
   artwork?: Artwork
+  playback?: Playback
 }
 
 export interface BackstageTrackGenreTable {

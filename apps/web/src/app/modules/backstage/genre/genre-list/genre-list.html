@@ -22,7 +22,7 @@
     [rowData]="genresResource.value()?.backstageGenres ?? []"
   />
 } @else {
-  <div class="genre-table__error">
+  <div class="genre-list__error">
     <p class="body-medium">{{ genresResource.error()?.message }}</p>
   </div>
 }

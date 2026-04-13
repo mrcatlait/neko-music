@@ -59,10 +59,14 @@ export class AssetCleanupService {
 
     switch (asset.mediaType) {
       case MediaType.Image:
-        await this.imageMetadataRepository.deleteByAssetId(asset.id)
+        await this.imageMetadataRepository.delete({
+          assetId: asset.id,
+        })
         break
       case MediaType.Audio:
-        await this.audioMetadataRepository.deleteByAssetId(asset.id)
+        await this.audioMetadataRepository.delete({
+          assetId: asset.id,
+        })
         break
     }
 

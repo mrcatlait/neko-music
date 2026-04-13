@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { join } from 'node:path'
 import { NestFactory, Reflector } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { fastifyCookie } from '@fastify/cookie'
@@ -39,10 +39,10 @@ async function bootstrap() {
   await app.register(fastifyCookie)
   await app.register(fastifyMultipart)
 
-  // app.enableCors({
-  //   origin: UI_URL,
-  //   credentials: true,
-  // })
+  app.enableCors({
+    origin: UI_URL,
+    credentials: true,
+  })
 
   const config = new DocumentBuilder()
     .setTitle('Neko Music API')

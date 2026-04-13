@@ -18,6 +18,7 @@ export abstract class CoreModuleWithOptions {
     }
 
     const providers: Provider[] = [optionsProvider, ...this.providers]
+    const exports: Provider[] = [optionsProvider, ...this.exports]
 
     return {
       module: this.module,
@@ -25,7 +26,7 @@ export abstract class CoreModuleWithOptions {
       controllers: this.controllers,
       providers,
       global: this.global,
-      exports: [...this.exports],
+      exports,
     }
   }
 

@@ -3,6 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { AuthRepository } from '../../repositories'
 
 import { GetUserProfileUseCase } from '@/modules/user/use-cases'
+import { UseCase } from '@/modules/shared/types'
 
 export interface GetUserUseCaseParams {
   readonly userId: string
@@ -15,7 +16,7 @@ export interface GetUserUseCaseResult {
 }
 
 @Injectable()
-export class GetUserUseCase {
+export class GetUserUseCase implements UseCase<GetUserUseCaseParams, GetUserUseCaseResult> {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly getUserProfileUseCase: GetUserProfileUseCase,

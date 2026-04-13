@@ -3,8 +3,8 @@ import { Selectable } from 'kysely'
 
 import { UpdateBackstageArtistValidator } from './update-backstage-artist.validator'
 import { ArtistRepository } from '../../repositories'
-import { SyncArtistUseCase } from '../sync-artist'
 import { BackstageArtistTable } from '../../../backstage.schema'
+import { ProcessBackstageArtistLifecycleUseCase } from '../process-backstage-artist-lifecycle'
 
 import { UseCase } from '@/modules/shared/types'
 
@@ -26,7 +26,7 @@ export class UpdateBackstageArtistUseCase implements UseCase<
   constructor(
     private readonly updateBackstageArtistValidator: UpdateBackstageArtistValidator,
     private readonly artistRepository: ArtistRepository,
-    private readonly syncArtistUseCase: SyncArtistUseCase,
+    private readonly processBackstageArtistLifecycleUseCase: ProcessBackstageArtistLifecycleUseCase,
   ) {}
 
   async invoke(params: UpdateBackstageArtistUseCaseParams): Promise<UpdateBackstageArtistUseCaseResult> {
@@ -40,7 +40,7 @@ export class UpdateBackstageArtistUseCase implements UseCase<
       genres: params.genres,
     })
 
-    await this.syncArtistUseCase.invoke({
+    await this.processBackstageArtistLifecycleUseCase.invoke({
       artistId: artist.id,
     })
 
