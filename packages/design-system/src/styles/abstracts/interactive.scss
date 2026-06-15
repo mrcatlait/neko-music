@@ -1,0 +1,9 @@
+@mixin interactive {
+  &:-webkit-any(a, button, select, textarea, input) {
+      @content;
+  }
+
+  &:-moz-any(a, button, select, textarea, input) {
+      @content;
+  }
+}

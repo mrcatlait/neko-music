@@ -9,6 +9,8 @@ import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius'
 import { SecurityHeadersMiddleware } from './middlewares'
 import { BackstageModule } from '../backstage/backstage.module'
 import { ArtistLoader } from '../backstage/artist/loaders'
+import { ImportModule } from '../import/import.module'
+import { YoutubeImportStrategy } from '../import/strategies'
 
 import { AuthGuard } from '@/modules/auth/guards'
 import { DatabaseModule } from '@/modules/database/database.module'
@@ -55,6 +57,7 @@ import { AuthModule } from '@/modules/auth/auth.module'
         loaders: {
           ...artistLoader.defaultLoader(),
         },
+        context: (req, res) => ({ req, res }),
       }),
     }),
     ScheduleModule.forRoot(),
@@ -71,6 +74,14 @@ import { AuthModule } from '@/modules/auth/auth.module'
         },
       }),
       inject: [ConfigService],
+    }),
+    ImportModule.forRoot({
+      importStrategies: [
+        new YoutubeImportStrategy({
+          downloadDirectory: join(process.cwd(), 'media', 'import'),
+        }),
+      ],
+      discoveryTtlDays: 7,
     }),
     BackstageModule.forRoot({
       autoPublish: true,

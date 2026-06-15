@@ -3,7 +3,7 @@
  * @param array - Array to shuffle
  * @returns Shuffled array
  * @example
- * ```typescript
+ * ```ts
  * shuffleArray([1, 2, 3, 4, 5]) // Returns: [3, 1, 5, 2, 4]
  * ```
  */

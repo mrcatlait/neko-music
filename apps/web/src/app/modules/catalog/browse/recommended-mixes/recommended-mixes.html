@@ -1,0 +1,59 @@
+<section class="recommended-mixes">
+  <p class="label-medium recommended-mixes__caption">Recommendations</p>
+  <h1
+    class="headline-large recommended-mixes__heading"
+    data-testid="recommended-mixes-heading"
+  >
+    Egor, we have prepared several mixes for you
+  </h1>
+
+  <div class="recommended-mixes__grid">
+    @for (card of cards; track card.id) {
+      <article
+        class="recommended-mix-card"
+        data-testid="recommended-mix-card"
+        [attr.data-background-type]="card.background.type"
+        [class.recommended-mix-card--illustration]="card.background.type === 'illustration'"
+        [class.recommended-mix-card--image]="card.background.type === 'image'"
+        [style.background-image]="card.background.type === 'image' ? 'url(' + card.background.imageUrl + ')' : null"
+      >
+        @if (card.background.type === 'illustration') {
+          <div
+            aria-hidden="true"
+            class="recommended-mix-card__illustration"
+            [class.recommended-mix-card__illustration--marble]="card.background.variant === 'marble'"
+            [class.recommended-mix-card__illustration--rings]="card.background.variant === 'rings'"
+          ></div>
+        }
+
+        <p
+          class="label-medium recommended-mix-card__caption"
+          data-testid="recommended-mix-caption"
+        >
+          {{ card.caption }}
+        </p>
+
+        <h2
+          class="title-large recommended-mix-card__title"
+          data-testid="recommended-mix-title"
+        >
+          {{ card.title }}
+        </h2>
+
+        <button
+          class="recommended-mix-card__play"
+          data-testid="recommended-mix-play"
+          type="button"
+          [attr.aria-label]="'Play ' + card.title"
+        >
+          <i
+            aria-hidden="true"
+            class="material-symbols-outlined"
+          >
+            play_arrow
+          </i>
+        </button>
+      </article>
+    }
+  </div>
+</section>

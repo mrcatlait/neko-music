@@ -35,6 +35,6 @@ import {
     SyncPublishedGenreUseCase,
     SyncPublishedGenreValidator,
   ],
-  exports: [GenreRepository],
+  exports: [GenreRepository, CreateBackstageGenreUseCase],
 })
 export class BackstageGenreModule {}

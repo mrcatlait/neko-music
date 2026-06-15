@@ -93,9 +93,9 @@ proto plugin add moon "https://raw.githubusercontent.com/moonrepo/moon/master/pr
 proto install moon
 ```
 
-Using npm:
+Using pnpm:
 ```bash
-npm install --save-dev @moonrepo/cli
+pnpm add -D @moonrepo/cli
 ```
 
 On Linux, macOS, or WSL:

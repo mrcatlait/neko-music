@@ -1,109 +1,115 @@
-<h1 class="headline-large">Log In</h1>
+<section class="login-page">
+  <header class="login-page__header">
+    <h1 class="headline-large login-page__title">Log In</h1>
+    <p class="body-medium login-page__subtitle">Welcome back. Sign in to keep your collection in sync.</p>
+  </header>
 
-@if (invalidCredentials()) {
-  <div class="login-page__error-banner body-medium">
-    Sorry, couldn't find an account matching the username and password you entered. Please try again.
-  </div>
-}
+  @if (invalidCredentials()) {
+    <div class="login-page__error-banner body-medium">
+      Sorry, couldn't find an account matching the username and password you entered. Please try again.
+    </div>
+  }
 
-<form
-  autocomplete="off"
-  (submit)="login($event)"
->
-  <n-textfield>
-    <label for="email">Email address</label>
+  <form
+    autocomplete="off"
+    class="login-page__form"
+    (submit)="login($event)"
+  >
+    <n-textfield>
+      <label for="email">Email address</label>
 
-    <input
-      id="email"
-      type="email"
-      [formField]="loginForm.email"
-    />
+      <input
+        id="email"
+        type="email"
+        [formField]="loginForm.email"
+      />
 
-    @let emailTouched = loginForm.email().touched();
-    @let emailInvalid = loginForm.email().invalid();
+      @let emailTouched = loginForm.email().touched();
+      @let emailInvalid = loginForm.email().invalid();
 
-    @if (emailInvalid && emailTouched) {
-      <i
-        aria-hidden="true"
-        class="color-error"
-        slot="right"
-      >
-        error
-      </i>
-    }
-
-    <span slot="error">
       @if (emailInvalid && emailTouched) {
-        @for (error of loginForm.email().errors(); track error) {
-          <span>{{ error.message }}</span>
-        }
+        <i
+          aria-hidden="true"
+          class="color-error"
+          slot="right"
+        >
+          error
+        </i>
       }
-    </span>
-  </n-textfield>
 
-  <n-textfield>
-    <label for="password">Password</label>
+      <span slot="error">
+        @if (emailInvalid && emailTouched) {
+          @for (error of loginForm.email().errors(); track error) {
+            <span>{{ error.message }}</span>
+          }
+        }
+      </span>
+    </n-textfield>
 
-    <input
-      id="password"
-      [formField]="loginForm.password"
-      [type]="hidePassword ? 'password' : 'text'"
-    />
+    <n-textfield>
+      <label for="password">Password</label>
 
-    @let passwordTouched = loginForm.password().touched();
-    @let passwordInvalid = loginForm.password().invalid();
+      <input
+        id="password"
+        [formField]="loginForm.password"
+        [type]="hidePassword ? 'password' : 'text'"
+      />
+
+      @let passwordTouched = loginForm.password().touched();
+      @let passwordInvalid = loginForm.password().invalid();
+
+      <button
+        aria-label="Show password"
+        nIconButton
+        slot="right"
+        tabindex="-1"
+        type="button"
+        [attr.aria-pressed]="hidePassword"
+        (click)="hidePassword = !hidePassword"
+      >
+        <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
+      </button>
+
+      @if (passwordInvalid && passwordTouched) {
+        <i
+          aria-hidden="true"
+          class="color-error"
+          slot="right"
+        >
+          error
+        </i>
+      }
+
+      <span slot="error">
+        @if (passwordInvalid && passwordTouched) {
+          @for (error of loginForm.password().errors(); track error) {
+            <span>{{ error.message }}</span>
+          }
+        }
+      </span>
+    </n-textfield>
 
     <button
-      aria-label="Show password"
-      nIconButton
-      slot="right"
-      tabindex="-1"
-      type="button"
-      [attr.aria-pressed]="hidePassword"
-      (click)="hidePassword = !hidePassword"
+      nButton
+      type="submit"
+      [disabled]="loading()"
+      (click)="login($event)"
     >
-      <i>{{ hidePassword ? 'visibility_off' : 'visibility' }}</i>
-    </button>
-
-    @if (passwordInvalid && passwordTouched) {
-      <i
-        aria-hidden="true"
-        class="color-error"
-        slot="right"
-      >
-        error
-      </i>
-    }
-
-    <span slot="error">
-      @if (passwordInvalid && passwordTouched) {
-        @for (error of loginForm.password().errors(); track error) {
-          <span>{{ error.message }}</span>
-        }
+      @if (loading()) {
+        <n-loading-indicator [size]="12" />
+      } @else {
+        Log In
       }
-    </span>
-  </n-textfield>
+    </button>
+  </form>
 
-  <button
-    nButton
-    type="submit"
-    [disabled]="loading()"
-    (click)="login($event)"
-  >
-    @if (loading()) {
-      <n-loading-indicator [size]="12" />
-    } @else {
-      Log In
-    }
-  </button>
-</form>
-
-<p class="body-medium">
-  Don't have an account?
-  <a
-    class="link"
-    routerLink="/registration"
-  >
-    Sign up
-  </a>
-</p>
+  <p class="body-medium login-page__registration-link">
+    Don't have an account?
+    <a
+      class="link"
+      routerLink="/registration"
+    >
+      Sign up
+    </a>
+  </p>
+</section>

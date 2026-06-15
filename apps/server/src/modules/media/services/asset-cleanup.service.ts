@@ -7,9 +7,10 @@ import {
   AssetRepository,
   AudioMetadataRepository,
   ImageMetadataRepository,
+  ProcessingJobRepository,
   SourceAssetRepository,
 } from '../repositories'
-import { EntityType, MediaType } from '../enums'
+import { EntityType, MediaType, ProcessingStatus } from '../enums'
 
 @Injectable()
 export class AssetCleanupService {
@@ -18,6 +19,7 @@ export class AssetCleanupService {
   constructor(
     @Inject(MEDIA_MODULE_OPTIONS) private readonly options: MediaModuleOptions,
     private readonly sourceAssetRepository: SourceAssetRepository,
+    private readonly processingJobRepository: ProcessingJobRepository,
     private readonly assetRepository: AssetRepository,
     private readonly imageMetadataRepository: ImageMetadataRepository,
     private readonly audioMetadataRepository: AudioMetadataRepository,
@@ -85,12 +87,30 @@ export class AssetCleanupService {
     entityId: string,
     excludeSourceAssetId: string,
   ): Promise<void> {
+    const keepSourceAsset = await this.sourceAssetRepository.findOne(excludeSourceAssetId)
+
+    if (!keepSourceAsset) {
+      return
+    }
+
     const sourceAssets = await this.sourceAssetRepository.findMany({ entityType, entityId })
 
-    const oldSourceAssets = sourceAssets.filter((sourceAsset) => sourceAsset.id !== excludeSourceAssetId)
+    const oldSourceAssets = sourceAssets.filter(
+      (sourceAsset) => sourceAsset.id !== excludeSourceAssetId && sourceAsset.mediaType === keepSourceAsset.mediaType,
+    )
 
     for (const sourceAsset of oldSourceAssets) {
+      if (await this.hasIncompleteProcessingJob(sourceAsset.id)) {
+        continue
+      }
+
       await this.cleanupSourceAsset(sourceAsset.id)
     }
+  }
+
+  private async hasIncompleteProcessingJob(sourceAssetId: string): Promise<boolean> {
+    const jobs = await this.processingJobRepository.findMany({ sourceAssetId })
+
+    return jobs.some((job) => job.status === ProcessingStatus.Pending || job.status === ProcessingStatus.Processing)
   }
 }

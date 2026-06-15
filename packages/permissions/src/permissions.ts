@@ -33,8 +33,26 @@ export const Permissions = {
     Read: 'user.read',
     Write: 'user.write',
   },
+  Import: {
+    Read: 'import.read',
+    Write: 'import.write',
+    Review: 'import.review',
+    Promote: 'import.promote',
+    Retry: 'import.retry',
+    Manage: 'import.manage',
+  },
 } as const
 
 export const getAllPermissions = (): string[] => {
-  return Object.values(Permissions).flatMap((permission) => Object.values(permission))
+  const allPermissions: string[] = []
+
+  for (const permissionScope of Object.keys(Permissions) as Array<keyof typeof Permissions>) {
+    const scopedPermissions = Permissions[permissionScope]
+
+    for (const permissionName of Object.keys(scopedPermissions) as Array<keyof typeof scopedPermissions>) {
+      allPermissions.push(scopedPermissions[permissionName])
+    }
+  }
+
+  return allPermissions
 }

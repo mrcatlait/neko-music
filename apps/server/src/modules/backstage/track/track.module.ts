@@ -43,6 +43,6 @@ import {
     UpdateBackstageTrackPlaybackUseCase,
     UpdateBackstageTrackPlaybackValidator,
   ],
-  exports: [TrackRepository, ProcessBackstageTrackLifecycleUseCase],
+  exports: [TrackRepository, ProcessBackstageTrackLifecycleUseCase, CreateBackstageTrackUseCase],
 })
 export class BackstageTrackModule {}

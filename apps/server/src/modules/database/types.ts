@@ -1,6 +1,10 @@
 import { Kysely } from 'kysely'
 
 export interface DatabaseModuleOptions {
+  // Retry
+  retryInterval?: number
+  maxRetries?: number
+
   // Database
   host: string
   port: number

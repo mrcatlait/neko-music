@@ -15,10 +15,16 @@
       "path": "packages/contracts"
     },
     {
+      "path": "packages/design-system"
+    },
+    {
       "path": "packages/permissions"
     },
     {
       "path": "packages/selectors"
+    },
+    {
+      "path": "packages/server-core"
     }
   ]
 }

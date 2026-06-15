@@ -11,6 +11,14 @@
       "default": "./prettier.js"
     }
   },
+  "peerDependencies": {
+    "eslint": "^9.38.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": false
+    }
+  },
   "dependencies": {
     "@eslint/compat": "^1.4.1",
     "@eslint/js": "^9.18.0",

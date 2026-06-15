@@ -1,0 +1,36 @@
+<div
+  class="circular-progress"
+  role="progressbar"
+  tabindex="-1"
+  [attr.aria-valuemax]="100"
+  [attr.aria-valuemin]="0"
+  [attr.aria-valuenow]="normalizedBuffer()"
+  [style.height.px]="size()"
+  [style.width.px]="size()"
+>
+  <svg
+    aria-hidden="true"
+    [attr.viewBox]="viewBox()"
+  >
+    <circle
+      class="circular-progress__track"
+      pathLength="100"
+      [attr.cx]="center()"
+      [attr.cy]="center()"
+      [attr.r]="radius()"
+      [attr.stroke-dasharray]="trackDasharray()"
+      [attr.stroke-dashoffset]="trackDashoffset()"
+      [attr.stroke-width]="trackWidth()"
+    />
+
+    <circle
+      class="circular-progress__active-indicator"
+      pathLength="100"
+      [attr.cx]="center()"
+      [attr.cy]="center()"
+      [attr.r]="radius()"
+      [attr.stroke-dasharray]="activeDasharray()"
+      [attr.stroke-width]="trackWidth()"
+    />
+  </svg>
+</div>

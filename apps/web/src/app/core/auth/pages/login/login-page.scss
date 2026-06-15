@@ -1,19 +1,38 @@
-h1 {
-  margin-bottom: 24px;
-}
-
-form {
+.login-page {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-top: 24px;
-}
 
-p {
-  text-align: center;
-  margin-top: 20px;
-}
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-.login-page__error-banner {
-  color: var(--color-error);
+  &__title {
+    margin: 0;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: var(--color-text-medium-emphasis);
+  }
+
+  &__error-banner {
+    color: var(--color-error);
+    padding: 10px 12px;
+    border-radius: 12px;
+    background-color: color-mix(in oklab, var(--color-error), transparent 92%);
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__registration-link {
+    text-align: center;
+    margin: 4px 0 0;
+  }
 }

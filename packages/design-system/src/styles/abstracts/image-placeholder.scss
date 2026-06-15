@@ -1,0 +1,6 @@
+@mixin image-placeholder($url: url('/assets/images/placeholders/1x1.gif')) {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: $url;
+}

@@ -1,0 +1,3 @@
+mutation PromoteImportJobItem($input: PromoteImportJobItemInput!) {
+  promoteImportJobItem(input: $input)
+}

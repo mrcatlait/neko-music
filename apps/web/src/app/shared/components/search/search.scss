@@ -1,0 +1,43 @@
+@use 'abstracts' as abstracts;
+
+.search {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  min-width: 360px;
+  max-width: 720px;
+  height: 56px;
+  border-radius: var(--shape-corner-full);
+  color: var(--color-on-surface);
+  background-color: var(--color-surface-container-high);
+
+  // @include abstracts.state(var(--color-on-surface));
+
+  &__icon {
+    margin-left: 16px;
+    margin-right: 12px;
+  }
+
+  &__input {
+    background: transparent;
+    border: none;
+    outline: none;
+    height: 100%;
+    color: var(--color-on-surface);
+
+    @include abstracts.typography('body-large');
+
+    &::placeholder {
+      color: var(--color-text-medium-emphasis);
+    }
+
+    &:focus,
+    &:focus-visible {
+      caret-color: var(--color-secondary);
+    }
+  }
+
+  &__clear {
+    margin-right: 12px;
+  }
+}

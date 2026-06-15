@@ -1,0 +1,38 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: 'frontend'
+layer: 'library'
+language: 'typescript'
+
+dependsOn:
+  - id: 'eslint-config'
+    scope: 'development'
+
+fileGroups:
+  app:
+    - 'angular.*'
+
+tasks:
+  build:
+    command: 'ng build'
+    inputs:
+      - '@group(configs)'
+      - '@group(app)'
+      - '@group(sources)'
+    outputs:
+      - 'dist'
+
+  storybook:
+    command: 'ng run design-system:storybook'
+    preset: 'server'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
+
+  storybook-build:
+    command: 'ng run design-system:build-storybook'
+    inputs:
+      - '@group(app)'
+      - '@group(sources)'
+    outputs:
+      - 'storybook-static'

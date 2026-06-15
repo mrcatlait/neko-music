@@ -1,0 +1,206 @@
+// =============================================================================
+// 1. CONTAINER TRANSFORM
+// =============================================================================
+// Purpose: Seamless element morphing with shared boundaries
+// Timing: Medium2 enter (300ms), Short4 exit (200ms)
+// 
+// Material Components:
+//   • Dialog/Modal (expand from trigger)
+//   • Card → Detail View
+//   • FAB → Sheet/Menu 
+//   • Image → Fullscreen
+//   • List Item → Detail Page
+
+@mixin container-transform-enter() {
+  animation: container-transform-enter var(--motion-duration-medium2) var(--motion-easing-emphasized) forwards;
+}
+
+@mixin container-transform-exit() {
+  animation: container-transform-exit var(--motion-duration-short4) var(--motion-easing-emphasized-accelerate) forwards;
+}
+
+// =============================================================================
+// 2. SHARED AXIS
+// =============================================================================
+// Purpose: Elements that have spatial or temporal relationship
+// Timing: Medium1 enter (250ms), Short4 exit (200ms)
+
+// -----------------------------------------------------------------------------
+// 2A. HORIZONTAL AXIS (X)
+// -----------------------------------------------------------------------------
+// Material Components:
+//   • Page Navigation (forward/back)
+//   • Tab Bar (horizontal tabs)
+//   • Stepper (next/previous)
+//   • Carousel/Slider
+//   • Drawer Navigation
+
+@mixin shared-axis-x-enter() {
+  animation: shared-axis-x-enter var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
+}
+
+@mixin shared-axis-x-exit() {
+  animation: shared-axis-x-exit var(--motion-duration-short4) var(--motion-easing-emphasized-accelerate) forwards;
+}
+
+// -----------------------------------------------------------------------------
+// 2B. VERTICAL AXIS (Y)
+// -----------------------------------------------------------------------------
+// Material Components:
+//   • Cards in Lists
+//   • Search Results
+//   • Feed Items
+//   • Notifications List
+//   • Menu Items (vertical)
+
+@mixin shared-axis-y-enter() {
+  animation: shared-axis-y-enter var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
+}
+
+@mixin shared-axis-y-exit() {
+  animation: shared-axis-y-exit var(--motion-duration-short4) var(--motion-easing-emphasized-accelerate) forwards;
+}
+
+// -----------------------------------------------------------------------------
+// 2C. DEPTH AXIS (Z)
+// -----------------------------------------------------------------------------
+// Material Components:
+//   • Dropdown Menus
+//   • Select Options
+//   • Context Menus
+//   • Popover Menus
+//   • Date/Time Pickers
+
+@mixin shared-axis-z-enter() {
+  animation: shared-axis-z-enter var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
+}
+
+@mixin shared-axis-z-exit() {
+  animation: shared-axis-z-exit var(--motion-duration-short4) var(--motion-easing-emphasized-accelerate) forwards;
+}
+
+// =============================================================================
+// 3. FADE THROUGH
+// =============================================================================
+// Purpose: Content replacement without spatial relationship
+// Timing: Short1 exit (50ms), Short3 enter (150ms) with Short1 delay
+// 
+// Material Components:
+//   • Tab Content Panels
+//   • Page Content (different routes)
+//   • Image Carousel Content
+//   • Search Results Replacement
+//   • Loading → Content States
+
+@mixin fade-through-exit() {
+  animation: fade-through-exit var(--motion-duration-short1) var(--motion-easing-standard-accelerate) forwards;
+}
+
+@mixin fade-through-enter() {
+  opacity: 0;
+  animation: fade-through-enter var(--motion-duration-short3) var(--motion-easing-standard-decelerate) var(--motion-duration-short1) forwards;
+}
+
+// =============================================================================
+// 4. FADE
+// =============================================================================
+// Purpose: Simple show/hide without drawing attention
+// Timing: Short3 enter (150ms), Short2 exit (100ms)
+// 
+// Material Components:
+//   • Tooltips
+//   • Helper Text
+//   • Overlay/Scrim
+//   • Loading Spinners
+//   • Badge/Chip Appearance
+//   • Icon State Changes
+
+@mixin fade-enter() {
+  animation: fade-in var(--motion-duration-short3) var(--motion-easing-standard) forwards;
+}
+
+@mixin fade-exit() {
+  animation: fade-exit var(--motion-duration-short2) var(--motion-easing-standard) forwards;
+}
+
+// =============================================================================
+// DIRECTIONAL SLIDE UTILITIES
+// =============================================================================
+// Purpose: Off-screen element entry/exit
+// Timing: Medium1 enter (250ms), Short3 exit (150ms)
+// 
+// Material Components:
+//   • Bottom Sheets (from bottom)
+//   • Side Sheets/Navigation Drawer (from left/right)
+//   • Snackbar (from bottom)
+//   • App Bar (from top)
+//   • Side Panel (from left/right)
+
+@mixin slide-enter-from-bottom() {
+  animation: shared-axis-y-enter var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
+}
+
+@mixin slide-enter-from-top() {
+  animation: shared-axis-y-exit var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
+}
+
+@mixin slide-enter-from-left() {
+  animation: shared-axis-x-enter var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
+}
+
+@mixin slide-enter-from-right() {
+  animation: shared-axis-x-exit var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) forwards;
+}
+
+// =============================================================================
+// STAGGER UTILITIES
+// =============================================================================
+// Purpose: Progressive reveal for grouped content
+// Timing: 50ms base delay (optimized for web)
+// 
+// Material Components:
+//   • List Items (search results, feeds)
+//   • Grid Items (photo gallery, products)
+//   • Menu Items (navigation, options)
+//   • Card Collections
+//   • Form Fields (progressive forms)
+
+@mixin stagger-children($max-items: 10) {
+  @for $i from 1 through $max-items {
+    &:nth-child(#{$i}) {
+      animation-delay: calc(50ms * #{$i - 1});
+    }
+  }
+}
+
+@mixin stagger-from-index($start-index: 1, $max-items: 10) {
+  @for $i from $start-index through $max-items {
+    &:nth-child(#{$i}) {
+      animation-delay: calc(50ms * #{$i - $start-index});
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Loading States
+// -----------------------------------------------------------------------------
+// Material Components: Skeleton Loader, Progress Indicators
+// Timing: 1.5s pulse, 1.4s spin (standard loading speeds)
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes loading-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@mixin skeleton-loading() {
+  animation: skeleton-pulse 1.5s var(--motion-easing-standard) infinite;
+}
+
+@mixin spinner-loading() {
+  animation: loading-spin 1.4s linear infinite;
+}

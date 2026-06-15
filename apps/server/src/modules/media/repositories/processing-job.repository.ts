@@ -6,6 +6,7 @@ import { EntityType } from '../enums'
 
 import { Database } from '@/modules/database/types'
 import { InjectDatabase } from '@/modules/database'
+import { Repository } from '@/modules/shared/classes'
 
 export interface FindManyByEntityParameters {
   entityType: EntityType
@@ -16,8 +17,10 @@ export interface FindManyByEntityParameters {
 export type ProcessingJobWithEntityId = Selectable<ProcessingJobTable> & { entityId: string }
 
 @Injectable()
-export class ProcessingJobRepository {
-  constructor(@InjectDatabase() private readonly database: Database<MediaSchema>) {}
+export class ProcessingJobRepository extends Repository<MediaSchema, 'media.ProcessingJob'> {
+  constructor(@InjectDatabase() database: Database<MediaSchema>) {
+    super(database, 'media.ProcessingJob')
+  }
 
   findManyByEntity(params: FindManyByEntityParameters): Promise<ProcessingJobWithEntityId[]> {
     if (params.entityIds?.length === 0) {

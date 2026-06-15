@@ -11,5 +11,12 @@ dependsOn:
 tasks:
   build:
     command: 'tsc'
+    args:
+      - '--build'
+      - '--pretty'
+      - 'tsconfig.build.json'
     inputs:
       - '@group(sources)'
+      - '@globs(configs)'
+    outputs:
+      - 'dist'

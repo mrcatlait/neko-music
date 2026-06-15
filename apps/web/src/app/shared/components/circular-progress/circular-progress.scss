@@ -1,0 +1,27 @@
+.circular-progress {
+  --n-circular-progress-active-indicator-color: var(--color-primary);
+  --n-circular-progress-track-color: var(--color-secondary-container);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--shape-corner-full);
+
+  svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+}
+
+.circular-progress__active-indicator {
+  stroke: var(--n-circular-progress-active-indicator-color);
+  stroke-linecap: round;
+  fill: none;
+}
+
+.circular-progress__track {
+  stroke: var(--n-circular-progress-track-color);
+  stroke-linecap: round;
+  fill: none;
+}

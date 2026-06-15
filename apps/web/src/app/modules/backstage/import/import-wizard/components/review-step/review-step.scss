@@ -1,0 +1,57 @@
+.review-step {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &__header {
+    display: grid;
+    margin-bottom: 28px;
+  }
+
+  &__index {
+    color: var(--color-primary);
+  }
+
+  &__title {}
+
+  &__subtitle {
+    color: var(--color-text-medium-emphasis);
+  }
+
+  &__content {
+    display: grid;
+    gap: var(--step-gap-lg);
+  }
+
+  &__diff {
+    display: grid;
+    gap: 4px;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+  }
+
+  &__diff-item {
+    margin: 0;
+  }
+
+  &__diff-item--new {
+    color: var(--color-success);
+  }
+
+  &__diff-item--removed {
+    color: var(--color-warning);
+  }
+
+  &__grid {
+    min-height: 380px;
+  }
+
+  &__navigation {
+    display: flex;
+    gap: 8px;
+    margin-top: 28px;
+  }
+}

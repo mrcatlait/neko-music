@@ -1,0 +1,8 @@
+.import-source-chip {
+  &__brand-icon {
+    width: var(--n-chip-icon-size);
+    height: var(--n-chip-icon-size);
+    flex-shrink: 0;
+    margin-inline-end: var(--n-chip-icon-label-space);
+  }
+}

@@ -1,0 +1,206 @@
+.offline-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  &__illustration {
+    position: relative;
+    width: min(100%, 760px);
+    aspect-ratio: 11 / 6;
+    display: grid;
+    place-items: center;
+    margin-inline: auto;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: min(100%, 380px);
+    aspect-ratio: 1;
+    border-radius: var(--shape-corner-full);
+    background: var(--color-surface-container);
+  }
+
+  &__scene {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 430px);
+    padding-inline: 20px;
+  }
+
+  &__card {
+    min-height: 224px;
+    border-radius: var(--shape-corner-medium);
+    background: var(--color-surface-container-low);
+    border: 1px solid var(--color-outline-variant);
+    box-shadow: 0 8px 24px rgb(var(--color-surface-rgb) / 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(4deg) translateY(-2px);
+  }
+
+  &__panel {
+    width: min(100%, 220px);
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 72px;
+    min-height: 24px;
+    padding: 0 12px;
+    border-radius: var(--shape-corner-full);
+    color: var(--color-on-secondary-container);
+    background: var(--color-secondary-container);
+  }
+
+  &__signal {
+    position: relative;
+    width: 88px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+  }
+
+  &__signal-icon {
+    color: var(--color-text-medium-emphasis);
+    font-size: clamp(3rem, 7vw, 4.6rem);
+    line-height: 1;
+  }
+
+  &__signal-slash {
+    position: absolute;
+    width: 4px;
+    height: 74px;
+    top: 16px;
+    left: 17px;
+    border-radius: var(--shape-corner-full);
+    background: var(--color-error);
+    transform: rotate(-45deg);
+    transform-origin: top left;
+  }
+
+  &__link {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr) 14px;
+    align-items: center;
+    column-gap: 10px;
+  }
+
+  &__node {
+    width: 14px;
+    height: 14px;
+    border-radius: var(--shape-corner-full);
+    background: var(--color-surface-container-highest);
+    border: 1px solid var(--color-outline);
+  }
+
+  &__node--source {
+    background: var(--color-primary);
+    border-color: transparent;
+  }
+
+  &__node--target {
+    position: relative;
+  }
+
+  &__node--target::before,
+  &__node--target::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 2px;
+    border-radius: var(--shape-corner-full);
+    background: var(--color-text-medium-emphasis);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &__node--target::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  &__path {
+    height: 2px;
+    border-radius: var(--shape-corner-full);
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--color-outline) 0 8px,
+      transparent 8px 14px
+    );
+  }
+
+  &__content {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__title {
+    color: var(--color-on-surface);
+    text-align: center;
+  }
+
+  &__description {
+    color: var(--color-text-medium-emphasis);
+    max-width: 52ch;
+    text-align: center;
+    text-wrap: pretty;
+  }
+
+  &__actions {
+    display: flex;
+    margin-top: 24px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .offline-page {
+    &__illustration {
+      aspect-ratio: 1;
+    }
+
+    &__scene {
+      width: min(100%, 360px);
+      padding: 0 16px;
+    }
+
+    &__card {
+      min-height: 154px;
+      transform: rotate(2deg);
+    }
+
+    &__panel {
+      width: min(100%, 180px);
+      gap: 12px;
+    }
+
+    &__signal {
+      width: 72px;
+    }
+
+    &__signal-icon {
+      font-size: clamp(2.8rem, 10vw, 3.8rem);
+    }
+
+    &__signal-slash {
+      height: 60px;
+      top: 8px;
+      left: 13px;
+    }
+  }
+}

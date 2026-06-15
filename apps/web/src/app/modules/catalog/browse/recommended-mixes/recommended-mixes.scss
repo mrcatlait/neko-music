@@ -1,0 +1,165 @@
+:host {
+  display: block;
+}
+
+$ripple-origin-x: calc(100% - 48px);
+$ripple-origin-y: calc(100% - 48px);
+$ripple-rings: (
+  (12%, 0.48),
+  (27%, 0.34),
+  (42%, 0.24),
+  (57%, 0.16),
+  (72%, 0.1)
+);
+
+@function ripple-layer($radius, $opacity, $thickness: 0.5%, $feather: 0.3%) {
+  @return radial-gradient(
+    circle at #{$ripple-origin-x} #{$ripple-origin-y},
+    transparent 0 #{$radius - $feather},
+    rgb(255 255 255 / #{$opacity}) #{$radius} #{$radius + $thickness},
+    transparent #{$radius + $thickness + $feather}
+  );
+}
+
+@function ripple-layers($rings) {
+  $layers: ();
+
+  @each $ring in $rings {
+    $layers: append($layers, ripple-layer(nth($ring, 1), nth($ring, 2)), comma);
+  }
+
+  @return $layers;
+}
+
+.recommended-mixes {
+  display: grid;
+  gap: 24px;
+
+  &__caption {
+    color: var(--color-text-medium-emphasis);
+    text-transform: uppercase;
+  }
+
+  &__heading {
+    max-width: 22ch;
+    color: var(--color-text-high-emphasis);
+    text-wrap: balance;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+}
+
+.recommended-mix-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  isolation: isolate;
+  min-height: 320px;
+  padding: 20px;
+  border-radius: var(--shape-corner-large);
+  overflow: hidden;
+  background-color: var(--color-surface-container-high);
+  color: var(--color-on-surface);
+  box-shadow: 0 8px 24px rgb(var(--color-surface-rgb) / 0.48);
+  transition: transform var(--motion-duration-short3) var(--motion-easing-standard),
+    box-shadow var(--motion-duration-short3) var(--motion-easing-standard);
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: '';
+    background: linear-gradient(180deg, rgb(0 0 0 / 0.18) 0%, rgb(0 0 0 / 0.36) 100%);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgb(var(--color-surface-rgb) / 0.56);
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  &--image {
+    background-position: center;
+    background-size: cover;
+  }
+
+  &--illustration {
+    background-color: color-mix(in oklab, var(--color-primary), #bd1322 62%);
+  }
+
+  &__illustration {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+
+    &--rings {
+      background:
+        ripple-layers($ripple-rings),
+        linear-gradient(145deg, #da1f2f 0%, #b11522 100%);
+    }
+
+    &--marble {
+      background:
+        radial-gradient(circle at 84% 18%, rgb(201 22 35 / 0.8) 0%, transparent 42%),
+        radial-gradient(circle at 14% 88%, rgb(8 177 162 / 0.72) 0%, transparent 36%),
+        linear-gradient(160deg, #00111d 0%, #112c35 45%, #0d1119 100%);
+      filter: saturate(1.2);
+    }
+  }
+
+  &__caption {
+    color: rgb(255 255 255 / 0.82);
+    text-transform: uppercase;
+  }
+
+  &__title {
+    max-width: 19rem;
+    margin: 0;
+    white-space: pre-line;
+    text-wrap: balance;
+    color: #fff;
+  }
+
+  &__play {
+    align-self: end;
+    width: 56px;
+    height: 56px;
+    border: 0;
+    border-radius: var(--shape-corner-full);
+    background-color: #fff;
+    color: #191919;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: transform var(--motion-duration-short3) var(--motion-easing-standard),
+      opacity var(--motion-duration-short2) var(--motion-easing-standard);
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  .recommended-mixes {
+    gap: 16px;
+  }
+
+  .recommended-mix-card {
+    min-height: 280px;
+    padding: 16px;
+  }
+}

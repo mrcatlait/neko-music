@@ -1,0 +1,3 @@
+mutation RetryImportJobItem($input: RetryImportJobItemInput!) {
+  retryImportJobItem(input: $input)
+}

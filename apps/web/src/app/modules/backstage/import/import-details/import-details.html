@@ -1,0 +1,352 @@
+@if (!importJobResource.error() && importJob()) {
+  <section class="import-details">
+  <n-breadcrumb
+    ariaLabel="Import details breadcrumbs"
+    class="import-details__breadcrumbs"
+  >
+    <li nBreadcrumbItem>
+      <a routerLink="/backstage">Backstage</a>
+    </li>
+
+    <li nBreadcrumbItem>
+      <a routerLink="/backstage/import">Import</a>
+    </li>
+
+    <li
+      current
+      nBreadcrumbItem
+    >
+      {{ importJob()!.label }}
+    </li>
+  </n-breadcrumb>
+
+  <header class="import-details__header">
+    <n-import-source-chip
+      class="import-details__header-chip"
+      [dataSource]="importJob()!.dataSource"
+    />
+
+    <div class="import-details__header-title">
+      <h1>{{ importJob()!.label }}</h1>
+
+      <button
+        nIconButton
+        type="button"
+        [nMenuTrigger]="menuTemplate"
+        (nMenuOpenChange)="menuOpen = $event"
+      >
+        <i
+          class="import-details__header-menu-icon"
+          [class.import-details__header-menu-icon--open]="menuOpen"
+        >
+          arrow_drop_down
+        </i>
+      </button>
+
+      <ng-template #menuTemplate>
+        <n-menu [align]="'left'">
+          <n-menu-item>
+            <i class="outlined">open_in_new</i>
+            Open in new tab
+          </n-menu-item>
+
+          <n-menu-item>
+            <i class="outlined">delete</i>
+            Delete import
+          </n-menu-item>
+        </n-menu>
+      </ng-template>
+    </div>
+
+    <div class="import-details__header-actions">
+      <button
+        color="secondary"
+        nButton
+        type="button"
+        variant="outlined"
+      >
+        <i class="outlined">refresh</i>
+        Sync
+      </button>
+
+      <button
+        color="secondary"
+        nButton
+        type="button"
+        variant="outlined"
+        [disabled]="isCancelingImport()"
+        (click)="cancelImport()"
+      >
+        <i class="outlined">cancel</i>
+        Request cancel
+      </button>
+    </div>
+
+    <p class="body-medium import-details__header-subtitle">
+      Created {{ formatDate(importJob()!.createdAt) }} · Started {{ formatDate(importJob()!.startedAt) }} · Completed
+      {{ formatDate(importJob()!.completedAt) }}
+    </p>
+
+    @if (cancelStatusMessage()) {
+      <p class="body-small import-details__status-message">{{ cancelStatusMessage() }}</p>
+    }
+    @if (cancelError()) {
+      <p class="body-small import-details__status-message import-details__status-message--error">{{ cancelError() }}</p>
+    }
+  </header>
+
+  <section class="import-details__overview">
+    <ul class="import-details__kpi-list">
+      <li class="import-details__kpi-item">
+        <h3 class="import-details__kpi-label title-medium">Discovered</h3>
+
+        <p class="import-details__kpi-description body-small">Total items discovered in the import</p>
+
+        <strong class="import-details__kpi-value display-small">{{ importJob()!.totalItems }}</strong>
+      </li>
+
+      <li class="import-details__kpi-item">
+        <h3 class="import-details__kpi-label title-medium">Completed</h3>
+
+        <p class="import-details__kpi-description body-small">Percentage of processed items</p>
+
+        <strong class="import-details__kpi-value display-small">{{ importJob()!.progressPercent }}%</strong>
+      </li>
+
+      <li class="import-details__kpi-item">
+        <h3 class="import-details__kpi-label title-medium">Failed</h3>
+
+        <p class="import-details__kpi-description body-small">Amount of failed processing items</p>
+
+        <strong class="import-details__kpi-value display-small">{{ importJob()!.failedItems }}</strong>
+      </li>
+
+      <li class="import-details__kpi-item">
+        <h3 class="import-details__kpi-label title-medium">Needs review</h3>
+
+        <p class="import-details__kpi-description body-small">Amount of items that need review</p>
+
+        <strong class="import-details__kpi-value display-small">{{ importJob()!.pendingReviewItems }}</strong>
+      </li>
+    </ul>
+  </section>
+
+  <section class="import-details__table">
+    <header class="import-details__table-header">
+      <i class="outlined">table_view</i>
+      <h3 class="title-medium">Discovered items</h3>
+    </header>
+
+    <ag-grid-angular
+      class="import-details__table-grid"
+      [columnDefs]="itemColumnDefs"
+      [gridOptions]="gridOptions"
+      [modules]="modules"
+      [rowData]="importItems()"
+    />
+  </section>
+
+  <section class="import-details__review">
+    <header class="import-details__review-header">
+      <i class="outlined">fact_check</i>
+      <h3 class="title-medium">Review claims</h3>
+    </header>
+
+    <div class="import-details__review-grid">
+      <article class="import-details__review-card">
+        <h4 class="title-small">Promotion eligibility</h4>
+        <p class="body-small">Check whether an item is ready for promotion.</p>
+
+        <label
+          class="body-small"
+          for="job-item-id"
+        >
+          Import item
+        </label>
+        <select
+          id="job-item-id"
+          class="import-details__input"
+          [value]="selectedImportJobItemId()"
+          (change)="onSelectedItemChange($event)"
+        >
+          @for (item of importItems(); track item.id) {
+            <option [value]="item.id">
+              {{ item.label }}
+            </option>
+          }
+        </select>
+
+        <button
+          nButton
+          type="button"
+          [disabled]="isCheckingEligibility()"
+          (click)="checkPromotionEligibility()"
+        >
+          Check eligibility
+        </button>
+
+        <button
+          nButton
+          type="button"
+          [disabled]="isPromotingItem()"
+          (click)="promoteSelectedItem()"
+        >
+          Promote selected item
+        </button>
+
+        @if (eligibility()) {
+          <p class="body-small">
+            Status:
+            @if (eligibility()!.isEligible) {
+              <strong>Eligible</strong>
+            } @else {
+              <strong>Blocked</strong>
+            }
+          </p>
+
+          @if (eligibility()!.unresolvedRequiredFields.length > 0) {
+            <p class="body-small">Unresolved fields: {{ eligibility()!.unresolvedRequiredFields.join(', ') }}</p>
+          }
+        }
+
+        @if (eligibilityError()) {
+          <p class="body-small import-details__status-message import-details__status-message--error">{{ eligibilityError() }}</p>
+        }
+        @if (promoteStatusMessage()) {
+          <p class="body-small import-details__status-message">{{ promoteStatusMessage() }}</p>
+        }
+        @if (promoteError()) {
+          <p class="body-small import-details__status-message import-details__status-message--error">{{ promoteError() }}</p>
+        }
+        @if (selectedImportJobItem()?.errorMessage === 'hard_duplicate') {
+          <p class="body-small">This item was skipped as a hard duplicate.</p>
+        }
+      </article>
+
+      <article class="import-details__review-card">
+        <h4 class="title-small">Retry failed item</h4>
+        <p class="body-small">Retry only applies to failed items.</p>
+
+        <label
+          class="body-small"
+          for="retry-reason"
+        >
+          Retry reason (optional)
+        </label>
+        <input
+          id="retry-reason"
+          class="import-details__input"
+          type="text"
+          [value]="retryReason()"
+          (input)="onRetryReasonChange($event)"
+        />
+
+        <button
+          nButton
+          type="button"
+          [disabled]="isRetryingItem() || selectedImportJobItem()?.status !== 'failed'"
+          (click)="retrySelectedItem()"
+        >
+          Retry selected item
+        </button>
+
+        @if (retryStatusMessage()) {
+          <p class="body-small import-details__status-message">{{ retryStatusMessage() }}</p>
+        }
+        @if (retryError()) {
+          <p class="body-small import-details__status-message import-details__status-message--error">{{ retryError() }}</p>
+        }
+      </article>
+
+      <article class="import-details__review-card">
+        <h4 class="title-small">Per-claim review</h4>
+        <p class="body-small">Review each metadata claim for the selected item.</p>
+
+        @if (isLoadingClaims()) {
+          <p class="body-small">Loading claims...</p>
+        } @else if (itemClaimsError()) {
+          <p class="body-small import-details__status-message import-details__status-message--error">{{ itemClaimsError() }}</p>
+        } @else if (itemClaims().length === 0) {
+          <p class="body-small">No claims found for this item.</p>
+        } @else {
+          <div class="import-details__claims">
+            @for (claim of itemClaims(); track claim.id) {
+              <div class="import-details__claim">
+                <p class="body-small"><strong>{{ claim.field }}</strong>: {{ claim.value }}</p>
+                <p class="body-small">Extractor: {{ claim.extractor }} · Confidence: {{ claim.confidence }}</p>
+
+                <label
+                  class="body-small"
+                  [for]="'decision-' + claim.id"
+                >
+                  Decision
+                </label>
+                <select
+                  class="import-details__input"
+                  [id]="'decision-' + claim.id"
+                  [value]="getClaimDecision(claim)"
+                  (change)="onClaimDecisionChange(claim.id, $event)"
+                >
+                  @for (decision of reviewDecisions; track decision.value) {
+                    <option [value]="decision.value">
+                      {{ decision.label }}
+                    </option>
+                  }
+                </select>
+
+                <label
+                  class="body-small"
+                  [for]="'replacement-entity-' + claim.id"
+                >
+                  Replacement entity ID (optional)
+                </label>
+                <input
+                  class="import-details__input"
+                  [id]="'replacement-entity-' + claim.id"
+                  type="text"
+                  [value]="getClaimReplacementEntityId(claim)"
+                  (input)="onClaimReplacementEntityIdChange(claim.id, $event)"
+                />
+
+                <label
+                  class="body-small"
+                  [for]="'replacement-value-' + claim.id"
+                >
+                  Replacement value (optional)
+                </label>
+                <input
+                  class="import-details__input"
+                  [id]="'replacement-value-' + claim.id"
+                  type="text"
+                  [value]="getClaimReplacementValue(claim)"
+                  (input)="onClaimReplacementValueChange(claim.id, $event)"
+                />
+
+                <button
+                  nButton
+                  type="button"
+                  [disabled]="savingClaimId() === claim.id"
+                  (click)="submitReviewAction(claim.id)"
+                >
+                  Save claim action
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        @if (reviewStatusMessage()) {
+          <p class="body-small import-details__status-message">{{ reviewStatusMessage() }}</p>
+        }
+        @if (reviewError()) {
+          <p class="body-small import-details__status-message import-details__status-message--error">{{ reviewError() }}</p>
+        }
+      </article>
+    </div>
+  </section>
+  </section>
+} @else if (importJobResource.error()) {
+  <p class="body-medium import-details__empty">{{ importJobResource.error()?.message }}</p>
+} @else {
+  <p class="body-medium import-details__empty">Loading import details...</p>
+}

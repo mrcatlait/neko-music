@@ -1,11 +1,15 @@
 {
-  "include": [
-    "**/*"
-  ],
-  "references": [],
+  "extends": "../../tsconfig.options.json",
   "compilerOptions": {
-    "strictNullChecks": true,
-    "composite": true,
+    "emitDeclarationOnly": true,
     "outDir": "../../.moon/cache/types/packages/selectors"
-  }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    }
+  ]
 }

@@ -1,0 +1,9 @@
+@mixin states() {
+  :root {
+    --state-dragged-layer-opacity:  0.16;
+    --state-focus-layer-opacity:  0.12;
+    --state-hover-layer-opacity:  0.08;
+    --state-pressed-layer-opacity:  0.12;
+    --state-disabled-layer-opacity: 0.38;
+  }
+}

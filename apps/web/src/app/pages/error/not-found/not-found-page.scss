@@ -1,0 +1,107 @@
+.not-found-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  &__illustration {
+    position: relative;
+    width: min(100%, 760px);
+    aspect-ratio: 11 / 6;
+    display: grid;
+    place-items: center;
+    margin-inline: auto;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: min(100%, 380px);
+    aspect-ratio: 1;
+    border-radius: var(--shape-corner-full);
+    background: var(--color-surface-container);
+  }
+
+  &__scene {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 430px);
+    padding-inline: 20px;
+  }
+
+  &__missing {
+    border-radius: var(--shape-corner-medium);
+    background: var(--color-surface-container-low);
+    border: 1px solid var(--color-outline-variant);
+    box-shadow: 0 8px 24px rgb(var(--color-surface-rgb) / 50%);
+  }
+
+  &__missing {
+    min-height: 224px;
+    padding: 20px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-5deg) translateY(-2px);
+  }
+
+  &__missing-code {
+    margin: 0;
+    color: var(--color-text-medium-emphasis);
+    font-size: clamp(3.2rem, 8vw, 5.6rem);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  &__content {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__title {
+    color: var(--color-on-surface);
+    text-align: center;
+  }
+
+  &__description {
+    color: var(--color-text-medium-emphasis);
+    max-width: 52ch;
+    text-align: center;
+    text-wrap: pretty;
+  }
+
+  &__actions {
+    display: flex;
+    margin-top: 24px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .not-found-page {
+    &__illustration {
+      aspect-ratio: 1;
+    }
+
+    &__scene {
+      width: min(100%, 360px);
+      padding: 0 16px;
+    }
+
+    &__missing {
+      min-height: 154px;
+      transform: rotate(-2deg);
+    }
+
+    &__missing-code {
+      font-size: clamp(2.8rem, 13vw, 4.2rem);
+    }
+  }
+}

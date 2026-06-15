@@ -14,7 +14,7 @@ type LooseDbSchema = Record<string, Record<string, unknown>>
  * Kysely CRUD base for a single table. Subclasses set {@link table} to the schema-qualified name
  * (e.g. `'backstage.Artist'`).
  * @example
- * ```typescript
+ * ```ts
  * class ArtistRepository extends Repository<BackstageSchema, 'backstage.Artist'> {
  *   constructor(@InjectDatabase() database: Database<BackstageSchema>) {
  *     super(database, 'backstage.Artist')
@@ -88,6 +88,12 @@ export abstract class Repository<Schema, TableName extends keyof Schema & string
   create(data: Insertable<Schema[TableName]>): Promise<Selectable<Schema[TableName]>> {
     return this.db.insertInto(this.tableName).values(data).returningAll().executeTakeFirstOrThrow() as Promise<
       Selectable<Schema[TableName]>
+    >
+  }
+
+  createMany(data: Insertable<Schema[TableName]>[]): Promise<Selectable<Schema[TableName]>[]> {
+    return this.db.insertInto(this.tableName).values(data).returningAll().execute() as Promise<
+      Selectable<Schema[TableName]>[]
     >
   }
 

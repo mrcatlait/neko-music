@@ -19,6 +19,7 @@ export default defineConfig(() => ({
     outputFile: {
       junit: './reports/unit/junit-report.xml',
     },
+    testTimeout: 60000,
     coverage: {
       enabled: true,
       provider: 'v8',
@@ -35,7 +36,7 @@ export default defineConfig(() => ({
         '**/*.table.ts',
         '**/*.spec.ts',
       ],
-      reporter: ['text', 'lcov'],
+      reporter: ['text', 'lcov', 'html'],
       all: true,
     }
   },

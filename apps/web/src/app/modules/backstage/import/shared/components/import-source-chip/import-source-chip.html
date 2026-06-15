@@ -1,0 +1,24 @@
+<n-chip class="import-source-chip">
+  @switch (dataSource()) {
+    @case ('youtube') {
+      <n-youtube-icon
+        aria-hidden="true"
+        class="import-source-chip__brand-icon"
+      />
+    }
+    @case ('soundcloud') {
+      <n-soundcloud-icon
+        aria-hidden="true"
+        class="import-source-chip__brand-icon"
+      />
+    }
+    @case ('filesystem') {
+      <i aria-hidden="true">folder</i>
+    }
+    @default {
+      <i aria-hidden="true">cloud_download</i>
+    }
+  }
+
+  <span>{{ label() }}</span>
+</n-chip>

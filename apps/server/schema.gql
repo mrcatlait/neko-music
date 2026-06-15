@@ -76,13 +76,112 @@ type BackstageTrack {
   playback: Playback
 }
 
+type ImportMethod {
+  key: String!
+  name: String!
+  description: String!
+}
+
+type ImportDiscoveryTrack {
+  id: ID!
+  sourceItemRef: String!
+  label: String!
+  position: Int!
+  isSelected: Boolean!
+}
+
+type ImportDiscovery {
+  id: ID!
+  dataSource: String!
+  sourceRef: String!
+  label: String!
+  tracks: [ImportDiscoveryTrack!]!
+}
+
+type ImportDiscoveryRefreshResult {
+  discovery: ImportDiscovery!
+  newSourceItemRefs: [String!]!
+  removedSourceItemRefs: [String!]!
+}
+
+type ImportJobItemPromotionEligibility {
+  importJobItemId: ID!
+  isEligible: Boolean!
+  unresolvedRequiredFields: [String!]!
+}
+
+type ImportJobItemModel {
+  id: ID!
+  sourceItemRef: String!
+  label: String!
+  status: String!
+  retryCount: Int!
+  errorMessage: String
+}
+
+type ImportJobItemClaim {
+  id: ID!
+  importJobItemId: String!
+  field: String!
+  value: String!
+  sourceAttribute: String!
+  extractor: String!
+  confidence: Int!
+  decision: String!
+  replacementEntityId: String
+  replacementValue: String
+}
+
+type ImportJobSummary {
+  id: ID!
+  dataSource: String!
+  sourceRef: String!
+  label: String!
+  status: String!
+  createdAt: DateTime!
+  startedAt: DateTime
+  completedAt: DateTime
+  totalItems: Int!
+  completedItems: Int!
+  failedItems: Int!
+  pendingReviewItems: Int!
+  progressPercent: Int!
+}
+
+type ImportJobDetails {
+  id: ID!
+  dataSource: String!
+  sourceRef: String!
+  label: String!
+  status: String!
+  createdAt: DateTime!
+  startedAt: DateTime
+  completedAt: DateTime
+  totalItems: Int!
+  completedItems: Int!
+  failedItems: Int!
+  pendingReviewItems: Int!
+  progressPercent: Int!
+  items: [ImportJobItemModel!]!
+}
+
 type Query {
+  importMethods: [ImportMethod!]!
+  imports: [ImportJobSummary!]!
+  importJob(id: ID!): ImportJobDetails!
+  importJobItemClaims(importJobItemId: ID!): [ImportJobItemClaim!]!
+  importJobItemPromotionEligibility(input: ImportJobItemPromotionEligibilityInput!): ImportJobItemPromotionEligibility!
   backstageAlbum(id: String!): BackstageAlbum!
   backstageAlbums(input: AlbumsInput): [BackstageAlbum!]!
   backstageArtist(id: String!): BackstageArtist!
   backstageArtists(input: ArtistsInput): [BackstageArtist!]!
   backstageGenre(id: String!): BackstageGenre!
   backstageGenres(input: GenresInput): [BackstageGenre!]!
+}
+
+input ImportJobItemPromotionEligibilityInput {
+  """The import job item id"""
+  importJobItemId: ID!
 }
 
 input AlbumsInput {
@@ -115,6 +214,14 @@ input GenresFiltersInput {
 }
 
 type Mutation {
+  discoverImport(input: DiscoverImportInput!): ImportDiscovery!
+  refreshImportDiscovery(input: RefreshImportDiscoveryInput!): ImportDiscoveryRefreshResult!
+  startImportFromDiscovery(input: StartImportFromDiscoveryInput!): String!
+  cancelImportJob(input: CancelImportJobInput!): String!
+  import(input: ImportInput!): String!
+  reviewMetadataClaim(input: ReviewMetadataClaimInput!): String!
+  promoteImportJobItem(input: PromoteImportJobItemInput!): String!
+  retryImportJobItem(input: RetryImportJobItemInput!): String!
   createAlbum(album: CreateAlbumInput!): BackstageAlbum!
   updateAlbum(id: String!, album: UpdateAlbumInput!): BackstageAlbum!
   generateAlbumArtworkUploadToken(id: String!): UploadToken!
@@ -125,6 +232,66 @@ type Mutation {
   updateGenre(id: String!, genre: UpdateGenreInput!): BackstageGenre!
   createTrack(track: CreateTrackInput!): BackstageTrack!
   generateTrackArtworkUploadToken(id: String!): UploadToken!
+}
+
+input DiscoverImportInput {
+  """The data source of the import method"""
+  dataSource: String!
+
+  """The reference to discover import source items from"""
+  sourceRef: String!
+}
+
+input RefreshImportDiscoveryInput {
+  """The discovery snapshot id to refresh from"""
+  discoveryId: ID!
+}
+
+input StartImportFromDiscoveryInput {
+  """The discovery snapshot id"""
+  discoveryId: ID!
+
+  """The selected discovery item ids to start import with"""
+  selectedItemIds: [ID!]!
+}
+
+input CancelImportJobInput {
+  """The import job id"""
+  jobId: ID!
+}
+
+input ImportInput {
+  """The data source of the import"""
+  dataSource: String!
+
+  """The reference to the source data"""
+  sourceRef: String!
+}
+
+input ReviewMetadataClaimInput {
+  """The metadata claim id"""
+  metadataClaimId: ID!
+
+  """Review action for the claim"""
+  decision: String!
+
+  """Existing entity id for link_existing resolution"""
+  replacementEntityId: ID
+
+  """Manual value for create_new resolution"""
+  replacementValue: String
+
+  """Optional reason stored in review history"""
+  reason: String
+}
+
+input PromoteImportJobItemInput {
+  importJobItemId: ID!
+}
+
+input RetryImportJobItemInput {
+  importJobItemId: ID!
+  reason: String
 }
 
 input CreateAlbumInput {

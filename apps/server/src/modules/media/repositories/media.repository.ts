@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { Insertable, Selectable, sql } from 'kysely'
 
-import { EntityType, MediaType, ProcessingStatus, ProcessingStep } from '../enums'
+import { EntityType, MediaType, ProcessingStatus, ProcessingJobItem } from '../enums'
 import {
   AssetTable,
   ImageMetadataTable,
   MediaSchema,
+  ProcessingJobItemTable,
   ProcessingJobTable,
-  ProcessingStepTable,
   SourceAssetTable,
 } from '../media.schema'
 
@@ -32,7 +32,7 @@ export class MediaRepository {
    */
   createSourceAssetAndProcessingJob(
     sourceAsset: Insertable<SourceAssetTable>,
-    processingSteps: ProcessingStep[],
+    processingSteps: ProcessingJobItem[],
   ): Promise<string> {
     return this.database.transaction().execute(async (tx) => {
       const createdSourceAsset = await tx
@@ -55,7 +55,7 @@ export class MediaRepository {
         const step = processingSteps[index]
 
         await tx
-          .insertInto('media.ProcessingStep')
+          .insertInto('media.ProcessingJobItem')
           .values({
             jobId: processingJobId,
             name: step,
@@ -78,9 +78,9 @@ export class MediaRepository {
       .then((result) => result.id)
   }
 
-  createProcessingSteps(processingSteps: Insertable<ProcessingStepTable>[]): Promise<void> {
+  createProcessingSteps(processingSteps: Insertable<ProcessingJobItemTable>[]): Promise<void> {
     return this.database
-      .insertInto('media.ProcessingStep')
+      .insertInto('media.ProcessingJobItem')
       .values(processingSteps)
       .execute()
       .then(() => undefined)
@@ -95,9 +95,9 @@ export class MediaRepository {
       .executeTakeFirst()
   }
 
-  findProcessingStepsByJobId(jobId: string): Promise<Selectable<ProcessingStepTable>[]> {
+  findProcessingStepsByJobId(jobId: string): Promise<Selectable<ProcessingJobItemTable>[]> {
     return this.database
-      .selectFrom('media.ProcessingStep')
+      .selectFrom('media.ProcessingJobItem')
       .where('jobId', '=', jobId)
       .orderBy('order', 'asc')
       .selectAll()
@@ -117,9 +117,9 @@ export class MediaRepository {
       .then(() => undefined)
   }
 
-  updateProcessingStep(step: Selectable<ProcessingStepTable>): Promise<void> {
+  updateProcessingStep(step: Selectable<ProcessingJobItemTable>): Promise<void> {
     return this.database
-      .updateTable('media.ProcessingStep')
+      .updateTable('media.ProcessingJobItem')
       .set(step)
       .where('id', '=', step.id)
       .execute()

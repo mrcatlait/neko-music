@@ -1,0 +1,72 @@
+<section
+  aria-labelledby="server-error-title"
+  class="server-error-page"
+>
+  <div
+    aria-hidden="true"
+    class="server-error-page__illustration"
+  >
+    <div class="server-error-page__backdrop"></div>
+
+    <div class="server-error-page__scene">
+      <div class="server-error-page__card">
+        <div class="server-error-page__console">
+          <div class="server-error-page__console-header">
+            <span class="server-error-page__console-dot"></span>
+            <span class="server-error-page__console-dot"></span>
+            <span class="server-error-page__console-dot"></span>
+          </div>
+
+          <div class="server-error-page__console-body">
+            <span class="server-error-page__line server-error-page__line--primary"></span>
+            <span class="server-error-page__line server-error-page__line--secondary"></span>
+
+            <div class="server-error-page__pulse">
+              <span class="server-error-page__pulse-segment"></span>
+              <span class="server-error-page__pulse-segment"></span>
+              <span class="server-error-page__pulse-segment"></span>
+              <span class="server-error-page__pulse-segment"></span>
+              <span class="server-error-page__pulse-segment"></span>
+            </div>
+
+            <span class="server-error-page__line server-error-page__line--secondary"></span>
+          </div>
+
+          <div class="server-error-page__badge">
+            <i class="outlined server-error-page__badge-icon">bolt</i>
+            <span class="server-error-page__code title-large">500</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="server-error-page__content">
+    <h1
+      class="server-error-page__title headline-medium"
+      id="server-error-title"
+    >
+      Server error
+    </h1>
+
+    <p class="server-error-page__description body-large">Something went wrong on our side. Please retry in a moment.</p>
+  </div>
+
+  <div class="server-error-page__actions">
+    <button
+      nButton
+      type="button"
+      (click)="reloadPage()"
+    >
+      Retry
+    </button>
+
+    <a
+      nButton
+      routerLink="/"
+      variant="outlined"
+    >
+      Back to home
+    </a>
+  </div>
+</section>

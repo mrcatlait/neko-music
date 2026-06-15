@@ -1,8 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 
+import { RecommendedMixes } from './recommended-mixes/recommended-mixes'
+
 @Component({
   selector: 'n-browse-page',
-  template: ` <h1>Browse</h1> `,
+  standalone: true,
+  imports: [RecommendedMixes],
+  templateUrl: './browse-page.html',
+  styleUrl: './browse-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BrowsePage {}

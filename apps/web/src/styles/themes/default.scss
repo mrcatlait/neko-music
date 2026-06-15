@@ -33,29 +33,24 @@
     --color-surface-rgb: #{abstracts.hex-to-rgb(#101010)};
     --color-on-surface: var(--color-text-high-emphasis);
     --color-on-surface-rgb: 255, 255, 255; 
-    --color-surface-container: #191919;
-    --color-surface-container-highest: #6B6B6B;
-    --color-surface-container-high: #262626;
-    --color-surface-container-low: #090909;
-    --color-surface-container-lowest: #000;
-    --color-surface-container-lowest-rgb: #{abstracts.hex-to-rgb(#000)};
+    --color-on-surface-variant: rgb(255 255 255 / 67%);
+    --color-surface-container-lowest: #060606;
+    --color-surface-container-lowest-rgb: #{abstracts.hex-to-rgb(#060606)};
+    --color-surface-container-low: #161616;
+    --color-surface-container: #1d1d1d;
+    --color-surface-container-high: #252525;
+    --color-surface-container-highest: #2f2f2f;
     --color-inverse-surface: #cfcfcf;
     --color-inverse-on-surface: #303030;
 
     // Error
     --color-error: #ffb4ab;
+    --color-on-error: #690005;
+    --color-error-container: #93000a;
+    --color-on-error-container: #ffdad6;
 
     // Success
     --color-success: #b7e1cd;
-
-    // Status
-    // https://carbondesignsystem.com/patterns/status-indicator-pattern/
-    --color-status-normal: #64D3FF;
-    --color-status-success: #32D84C;
-    --color-status-caution: #FFD509;
-    --color-status-failed: #FF443B;
-    --color-status-undefined: #BE5AF2;
-    --color-status-pending: var(--color-text-medium-emphasis);
   }
 
   .color-error {

@@ -8,6 +8,15 @@ import { Portal } from '@/shared/portal'
 @Component({
   selector: 'n-root',
   imports: [RouterOutlet, SnackbarOutlet, DialogOutlet],
+  styles: [
+    `
+      @use 'abstracts' as abstracts;
+
+      :host {
+        @include abstracts.typography('body-medium');
+      }
+    `,
+  ],
   template: `<router-outlet /><n-snackbar-outlet /><n-dialog-outlet />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

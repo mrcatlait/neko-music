@@ -9,7 +9,7 @@ import {
   DashService,
   FileService,
   ImageService,
-  ProcessingPipelineService,
+  ProcessingRunnerService,
   StreamingService,
   UploadTokenService,
 } from './services'
@@ -23,6 +23,7 @@ import {
   GetMediaReadinessUseCase,
   GetProcessingStatusUseCase,
   GetPlaybackUseCase,
+  IngestMediaFromPathUseCase,
 } from './use-cases'
 import {
   AssetRepository,
@@ -32,9 +33,12 @@ import {
   SourceAssetRepository,
   ProcessingJobRepository,
   UploadTokenRepository,
+  ProcessingJobItemRepository,
 } from './repositories'
 import { TriggerMediaProcessingCron, UploadTokenCleanupCron } from './crons'
 import { MediaListener } from './listeners'
+import { ProcessingJobRunnerService } from './services/processing-job-runner.service'
+import { ProcessingJobItemRunnerService } from './services/processing-job-item-runner.service'
 
 import { CoreModuleWithOptions } from '@/modules/shared/classes'
 
@@ -52,7 +56,9 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     DashService,
     FileService,
     ImageService,
-    ProcessingPipelineService,
+    ProcessingRunnerService,
+    ProcessingJobRunnerService,
+    ProcessingJobItemRunnerService,
     StreamingService,
     UploadTokenService,
     // Repositories
@@ -62,6 +68,7 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     ImageMetadataRepository,
     AudioMetadataRepository,
     ProcessingJobRepository,
+    ProcessingJobItemRepository,
     UploadTokenRepository,
     // Use Cases
     GenerateUploadTokenUseCase,
@@ -72,6 +79,7 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     UploadMediaUseCase,
     UploadAudioValidator,
     UploadImageValidator,
+    IngestMediaFromPathUseCase,
     // Listeners
     MediaListener,
   ]
@@ -81,6 +89,7 @@ export class MediaCoreModule extends CoreModuleWithOptions {
     GetMediaReadinessUseCase,
     GetProcessingStatusUseCase,
     GetPlaybackUseCase,
+    IngestMediaFromPathUseCase,
   ]
   static readonly controllers = [MediaController, StreamingController]
 

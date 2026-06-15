@@ -1,0 +1,67 @@
+<section class="select-source-step">
+  <header class="select-source-step__header">
+    <p class="title-small select-source-step__index">Step 1 of 3</p>
+
+    <h3 class="headline-small select-source-step__title">Choose a source</h3>
+
+    <p class="body-medium select-source-step__subtitle">Select where these tracks come from.</p>
+  </header>
+
+  <ul
+    aria-label="Import sources"
+    class="select-source-step__list"
+    role="listbox"
+  >
+    @for (s of sources(); track s.key) {
+      @let selected = source() === s.key;
+
+      <li
+        class="select-source-step__list-item"
+        role="option"
+        tabindex="0"
+        [attr.aria-selected]="selected"
+        (click)="selectSource(s.key)"
+        (keydown)="selectSource(s.key)"
+      >
+        @switch (s.key) {
+          @case ('youtube') {
+            <n-youtube-icon
+              aria-hidden="true"
+              class="select-source-step__list-item-icon"
+            />
+          }
+          @case ('soundcloud') {
+            <n-soundcloud-icon
+              aria-hidden="true"
+              class="select-source-step__list-item-icon"
+            />
+          }
+        }
+
+        <h3 class="title-medium select-source-step__list-item-title">{{ s.name }}</h3>
+
+        <p class="body-medium select-source-step__list-item-description">
+          {{ s.description }}
+        </p>
+
+        @if (selected) {
+          <i class="select-source-step__list-item-selected">check_circle</i>
+        } @else {
+          <i class="select-source-step__list-item-selected outlined">circle</i>
+        }
+      </li>
+    }
+  </ul>
+
+  <div class="select-source-step__navigation">
+    <button
+      nButton
+      type="button"
+      variant="filled"
+      [disabled]="!source()"
+      (click)="continue()"
+    >
+      Continue
+    </button>
+  </div>
+</section>

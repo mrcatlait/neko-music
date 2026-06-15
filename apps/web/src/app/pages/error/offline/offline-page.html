@@ -1,0 +1,61 @@
+<section
+  aria-labelledby="offline-title"
+  class="offline-page"
+>
+  <div
+    aria-hidden="true"
+    class="offline-page__illustration"
+  >
+    <div class="offline-page__backdrop"></div>
+
+    <div class="offline-page__scene">
+      <div class="offline-page__card">
+        <div class="offline-page__panel">
+          <span class="offline-page__chip label-medium">Offline</span>
+
+          <div class="offline-page__signal">
+            <i class="outlined offline-page__signal-icon">wifi</i>
+            <span class="offline-page__signal-slash"></span>
+          </div>
+
+          <div class="offline-page__link">
+            <span class="offline-page__node offline-page__node--source"></span>
+            <span class="offline-page__path"></span>
+            <span class="offline-page__node offline-page__node--target"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="offline-page__content">
+    <h1
+      class="offline-page__title headline-medium"
+      id="offline-title"
+    >
+      You're offline
+    </h1>
+
+    <p class="offline-page__description body-large">
+      We can't reach the server right now. Check your connection, then try again.
+    </p>
+  </div>
+
+  <div class="offline-page__actions">
+    <button
+      nButton
+      type="button"
+      (click)="reloadPage()"
+    >
+      Retry
+    </button>
+
+    <a
+      nButton
+      routerLink="/"
+      variant="outlined"
+    >
+      Back to home
+    </a>
+  </div>
+</section>

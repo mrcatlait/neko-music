@@ -1,0 +1,3 @@
+mutation StartImportFromDiscovery($input: StartImportFromDiscoveryInput!) {
+  startImportFromDiscovery(input: $input)
+}

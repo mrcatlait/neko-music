@@ -1,0 +1,22 @@
+<div class="search">
+  <i class="search__icon">search</i>
+
+  <input
+    class="search__input"
+    placeholder="Search"
+    type="text"
+    [value]="query()"
+    (input)="query.set($event.target.value)"
+  />
+
+  @if (showClear()) {
+    <button
+      class="search__clear"
+      nIconButton
+      type="button"
+      (click)="query.set('')"
+    >
+      <i>close</i>
+    </button>
+  }
+</div>

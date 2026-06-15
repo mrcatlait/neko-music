@@ -23,7 +23,7 @@ type Aligns = 'left' | 'right' | 'center'
     n-menu {
       --n-menu-background-color: var(--color-surface-container-high);
       --n-menu-color: var(--color-text-high-emphasis);
-      --n-menu-border-radius: var(--shape-corner-extra-small);
+      --n-menu-border-radius: var(--shape-corner-large);
       --n-menu-min-width: 112px;
       --n-menu-max-width: 280px;
       --n-menu-padding: 4px 0;
@@ -37,6 +37,8 @@ type Aligns = 'left' | 'right' | 'center'
       min-width: var(--n-menu-min-width);
       max-width: var(--n-menu-max-width);
       padding: var(--n-menu-padding);
+      overflow: hidden;
+      gap: 2px;
 
       @include abstracts.elevation(4);
     }

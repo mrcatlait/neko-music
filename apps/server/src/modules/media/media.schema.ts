@@ -1,6 +1,6 @@
 import { Generated } from 'kysely'
 
-import { EntityType, MediaType, ProcessingStatus, ProcessingStep, StorageProvider } from './enums'
+import { EntityType, MediaType, ProcessingStatus, ProcessingJobItem, StorageProvider } from './enums'
 
 export interface UploadTokenTable {
   id: Generated<string>
@@ -55,10 +55,10 @@ export interface AudioMetadataTable {
   duration: number
 }
 
-export interface ProcessingStepTable {
+export interface ProcessingJobItemTable {
   id: Generated<string>
   jobId: string
-  name: ProcessingStep
+  name: ProcessingJobItem
   order: number
   status: ProcessingStatus
   startedAt: Date | null
@@ -82,5 +82,5 @@ export interface MediaSchema {
   'media.ImageMetadata': ImageMetadataTable
   'media.AudioMetadata': AudioMetadataTable
   'media.ProcessingJob': ProcessingJobTable
-  'media.ProcessingStep': ProcessingStepTable
+  'media.ProcessingJobItem': ProcessingJobItemTable
 }

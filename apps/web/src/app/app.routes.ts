@@ -22,6 +22,16 @@ export const routes: Routes = [
     loadChildren: () => import('./core/auth/auth.routes').then((c) => c.routes),
   },
   {
+    path: 'offline',
+    pathMatch: 'full',
+    loadComponent: () => import('./pages/error/offline/offline-page').then((c) => c.OfflinePage),
+  },
+  {
+    path: '500',
+    pathMatch: 'full',
+    loadComponent: () => import('./pages/error/server-error/server-error-page').then((c) => c.ServerErrorPage),
+  },
+  {
     path: '404',
     pathMatch: 'full',
     loadComponent: () => import('./pages/error/not-found/not-found-page').then((c) => c.NotFoundPage),

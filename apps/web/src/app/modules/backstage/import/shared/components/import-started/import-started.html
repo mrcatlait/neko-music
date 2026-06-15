@@ -1,0 +1,90 @@
+<n-import-started-illustration />
+
+<section
+  aria-labelledby="import-started-title"
+  class="import-started"
+>
+  <div
+    aria-hidden="true"
+    class="import-started__illustration"
+  >
+    <div class="import-started__illustration-backdrop"></div>
+
+    <div class="import-started__illustration-scene">
+      <div class="import-started__illustration-source">
+        <span class="import-started__illustration-record"></span>
+
+        <span class="import-started__illustration-source-copy">
+          <span class="import-started__illustration-line import-started__illustration-line--source-primary"></span>
+          <span class="import-started__illustration-line import-started__illustration-line--source-secondary"></span>
+        </span>
+      </div>
+
+      <div class="import-started__illustration-flow">
+        <i>arrow_right_alt</i>
+        <!-- <span class="import-started__illustration-dot"></span>
+        <span class="import-started__illustration-dot"></span>
+        <span class="import-started__illustration-dot"></span> -->
+      </div>
+
+      <div class="import-started__illustration-queue">
+        <div class="import-started__illustration-queue-header">
+          <span class="import-started__illustration-chip"></span>
+
+          <span class="import-started__illustration-progress">
+            <span class="import-started__illustration-progress-fill"></span>
+          </span>
+        </div>
+
+        <div class="import-started__illustration-track import-started__illustration-track--active">
+          <span class="import-started__illustration-track-state"></span>
+          <span class="import-started__illustration-line import-started__illustration-line--queue-primary"></span>
+          <span class="import-started__illustration-line import-started__illustration-line--queue-secondary"></span>
+        </div>
+
+        <div class="import-started__illustration-track">
+          <span class="import-started__illustration-track-state"></span>
+          <span class="import-started__illustration-line import-started__illustration-line--queue-primary"></span>
+          <span class="import-started__illustration-line import-started__illustration-line--queue-secondary"></span>
+        </div>
+
+        <div class="import-started__illustration-track">
+          <span class="import-started__illustration-track-state"></span>
+          <span class="import-started__illustration-line import-started__illustration-line--queue-primary"></span>
+          <span class="import-started__illustration-line import-started__illustration-line--queue-secondary"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="import-started__content">
+    <h2
+      class="import-started__title"
+      id="import-started-title"
+    >
+      Import started
+    </h2>
+
+    <p class="import-started__description">
+      Your import is running in the background. You can track progress now or continue working and come back later.
+    </p>
+  </div>
+
+  <div class="import-started__actions">
+    <a
+      nButton
+      routerLink="/backstage/import"
+      variant="outlined"
+    >
+      Open imports
+    </a>
+
+    <a
+      nButton
+      routerLink="/backstage/import/new"
+      variant="outlined"
+    >
+      Start another import
+    </a>
+  </div>
+</section>

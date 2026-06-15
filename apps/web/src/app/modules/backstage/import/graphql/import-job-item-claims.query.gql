@@ -1,0 +1,14 @@
+query GetImportJobItemClaims($importJobItemId: ID!) {
+  importJobItemClaims(importJobItemId: $importJobItemId) {
+    id
+    importJobItemId
+    field
+    value
+    sourceAttribute
+    extractor
+    confidence
+    decision
+    replacementEntityId
+    replacementValue
+  }
+}

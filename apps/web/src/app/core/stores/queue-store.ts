@@ -8,9 +8,59 @@ import { Queue } from '@/shared/models'
   providedIn: 'root',
 })
 export class QueueStore {
-  readonly tracks = signal<any[]>([])
-  readonly nextTracks = signal<any[]>([])
-  readonly currentTrack = signal<any>({} as any)
+  readonly tracks = signal<any[]>([
+    {
+      id: '1',
+      title: 'Hey Jude',
+      artists: ['The Beatles'],
+      album: 'The Beatles',
+      duration: 360,
+      artwork: {
+        url: 'https://via.placeholder.com/150',
+        dominantColor: '#000000',
+      },
+    },
+    {
+      id: '2',
+      title: 'Let It Be',
+      artists: ['The Beatles'],
+      album: 'The Beatles',
+      duration: 360,
+      artwork: {
+        url: 'https://via.placeholder.com/150',
+        dominantColor: '#000000',
+      },
+    },
+  ])
+  readonly nextTracks = signal<any[]>([
+    {
+      id: '3',
+      title: 'Come Together',
+      artists: ['The Beatles'],
+      album: 'The Beatles',
+      duration: 360,
+    },
+  ])
+  readonly currentTrack = signal<any>({
+    id: '',
+    title: 'Hey Jude',
+    artists: [
+      {
+        id: '1',
+        name: 'The Beatles',
+      },
+      {
+        id: '2',
+        name: 'Paul McCartney',
+      },
+    ],
+    album: 'The Beatles',
+    duration: 360,
+    artwork: {
+      url: 'http://img.youtube.com/vi/7qMls5yxP1w/sddefault.jpg',
+      dominantColor: '#000000',
+    },
+  })
 
   readonly queueId = signal<string | null>(null)
   readonly queueName = signal<string | null>(null)

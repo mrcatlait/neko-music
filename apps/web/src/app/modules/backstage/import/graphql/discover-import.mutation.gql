@@ -1,0 +1,15 @@
+mutation DiscoverImport($input: DiscoverImportInput!) {
+  discoverImport(input: $input) {
+    id
+    dataSource
+    sourceRef
+    label
+    tracks {
+      id
+      sourceItemRef
+      label
+      position
+      isSelected
+    }
+  }
+}

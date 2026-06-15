@@ -6,11 +6,12 @@ import { DatabaseMigrationService } from './database-migration.service'
 import type { Database, DatabaseModuleOptions } from '../types'
 import { InjectDatabase } from '../database.injector'
 import { DatabaseSeedService } from './database-seed.service'
+import { FailedDatabaseConnectException } from '../exceptions'
 
 @Injectable()
 export class DatabaseService implements OnApplicationBootstrap {
-  private readonly RETRIES_INTERVAL = 3000
-  private readonly MAX_RETRIES = 10
+  private readonly retryInterval: number
+  private readonly maxRetries: number
 
   private readonly logger = new Logger(this.constructor.name)
 
@@ -19,7 +20,10 @@ export class DatabaseService implements OnApplicationBootstrap {
     @Inject(DATABASE_MODULE_OPTIONS) private readonly options: DatabaseModuleOptions,
     private readonly databaseMigrationService: DatabaseMigrationService,
     private readonly databaseSeedService: DatabaseSeedService,
-  ) {}
+  ) {
+    this.retryInterval = options.retryInterval ?? 3000
+    this.maxRetries = options.maxRetries ?? 10
+  }
 
   async onApplicationBootstrap() {
     try {
@@ -40,19 +44,19 @@ export class DatabaseService implements OnApplicationBootstrap {
   }
 
   async connect(): Promise<void> {
-    let retries = 0
+    let attempts = 0
 
-    while (retries < this.MAX_RETRIES) {
+    while (attempts < this.maxRetries) {
       try {
         await this.database.executeQuery<number>(CompiledQuery.raw('SELECT 1'))
         return
       } catch {
-        retries = retries + 1
-        this.logger.error(`Failed to connect to database, retrying... (${retries}/${this.MAX_RETRIES})`)
-        await new Promise((resolve) => setTimeout(resolve, this.RETRIES_INTERVAL))
+        attempts = attempts + 1
+        this.logger.error(`Failed to connect to database, retrying... (${attempts}/${this.maxRetries})`)
+        await new Promise((resolve) => setTimeout(resolve, this.retryInterval))
       }
     }
 
-    throw new Error('Failed to connect to database')
+    throw new FailedDatabaseConnectException()
   }
 }

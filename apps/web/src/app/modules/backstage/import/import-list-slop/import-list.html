@@ -1,0 +1,227 @@
+<section class="import-list">
+  <header class="import-list__header">
+    <div class="import-list__heading">
+      <h1>Imports</h1>
+      <p class="body-medium">Track import progress, resolve review items, and publish when ready.</p>
+    </div>
+
+    <button
+      color="primary"
+      nButton
+      type="button"
+      variant="filled"
+      (click)="createNew()"
+    >
+      <i>add</i>
+      Create import
+    </button>
+  </header>
+
+  <div class="import-list__content">
+    <aside class="import-list__filters">
+      <header class="import-list__filters-header">
+        <h2 class="title-small">Filters</h2>
+        <button
+          nButton
+          type="button"
+          variant="text"
+          (click)="clearSelection()"
+        >
+          Reset
+        </button>
+      </header>
+
+      <section class="import-list__filter-group">
+        <h3 class="label-large">Source</h3>
+        <label class="import-list__filter-option">
+          <input
+            checked
+            type="checkbox"
+          />
+          YouTube playlist
+        </label>
+        <label class="import-list__filter-option">
+          <input
+            checked
+            type="checkbox"
+          />
+          YouTube track
+        </label>
+        <label class="import-list__filter-option">
+          <input
+            checked
+            type="checkbox"
+          />
+          Local folder
+        </label>
+        <label class="import-list__filter-option">
+          <input
+            checked
+            type="checkbox"
+          />
+          S3 bucket
+        </label>
+      </section>
+
+      <section class="import-list__filter-group">
+        <h3 class="label-large">Status</h3>
+        <div class="import-list__filter-pills">
+          <span class="label-small">Analyzing</span>
+          <span class="label-small">Needs review</span>
+          <span class="label-small">Failed</span>
+          <span class="label-small">Published</span>
+        </div>
+      </section>
+    </aside>
+
+    <n-tab-group class="import-list__tabs">
+      <n-tab
+        label="In Progress"
+        [count]="todoImports().length"
+      >
+        <section class="import-list__tab-content">
+          <!-- add notification if filter is applied (total count vs filtered count) -->
+
+          @for (group of todoGroups(); track group.sourceType) {
+            <section class="import-list__group">
+              <header class="import-list__group-header">
+                <h3 class="title-small">{{ group.sourceLabel }}</h3>
+                <span class="label-small">{{ group.imports.length }} imports</span>
+              </header>
+
+              <div class="import-list__cards">
+                @for (item of group.imports; track item.id) {
+                  <article
+                    class="import-card"
+                    (click)="navigateToImport(item.id)"
+                  >
+                    <header class="import-card__header">
+                      <label
+                        class="import-card__select"
+                        (click)="$event.stopPropagation()"
+                      >
+                        <input
+                          type="checkbox"
+                          [checked]="isSelected(item.id)"
+                          (change)="toggleItemSelection(item.id)"
+                        />
+                      </label>
+
+                      <div class="import-card__heading">
+                        <h4 class="title-medium">{{ item.label }}</h4>
+                        <p class="label-medium">{{ item.sourceLabel }}</p>
+                      </div>
+
+                      <span
+                        class="label-medium import-card__status"
+                        [attr.data-status]="item.status"
+                      >
+                        {{ statusLabel(item.status) }}
+                      </span>
+                    </header>
+
+                    <div class="import-card__metrics">
+                      <span class="label-medium">{{ item.tracksTotal }} tracks</span>
+                      <span class="label-medium">{{ item.tracksReady }} ready</span>
+                      <span class="label-medium">{{ item.tracksNeedsReview }} review</span>
+                      <span class="label-medium">{{ item.tracksFailed }} failed</span>
+                    </div>
+
+                    <div class="import-card__progress">
+                      <div class="import-card__progress-track">
+                        <span
+                          class="import-card__progress-fill"
+                          [style.width.%]="item.progress"
+                        ></span>
+                      </div>
+                      <p class="label-small">{{ item.progress }}% • Updated {{ item.updatedAtLabel }}</p>
+                    </div>
+
+                    <footer class="import-card__actions">
+                      <button
+                        nButton
+                        type="button"
+                        variant="text"
+                        (click)="$event.stopPropagation(); navigateToImport(item.id)"
+                      >
+                        Open
+                      </button>
+
+                      @if (item.tracksFailed > 0) {
+                        <button
+                          nButton
+                          type="button"
+                          variant="text"
+                          (click)="$event.stopPropagation()"
+                        >
+                          Retry failed
+                        </button>
+                      }
+                    </footer>
+                  </article>
+                }
+              </div>
+            </section>
+          }
+        </section>
+      </n-tab>
+
+      <n-tab
+        label="Completed"
+        [count]="completedImports().length"
+      >
+        <section class="import-list__tab-content">
+          @for (group of completedGroups(); track group.sourceType) {
+            <section class="import-list__group">
+              <header class="import-list__group-header">
+                <h3 class="title-small">{{ group.sourceLabel }}</h3>
+                <span class="label-small">{{ group.imports.length }} imports</span>
+              </header>
+
+              <div class="import-list__cards">
+                @for (item of group.imports; track item.id) {
+                  <article
+                    class="import-card"
+                    (click)="navigateToImport(item.id)"
+                  >
+                    <header class="import-card__header">
+                      <div class="import-card__heading">
+                        <h4 class="title-medium">{{ item.label }}</h4>
+                        <p class="label-medium">{{ item.sourceLabel }}</p>
+                      </div>
+
+                      <span
+                        class="label-medium import-card__status"
+                        [attr.data-status]="item.status"
+                      >
+                        {{ statusLabel(item.status) }}
+                      </span>
+                    </header>
+
+                    <div class="import-card__metrics">
+                      <span class="label-medium">{{ item.tracksTotal }} tracks</span>
+                      <span class="label-medium">{{ item.tracksReady }} ready</span>
+                      <span class="label-medium">{{ item.tracksNeedsReview }} review</span>
+                      <span class="label-medium">{{ item.tracksFailed }} failed</span>
+                    </div>
+
+                    <footer class="import-card__actions">
+                      <button
+                        nButton
+                        type="button"
+                        variant="text"
+                        (click)="$event.stopPropagation(); navigateToImport(item.id)"
+                      >
+                        Open
+                      </button>
+                    </footer>
+                  </article>
+                }
+              </div>
+            </section>
+          }
+        </section>
+      </n-tab>
+    </n-tab-group>
+  </div>
+</section>

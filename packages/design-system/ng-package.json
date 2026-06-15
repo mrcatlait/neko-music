@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "./dist/design-system",
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "styleIncludePaths": [
+      "src/styles"
+    ]
+  },
+  "assets": [
+    "src/styles/**/*",
+    "src/assets/**/*"
+  ]
+}

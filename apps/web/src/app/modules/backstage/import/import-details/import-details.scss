@@ -1,0 +1,213 @@
+.import-details {
+  display: grid;
+  gap: 20px;
+  flex: 1;
+  position: relative;
+
+  // Breadcrumbs
+  &__breadcrumbs {
+    margin-bottom: -8px;
+  }
+
+  // Header
+  &__header {
+    display: grid;
+    gap: 10px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    justify-content: center;
+    align-items: center;
+    grid-template-areas:
+      'source-chip .'
+      'title actions'
+      'subtitle .';
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  &__header-chip {
+    grid-area: source-chip;
+    width: fit-content;
+  }
+
+  &__header-title {
+    grid-area: title;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+
+    h1 {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &__header-menu-icon {
+    transform: rotate(0deg);
+    transition: transform var(--motion-duration-short4) var(--motion-easing-standard);
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__header-actions {
+    grid-area: actions;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__header-subtitle {
+    grid-area: subtitle;
+    align-self: start;
+    color: var(--color-text-medium-emphasis);
+    max-width: 70ch;
+  }
+
+  &__status-message {
+    color: var(--color-text-medium-emphasis);
+    margin: 0;
+
+    &--error {
+      color: var(--color-error);
+    }
+  }
+
+  // Overview KPIs
+  &__overview {
+    display: grid;
+  }
+
+  &__kpi-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__kpi-item {
+    display: grid;
+    padding: 20px 24px;
+    border: 1px solid var(--color-outline);
+    border-radius: var(--shape-corner-medium);
+  }
+
+  &__kpi-label {
+    margin: 0;
+  }
+
+  &__kpi-description {
+    margin-bottom: 24px;
+    color: var(--color-text-medium-emphasis);
+  }
+
+  &__kpi-value {
+    margin: 0;
+    font-family: var(--typography-font-family-mono);
+  }
+
+  // Discovered items table
+  &__table {
+    display: grid;
+    --ag-wrapper-border-radius: 0 0 var(--shape-corner-medium) var(--shape-corner-medium);
+  }
+
+  &__table-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    border: 1px solid var(--color-outline);
+    border-bottom: 0;
+    border-radius: var(--shape-corner-medium) var(--shape-corner-medium) 0 0;
+
+    i {
+      color: var(--color-text-medium-emphasis);
+    }
+  }
+
+  &__table-grid {
+    min-height: 299px;
+  }
+
+  &__review {
+    display: grid;
+    border: 1px solid var(--color-outline);
+    border-radius: var(--shape-corner-medium);
+    overflow: hidden;
+  }
+
+  &__review-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-outline);
+
+    i {
+      color: var(--color-text-medium-emphasis);
+    }
+  }
+
+  &__review-grid {
+    display: grid;
+    gap: 16px;
+    padding: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+
+  &__review-card {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid var(--color-outline);
+    border-radius: var(--shape-corner-medium);
+
+    h4,
+    p {
+      margin: 0;
+    }
+
+    p {
+      color: var(--color-text-medium-emphasis);
+    }
+  }
+
+  &__claims {
+    display: grid;
+    gap: 12px;
+  }
+
+  &__claim {
+    display: grid;
+    gap: 8px;
+    border: 1px solid var(--color-outline);
+    border-radius: var(--shape-corner-small);
+    padding: 10px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    border: 1px solid var(--color-outline);
+    border-radius: var(--shape-corner-small);
+    background-color: transparent;
+    color: var(--color-text-high-emphasis);
+    padding: 8px 10px;
+    min-height: 40px;
+    font: inherit;
+  }
+
+  &__empty {
+    color: var(--color-text-medium-emphasis);
+  }
+}

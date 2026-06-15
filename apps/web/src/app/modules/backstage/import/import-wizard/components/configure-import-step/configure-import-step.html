@@ -1,0 +1,57 @@
+<section class="configure-import-step">
+  <header class="configure-import-step__header">
+    <p class="title-small configure-import-step__index">Step 2 of 3</p>
+
+    <h3 class="headline-small configure-import-step__title">Configure import</h3>
+
+    <p class="body-medium configure-import-step__subtitle">Paste the link to the tracks you want to import.</p>
+  </header>
+
+  <n-textfield>
+    <label for="source-ref">Source reference</label>
+
+    <input
+      id="source-ref"
+      type="text"
+      [value]="sourceInput()"
+      (input)="sourceInput.set($any($event.target).value)"
+    />
+
+    @if (sourceRefError()) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
+    <span slot="error">
+      @if (sourceRefError()) {
+        <span>{{ sourceRefError() }}</span>
+      }
+    </span>
+  </n-textfield>
+
+  <div class="configure-import-step__navigation">
+    <button
+      nButton
+      type="button"
+      variant="outlined"
+      (click)="previous()"
+    >
+      Back
+    </button>
+
+    <button
+      nButton
+      type="button"
+      variant="filled"
+      [disabled]="!!sourceRefError()"
+      (click)="continue()"
+    >
+      Continue
+    </button>
+  </div>
+</section>

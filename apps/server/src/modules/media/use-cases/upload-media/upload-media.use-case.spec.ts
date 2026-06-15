@@ -8,7 +8,7 @@ import { UploadAudioValidator } from './upload-audio.validator'
 import { MediaRepository, SourceAssetRepository, UploadTokenRepository } from '../../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaUploadedEvent } from '../../events'
-import { EntityType, MediaType, ProcessingStatus, ProcessingStep, StorageProvider } from '../../enums'
+import { EntityType, MediaType, ProcessingJobItem, ProcessingStatus, StorageProvider } from '../../enums'
 import { FileService } from '../../services'
 import { MediaModuleOptions } from '../../types'
 import { NamingStrategy, StorageStrategy } from '../../strategies'
@@ -231,7 +231,7 @@ describe('UploadMediaUseCase', () => {
           entityId: 'track-1',
           checksum: 'sha256',
         }),
-        [ProcessingStep.AudioTransformation],
+        [ProcessingJobItem.AudioTransformation],
       )
       expect(uploadTokenRepository.delete).toHaveBeenCalledWith(uploadToken.id)
       expect(eventEmitter.emit).toHaveBeenCalledWith(

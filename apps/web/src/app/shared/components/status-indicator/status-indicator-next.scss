@@ -1,0 +1,43 @@
+.status-indicator {
+  --n-status-indicator-color: var(--color-status-normal);
+  --n-status-indicator-color-red: #fa4d56;
+  --n-status-indicator-color-green: #42be65;
+  --n-status-indicator-color-orange: #ff832b;
+  --n-status-indicator-color-blue: #4589ff;
+  --n-status-indicator-color-yellow: #f1c21b;
+  --n-status-indicator-color-purple: #a56eff;
+  --n-status-indicator-color-gray: #8d8d8d;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &[data-status-indicator-status='failed'] {
+    --n-status-indicator-color: var(--n-status-indicator-color-red);
+  }
+
+  &[data-status-indicator-status='caution'] {
+    --n-status-indicator-color: var(--n-status-indicator-color-orange);
+  }
+
+  &[data-status-indicator-status='undefined'] {
+    --n-status-indicator-color: var(--n-status-indicator-color-purple);
+  }
+
+  &[data-status-indicator-status='succeeded'] {
+    --n-status-indicator-color: var(--n-status-indicator-color-green);
+  }
+
+  &[data-status-indicator-status='progress'] {
+    --n-status-indicator-color: var(--n-status-indicator-color-blue);
+  }
+
+  &[data-status-indicator-status='pending'] {
+    --n-status-indicator-color: var(--n-status-indicator-color-gray);
+  }
+
+  &__icon {
+    color: var(--n-status-indicator-color);
+    font-size: 20px;
+  }
+}

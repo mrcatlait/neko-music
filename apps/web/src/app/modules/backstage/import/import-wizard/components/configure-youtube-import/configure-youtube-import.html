@@ -1,0 +1,36 @@
+<form
+  autocomplete="off"
+  class="configure-youtube-import__form"
+  [formRoot]="configureYoutubeImportForm"
+>
+  <n-textfield>
+    <label for="youtubeUrl">YouTube URL</label>
+
+    <input
+      id="youtubeUrl"
+      type="text"
+      [formField]="configureYoutubeImportForm.youtubeUrl"
+    />
+
+    @let youtubeUrlTouched = configureYoutubeImportForm.youtubeUrl().touched();
+    @let youtubeUrlInvalid = configureYoutubeImportForm.youtubeUrl().invalid();
+
+    @if (youtubeUrlInvalid && youtubeUrlTouched) {
+      <i
+        aria-hidden="true"
+        class="color-error"
+        slot="right"
+      >
+        error
+      </i>
+    }
+
+    <span slot="error">
+      @if (youtubeUrlInvalid && youtubeUrlTouched) {
+        @for (error of configureYoutubeImportForm.youtubeUrl().errors(); track error) {
+          <span>{{ error.message }}</span>
+        }
+      }
+    </span>
+  </n-textfield>
+</form>

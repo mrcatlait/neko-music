@@ -30,7 +30,7 @@
       @if (genres().length > 0) {
         @for (genre of genres(); track genre.id) {
           <n-autocomplete-option
-            [disabled]="selectedGenres().some(selectedGenre => selectedGenre.id === genre.id)"
+            [disabled]="selectedGenres().some((selectedGenre) => selectedGenre.id === genre.id)"
             [value]="genre.id"
           >
             {{ genre.name }}

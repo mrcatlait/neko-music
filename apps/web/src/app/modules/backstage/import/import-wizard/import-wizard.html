@@ -1,0 +1,62 @@
+<section class="import-wizard">
+  <n-breadcrumb>
+    <li nBreadcrumbItem>
+      <a routerLink="/backstage">Backstage</a>
+    </li>
+
+    <li nBreadcrumbItem>
+      <a routerLink="/backstage/import">Import</a>
+    </li>
+
+    <li
+      current
+      nBreadcrumbItem
+    >
+      Import tracks
+    </li>
+  </n-breadcrumb>
+
+  <header class="import-wizard__header">
+    <h1>Import tracks</h1>
+
+    <p class="body-large import-wizard__description">
+      Add tracks from a link or local folder. Review metadata before anything reaches your library.
+    </p>
+  </header>
+
+  <n-step-indicator
+    [currentStep]="currentStep()"
+    [steps]="steps"
+  />
+
+  @switch (currentStep()) {
+    @case (0) {
+      <n-select-source-step
+        class="import-wizard__step"
+        [selectedSource]="selectedSource()"
+        (sourceSelected)="selectSource($event)"
+      />
+    }
+    @case (1) {
+      <n-configure-import-step
+        class="import-wizard__step"
+        [source]="selectedSource()"
+        [sourceRef]="sourceRef()"
+        (importConfigured)="configureImport($event)"
+        (navigateBack)="backToSelectSource()"
+      />
+    }
+    @case (2) {
+      <n-review-step
+        class="import-wizard__step"
+        [tracks]="discoveryTracks()"
+        [newSourceItemRefs]="newSourceItemRefs()"
+        [removedSourceItemRefs]="removedSourceItemRefs()"
+        [isRefreshing]="isRefreshingDiscovery()"
+        (refreshRequested)="refreshDiscovery()"
+        (startImport)="startImport($event)"
+        (navigateBack)="backToConfigureImport()"
+      />
+    }
+  }
+</section>

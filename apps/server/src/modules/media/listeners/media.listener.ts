@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
 
-import { AssetCleanupService, ProcessingPipelineService } from '../services'
+import { AssetCleanupService, ProcessingRunnerService } from '../services'
 import { MediaUploadedEvent, MediaProcessingCompletedEvent, MediaReadyEvent } from '../events'
 
 @Injectable()
@@ -9,7 +9,7 @@ export class MediaListener {
   constructor(
     private readonly assetCleanupService: AssetCleanupService,
     private readonly eventEmitter: EventEmitter2,
-    private readonly processingPipelineService: ProcessingPipelineService,
+    private readonly processingRunnerService: ProcessingRunnerService,
   ) {}
 
   @OnEvent(MediaProcessingCompletedEvent.event)
@@ -31,6 +31,6 @@ export class MediaListener {
 
   @OnEvent(MediaUploadedEvent.event)
   handleMediaUploadedEvent(): void {
-    this.processingPipelineService.next()
+    this.processingRunnerService.next()
   }
 }

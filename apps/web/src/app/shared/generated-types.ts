@@ -22,6 +22,10 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
 };
 
+export type AlbumsInput = {
+  pagination?: InputMaybe<PagePaginationInput>;
+};
+
 export type ArtistsInput = {
   pagination?: InputMaybe<PagePaginationInput>;
 };
@@ -32,6 +36,17 @@ export type Artwork = {
   dominantColor: Scalars['String']['output'];
   /** The template URL with {size} placeholder; use preset names (small, medium, large) */
   url: Scalars['String']['output'];
+};
+
+export type BackstageAlbum = {
+  __typename?: 'BackstageAlbum';
+  artwork?: Maybe<Artwork>;
+  explicit: Scalars['Boolean']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  releaseDate: Scalars['DateTime']['output'];
+  status: Scalars['String']['output'];
+  type: Scalars['String']['output'];
 };
 
 export type BackstageArtist = {
@@ -61,6 +76,34 @@ export type BackstageGenre = {
   updatedBy: Scalars['String']['output'];
 };
 
+export type BackstageTrack = {
+  __typename?: 'BackstageTrack';
+  albumId: Scalars['String']['output'];
+  artwork?: Maybe<Artwork>;
+  diskNumber: Scalars['Int']['output'];
+  explicit: Scalars['Boolean']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  playback?: Maybe<Playback>;
+  releaseDate: Scalars['DateTime']['output'];
+  status: Scalars['String']['output'];
+  trackNumber: Scalars['Int']['output'];
+  type: Scalars['String']['output'];
+};
+
+export type CancelImportJobInput = {
+  /** The import job id */
+  jobId: Scalars['ID']['input'];
+};
+
+export type CreateAlbumInput = {
+  explicit: Scalars['Boolean']['input'];
+  genres: Array<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  releaseDate: Scalars['DateTime']['input'];
+  type: Scalars['String']['input'];
+};
+
 export type CreateArtistInput = {
   genres: Array<Scalars['String']['input']>;
   name: Scalars['String']['input'];
@@ -70,6 +113,24 @@ export type CreateArtistInput = {
 export type CreateGenreInput = {
   name: Scalars['String']['input'];
   slug: Scalars['String']['input'];
+};
+
+export type CreateTrackInput = {
+  albumId: Scalars['String']['input'];
+  diskNumber: Scalars['Int']['input'];
+  explicit: Scalars['Boolean']['input'];
+  genres: Array<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  releaseDate: Scalars['DateTime']['input'];
+  trackNumber: Scalars['Int']['input'];
+  type: Scalars['String']['input'];
+};
+
+export type DiscoverImportInput = {
+  /** The data source of the import method */
+  dataSource: Scalars['String']['input'];
+  /** The reference to discover import source items from */
+  sourceRef: Scalars['String']['input'];
 };
 
 export type GenresFiltersInput = {
@@ -84,13 +145,146 @@ export type GenresInput = {
   pagination?: InputMaybe<PagePaginationInput>;
 };
 
+export type ImportDiscovery = {
+  __typename?: 'ImportDiscovery';
+  dataSource: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  label: Scalars['String']['output'];
+  sourceRef: Scalars['String']['output'];
+  tracks: Array<ImportDiscoveryTrack>;
+};
+
+export type ImportDiscoveryRefreshResult = {
+  __typename?: 'ImportDiscoveryRefreshResult';
+  discovery: ImportDiscovery;
+  newSourceItemRefs: Array<Scalars['String']['output']>;
+  removedSourceItemRefs: Array<Scalars['String']['output']>;
+};
+
+export type ImportDiscoveryTrack = {
+  __typename?: 'ImportDiscoveryTrack';
+  id: Scalars['ID']['output'];
+  isSelected: Scalars['Boolean']['output'];
+  label: Scalars['String']['output'];
+  position: Scalars['Int']['output'];
+  sourceItemRef: Scalars['String']['output'];
+};
+
+export type ImportInput = {
+  /** The data source of the import */
+  dataSource: Scalars['String']['input'];
+  /** The reference to the source data */
+  sourceRef: Scalars['String']['input'];
+};
+
+export type ImportJobDetails = {
+  __typename?: 'ImportJobDetails';
+  completedAt?: Maybe<Scalars['DateTime']['output']>;
+  completedItems: Scalars['Int']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  dataSource: Scalars['String']['output'];
+  failedItems: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
+  items: Array<ImportJobItemModel>;
+  label: Scalars['String']['output'];
+  pendingReviewItems: Scalars['Int']['output'];
+  progressPercent: Scalars['Int']['output'];
+  sourceRef: Scalars['String']['output'];
+  startedAt?: Maybe<Scalars['DateTime']['output']>;
+  status: Scalars['String']['output'];
+  totalItems: Scalars['Int']['output'];
+};
+
+export type ImportJobItemClaim = {
+  __typename?: 'ImportJobItemClaim';
+  confidence: Scalars['Int']['output'];
+  decision: Scalars['String']['output'];
+  extractor: Scalars['String']['output'];
+  field: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  importJobItemId: Scalars['String']['output'];
+  replacementEntityId?: Maybe<Scalars['String']['output']>;
+  replacementValue?: Maybe<Scalars['String']['output']>;
+  sourceAttribute: Scalars['String']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type ImportJobItemModel = {
+  __typename?: 'ImportJobItemModel';
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  label: Scalars['String']['output'];
+  retryCount: Scalars['Int']['output'];
+  sourceItemRef: Scalars['String']['output'];
+  status: Scalars['String']['output'];
+};
+
+export type ImportJobItemPromotionEligibility = {
+  __typename?: 'ImportJobItemPromotionEligibility';
+  importJobItemId: Scalars['ID']['output'];
+  isEligible: Scalars['Boolean']['output'];
+  unresolvedRequiredFields: Array<Scalars['String']['output']>;
+};
+
+export type ImportJobItemPromotionEligibilityInput = {
+  /** The import job item id */
+  importJobItemId: Scalars['ID']['input'];
+};
+
+export type ImportJobSummary = {
+  __typename?: 'ImportJobSummary';
+  completedAt?: Maybe<Scalars['DateTime']['output']>;
+  completedItems: Scalars['Int']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  dataSource: Scalars['String']['output'];
+  failedItems: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
+  label: Scalars['String']['output'];
+  pendingReviewItems: Scalars['Int']['output'];
+  progressPercent: Scalars['Int']['output'];
+  sourceRef: Scalars['String']['output'];
+  startedAt?: Maybe<Scalars['DateTime']['output']>;
+  status: Scalars['String']['output'];
+  totalItems: Scalars['Int']['output'];
+};
+
+export type ImportMethod = {
+  __typename?: 'ImportMethod';
+  description: Scalars['String']['output'];
+  key: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  cancelImportJob: Scalars['String']['output'];
+  createAlbum: BackstageAlbum;
   createArtist: BackstageArtist;
   createGenre: BackstageGenre;
+  createTrack: BackstageTrack;
+  discoverImport: ImportDiscovery;
+  generateAlbumArtworkUploadToken: UploadToken;
   generateArtistArtworkUploadToken: UploadToken;
+  generateTrackArtworkUploadToken: UploadToken;
+  import: Scalars['String']['output'];
+  promoteImportJobItem: Scalars['String']['output'];
+  refreshImportDiscovery: ImportDiscoveryRefreshResult;
+  retryImportJobItem: Scalars['String']['output'];
+  reviewMetadataClaim: Scalars['String']['output'];
+  startImportFromDiscovery: Scalars['String']['output'];
+  updateAlbum: BackstageAlbum;
   updateArtist: BackstageArtist;
   updateGenre: BackstageGenre;
+};
+
+
+export type MutationCancelImportJobArgs = {
+  input: CancelImportJobInput;
+};
+
+
+export type MutationCreateAlbumArgs = {
+  album: CreateAlbumInput;
 };
 
 
@@ -104,7 +298,63 @@ export type MutationCreateGenreArgs = {
 };
 
 
+export type MutationCreateTrackArgs = {
+  track: CreateTrackInput;
+};
+
+
+export type MutationDiscoverImportArgs = {
+  input: DiscoverImportInput;
+};
+
+
+export type MutationGenerateAlbumArtworkUploadTokenArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type MutationGenerateArtistArtworkUploadTokenArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type MutationGenerateTrackArtworkUploadTokenArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type MutationImportArgs = {
+  input: ImportInput;
+};
+
+
+export type MutationPromoteImportJobItemArgs = {
+  input: PromoteImportJobItemInput;
+};
+
+
+export type MutationRefreshImportDiscoveryArgs = {
+  input: RefreshImportDiscoveryInput;
+};
+
+
+export type MutationRetryImportJobItemArgs = {
+  input: RetryImportJobItemInput;
+};
+
+
+export type MutationReviewMetadataClaimArgs = {
+  input: ReviewMetadataClaimInput;
+};
+
+
+export type MutationStartImportFromDiscoveryArgs = {
+  input: StartImportFromDiscoveryInput;
+};
+
+
+export type MutationUpdateAlbumArgs = {
+  album: UpdateAlbumInput;
   id: Scalars['String']['input'];
 };
 
@@ -127,12 +377,40 @@ export type PagePaginationInput = {
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type Playback = {
+  __typename?: 'Playback';
+  duration: Scalars['Int']['output'];
+  format: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
+export type PromoteImportJobItemInput = {
+  importJobItemId: Scalars['ID']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  backstageAlbum: BackstageAlbum;
+  backstageAlbums: Array<BackstageAlbum>;
   backstageArtist: BackstageArtist;
   backstageArtists: Array<BackstageArtist>;
   backstageGenre: BackstageGenre;
   backstageGenres: Array<BackstageGenre>;
+  importJob: ImportJobDetails;
+  importJobItemClaims: Array<ImportJobItemClaim>;
+  importJobItemPromotionEligibility: ImportJobItemPromotionEligibility;
+  importMethods: Array<ImportMethod>;
+  imports: Array<ImportJobSummary>;
+};
+
+
+export type QueryBackstageAlbumArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryBackstageAlbumsArgs = {
+  input?: InputMaybe<AlbumsInput>;
 };
 
 
@@ -153,6 +431,59 @@ export type QueryBackstageGenreArgs = {
 
 export type QueryBackstageGenresArgs = {
   input?: InputMaybe<GenresInput>;
+};
+
+
+export type QueryImportJobArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryImportJobItemClaimsArgs = {
+  importJobItemId: Scalars['ID']['input'];
+};
+
+
+export type QueryImportJobItemPromotionEligibilityArgs = {
+  input: ImportJobItemPromotionEligibilityInput;
+};
+
+export type RefreshImportDiscoveryInput = {
+  /** The discovery snapshot id to refresh from */
+  discoveryId: Scalars['ID']['input'];
+};
+
+export type RetryImportJobItemInput = {
+  importJobItemId: Scalars['ID']['input'];
+  reason?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ReviewMetadataClaimInput = {
+  /** Review action for the claim */
+  decision: Scalars['String']['input'];
+  /** The metadata claim id */
+  metadataClaimId: Scalars['ID']['input'];
+  /** Optional reason stored in review history */
+  reason?: InputMaybe<Scalars['String']['input']>;
+  /** Existing entity id for link_existing resolution */
+  replacementEntityId?: InputMaybe<Scalars['ID']['input']>;
+  /** Manual value for create_new resolution */
+  replacementValue?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type StartImportFromDiscoveryInput = {
+  /** The discovery snapshot id */
+  discoveryId: Scalars['ID']['input'];
+  /** The selected discovery item ids to start import with */
+  selectedItemIds: Array<Scalars['ID']['input']>;
+};
+
+export type UpdateAlbumInput = {
+  explicit: Scalars['Boolean']['input'];
+  genres: Array<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  releaseDate: Scalars['DateTime']['input'];
+  type: Scalars['String']['input'];
 };
 
 export type UpdateArtistInput = {
@@ -231,6 +562,93 @@ export type GetBackstageGenresQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetBackstageGenresQuery = { __typename?: 'Query', backstageGenres: Array<{ __typename?: 'BackstageGenre', id: string, name: string, slug: string, status: string }> };
+
+export type CancelImportJobMutationVariables = Exact<{
+  input: CancelImportJobInput;
+}>;
+
+
+export type CancelImportJobMutation = { __typename?: 'Mutation', cancelImportJob: string };
+
+export type DiscoverImportMutationVariables = Exact<{
+  input: DiscoverImportInput;
+}>;
+
+
+export type DiscoverImportMutation = { __typename?: 'Mutation', discoverImport: { __typename?: 'ImportDiscovery', id: string, dataSource: string, sourceRef: string, label: string, tracks: Array<{ __typename?: 'ImportDiscoveryTrack', id: string, sourceItemRef: string, label: string, position: number, isSelected: boolean }> } };
+
+export type GetImportJobItemClaimsQueryVariables = Exact<{
+  importJobItemId: Scalars['ID']['input'];
+}>;
+
+
+export type GetImportJobItemClaimsQuery = { __typename?: 'Query', importJobItemClaims: Array<{ __typename?: 'ImportJobItemClaim', id: string, importJobItemId: string, field: string, value: string, sourceAttribute: string, extractor: string, confidence: number, decision: string, replacementEntityId?: string | null, replacementValue?: string | null }> };
+
+export type GetImportJobItemPromotionEligibilityQueryVariables = Exact<{
+  input: ImportJobItemPromotionEligibilityInput;
+}>;
+
+
+export type GetImportJobItemPromotionEligibilityQuery = { __typename?: 'Query', importJobItemPromotionEligibility: { __typename?: 'ImportJobItemPromotionEligibility', importJobItemId: string, isEligible: boolean, unresolvedRequiredFields: Array<string> } };
+
+export type GetImportJobQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetImportJobQuery = { __typename?: 'Query', importJob: { __typename?: 'ImportJobDetails', id: string, dataSource: string, sourceRef: string, label: string, status: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, totalItems: number, completedItems: number, failedItems: number, pendingReviewItems: number, progressPercent: number, items: Array<{ __typename?: 'ImportJobItemModel', id: string, sourceItemRef: string, label: string, status: string, retryCount: number, errorMessage?: string | null }> } };
+
+export type GetImportMethodsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetImportMethodsQuery = { __typename?: 'Query', importMethods: Array<{ __typename?: 'ImportMethod', key: string, name: string, description: string }> };
+
+export type ImportMutationVariables = Exact<{
+  input: ImportInput;
+}>;
+
+
+export type ImportMutation = { __typename?: 'Mutation', import: string };
+
+export type GetImportsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetImportsQuery = { __typename?: 'Query', imports: Array<{ __typename?: 'ImportJobSummary', id: string, dataSource: string, sourceRef: string, label: string, status: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, totalItems: number, completedItems: number, failedItems: number, pendingReviewItems: number, progressPercent: number }> };
+
+export type PromoteImportJobItemMutationVariables = Exact<{
+  input: PromoteImportJobItemInput;
+}>;
+
+
+export type PromoteImportJobItemMutation = { __typename?: 'Mutation', promoteImportJobItem: string };
+
+export type RefreshImportDiscoveryMutationVariables = Exact<{
+  input: RefreshImportDiscoveryInput;
+}>;
+
+
+export type RefreshImportDiscoveryMutation = { __typename?: 'Mutation', refreshImportDiscovery: { __typename?: 'ImportDiscoveryRefreshResult', newSourceItemRefs: Array<string>, removedSourceItemRefs: Array<string>, discovery: { __typename?: 'ImportDiscovery', id: string, dataSource: string, sourceRef: string, label: string, tracks: Array<{ __typename?: 'ImportDiscoveryTrack', id: string, sourceItemRef: string, label: string, position: number, isSelected: boolean }> } } };
+
+export type RetryImportJobItemMutationVariables = Exact<{
+  input: RetryImportJobItemInput;
+}>;
+
+
+export type RetryImportJobItemMutation = { __typename?: 'Mutation', retryImportJobItem: string };
+
+export type ReviewMetadataClaimMutationVariables = Exact<{
+  input: ReviewMetadataClaimInput;
+}>;
+
+
+export type ReviewMetadataClaimMutation = { __typename?: 'Mutation', reviewMetadataClaim: string };
+
+export type StartImportFromDiscoveryMutationVariables = Exact<{
+  input: StartImportFromDiscoveryInput;
+}>;
+
+
+export type StartImportFromDiscoveryMutation = { __typename?: 'Mutation', startImportFromDiscovery: string };
 
 export type GetBackstageGenresByFilterQueryVariables = Exact<{
   input?: InputMaybe<GenresInput>;
@@ -368,6 +786,219 @@ export const GetBackstageGenresDocument = gql`
 @Injectable()
 export class GetBackstageGenresGql extends GraphqlQuery<GetBackstageGenresQuery, GetBackstageGenresQueryVariables> {
   override readonly document = GetBackstageGenresDocument;
+}
+export const CancelImportJobDocument = gql`
+    mutation CancelImportJob($input: CancelImportJobInput!) {
+  cancelImportJob(input: $input)
+}
+    ` as unknown as TypedDocumentNode<CancelImportJobMutation, CancelImportJobMutationVariables>;
+
+@Injectable()
+export class CancelImportJobGql extends GraphqlMutation<CancelImportJobMutation, CancelImportJobMutationVariables> {
+  override readonly document = CancelImportJobDocument;
+}
+export const DiscoverImportDocument = gql`
+    mutation DiscoverImport($input: DiscoverImportInput!) {
+  discoverImport(input: $input) {
+    id
+    dataSource
+    sourceRef
+    label
+    tracks {
+      id
+      sourceItemRef
+      label
+      position
+      isSelected
+    }
+  }
+}
+    ` as unknown as TypedDocumentNode<DiscoverImportMutation, DiscoverImportMutationVariables>;
+
+@Injectable()
+export class DiscoverImportGql extends GraphqlMutation<DiscoverImportMutation, DiscoverImportMutationVariables> {
+  override readonly document = DiscoverImportDocument;
+}
+export const GetImportJobItemClaimsDocument = gql`
+    query GetImportJobItemClaims($importJobItemId: ID!) {
+  importJobItemClaims(importJobItemId: $importJobItemId) {
+    id
+    importJobItemId
+    field
+    value
+    sourceAttribute
+    extractor
+    confidence
+    decision
+    replacementEntityId
+    replacementValue
+  }
+}
+    ` as unknown as TypedDocumentNode<GetImportJobItemClaimsQuery, GetImportJobItemClaimsQueryVariables>;
+
+@Injectable()
+export class GetImportJobItemClaimsGql extends GraphqlQuery<GetImportJobItemClaimsQuery, GetImportJobItemClaimsQueryVariables> {
+  override readonly document = GetImportJobItemClaimsDocument;
+}
+export const GetImportJobItemPromotionEligibilityDocument = gql`
+    query GetImportJobItemPromotionEligibility($input: ImportJobItemPromotionEligibilityInput!) {
+  importJobItemPromotionEligibility(input: $input) {
+    importJobItemId
+    isEligible
+    unresolvedRequiredFields
+  }
+}
+    ` as unknown as TypedDocumentNode<GetImportJobItemPromotionEligibilityQuery, GetImportJobItemPromotionEligibilityQueryVariables>;
+
+@Injectable()
+export class GetImportJobItemPromotionEligibilityGql extends GraphqlQuery<GetImportJobItemPromotionEligibilityQuery, GetImportJobItemPromotionEligibilityQueryVariables> {
+  override readonly document = GetImportJobItemPromotionEligibilityDocument;
+}
+export const GetImportJobDocument = gql`
+    query GetImportJob($id: ID!) {
+  importJob(id: $id) {
+    id
+    dataSource
+    sourceRef
+    label
+    status
+    createdAt
+    startedAt
+    completedAt
+    totalItems
+    completedItems
+    failedItems
+    pendingReviewItems
+    progressPercent
+    items {
+      id
+      sourceItemRef
+      label
+      status
+      retryCount
+      errorMessage
+    }
+  }
+}
+    ` as unknown as TypedDocumentNode<GetImportJobQuery, GetImportJobQueryVariables>;
+
+@Injectable()
+export class GetImportJobGql extends GraphqlQuery<GetImportJobQuery, GetImportJobQueryVariables> {
+  override readonly document = GetImportJobDocument;
+}
+export const GetImportMethodsDocument = gql`
+    query GetImportMethods {
+  importMethods {
+    key
+    name
+    description
+  }
+}
+    ` as unknown as TypedDocumentNode<GetImportMethodsQuery, GetImportMethodsQueryVariables>;
+
+@Injectable()
+export class GetImportMethodsGql extends GraphqlQuery<GetImportMethodsQuery, GetImportMethodsQueryVariables> {
+  override readonly document = GetImportMethodsDocument;
+}
+export const ImportDocument = gql`
+    mutation Import($input: ImportInput!) {
+  import(input: $input)
+}
+    ` as unknown as TypedDocumentNode<ImportMutation, ImportMutationVariables>;
+
+@Injectable()
+export class ImportGql extends GraphqlMutation<ImportMutation, ImportMutationVariables> {
+  override readonly document = ImportDocument;
+}
+export const GetImportsDocument = gql`
+    query GetImports {
+  imports {
+    id
+    dataSource
+    sourceRef
+    label
+    status
+    createdAt
+    startedAt
+    completedAt
+    totalItems
+    completedItems
+    failedItems
+    pendingReviewItems
+    progressPercent
+  }
+}
+    ` as unknown as TypedDocumentNode<GetImportsQuery, GetImportsQueryVariables>;
+
+@Injectable()
+export class GetImportsGql extends GraphqlQuery<GetImportsQuery, GetImportsQueryVariables> {
+  override readonly document = GetImportsDocument;
+}
+export const PromoteImportJobItemDocument = gql`
+    mutation PromoteImportJobItem($input: PromoteImportJobItemInput!) {
+  promoteImportJobItem(input: $input)
+}
+    ` as unknown as TypedDocumentNode<PromoteImportJobItemMutation, PromoteImportJobItemMutationVariables>;
+
+@Injectable()
+export class PromoteImportJobItemGql extends GraphqlMutation<PromoteImportJobItemMutation, PromoteImportJobItemMutationVariables> {
+  override readonly document = PromoteImportJobItemDocument;
+}
+export const RefreshImportDiscoveryDocument = gql`
+    mutation RefreshImportDiscovery($input: RefreshImportDiscoveryInput!) {
+  refreshImportDiscovery(input: $input) {
+    newSourceItemRefs
+    removedSourceItemRefs
+    discovery {
+      id
+      dataSource
+      sourceRef
+      label
+      tracks {
+        id
+        sourceItemRef
+        label
+        position
+        isSelected
+      }
+    }
+  }
+}
+    ` as unknown as TypedDocumentNode<RefreshImportDiscoveryMutation, RefreshImportDiscoveryMutationVariables>;
+
+@Injectable()
+export class RefreshImportDiscoveryGql extends GraphqlMutation<RefreshImportDiscoveryMutation, RefreshImportDiscoveryMutationVariables> {
+  override readonly document = RefreshImportDiscoveryDocument;
+}
+export const RetryImportJobItemDocument = gql`
+    mutation RetryImportJobItem($input: RetryImportJobItemInput!) {
+  retryImportJobItem(input: $input)
+}
+    ` as unknown as TypedDocumentNode<RetryImportJobItemMutation, RetryImportJobItemMutationVariables>;
+
+@Injectable()
+export class RetryImportJobItemGql extends GraphqlMutation<RetryImportJobItemMutation, RetryImportJobItemMutationVariables> {
+  override readonly document = RetryImportJobItemDocument;
+}
+export const ReviewMetadataClaimDocument = gql`
+    mutation ReviewMetadataClaim($input: ReviewMetadataClaimInput!) {
+  reviewMetadataClaim(input: $input)
+}
+    ` as unknown as TypedDocumentNode<ReviewMetadataClaimMutation, ReviewMetadataClaimMutationVariables>;
+
+@Injectable()
+export class ReviewMetadataClaimGql extends GraphqlMutation<ReviewMetadataClaimMutation, ReviewMetadataClaimMutationVariables> {
+  override readonly document = ReviewMetadataClaimDocument;
+}
+export const StartImportFromDiscoveryDocument = gql`
+    mutation StartImportFromDiscovery($input: StartImportFromDiscoveryInput!) {
+  startImportFromDiscovery(input: $input)
+}
+    ` as unknown as TypedDocumentNode<StartImportFromDiscoveryMutation, StartImportFromDiscoveryMutationVariables>;
+
+@Injectable()
+export class StartImportFromDiscoveryGql extends GraphqlMutation<StartImportFromDiscoveryMutation, StartImportFromDiscoveryMutationVariables> {
+  override readonly document = StartImportFromDiscoveryDocument;
 }
 export const GetBackstageGenresByFilterDocument = gql`
     query GetBackstageGenresByFilter($input: GenresInput) {

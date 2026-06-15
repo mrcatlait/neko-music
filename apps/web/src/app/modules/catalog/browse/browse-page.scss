@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+.browse-page {
+  padding: 24px 0 32px;
+}
+
+@media (max-width: 599px) {
+  .browse-page {
+    padding: 16px 0 24px;
+  }
+}

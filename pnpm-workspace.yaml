@@ -1,0 +1,28 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - 'tools/*'
+
+# Hoist ESLint tooling so the VS Code extension and flat config can resolve
+# packages declared only on @neko/eslint-config (pnpm isolates otherwise).
+# Avoid '*eslint*' — it also hoists @types/eslint into packages that do not use ESLint.
+publicHoistPattern:
+  - 'eslint'
+  - '@eslint/*'
+  - 'typescript-eslint'
+  - 'eslint-*'
+  - '*eslint-plugin*'
+
+allowBuilds:
+  '@nestjs/core': true
+  '@parcel/watcher': true
+  '@scarf/scarf': true
+  '@swc/core': true
+  bcrypt: true
+  cpu-features: true
+  esbuild: true
+  lmdb: true
+  msgpackr-extract: true
+  protobufjs: true
+  sharp: true
+  ssh2: true

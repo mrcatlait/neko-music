@@ -24,7 +24,7 @@ const config: CodegenConfig = {
       // Could add `addTypenameSelectionDocumentTransform` from '@graphql-codegen/client-preset' to add __typename to the query variables in case Graphcache is used
     },
   },
-  watch: true,
+  watch: false,
 }
 
 export default config

@@ -7,8 +7,8 @@ import { DatabasePropagationService } from './database-propagation.service'
 
 @Injectable()
 export class DatabaseSeedService extends DatabasePropagationService {
-  protected readonly tableName: string = 'seeds'
-  protected readonly scriptsFolder: string
+  readonly tableName: string = 'seeds'
+  readonly scriptsFolder: string
 
   constructor(
     @InjectDatabase() protected readonly database: Database<unknown>,

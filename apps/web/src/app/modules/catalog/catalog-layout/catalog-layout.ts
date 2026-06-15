@@ -4,10 +4,11 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
 import { PlaybackStore } from '@/core/stores'
 import { PlaybackStatus } from '@/shared/enums'
 import { Player } from '@/modules/playback/player'
+import { Search } from '@/shared/components'
 
 @Component({
   selector: 'n-catalog-layout',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, Player],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, Player, Search],
   templateUrl: './catalog-layout.html',
   styleUrl: './catalog-layout.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

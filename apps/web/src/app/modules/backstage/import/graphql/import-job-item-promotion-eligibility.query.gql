@@ -1,0 +1,7 @@
+query GetImportJobItemPromotionEligibility($input: ImportJobItemPromotionEligibilityInput!) {
+  importJobItemPromotionEligibility(input: $input) {
+    importJobItemId
+    isEligible
+    unresolvedRequiredFields
+  }
+}

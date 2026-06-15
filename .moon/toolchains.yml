@@ -2,12 +2,12 @@ $schema: 'https://moonrepo.dev/schemas/toolchain.json'
 
 javascript:
   dependencyVersionFormat: 'star'
-  packageManager: 'npm'
+  packageManager: 'pnpm'
 
 node:
-  version: '22'
+  versionFromPrototools: 'nodejs'
 
-npm:
+pnpm:
   version: '11'
 
 typescript:

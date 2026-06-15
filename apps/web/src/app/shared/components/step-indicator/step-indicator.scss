@@ -1,0 +1,76 @@
+.step-indicator {
+  --n-step-indicator-label-color: var(--color-text-medium-emphasis);
+  --n-step-indicator-index-color: var(--color-text-high-emphasis);
+  --n-step-indicator-index-background-color: var(--color-surface-container-highest);
+  --n-step-indicator-line-color: var(--color-outline);
+  --n-step-indicator-line-style: dashed;
+
+  display: flex;
+  width: 100%;
+  height: 80px;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 16px;
+  background: var(--color-surface-container);
+  padding: 16px 24px;
+  border-radius: var(--shape-corner-medium);
+
+  &__item {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 16px;
+    min-width: 120px;
+
+    &:last-child {
+      flex: 0 0 auto;
+    }
+
+    &-index {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--shape-corner-full);
+      color: var(--n-step-indicator-index-color);
+      background: var(--n-step-indicator-index-background-color);
+
+      i {
+        font-size: 20px;
+      }
+    }
+
+    &-label {
+      color: var(--n-step-indicator-label-color);
+    }
+
+    &:not(:last-child)::after {
+      content: '';
+      flex: 1;
+      align-self: center;
+      height: 0;
+      border-top: 2px var(--n-step-indicator-line-style) var(--n-step-indicator-line-color);
+      pointer-events: none;
+    }
+
+    &[data-step-completed="true"] {
+      --n-step-indicator-index-color: var(--color-primary);
+      --n-step-indicator-index-background-color: transparent;
+      --n-step-indicator-line-color: var(--color-primary);
+      --n-step-indicator-line-style: solid;
+  
+      .step-indicator__item-index {
+        border: 2px solid var(--color-primary);
+      }
+    }
+  
+    &[data-step-current="true"] {
+      --n-step-indicator-label-color: var(--color-on-surface);
+      --n-step-indicator-index-color: var(--color-on-primary);
+      --n-step-indicator-index-background-color: var(--color-primary);
+    }
+  }
+}

@@ -44,6 +44,6 @@ import { ArtistLoader } from './loaders'
     SyncPublishedArtistUseCase,
     SyncPublishedArtistValidator,
   ],
-  exports: [ArtistLoader],
+  exports: [ArtistLoader, ArtistRepository, CreateBackstageArtistUseCase],
 })
 export class BackstageArtistModule {}

@@ -1,0 +1,133 @@
+.import-list {
+  display: grid;
+  gap: 32px;
+  flex: 1;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  &__content {
+    display: grid;
+    flex: 1;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  &__tab-content {
+    margin-top: 16px;
+    display: grid;
+    gap: 12px;
+  }
+
+  &__filters {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid var(--color-outline);
+    border-radius: var(--shape-corner-medium);
+  }
+
+  &__empty {
+    color: var(--color-text-medium-emphasis);
+  }
+}
+
+.import-list__group {
+  margin-bottom: 16px;
+  color: var(--color-text-medium-emphasis);
+}
+
+.import-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "source header progress"
+    "source content ."
+    "source content .";
+  column-gap: 16px;
+  padding: 16px;
+  border-radius: var(--shape-corner-medium);
+  // background-color: var(--color-surface-container);
+  border: 1px solid var(--color-outline);
+
+  &--clickable {
+    cursor: pointer;
+  }
+
+  &__source {
+    margin-top: 4px;
+    grid-area: source;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--shape-corner-full);
+    background-color: var(--color-surface-container-highest);
+  }
+
+  &__source-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  &__header {
+    grid-area: header;
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: var(--color-text-medium-emphasis);
+  }
+
+  &__progress {
+    grid-area: progress;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--typography-font-family-mono);
+    padding: 8px;
+  }
+
+  &__actions {
+    grid-area: actions;
+    margin-left: -16px;
+  }
+}
+
+.import-card__content {
+  display: flex;
+  gap: 8px;
+}
+
+.import-card__metric {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  border-radius: var(--shape-corner-full);
+  padding: 6px 12px;
+  width: fit-content;
+  color: var(--color-text-medium-emphasis);
+
+  &--completed {
+    background-color: color-mix(in oklab, var(--color-primary), var(--color-surface) 77%);
+  }
+
+  &--failed {
+    background-color: color-mix(in oklab, var(--color-error), var(--color-surface) 77%);
+  }
+}
+
+.import-card__metric-value {
+  color: var(--color-text-high-emphasis);
+  font-family: var(--typography-font-family-mono);
+}

@@ -1,0 +1,147 @@
+<section class="import-list">
+  <header class="import-list__header">
+    <div class="import-list__heading">
+      <h1>Imports</h1>
+      <p class="body-medium">Track import progress, resolve review items, and publish when ready.</p>
+    </div>
+
+    <button
+      color="primary"
+      nButton
+      type="button"
+      variant="filled"
+      (click)="createNew()"
+    >
+      <i>add</i>
+      Create import
+    </button>
+  </header>
+
+  <div class="import-list__content">
+    <aside class="import-list__filters"></aside>
+
+    @if (!importsResource.error()) {
+      <n-tab-group class="import-list__tabs">
+        <n-tab
+          label="In progress"
+          [count]="inProgressImports().length"
+        >
+          <section class="import-list__tab-content">
+            @if (inProgressImports().length === 0) {
+              <p class="body-medium import-list__empty">No imports are in progress.</p>
+            }
+
+            @for (job of inProgressImports(); track job.id) {
+              <article
+                class="import-card import-card--clickable"
+                role="button"
+                tabindex="0"
+                (click)="navigateToImport(job.id)"
+                (keydown.enter)="navigateToImport(job.id)"
+              >
+                <div class="import-card__source">
+                  @if (isYoutubeImport(job)) {
+                    <n-youtube-icon class="import-card__source-icon" />
+                  } @else {
+                    <span class="label-medium">{{ job.dataSource.slice(0, 1).toUpperCase() }}</span>
+                  }
+                </div>
+
+                <header class="import-card__header">
+                  <h4 class="title-large import-card__title">{{ job.label }}</h4>
+                  <p class="label-medium import-card__subtitle">{{ job.dataSource }}</p>
+                </header>
+
+                <div class="import-card__progress">
+                  <span class="label-large import-card__progress-text">{{ job.progressPercent }}%</span>
+
+                  <n-circular-progress
+                    [buffer]="job.progressPercent"
+                    [gap]="3"
+                    [size]="40"
+                    [trackWidth]="6"
+                  />
+                </div>
+
+                <div class="import-card__content">
+                  <div class="label-medium import-card__metric label-medium import-card__metric--completed">
+                    Completed
+                    <span class="import-card__metric-value label-large">{{ job.completedItems }}</span>
+                    tracks
+                  </div>
+
+                  <div class="label-medium import-card__metric label-medium import-card__metric--failed">
+                    Failed
+                    <span class="import-card__metric-value label-large">{{ job.failedItems }}</span>
+                    tracks
+                  </div>
+                </div>
+              </article>
+            }
+          </section>
+        </n-tab>
+
+        <n-tab
+          label="Completed"
+          [count]="completedImports().length"
+        >
+          <section class="import-list__tab-content">
+            @if (completedImports().length === 0) {
+              <p class="body-medium import-list__empty">No completed imports yet.</p>
+            }
+
+            @for (job of completedImports(); track job.id) {
+              <article
+                class="import-card import-card--clickable"
+                role="button"
+                tabindex="0"
+                (click)="navigateToImport(job.id)"
+                (keydown.enter)="navigateToImport(job.id)"
+              >
+                <div class="import-card__source">
+                  @if (isYoutubeImport(job)) {
+                    <n-youtube-icon class="import-card__source-icon" />
+                  } @else {
+                    <span class="label-medium">{{ job.dataSource.slice(0, 1).toUpperCase() }}</span>
+                  }
+                </div>
+
+                <header class="import-card__header">
+                  <h4 class="title-large import-card__title">{{ job.label }}</h4>
+                  <p class="label-medium import-card__subtitle">{{ job.dataSource }}</p>
+                </header>
+
+                <div class="import-card__progress">
+                  <span class="label-large import-card__progress-text">{{ job.progressPercent }}%</span>
+
+                  <n-circular-progress
+                    [buffer]="job.progressPercent"
+                    [gap]="3"
+                    [size]="40"
+                    [trackWidth]="6"
+                  />
+                </div>
+
+                <div class="import-card__content">
+                  <div class="label-medium import-card__metric label-medium import-card__metric--completed">
+                    Completed
+                    <span class="import-card__metric-value label-large">{{ job.completedItems }}</span>
+                    tracks
+                  </div>
+
+                  <div class="label-medium import-card__metric label-medium import-card__metric--failed">
+                    Failed
+                    <span class="import-card__metric-value label-large">{{ job.failedItems }}</span>
+                    tracks
+                  </div>
+                </div>
+              </article>
+            }
+          </section>
+        </n-tab>
+      </n-tab-group>
+    } @else {
+      <p class="body-medium import-list__empty">{{ importsResource.error()?.message }}</p>
+    }
+  </div>
+</section>

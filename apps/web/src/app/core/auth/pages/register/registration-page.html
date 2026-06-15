@@ -79,10 +79,18 @@
     <span class="label-large">Your password must contain at least</span>
 
     <ul class="body-small">
-      @let requiredError = registrationForm.password().errors().some(error => error.message === 'required');
+      @let requiredError =
+        registrationForm
+          .password()
+          .errors()
+          .some((error) => error.message === 'required');
 
       <li>
-        @let minLengthError = registrationForm.password().errors().some(error => error.message === 'minlength');
+        @let minLengthError =
+          registrationForm
+            .password()
+            .errors()
+            .some((error) => error.message === 'minlength');
 
         @if (!minLengthError && !requiredError && passwordTouched) {
           <i class="success">check_circle</i>
@@ -94,7 +102,11 @@
       </li>
 
       <li>
-        @let patternError = registrationForm.password().errors().some(error => error.message === 'pattern');
+        @let patternError =
+          registrationForm
+            .password()
+            .errors()
+            .some((error) => error.message === 'pattern');
 
         @if (!patternError && !requiredError && passwordTouched) {
           <i class="success">check_circle</i>

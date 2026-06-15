@@ -60,7 +60,7 @@ tasks:
       - 'tsconfig.spec.json'
 
   test-integration:
-    command: 'npm run test-integration'
+    command: 'pnpm run test-integration'
     options:
       runInCI: false
     inputs:

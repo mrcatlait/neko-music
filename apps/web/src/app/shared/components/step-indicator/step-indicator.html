@@ -1,0 +1,23 @@
+<ol class="step-indicator">
+  @for (step of steps(); track step; let index = $index) {
+    @let completed = index < currentStep();
+
+    <li
+      class="step-indicator__item"
+      [attr.data-step-completed]="completed"
+      [attr.data-step-current]="index === currentStep()"
+    >
+      <span class="step-indicator__item-index">
+        @if (completed) {
+          <i>check</i>
+        } @else {
+          {{ index + 1 }}
+        }
+      </span>
+
+      <span class="step-indicator__item-label title-medium">
+        {{ step }}
+      </span>
+    </li>
+  }
+</ol>

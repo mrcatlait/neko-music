@@ -97,6 +97,23 @@
           <span>Genres</span>
         </a>
       </li>
+
+      <li [aria-current]="importNav.isActive ? 'page' : undefined">
+        <a
+          #importNav="routerLinkActive"
+          routerLink="/backstage/import"
+          routerLinkActive="active"
+          [class.active]="importNav.isActive"
+        >
+          <i
+            aria-hidden="true"
+            [class.outlined]="!importNav.isActive"
+          >
+            download
+          </i>
+          <span>Import</span>
+        </a>
+      </li>
     </ul>
   </nav>
 </div>

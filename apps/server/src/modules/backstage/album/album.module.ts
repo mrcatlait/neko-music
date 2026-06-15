@@ -50,6 +50,6 @@ import {
     UpdateBackstageAlbumArtworkUseCase,
     UpdateBackstageAlbumArtworkValidator,
   ],
-  exports: [AlbumRepository, ProcessBackstageAlbumLifecycleUseCase],
+  exports: [AlbumRepository, ProcessBackstageAlbumLifecycleUseCase, CreateBackstageAlbumUseCase],
 })
 export class BackstageAlbumModule {}

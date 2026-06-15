@@ -14,4 +14,9 @@ export const routes: Routes = [
     canActivate: [withPermissionsGuard([Permissions.Genre.Write])],
     loadChildren: () => import('./genre/genre.routes').then((c) => c.routes),
   },
+  {
+    path: 'import',
+    canActivate: [withPermissionsGuard([Permissions.Import.Read])],
+    loadChildren: () => import('./import/import.routes').then((c) => c.routes),
+  },
 ]

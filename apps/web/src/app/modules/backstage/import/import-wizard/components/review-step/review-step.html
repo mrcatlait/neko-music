@@ -1,0 +1,69 @@
+<section class="review-step">
+  <header class="review-step__header">
+    <p class="title-small review-step__index">Step 3 of 3</p>
+
+    <h3 class="headline-small review-step__title">Review tracks</h3>
+
+    <p class="body-medium review-step__subtitle">Select tracks to import and verify metadata.</p>
+  </header>
+
+  <div class="review-step__content">
+    @if (newSourceItemRefs().length > 0 || removedSourceItemRefs().length > 0) {
+      <div class="review-step__diff">
+        @if (newSourceItemRefs().length > 0) {
+          <p class="body-small review-step__diff-item review-step__diff-item--new">
+            {{ newSourceItemRefs().length }} new source item(s) found
+          </p>
+        }
+
+        @if (removedSourceItemRefs().length > 0) {
+          <p class="body-small review-step__diff-item review-step__diff-item--removed">
+            {{ removedSourceItemRefs().length }} source item(s) removed since previous discovery
+          </p>
+        }
+      </div>
+    }
+
+    <ag-grid-angular
+      class="review-step__grid"
+      [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions"
+      [modules]="modules"
+      [rowData]="tracks()"
+    />
+  </div>
+
+  <div class="review-step__navigation">
+    <button
+      nButton
+      type="button"
+      variant="text"
+      [disabled]="isRefreshing()"
+      (click)="refresh()"
+    >
+      @if (isRefreshing()) {
+        Refreshing...
+      } @else {
+        Refresh discovery
+      }
+    </button>
+
+    <button
+      nButton
+      type="button"
+      variant="outlined"
+      (click)="previous()"
+    >
+      Back
+    </button>
+
+    <button
+      nButton
+      type="button"
+      variant="filled"
+      (click)="continue()"
+    >
+      Import tracks
+    </button>
+  </div>
+</section>

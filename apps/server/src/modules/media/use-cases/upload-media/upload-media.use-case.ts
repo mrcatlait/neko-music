@@ -5,7 +5,7 @@ import { join } from 'node:path'
 
 import { UploadImageValidator } from './upload-image.validator'
 import { UploadAudioValidator } from './upload-audio.validator'
-import { EntityType, MediaType, ProcessingStatus, ProcessingStep } from '../../enums'
+import { EntityType, MediaType, ProcessingStatus, ProcessingJobItem } from '../../enums'
 import { MediaRepository, SourceAssetRepository, UploadTokenRepository } from '../../repositories'
 import { MEDIA_MODULE_OPTIONS } from '../../tokens'
 import { MediaModuleOptions } from '../../types'
@@ -154,14 +154,14 @@ export class UploadMediaUseCase implements UseCase<UploadMediaUseCaseParams, Upl
     }
   }
 
-  private resolveProcessingSteps(mediaType: MediaType): ProcessingStep[] {
+  private resolveProcessingSteps(mediaType: MediaType): ProcessingJobItem[] {
     // @todo Think of a better way to determine the processing steps based on the media type and entity type
     // Maybe create empty pipeline and add the steps to it later in separate use cases
     switch (mediaType) {
       case MediaType.Image:
-        return [ProcessingStep.ImageTransformation]
+        return [ProcessingJobItem.ImageTransformation]
       case MediaType.Audio:
-        return [ProcessingStep.AudioTransformation]
+        return [ProcessingJobItem.AudioTransformation]
       default:
         return []
     }

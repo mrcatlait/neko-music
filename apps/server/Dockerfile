@@ -20,9 +20,9 @@ COPY --from=skeleton /app/.moon/docker/sources .
 
 RUN moon run server:build
 
-# moon docker prune can omit the server workspace link; reinstall prod deps for npm workspaces.
+# moon docker prune can omit the server workspace link; reinstall prod deps for pnpm workspaces.
 RUN moon docker prune \
-  && npm install --omit=dev
+  && corepack pnpm install --prod --frozen-lockfile
 
 FROM gcr.io/distroless/nodejs24-debian13
 WORKDIR /app

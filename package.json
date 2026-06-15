@@ -8,8 +8,10 @@
     "tools/*"
   ],
   "devDependencies": {
-    "@sonar/scan": "^4.3.5"
+    "@sonar/scan": "^4.3.5",
+    "vitest": "^4.1.7"
   },
+  "packageManager": "pnpm@11.3.0",
   "engines": {
     "node": "~22"
   }

@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core'
  * @param duration - The duration in seconds
  * @returns The formatted duration
  * @example
- * ```typescript
+ * ```ts
  * {{ 3600 | duration }} // Returns: '1:00:00'
  * {{ 60 | duration }} // Returns: '1:00'
  * {{ 1 | duration }} // Returns: '0:01'

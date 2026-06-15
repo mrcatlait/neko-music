@@ -1,0 +1,20 @@
+@use 'base' as base;
+@use 'components' as components;
+@use 'themes' as themes;
+
+@include base.motion-duration;
+@include base.motion-easing;
+@include base.motion-transition;
+@include base.elevations;
+@include base.reset;
+@include base.shapes;
+@include base.spacing;
+@include base.states;
+@include base.typography;
+
+@include components.icon;
+@include components.menu;
+@include components.tabs;
+@include components.textfield;
+
+@include themes.default;

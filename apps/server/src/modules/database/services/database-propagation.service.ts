@@ -8,8 +8,8 @@ import type { Database } from '../types'
 export abstract class DatabasePropagationService {
   private readonly logger = new Logger(this.constructor.name)
 
-  protected abstract readonly tableName: string
-  protected abstract readonly scriptsFolder: string
+  abstract tableName: string
+  abstract scriptsFolder: string
 
   constructor(protected readonly database: Database<unknown>) {}
 
@@ -32,25 +32,25 @@ export abstract class DatabasePropagationService {
     this.logger.log(`Executed scripts: ${pendingMigrations.length}`)
   }
 
-  private async getPendingScripts(scriptsFolder: string, tableName: string): Promise<string[]> {
+  async getPendingScripts(scriptsFolder: string, tableName: string): Promise<string[]> {
     const allScripts = this.getAllScripts(scriptsFolder)
     const executedScripts = await this.loadExecutedScripts(tableName)
 
     return allScripts.filter((script) => !executedScripts.some((executedScript) => executedScript === script))
   }
 
-  private getAllScripts(scriptsFolder: string): string[] {
+  getAllScripts(scriptsFolder: string): string[] {
     const scripts = readdirSync(scriptsFolder).filter((file) => file.endsWith('.sql'))
     return scripts.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
   }
 
-  private async executeScript(name: string, sql: string, tableName: string) {
+  async executeScript(name: string, sql: string, tableName: string) {
     this.logger.log(`Executing script: ${name}`)
     await this.database.executeQuery<void>(CompiledQuery.raw(sql))
     await this.insertExecutedScript(name, tableName)
   }
 
-  private async loadExecutedScripts(tableName: string): Promise<string[]> {
+  async loadExecutedScripts(tableName: string): Promise<string[]> {
     const { rows } = await this.database.executeQuery<{ name: string }>(
       CompiledQuery.raw(`SELECT name FROM "${tableName}" ORDER BY name DESC`),
     )
@@ -58,11 +58,11 @@ export abstract class DatabasePropagationService {
     return rows.map((row) => row.name)
   }
 
-  private insertExecutedScript(name: string, tableName: string): Promise<unknown> {
+  insertExecutedScript(name: string, tableName: string): Promise<unknown> {
     return this.database.executeQuery<void>(CompiledQuery.raw(`INSERT INTO "${tableName}" (name) VALUES ('${name}')`))
   }
 
-  private async createTableIfNotExist(tableName: string): Promise<void> {
+  async createTableIfNotExist(tableName: string): Promise<void> {
     const tableExist = await this.hasTable(tableName)
 
     if (!tableExist) {
@@ -72,7 +72,7 @@ export abstract class DatabasePropagationService {
     }
   }
 
-  private async getCurrentSchema(): Promise<string> {
+  async getCurrentSchema(): Promise<string> {
     const { rows } = await this.database.executeQuery<{ current_schema: string }>(
       CompiledQuery.raw('SELECT current_schema()'),
     )
@@ -80,7 +80,7 @@ export abstract class DatabasePropagationService {
     return rows[0].current_schema
   }
 
-  private async hasTable(tableName: string): Promise<boolean> {
+  async hasTable(tableName: string): Promise<boolean> {
     const schema = await this.getCurrentSchema()
 
     const { rows } = await this.database.executeQuery<{ current_schema: string }>(

@@ -1,0 +1,25 @@
+query GetImportJob($id: ID!) {
+  importJob(id: $id) {
+    id
+    dataSource
+    sourceRef
+    label
+    status
+    createdAt
+    startedAt
+    completedAt
+    totalItems
+    completedItems
+    failedItems
+    pendingReviewItems
+    progressPercent
+    items {
+      id
+      sourceItemRef
+      label
+      status
+      retryCount
+      errorMessage
+    }
+  }
+}

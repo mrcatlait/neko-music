@@ -1,0 +1,19 @@
+mutation RefreshImportDiscovery($input: RefreshImportDiscoveryInput!) {
+  refreshImportDiscovery(input: $input) {
+    newSourceItemRefs
+    removedSourceItemRefs
+    discovery {
+      id
+      dataSource
+      sourceRef
+      label
+      tracks {
+        id
+        sourceItemRef
+        label
+        position
+        isSelected
+      }
+    }
+  }
+}

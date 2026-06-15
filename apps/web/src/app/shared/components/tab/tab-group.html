@@ -1,0 +1,30 @@
+<ul
+  class="tab-group"
+  role="tablist"
+>
+  @for (tab of tabs(); track tab; let index = $index) {
+    <li
+      class="title-small tab-group__label"
+      role="tab"
+      [aria-current]="index === selectedTabIndex()"
+      [tabindex]="index === selectedTabIndex() ? 0 : -1"
+      (click)="selectTab(index)"
+      (keydown.enter)="selectTab(index)"
+      (keydown.space)="selectTab(index); $event.preventDefault()"
+    >
+      {{ tab.label() }}
+
+      @if (tab.count(); as count) {
+        <span class="label-small tab-group__badge">
+          {{ count > 999 ? '999+' : count }}
+        </span>
+      }
+    </li>
+  }
+</ul>
+
+@if (selectedTab(); as selectedTab) {
+  <section role="tabpanel">
+    <ng-container [ngTemplateOutlet]="selectedTab.content()" />
+  </section>
+}

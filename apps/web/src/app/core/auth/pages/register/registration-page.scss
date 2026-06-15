@@ -1,5 +1,5 @@
 h1 {
-  margin-bottom: 24px;
+  margin: 0;
   text-align: center;
 }
 
@@ -7,12 +7,12 @@ form {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-top: 24px;
+  padding-top: 20px;
 }
 
 p {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 .registration-page {

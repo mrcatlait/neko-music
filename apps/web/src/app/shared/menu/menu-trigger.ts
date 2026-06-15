@@ -1,10 +1,21 @@
-import { Directive, ElementRef, EmbeddedViewRef, inject, input, signal, TemplateRef } from '@angular/core'
+import {
+  computed,
+  Directive,
+  ElementRef,
+  EmbeddedViewRef,
+  inject,
+  input,
+  output,
+  signal,
+  TemplateRef,
+} from '@angular/core'
 
 import { Portal, TemplatePortal } from '../portal'
 import { MenuContext } from './menu-context'
 
 @Directive({
   selector: '[nMenuTrigger]',
+  exportAs: 'nMenuTrigger',
   host: {
     '(click)': 'toggle()',
     '(document:keydown.escape)': 'close()',
@@ -16,6 +27,7 @@ export class MenuTrigger {
   private readonly host = inject(ElementRef)
 
   template = input.required<TemplateRef<HTMLElement>>({ alias: 'nMenuTrigger' })
+  readonly openChange = output<boolean>({ alias: 'nMenuOpenChange' })
 
   private readonly menuRef = signal<EmbeddedViewRef<HTMLElement> | null>(null)
 
@@ -25,6 +37,7 @@ export class MenuTrigger {
     if (!menuRef) {
       const context: MenuContext = { host: this.host.nativeElement as HTMLElement }
       this.menuRef.set(this.portal.addTemplate(new TemplatePortal(this.template()), context))
+      this.openChange.emit(true)
     } else {
       this.close()
     }
@@ -45,6 +58,7 @@ export class MenuTrigger {
     if (menuRef) {
       this.portal.removeTemplate(menuRef)
       this.menuRef.set(null)
+      this.openChange.emit(false)
     }
   }
 

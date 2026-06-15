@@ -1,0 +1,17 @@
+query GetImports {
+  imports {
+    id
+    dataSource
+    sourceRef
+    label
+    status
+    createdAt
+    startedAt
+    completedAt
+    totalItems
+    completedItems
+    failedItems
+    pendingReviewItems
+    progressPercent
+  }
+}

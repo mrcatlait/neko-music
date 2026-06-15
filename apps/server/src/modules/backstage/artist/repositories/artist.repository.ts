@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Insertable, Selectable, Updateable } from 'kysely'
+import { Insertable, Selectable, Updateable, sql } from 'kysely'
 
 import { BackstageArtistTable, BackstageGenreTable, BackstageSchema } from '../../backstage.schema'
 
@@ -14,12 +14,29 @@ interface UpdateWithGenresParams extends Updateable<BackstageArtistTable> {
   genres: string[]
 }
 
+interface FuzzyMatchResult {
+  id: string
+  name: string
+  distance: number
+}
+
 type ArtistGenre = Selectable<BackstageGenreTable> & { artistId: string }
 
 @Injectable()
 export class ArtistRepository extends Repository<BackstageSchema, 'backstage.Artist'> {
   constructor(@InjectDatabase() database: Database<BackstageSchema>) {
     super(database, 'backstage.Artist')
+  }
+
+  findByFuzzyName(name: string, maxDistance = 3): Promise<FuzzyMatchResult[]> {
+    return this.database
+      .selectFrom('backstage.Artist')
+      .select(['id', 'name'])
+      .select((eb) => sql<number>`levenshtein(${eb.ref('name')}::text, ${name}::text)`.as('distance'))
+      .where((eb) => sql`levenshtein(${eb.ref('name')}::text, ${name}::text)`, '<=', maxDistance)
+      .orderBy((eb) => sql`levenshtein(${eb.ref('name')}::text, ${name}::text)`)
+      .limit(5)
+      .execute() as Promise<FuzzyMatchResult[]>
   }
 
   createWithGenres(params: CreateWithGenresParams): Promise<Selectable<BackstageArtistTable>> {
