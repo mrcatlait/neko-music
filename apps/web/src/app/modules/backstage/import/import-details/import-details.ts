@@ -19,6 +19,7 @@ import {
   RetryImportJobItemGql,
   ReviewMetadataClaimGql,
 } from '@/shared/generated-types'
+import { TimeAgoPipe } from '@/shared/pipes'
 
 type ImportJobItem = GetImportJobQuery['importJob']['items'][number]
 type ImportJobItemClaim = GetImportJobItemClaimsQuery['importJobItemClaims'][number]
@@ -39,6 +40,7 @@ type ImportJobItemClaim = GetImportJobItemClaimsQuery['importJobItemClaims'][num
     Menu,
     MenuItem,
     MenuTrigger,
+    TimeAgoPipe,
   ],
   providers: [
     provideGridOptions(),
@@ -425,13 +427,5 @@ export class ImportDetails {
     } finally {
       this.isLoadingClaims.set(false)
     }
-  }
-
-  protected formatDate(value: string | Date | null | undefined): string {
-    if (!value) {
-      return 'N/A'
-    }
-
-    return new Date(value).toLocaleString()
   }
 }

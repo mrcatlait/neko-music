@@ -1,0 +1,203 @@
+---
+description: Apply core visual-design principles to web UI layout and styling work
+alwaysApply: false
+---
+
+# Principles of Visual Design
+
+Apply these principles when creating or updating UI markup and styles. Favor choices
+that improve scanability, comprehension, accessibility, and task completion speed.
+
+## Core Objective
+
+- Help users quickly answer: "What is this?", "What can I do?", and "What should I do next?"
+- Treat visual design as information architecture, not decoration.
+- Prioritize usability first and aesthetics second.
+
+## 1. Scale (Importance Through Size)
+
+- Use relative size to communicate priority.
+- Keep most screens to three size tiers: `small`, `medium`, and `large`.
+- Make only truly primary content/actions the largest.
+- Avoid too many large elements. If everything is big, nothing stands out.
+
+### Do / Don't
+
+- **Do:** Keep heading, subheading, and body sizes clearly distinct.
+- **Do:** Reduce size for metadata and tertiary actions.
+- **Don't:** Use many near-identical sizes that force users to read everything.
+
+## 2. Visual Hierarchy (Attention Order)
+
+- Arrange visual signals so the eye follows an intended sequence.
+- Use hierarchy through size, contrast, spacing, placement, and grouping.
+- Align first-glance focal points with user task priorities.
+- Keep hierarchy stable across loading, empty, error, and success states.
+- Define hierarchy goals before styling: what should be noticed first, second, and third.
+- Hierarchy should reduce parsing effort; users should not need to inspect every element.
+
+### Best Practices
+
+- Use 2-3 emphasis levels for text and actions.
+- Keep one clear primary action per region.
+- De-emphasize supporting content without harming readability.
+- Run a squint/blur test; focal points should still be obvious when text is unreadable.
+- Typical web ranges: body `14-16px`, subheader `18-22px`, headline up to `~32px`.
+- Keep no more than `~2` dominant large elements per viewport.
+
+### Anti-Patterns
+
+- Uniform color, weight, and capitalization across all items.
+- Primary and secondary actions styled identically.
+- Critical controls buried among unrelated elements.
+
+## 3. Balance (Visual Weight Distribution)
+
+- Distribute visual weight so no area feels unintentionally heavy.
+- Use symmetry for stable tone and asymmetry for dynamic tone.
+- Asymmetrical layouts are valid when visual weight is still balanced.
+- Watch for accidental imbalance from oversized badges, imagery, or cards.
+
+## 4. Contrast (Difference With Purpose)
+
+- Use contrast to communicate function, priority, and state.
+- Preserve legibility with sufficient text/background contrast.
+- Reserve high-contrast accents for key actions and warnings.
+- Keep contrast variation restrained; too many treatments flatten hierarchy.
+- Judge contrast by value/saturation versus nearby context, not hue alone.
+
+### Do / Don't
+
+- **Do:** Keep disabled/inactive states readable.
+- **Do:** Reserve warning colors for destructive/risky actions.
+- **Do:** Keep palette constrained (typically up to 2 primary + 2 secondary colors).
+- **Don't:** Rely on color alone for meaning (add labels, icons, and state text).
+- **Don't:** Over-dim non-primary text until it becomes inaccessible.
+- **Don't:** Use more than `~3` contrast treatments per region unless required.
+
+## 5. Gestalt Grouping Principles
+
+### 5.1 Proximity
+
+- Elements close together are perceived as related.
+- Place related labels, controls, and outcomes near each other.
+- Separate unrelated items with intentional whitespace.
+- Keep actions near the content they affect.
+
+#### Risks
+
+- Far-away controls are easily missed during task-focused scanning.
+- Responsive stacking can unintentionally break grouping.
+
+### 5.2 Similarity
+
+- Shared color/shape/size/typography implies shared meaning.
+- Keep visual semantics consistent with behavior.
+- Ensure interactive affordances look interactive.
+- Differentiate primary and secondary actions clearly.
+
+#### Risks
+
+- Decorative elements styled as controls create false affordances.
+- Different actions that look identical slow decision-making.
+
+### 5.3 Common Region
+
+- Elements in the same boundary/background are perceived as a group.
+- Use containers when whitespace alone is insufficient.
+- Apply cards/regions to clarify mixed or dense content.
+- Prefer subtle boundaries; overuse increases clutter.
+
+#### Risks
+
+- Excess boxes increase cognitive load.
+- Full-width segmented regions can create false stopping points while scrolling.
+
+### 5.4 Closure
+
+- Users mentally complete incomplete shapes/objects.
+- Use closure to simplify icons and hint at off-screen content.
+- For continuation cues, show enough partial content to be recognizable.
+
+#### Risks
+
+- Tiny cutoffs fail to communicate "more content."
+- Over-abstract icons reduce comprehension without labels.
+
+## 6. Responsive Integrity
+
+- Revalidate hierarchy/grouping at mobile, tablet, and desktop sizes.
+- Ensure proximity survives wrapping and stacked columns.
+- Keep labels connected to the controls/values they describe.
+- Prevent detached CTAs after reflow.
+- Validate hierarchy with real content, not placeholders only.
+
+## 7. Typography and Spacing Systems
+
+- Use spacing rhythm: tighter within groups, wider between groups.
+- Keep heading-to-content spacing smaller than section-to-section spacing.
+- Choose line height for readability, especially on longer lines.
+- Keep typography mapping consistent for equivalent UI elements.
+- Use type contrast (weight/style) when size alone is not enough.
+- Avoid all-caps-heavy layouts unless required; they hurt scanning.
+
+## 8. Golden Ratio (Optional Aid)
+
+- Golden ratio can help derive harmonious proportions.
+- Use as a reference, not a strict requirement.
+- Prioritize readability, responsive behavior, and content needs over exact ratios.
+
+## 9. Actionability and Affordance Clarity
+
+- Interactive elements must look interactive.
+- Similar visuals should imply similar behavior.
+- Do not cluster unrelated actions into one dense action area.
+- Keep secondary actions visible but less dominant than primary actions.
+
+## 10. Content-Aware Design
+
+- Ensure hierarchy remains correct with production content.
+- Long labels, localization, and high-contrast artwork must not break structure.
+- Prevent any single image/badge from unintentionally dominating attention.
+- Review with realistic content density, not mock-only compositions.
+- If testing shows "Where do I look first?" confusion, reduce competing emphasis.
+
+## Visual Hierarchy Workflow (Required)
+
+1. Define task priority and message order before styling.
+2. Choose hierarchy signals: color/contrast, scale, and grouping.
+3. Apply constraints: `<=3` size tiers, constrained palette, constrained contrast variants.
+4. Validate with squint/blur pass and real-content pass.
+5. Verify accessibility and behavior at all breakpoints.
+6. Confirm users can identify the primary action quickly without coaching.
+
+## Grouping Guidance
+
+- Use whitespace first to express relationships.
+- Add containers only when whitespace is insufficient.
+- Let key groups breathe, while keeping heading-content links tight.
+- Avoid banner-blindness zones for critical information.
+- Avoid regions that look like terminal endpoints and discourage scrolling.
+
+## QA Checklist Before Merge
+
+- Is the primary task obvious in 2 seconds?
+- Is there a clear first focal point and sensible attention path?
+- Are related items grouped by proximity and spacing?
+- Are similar visuals reserved for similar behaviors?
+- Are containers used only when they add clarity?
+- Is text legible with adequate contrast?
+- Is meaning conveyed beyond color alone?
+- Do mobile/desktop preserve intended relationships?
+- Are continuation cues (scroll/swipe/more) visible and understandable?
+- Are icon meanings clear with labels where needed?
+- Are there `<=3` size tiers and `<=3` major contrast treatments per section?
+- Is the palette intentionally constrained instead of equally loud everywhere?
+
+## Quick Remediation Guide
+
+- If users miss a control, move it closer to related content (proximity).
+- If users confuse actions, differentiate visual semantics (similarity + contrast).
+- If layout feels noisy, remove unnecessary borders and competing accents.
+- If priority is unclear, increase scale/contrast separation.
+- If mobile grouping breaks, adjust spacing and boundaries per breakpoint.
