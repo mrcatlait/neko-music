@@ -18,4 +18,4 @@ Neko Music is a self-hosted music platform for a small household or community: a
 - **Backstage → Media**: Backstage entities reference processed media assets (artwork, audio) before publish
 - **Media → Catalog**: Catalog publish is blocked until Media readiness confirms streamable content
 - **Platform → all**: RBAC permissions (`@neko/permissions`) gate who can curate, review imports, or listen
-- **Platform API**: GraphQL for application domain data; REST for auth, media streaming, and uploads
+- **Platform API**: internal seam consumed only by the first-party web client (no public client contract) — GraphQL for application domain data; REST carve-outs for auth, media streaming, and uploads

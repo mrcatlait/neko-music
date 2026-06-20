@@ -45,13 +45,21 @@ _Avoid_: On-prem (enterprise connotation), local-only (implies no network access
 Music enters the system primarily through **Import** (external sources). Manual Backstage entry exists for corrections and edge cases, not bulk library building.
 _Avoid_: Upload (one source type, not the whole model), ingestion pipeline (implementation)
 
-**Extensibility** (v1 posture):
-Strategy interfaces exist for storage, transcoding, import sources, and auth — but v1 ships one default implementation each. Swapping is for motivated operators, not a plugin marketplace or hot-loading system.
+**Extensibility**:
+The only extension surface is the **back end**, through Strategies selected in Configuration. There is no front-end extension and no third party adds pages, schema, or entities — the web client is wholly first-party. Third-party Strategies are possible, but they fit existing interfaces; the platform is not a plugin marketplace or hot-loading system.
 _Avoid_: Plugin (implementation), modular (too vague)
 
 **Strategy**:
-A swappable implementation behind a module boundary — e.g. `YoutubeImportStrategy`, `LocalStorageStrategy`. Registered in-process at startup; capabilities exposed to the web client at runtime.
+A swappable implementation behind a back-end interface — e.g. `YoutubeImportStrategy`, `LocalStorageStrategy`. Selected and configured through Configuration; capabilities and required settings are described declaratively so the first-party web client renders them at runtime without bespoke UI.
 _Avoid_: Plugin, provider, adapter (code terms)
+
+**Configuration**:
+The single declarative description of one installation — which Strategies are active and their settings. The operator's primary control surface; the platform is started from it.
+_Avoid_: Settings (too granular), options
+
+**Strategy descriptor**:
+The declarative statement a Strategy makes about itself — its capabilities and the settings it needs. Lets the first-party web client present any Strategy, including third-party ones, without per-Strategy front-end code.
+_Avoid_: Manifest (overloaded), schema (ambiguous with GraphQL)
 
 ## v1 scope
 
@@ -94,7 +102,12 @@ _Avoid_: Federated, decentralized (in the ActivityPub sense)
 ## Client surface (open)
 
 **Web client**:
-The primary UI is the Angular SPA. v1 skeleton is web-only.
+The single-page web client is the primary UI. It ships **inside** the platform distribution and is served by the platform itself — not hosted as a separate site. Tightly coupled to the platform's API and versioned in lockstep with it.
+_Avoid_: SPA host, frontend deployment (it is not deployed separately)
+
+**Single deployable**:
+One self-contained unit runs an installation — back end and bundled web client together. The operator runs the platform; no separate front-end server or static host.
+_Avoid_: Two-tier deploy, separate frontend
 
 **Native mobile apps**:
 Not committed. Near-term exploration: whether a **PWA** (installable web, offline playback where feasible) is sufficient before any native app investment.
@@ -128,13 +141,15 @@ _Avoid_: APM (product name, not requirement)
 
 ## API surface
 
-**GraphQL API**:
-The primary application API for domain data — Backstage, Import, Catalog, and personal library features. Authorization scopes what each role can query or mutate; Listeners see a restricted surface, not a separate HTTP stack.
-_Avoid_: Admin API, curator API (use permissions instead)
+The web client is the **only** consumer of the application API. The API is therefore an internal seam, not a published contract: there is no client-agnostic public API and no third-party client to keep stable for.
 
-**REST API** (intentionally narrow):
+**GraphQL API**:
+The application API for domain data — Backstage, Import, Catalog, and personal library features. Internal to the platform and consumed only by the first-party web client; the GraphQL schema is a build artifact, not a versioned external contract. Authorization scopes what each role can query or mutate; Listeners see a restricted surface, not a separate HTTP stack.
+_Avoid_: Public API, Admin API, curator API (use permissions instead)
+
+**REST carve-outs** (intentionally narrow):
 REST endpoints for operations that don't fit GraphQL well:
-- **Auth** — login, register, logout, refresh, whoami (httpOnly refresh cookie). Stays REST for now; GraphQL migration deferred.
+- **Auth** — login, register, logout, refresh, whoami (httpOnly refresh cookie).
 - **Media streaming** — MPEG-DASH segments and manifests
 - **Media upload** — binary file uploads
 
